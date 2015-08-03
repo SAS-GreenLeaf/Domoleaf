@@ -1,0 +1,9 @@
+Package: glmaster
+Version: 0.0.2
+Section: base
+Priority: optional
+Architecture: all
+Pre-Depends: mariadb-server
+Depends: avahi-daemon,fail2ban,glslave,htop,locate,logrotate,miniupnpc,nginx,ntpdate,openssh-client,php-apc,php5-curl,php5-fpm,php5-gd,php5-mysql,python3,python3-crypto,python3-mysql.connector,python3-pip,python3-pyasn1,python3-pycurl,python3-rsa,ssl-cert,sslh,screen,tcpdump
+Maintainer: Greenleaf <contact@greenleaf.fr>
+Description: Greenleaf master daemon running under python 3 for D3 boxes

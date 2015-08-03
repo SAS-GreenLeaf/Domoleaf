@@ -1,0 +1,79 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides: glmaster
+# Required-Start: $local_fs $network $syslog mysql
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog
+# Should-Stop: $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Greenleaf master daemon for D3 boxes
+# description:
+### END INIT INFO
+
+PATH="$PATH"
+DAEMON="/usr/bin/master.py"
+LOG_FILE=/var/log/glmaster.log
+PID_FILE=/var/run/glmaster.pid
+PROG="glmaster"
+FILENAME="master.py"
+
+start()
+{
+	if [ -f $PID_FILE ]; then
+		echo "$PROG is already running"
+	else
+		echo "Starting $PROG"
+		$DAEMON --log > $LOG_FILE 2>&1
+		return 0
+	fi
+}
+
+stop()
+{
+	if [ -f $PID_FILE ]; then
+		echo "Stopping $PROG"
+		kill -9 `cat $PID_FILE`
+		rm -f $LOG_FILE
+		rm -f $PID_FILE
+		return 0
+	else
+		echo "$PROG is not running"
+	fi
+}
+
+restart()
+{
+	stop
+	start
+}
+
+status()
+{
+	if [ -f $PID_FILE ]; then
+		echo "$PROG is running"
+	else
+		echo "$PROG is not running"
+	fi
+}
+
+case $1 in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		restart
+		;;
+	status)
+		status
+		;;
+	*)
+		echo "Usage: $0 {start | stop | status | restart}"
+		RETVAL=2
+esac
+
+exit $RETVAL

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -e "[ \033[33m..\033[0m ] Removing Greenleaf master daemon..."

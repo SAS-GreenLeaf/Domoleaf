@@ -1,0 +1,9 @@
+/usr/bin/pthsem-config
+/usr/include/pthsem.h
+/usr/lib/*.a
+/usr/lib/*.so
+/usr/lib/*.la
+/usr/lib/pkgconfig
+/usr/share/aclocal/pthsem.m4
+/usr/share/man/man1/pthsem-config.1
+/usr/share/man/man3/pthsem.3

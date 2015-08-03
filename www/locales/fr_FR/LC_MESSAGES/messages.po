@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-23 14:18+0200\n"
+"PO-Revision-Date: 2014-10-23 15:46+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.10\n"
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Sign in"
+msgstr "Se connecter"
+
+msgid "Please sign in"
+msgstr "Connexion"
+
+msgid "Error:"
+msgstr "Erreur :"
+
+msgid "Info:"
+msgstr "Information :"
+
+msgid "Toggle navigation"
+msgstr "Basculer la navigation"
+
+msgid "Please enter your username and password to acces to the remote control"
+msgstr "Entrez votre identifiant et votre mot de passe pour accéder à votre télécommande"
+
+msgid "Password lost"
+msgstr "Mot de passe perdu"
+
+msgid "Develop by "
+msgstr "Développé par "
+
+msgid "All Areas"
+msgstr "Toutes Zones"
+
+msgid "Board"
+msgstr "Tableau"
+
+msgid "Suitcase"
+msgstr "Valise"

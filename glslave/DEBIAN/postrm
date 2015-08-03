@@ -1,0 +1,12 @@
+#!/bin/bash
+
+rm -rf /etc/greenleaf /usr/bin/glslave /usr/lib/greenleaf
+
+rm -f /var/log/glslave.log
+rm -f /var/log/monitor_enocean.log
+rm -f /var/log/monitor_knx.log
+rm -f /var/run/glslave.pid
+rm -f /var/run/monitor_enocean.pid
+rm -f /var/run/monitor_knx.pid
+
+echo -e "[ \033[32mok\033[0m ] Done removing Greenleaf slave daemon"

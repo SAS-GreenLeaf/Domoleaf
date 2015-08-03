@@ -1,0 +1,74 @@
+Source: pthsem
+Section: devel
+Priority: optional
+Maintainer: Martin Koegler <mkoegler@auto.tuwien.ac.at>
+Build-Depends: debhelper (>= 7), cdbs
+Standards-Version: 3.8.3
+Homepage: http://www.auto.tuwien.ac.at/~mkoegler/index.php/pth
+
+Package: libpthsem20
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Replaces: pthsem
+Description: pth replacement with semaphore support
+ This package provides GNU pth enhanged with semaphore support.
+ Pth is a very portable POSIX/ANSI-C based library for Unix platforms which
+ provides non-preemptive priority-based scheduling for multiple threads of
+ execution ("multithreading") inside server applications. All threads run in the
+ same address space of the server application, but each thread has its own
+ individual program-counter, run-time stack, signal mask and errno variable.
+
+
+Package: libpthsem-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, libpthsem20 (= ${binary:Version})
+Replaces: pthsem-dev
+Description: pth replacement with semaphore support
+ This package provides the development files of GPU pth enhanced with semaphore 
+ support.
+ Pth is a very portable POSIX/ANSI-C based library for Unix platforms which
+ provides non-preemptive priority-based scheduling for multiple threads of
+ execution ("multithreading") inside server applications. All threads run in the
+ same address space of the server application, but each thread has its own
+ individual program-counter, run-time stack, signal mask and errno variable.
+ .
+ This package contains the development files.
+
+Package: libpthsem-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends:
+ ${misc:Depends}, libpthsem20 (= ${binary:Version}),
+ libpthsem-dev (=${binary:Version})
+Description: pth replacement with semaphore support
+ This package provides the debug symols of GPU pth enhanced with semaphore 
+ support.
+ Pth is a very portable POSIX/ANSI-C based library for Unix platforms which
+ provides non-preemptive priority-based scheduling for multiple threads of
+ execution ("multithreading") inside server applications. All threads run in the
+ same address space of the server application, but each thread has its own
+ individual program-counter, run-time stack, signal mask and errno variable.
+ .
+ This package contains the debug symbols.
+
+Package: libpthsem-compat
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, libpthsem-dev
+Provides: libpth-dev
+Conflicts: libpth-dev
+Description: pth replacement with semaphore support
+ This package provides the development files of GPU pth enhanced with semaphore 
+ support.
+ Pth is a very portable POSIX/ANSI-C based library for Unix platforms which
+ provides non-preemptive priority-based scheduling for multiple threads of
+ execution ("multithreading") inside server applications. All threads run in the
+ same address space of the server application, but each thread has its own
+ individual program-counter, run-time stack, signal mask and errno variable.
+ .
+ This package contains the necessary files to built GNU pth applications with 
+ pthsem.
+

@@ -1,0 +1,87 @@
+diff --git a/configure.ac b/configure.ac
+index 494db94..24b4d90 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,8 +40,9 @@ AC_INIT(README)
+ AC_ENABLESUBDIR
+ AC_SRCDIR_PREFIX(srcdir_prefix)
+ AC_HEADLINE(dnl
+-GNU Pth, Portable Threads, dnl
++pthsem, Portable Threads, dnl
+ PTH_VERSION, pth_vers.c, dnl
++[Copyright (c) 2005-2006 Martin Koegler <mkoegler@auto.tuwien.ac.at>] 
+ [Copyright (c) 1999-2006 Ralf S. Engelschall <rse@engelschall.com>])
+ AC_CONFIG_PARAM(config.param)
+ AC_CONFIG_HEADER(pth_acdef.h)dnl
+@@ -640,6 +641,17 @@ AC_CHECK_EXTLIB(Dmalloc, dmalloc, dmallo
+                 AC_DEFINE(PTH_DMALLOC, 1, [define if using Dmalloc in GNU pth]))
+ 
+ dnl ##
++dnl ##  Valgrind support
++dnl ##
++
++AC_ARG_WITH(valgrind,[  --with-valgrind[[=DIR]]   include annotation for valgrind (default=no)],[
++  if test -d "$with_valgrind"; then
++	CPPFLAGS="$CPPFLAGS -I$with_valgrind/include"
++  fi
++  AC_CHECK_DEFINE(VALGRIND_STACK_REGISTER, valgrind/valgrind.h) 
++])
++
++dnl ##
+ dnl ##  OUTPUT SUBSTITUTION
+ dnl ##
+ 
+diff --git a/pth_tcb.c b/pth_tcb.c
+index bb8ec84..10ba2c6 100644
+--- a/pth_tcb.c
++++ b/pth_tcb.c
+@@ -84,10 +84,17 @@ #ifdef PTH_EX
+     /* per-thread exception handling */
+     ex_ctx_t       ex_ctx;               /* exception handling context                  */
+ #endif
++#ifdef HAVE_VALGRIND_STACK_REGISTER
++    int           stack_id;              /* stack id for valgrind                        */ 
++#endif
+ };
+ 
+ #endif /* cpp */
+ 
++#ifdef HAVE_VALGRIND_STACK_REGISTER
++#include <valgrind/valgrind.h>
++#endif
++
+ intern const char *pth_state_names[] = {
+     "scheduler", "new", "ready", "running", "waiting", "dead"
+ };
+@@ -108,6 +115,7 @@ intern pth_t pth_tcb_alloc(unsigned int 
+         stacksize = SIGSTKSZ;
+     if ((t = (pth_t)malloc(sizeof(struct pth_st))) == NULL)
+         return NULL;
++    memset (t, 0, sizeof(struct pth_st));
+     t->stacksize  = stacksize;
+     t->stack      = NULL;
+     t->stackguard = NULL;
+@@ -120,6 +128,9 @@ intern pth_t pth_tcb_alloc(unsigned int 
+                 pth_shield { free(t); }
+                 return NULL;
+             }
++#ifdef HAVE_VALGRIND_STACK_REGISTER
++        t->stack_id = VALGRIND_STACK_REGISTER (t->stack, t->stack + stacksize);
++#endif
+         }
+ #if PTH_STACKGROWTH < 0
+         /* guard is at lowest address (alignment is guarrantied) */
+@@ -138,8 +149,12 @@ intern void pth_tcb_free(pth_t t)
+ {
+     if (t == NULL)
+         return;
+-    if (t->stack != NULL && !t->stackloan)
++    if (t->stack != NULL && !t->stackloan) {
++#ifdef HAVE_VALGRIND_STACK_REGISTER
++        VALGRIND_STACK_DEREGISTER (t->stack_id);
++#endif
+         free(t->stack);
++    }
+     if (t->data_value != NULL)
+         free(t->data_value);
+     if (t->cleanups != NULL)

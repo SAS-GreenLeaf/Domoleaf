@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo -e "[ \033[32mOK\033[0m ] Done removing Greenleaf master daemon"
+
+rm -rf /usr/bin/glmaster /etc/greenleaf/www
+
+rm -f /var/run/glmaster.pid
+rm -f /var/log/glmaster.log

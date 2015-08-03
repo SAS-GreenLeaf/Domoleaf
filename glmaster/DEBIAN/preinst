@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo -e "[ \033[33m..\033[0m ] Installing Greenleaf master daemon..."
+
+mkdir -p /etc/greenleaf/sql/{create,update,backup}
+mkdir -p /usr/lib/greenleaf
+mkdir -p /etc/greenleaf
+mkdir -p /usr/bin/glmaster
+mkdir -p /etc/greenleaf/www

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo -e "[ \033[33m..\033[0m ] Installing Greenleaf slave daemon..."
+
+mkdir -p /usr/lib/greenleaf
+mkdir -p /etc/greenleaf
+mkdir -p /usr/bin/glslave

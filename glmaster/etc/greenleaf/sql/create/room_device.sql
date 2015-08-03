@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS `room_device` (
+  `room_device_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `protocol_id` int(11) unsigned NOT NULL,
+  `room_id` int(11) unsigned NOT NULL,
+  `device_id` int(10) unsigned NOT NULL,
+  `daemon_id` int(10) unsigned DEFAULT NULL,
+  `addr` varchar(255) DEFAULT NULL,
+  `plus1` varchar(255) DEFAULT NULL,
+  `plus2` varchar(255) DEFAULT NULL,
+  `plus3` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`room_device_id`),
+  KEY `protocol_id` (`protocol_id`),
+  KEY `room_id` (`room_id`),
+  KEY `device_id` (`device_id`),
+  KEY `daemon_id` (`daemon_id`),
+  CONSTRAINT `room_device_ibfk_1` FOREIGN KEY (`protocol_id`) REFERENCES `protocol` (`protocol_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `room_device_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `room_device_ibfk_3` FOREIGN KEY (`device_id`) REFERENCES `device` (`device_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `room_device_ibfk_4` FOREIGN KEY (`daemon_id`) REFERENCES `daemon` (`daemon_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

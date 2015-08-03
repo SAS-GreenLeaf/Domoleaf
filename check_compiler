@@ -1,0 +1,29 @@
+#!/bin/bash
+
+packages=''
+
+check_package()
+{
+	echo -e "[ \033[33m..\033[0m ] Checking for $1..."
+	dpkg -s $1 > /dev/null 2>&1
+	if [ $? -gt 0 ];
+	then
+		packages+=" $1"
+	else
+		echo -e "[ \033[32mok\033[0m ] $1"
+	fi
+}
+
+check_package make
+check_package gcc
+check_package gcc-arm-none-eabi
+check_package g++
+check_package libconfig-dev
+check_package autoconf
+check_package libtool
+check_package libxml2-dev
+
+if [ "$packages" != "" ];
+then
+	apt-get install -y $packages
+fi

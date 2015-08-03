@@ -1,0 +1,12 @@
+pthsem for Debian
+-----------------
+
+It is a pth library with added semaphore support. It can be used as a replacement of
+pth, if pthsem-config is used instead of pth-config.
+
+Additionally pthsem.h instead of pth.h has to be included.
+The replacement of AC_CHECK_PTH is called AC_CHECK_PTHSEM
+
+More information availeable at http://www.auto.tuwien.ac.at/~mkoegler/index.php/pth
+
+ -- Martin Kögler <mkoegler@auto.tuwien.ac.at>, Fri, 18 Mar 2005 12:41:24 +0100

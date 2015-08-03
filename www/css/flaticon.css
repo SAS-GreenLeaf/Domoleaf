@@ -1,0 +1,61 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("../fonts/flaticon.eot");
+	src: url("../fonts/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../fonts/flaticon.woff") format("woff"),
+	url("../fonts/flaticon.ttf") format("truetype"),
+	url("../fonts/flaticon.svg") format("svg");
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+ 	-moz-osx-font-smoothing: grayscale;
+ 	font-weight: bold;
+}
+
+div.bhoechie-tab-menu-right 
+div.list-group-app > a .glyphicon, 
+div.bhoechie-tab-menu-right div.list-group-app > a 
+.fi {
+    color: #76af1a;
+}
+
+.fi {
+	line-height: 1;
+}
+.flaticon-:before {
+	content: "\e000";
+}
+.flaticon-engineering:before {
+	content: "\e001";
+}
+.flaticon-heating1:before {
+	content: "\e002";
+}
+.flaticon-measure20:before {
+	content: "\e003";
+}
+.flaticon-person206:before {
+	content: "\e004";
+}
+.flaticon-sign35:before {
+	content: "\e005";
+}
+.flaticon-snowflake149:before {
+	content: "\e006";
+}
+.flaticon-thermometer2:before {
+	content: "\e007";
+}
+.flaticon-vintage62:before {
+	content: "\e008";
+}
+.flaticon-wind34:before {
+	content: "\e009";
+}
+.flaticon-winds4:before {
+	content: "\e00a";
+}

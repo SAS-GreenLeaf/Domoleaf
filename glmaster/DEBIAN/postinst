@@ -1,0 +1,63 @@
+#!/bin/bash
+
+echo -e "[ \033[32mok\033[0m ] Done installing Greenleaf master daemon"
+
+touch /etc/greenleaf/camera.conf
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    sed -i 's/default_server//g' /etc/nginx/sites-enabled/default
+fi
+sed -i 's/RUN=no/RUN=yes/g' /etc/default/sslh
+sed -i 's/<change-me>/0.0.0.0/g' /etc/default/sslh
+sed -i 's/127.0.0.1:443/127.0.0.1:1443/g' /etc/default/sslh
+
+sed -i 's/;opcache.enable=0/opcache.enable=0/g' /etc/php5/fpm/php.ini
+sed -i 's/opcache.enable=0/opcache.enable=1/g' /etc/php5/fpm/php.ini
+
+# Create mastercommand db if does not exist
+bash /etc/greenleaf/sql/database.sh
+
+# check password mysql in /etc/greenleaf/master.conf
+if grep -q "^password=greenleaf$" /etc/greenleaf/master.conf; then
+    echo -e "[ \033[33mINFO\033[0m ] Changing mysql default password..."
+    newpasswd=`echo \`date\` | sha1sum | sed 's/  -//g'`
+    sed -i "s/password=greenleaf/password=$newpasswd/g" /etc/greenleaf/master.conf
+    echo -e "[ \033[32mOK\033[0m ] Done."
+    echo -e "[ \033[33mINFO\033[0m ] Initializing SQL user..."
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "DELETE FROM user WHERE User='greenleaf';"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "DELETE FROM db WHERE User='greenleaf';"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "CREATE DATABASE IF NOT EXISTS mastercommand;"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "ALTER DATABASE mastercommand CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "INSERT INTO user (Host, User, Password) VALUES ('localhost', 'greenleaf', PASSWORD('$newpasswd'));"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "INSERT INTO db (\`Host\`, \`Db\`, \`User\`, \`Select_priv\`, \`Insert_priv\`, \`Update_priv\`, \`Delete_priv\`, \`Create_priv\`, \`Drop_priv\`, \`Grant_priv\`, \`References_priv\`, \`Index_priv\`, \`Alter_priv\`, \`Create_tmp_table_priv\`, \`Lock_tables_priv\`, \`Create_view_priv\`, \`Show_view_priv\`, \`Create_routine_priv\`, \`Alter_routine_priv\`, \`Execute_priv\`, \`Event_priv\`, \`Trigger_priv\`) VALUES ('localhost','mastercommand','greenleaf','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y');"
+    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "FLUSH PRIVILEGES;"
+    echo -e "[ \033[32mOK\033[0m ] Done."
+    sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
+else
+    newpasswd=grep -q "^password=" /etc/greenleaf/master.conf | cut -d = -f 2
+    sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
+fi
+
+user=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT user_id FROM user WHERE user_id = 1;"`
+if [ '$user' = '' ]; then
+    adminpasswd=`echo '1_admin' | sha256sum | sed 's/  -//g'`
+    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, $adminpasswd)"
+fi
+
+rm -f /etc/nginx/sites-enabled/master.conf
+ln -s /etc/nginx/sites-available/master.conf /etc/nginx/sites-enabled/master.conf
+
+systemctl restart nginx
+
+systemctl enable glmaster
+
+#Translation, .mo generation
+for inode in $(find /etc/greenleaf/www/locales -type d)
+do
+	if [ -f /etc/greenleaf/www/${inode}/messages.po ]
+	then
+		msgfmt /etc/greenleaf/www/${inode}/messages.po -o /etc/greenleaf/www/${inode}/messages.mo
+	fi
+done
+
+systemctl start glmaster

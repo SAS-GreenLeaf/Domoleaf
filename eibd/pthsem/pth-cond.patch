@@ -1,0 +1,39 @@
+--- pth_sync.c.old	2005-11-13 16:59:45.000000000 +0100
++++ pth_sync.c	2005-11-13 17:00:36.000000000 +0100
+@@ -240,12 +240,13 @@
+     pth_mutex_t *mutex = (pth_mutex_t *)(((void **)_cleanvec)[0]);
+     pth_cond_t  *cond  = (pth_cond_t  *)(((void **)_cleanvec)[1]);
+ 
++    /* fix number of waiters */
++    cond->cn_waiters--;
++
+     /* re-acquire mutex when pth_cond_await() is cancelled
+        in order to restore the condition variable semantics */
+     pth_mutex_acquire(mutex, FALSE, NULL);
+ 
+-    /* fix number of waiters */
+-    cond->cn_waiters--;
+     return;
+ }
+ 
+@@ -284,6 +285,10 @@
+     cleanvec[1] = cond;
+     pth_cleanup_push(pth_cond_cleanup_handler, cleanvec);
+     pth_wait(ev);
++
++    /* remove us from the number of waiters */
++    cond->cn_waiters--;
++
+     pth_cleanup_pop(FALSE);
+     if (ev_extra != NULL)
+         pth_event_isolate(ev);
+@@ -291,9 +296,6 @@
+     /* reacquire mutex */
+     pth_mutex_acquire(mutex, FALSE, NULL);
+ 
+-    /* remove us from the number of waiters */
+-    cond->cn_waiters--;
+-
+     /* release mutex (caller had to acquire it first) */
+     return TRUE;
+ }

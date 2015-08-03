@@ -1,0 +1,25 @@
+pthsem (2.0.8) unstable; urgency=low
+
+  * Monotonic clock support 
+
+ -- Martin Koegler <mkoegler@auto.tuwien.ac.at>  Fri, 02 Oct 2009 08:51:01 +0200
+
+pthsem (2.0.7) unstable; urgency=low
+
+  * Updated to pth 2.0.7
+
+ -- Martin Koegler <mkoegler@auto.tuwien.ac.at>  Sun, 20 Aug 2006 17:08:30 +0200
+
+pthsem (2.0.5) unstable; urgency=low
+
+  * Updated to pth 2.0.5
+  * Some bugfixes, documentation, ...
+
+ -- Martin Koegler <mkoegler@auto.tuwien.ac.at>  Sun, 13 Nov 2005 17:35:29 +0100
+
+pthsem (2.0.4-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Martin Koegler <e9925248@student.tuwien.ac.at>  Fri, 18 Mar 2005 12:41:24 +0100
+
