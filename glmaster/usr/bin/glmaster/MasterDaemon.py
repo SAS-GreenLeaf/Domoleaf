@@ -56,39 +56,39 @@ PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
 PROTOCOL_IP             = 6;    # IP protocol id
 
 # IDs for UPNP protocol
-UPNP_PLAY       	= 'play';               # Play command id
-UPNP_PAUSE      	= 'pause';              # Pause command id
-UPNP_NEXT       	= 'next';               # Next command id
-UPNP_PREVIOUS   	= 'prev';               # Prev command id
-UPNP_STOP       	= 'stop';               # Stop command id
-UPNP_VOLUME_UP  	= 'volume_up';          # Volume++ command id
+UPNP_PLAY           = 'play';               # Play command id
+UPNP_PAUSE          = 'pause';              # Pause command id
+UPNP_NEXT           = 'next';               # Next command id
+UPNP_PREVIOUS       = 'prev';               # Prev command id
+UPNP_STOP           = 'stop';               # Stop command id
+UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
-UPNP_SET_VOLUME 	= 'set_volume';         # Set volume command id
+UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
 
 #################################################
 # Packet types that can be received and treated #
 #################################################
-DATA_MONITOR_KNX        	  = 'monitor_knx';
-DATA_MONITOR_IP         	  = 'monitor_ip';
-DATA_MONITOR_ENOCEAN    	  = 'monitor_enocean';
-DATA_MONITOR_BLUETOOTH  	  = 'monitor_bluetooth';
-DATA_KNX_READ           	  = 'knx_read';
-DATA_KNX_WRITE_S        	  = 'knx_write_s';
-DATA_KNX_WRITE_L        	  = 'knx_write_l';
-DATA_SEND_TO_DEVICE     	  = 'send_to_device';
-DATA_CRON_UPNP          	  = 'cron_upnp';
-DATA_SEND_MAIL          	  = 'send_mail';
-DATA_CHECK_SLAVE        	  = 'check_slave';
-DATA_RELOAD_CAMERA      	  = 'reload_camera';
-DATA_RELOAD_D3CONFIG    	  = 'reload_d3config';
+DATA_MONITOR_KNX              = 'monitor_knx';
+DATA_MONITOR_IP               = 'monitor_ip';
+DATA_MONITOR_ENOCEAN          = 'monitor_enocean';
+DATA_MONITOR_BLUETOOTH        = 'monitor_bluetooth';
+DATA_KNX_READ                 = 'knx_read';
+DATA_KNX_WRITE_S              = 'knx_write_s';
+DATA_KNX_WRITE_L              = 'knx_write_l';
+DATA_SEND_TO_DEVICE           = 'send_to_device';
+DATA_CRON_UPNP                = 'cron_upnp';
+DATA_SEND_MAIL                = 'send_mail';
+DATA_CHECK_SLAVE              = 'check_slave';
+DATA_RELOAD_CAMERA            = 'reload_camera';
+DATA_RELOAD_D3CONFIG          = 'reload_d3config';
 DATA_BACKUP_DB_CREATE_LOCAL   = 'backup_db_create_local';
 DATA_BACKUP_DB_REMOVE_LOCAL   = 'backup_db_remove_local';
 DATA_BACKUP_DB_LIST_LOCAL     = 'backup_db_list_local';
 DATA_BACKUP_DB_RESTORE_LOCAL  = 'backup_db_restore_local';
-DATA_UPDATE             	  = 'update';
+DATA_UPDATE                   = 'update';
 
-HOSTS_CONF              	  = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
-CAMERA_CONF_FILE        	  = '/etc/greenleaf/camera.conf';         # Path for the cameras configuration file
+HOSTS_CONF                    = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
+CAMERA_CONF_FILE              = '/etc/greenleaf/camera.conf';         # Path for the cameras configuration file
 
 DEBUG_MODE = True;      # Debug flag
 
@@ -131,24 +131,24 @@ class MasterDaemon:
         };
         self.enocean_function = {};
         self.data_function = {
-            DATA_MONITOR_KNX            	  : self.monitor_knx,
-            DATA_MONITOR_IP             	  : self.monitor_ip,
-            DATA_MONITOR_ENOCEAN        	  : self.monitor_enocean,
-            DATA_MONITOR_BLUETOOTH      	  : self.monitor_bluetooth,
-            DATA_KNX_READ               	  : self.knx_read,
-            DATA_KNX_WRITE_S            	  : self.knx_write_short,
-            DATA_KNX_WRITE_L            	  : self.knx_write_long,
-            DATA_SEND_TO_DEVICE         	  : self.send_to_device,
-            DATA_CRON_UPNP             		  : self.cron_upnp,
-            DATA_SEND_MAIL              	  : self.send_mail,
-            DATA_CHECK_SLAVE            	  : self.check_slave,
-            DATA_RELOAD_CAMERA          	  : self.reload_camera,
-            DATA_RELOAD_D3CONFIG        	  : self.reload_d3config,
+            DATA_MONITOR_KNX                  : self.monitor_knx,
+            DATA_MONITOR_IP                   : self.monitor_ip,
+            DATA_MONITOR_ENOCEAN              : self.monitor_enocean,
+            DATA_MONITOR_BLUETOOTH            : self.monitor_bluetooth,
+            DATA_KNX_READ                     : self.knx_read,
+            DATA_KNX_WRITE_S                  : self.knx_write_short,
+            DATA_KNX_WRITE_L                  : self.knx_write_long,
+            DATA_SEND_TO_DEVICE               : self.send_to_device,
+            DATA_CRON_UPNP                    : self.cron_upnp,
+            DATA_SEND_MAIL                    : self.send_mail,
+            DATA_CHECK_SLAVE                  : self.check_slave,
+            DATA_RELOAD_CAMERA                : self.reload_camera,
+            DATA_RELOAD_D3CONFIG              : self.reload_d3config,
             DATA_BACKUP_DB_CREATE_LOCAL       : self.backup_db_create_local,
             DATA_BACKUP_DB_REMOVE_LOCAL       : self.backup_db_remove_local,
             DATA_BACKUP_DB_LIST_LOCAL         : self.backup_db_list_local,
             DATA_BACKUP_DB_RESTORE_LOCAL      : self.backup_db_restore_local,
-            DATA_UPDATE                 	  : self.update
+            DATA_UPDATE                       : self.update
         };
 
     def get_aes_slave_keys(self):
@@ -323,10 +323,10 @@ class MasterDaemon:
             s = os.stat('/etc/greenleaf/sql/backup/' + f);
             if '.sql' in f:
                 f = f.split('.sql')[0];
-				json_obj.append({"name": f, "size": s.st_size});
-		json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name']);
-		json_str = json.JSONEncoder().encode(json_sorted);
-		connection.send(bytes(json_str, 'utf-8'));
+                json_obj.append({"name": f, "size": s.st_size});
+        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name']);
+        json_str = json.JSONEncoder().encode(json_sorted);
+        connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_restore_local(self, json_obj, connection):
         filename = '/etc/greenleaf/sql/backup/';

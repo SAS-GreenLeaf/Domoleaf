@@ -1426,7 +1426,6 @@ class Admin extends User {
 		}
 	}
 	
-
 	function confDbListLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_list_local');
@@ -1435,20 +1434,20 @@ class Admin extends User {
 			return json_decode($listDb);
 		}
 		else{
-			return NULL;			
+			return NULL;
 		}
 	}
- 	
+	
 	function confDbCreateLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_create_local');
 	}
- 	
+	
 	function confDbRemoveLocal($filename){
 		$socket = new Socket();
 		$socket->send('backup_db_remove_local', $filename);
 	}
- 	
+	
 	function confDbRestoreLocal($filename){
 		$socket = new Socket();
 		$socket->send('backup_db_restore_local', $filename);
@@ -1460,6 +1459,7 @@ class Admin extends User {
 		$listBackupUSB = $socket->receive();
 		return $listBackupUSB;
 	}
+	
 	/*** Option ***/
 	function confOptionList(){
 		$link = Link::get_link('mastercommand');
