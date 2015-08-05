@@ -130,19 +130,21 @@ class Api {
 	static function action($token, $request) {
 
 		$answer  = array(
-				'request' => array(),
-				'id'      => 0,
-				'level'   => 0,
-				'language'=> '',
-				'design'  => 0
+				'request'    => array(),
+				'id'         => 0,
+				'level'      => 0,
+				'language'   => '',
+				'design'     => 0,
+				'obfuscation'=> 1
 		);
 		
 		if(!empty($token)) {
 			$co = Guest::connect($token);
-			$answer['id']       = $co['id'];
-			$answer['level']    = $co['level'];
-			$answer['language'] = $co['language'];
-			$answer['design']   = $co['design'];
+			$answer['id']         = $co['id'];
+			$answer['level']      = $co['level'];
+			$answer['language']   = $co['language'];
+			$answer['design']     = $co['design'];
+			$answer['obfuscation']= $co['obfuscation'];
 		}
 		elseif(!empty($request)) {
 			if(!empty($request['connection']) &&
@@ -152,10 +154,11 @@ class Api {
 				$answer['request']['connection'] = $rep;
 	
 				if(!empty($rep) && $rep['id'] > 0) {
-					$answer['id']       = $rep['id'];
-					$answer['level']    = $rep['level'];
-					$answer['language'] = $rep['language'];
-					$answer['design']   = $rep['design'];
+					$answer['id']         = $co['id'];
+					$answer['level']      = $co['level'];
+					$answer['language']   = $co['language'];
+					$answer['design']     = $co['design'];
+					$answer['obfuscation']= $co['obfuscation'];
 				}
 			}
 		}
