@@ -1441,16 +1441,22 @@ class Admin extends User {
 	function confDbCreateLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_create_local');
+		
+		$socket->receive();
 	}
 	
 	function confDbRemoveLocal($filename){
 		$socket = new Socket();
 		$socket->send('backup_db_remove_local', $filename);
+		
+		$socket->receive();
 	}
 	
 	function confDbRestoreLocal($filename){
 		$socket = new Socket();
 		$socket->send('backup_db_restore_local', $filename);
+		
+		$socket->receive();
 	}
 	
 	function confDbBackupUSB(){

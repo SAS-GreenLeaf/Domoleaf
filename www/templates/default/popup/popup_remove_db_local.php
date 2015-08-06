@@ -14,7 +14,7 @@ echo '
 printf(_('Do you want to delete the save of %s?'), '<strong>'.format_date($_GET['filename']).'</strong>');
 echo '</div>
 <div class="controls center">'.
-	'<button  id="eventSave" onclick="DeleteSave('.format_date($_GET['filename']).')" class="btn btn-success">'._('Yes').' <span class="glyphicon glyphicon-ok"></span></button> '.
+	'<button onclick="RemoveDbLocal('.$_GET['filename'].')" class="btn btn-success">'._('Yes').' <span class="glyphicon glyphicon-ok"></span></button> '.
 	'<button onclick="popup_close()" class="btn btn-danger">'._('No').' <span class="glyphicon glyphicon-remove"></span></button>'.
 '</div>';
 

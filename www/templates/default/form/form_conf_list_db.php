@@ -28,7 +28,10 @@ if (!empty($listDbLocal) && sizeof($listDbLocal) > 0) {
 						'.format_size($elem->size).'
 					</td>
 					<td class="center">
-						<button type="button" title="'._('Restore backup').'" class="btn btn-warning" onclick="RestoreDbLocal(\''.$parse[2].'\')">
+						<a href="/templates/default/form/form_download_backup.php?file='.$parse[2].'"><button type="button" class="btn btn-info" title="'._('Download backup').'" class="btn btn-greenleaf">
+							<i class="fa fa-download"></i>
+						</button></a>	
+						<button type="button" title="'._('Restore backup').'" class="btn btn-warning" onclick="PopupRestoreDbLocal(\''.$parse[2].'\')">
 							<i class="fa fa-reply"></i>
 						</button>
 						<button type="button" title="'._('Delete backup').'" class="btn btn-danger" onclick="PopupRemoveDbLocal(\''.$parse[2].'\')">

@@ -7,7 +7,7 @@ echo '
 	<div class="center"><h2>'._('Database configuration').'</h2></div><br/><br/>
 		<div class="col-xs-12 center">
 			<button type="button" class="btn btn-greenleaf" onclick="PopupUsb()">'._('USB Backup').'</button>
-			<button type="button" id="creatBackupLocal"class="btn btn-greenleaf" onclick="CreateBackupLocal()"><i class="fa fa-floppy-o"></i>'._(' Create Backup').'</button>
+			<button type="button" id="createBackupLocal" class="btn btn-greenleaf" onclick="CreateBackupLocal()"><i class="fa fa-floppy-o"></i>'._(' Create Backup').'</button>
 		</div>
 		<br/>
 		<br/>
@@ -46,6 +46,20 @@ function PopupRemoveDbLocal(filename){
 	});
 }
 
+function PopupRestoreDbLocal(filename){
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_restore_db_local.php",
+		data: "filename="+filename,
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Restore Database').'",
+				message: result
+			});
+		}
+	});
+}
+
 function ListDbLocal(){
 	$.ajax({
 		type:"GET",
@@ -53,19 +67,21 @@ function ListDbLocal(){
 		success: function(result){
 			$("#listDbLocal").html(result);
 		}
-})
+	});
 }
-			
+
 function CreateBackupLocal(){
-	LoadingButton("creatBackupLocal", 1);
-	$.ajax({
-		type:"GET",
-		url: "form/form_create_backup_local.php",
-		success: function(result){
-		setTimeout(function(){ ListDbLocal() }, 5000);
-		LoadingButton("creatBackupLocal", 0);
-		}
-})
+	if (!$("#createBackupLocal").hasClass("m-progress")){
+		$("#createBackupLocal").addClass("m-progress");
+		$.ajax({
+			type:"GET",
+			url: "form/form_create_backup_local.php",
+			success: function(result){
+				$("#createBackupLocal").removeClass("m-progress");
+				ListDbLocal();
+			}
+		});
+	}
 }
 
 function LoadingButton(id, status){
@@ -75,7 +91,7 @@ function LoadingButton(id, status){
 	else if (status == 0){
 		setTimeout(function(){
 			$("#"+id).removeClass("m-progress");
-		}, 5000);
+		}, 1000);
 	}
 }
 
@@ -83,20 +99,40 @@ function RemoveDbLocal(filename){
 	$.ajax({
 		type:"GET",
 		url: "form/form_remove_backup_local.php",
-		data: "filename="+filename+"&status=2",
+		data: "filename="+filename,
 		complete: function(result, status){
+			ListDbLocal();
+			popup_close();
 		}
-})
+	});
 }
-		
+
 function RestoreDbLocal(filename){
 	$.ajax({
 		type:"GET",
 		url: "form/form_restore_backup_local.php",
-		data: "filename="+filename+"&status=1",
+		data: "filename="+filename,
+		beforeSend:function(result, status){
+			popup_close();
+			PopupLoading();
+		},
 		complete: function(result, status){
+			popup_close();
 		}
-})
+	});
+}
+
+function PopupLoading(){
+	$.ajax({
+		url: "/templates/'.TEMPLATE.'/popup/popup_loading.php",
+		success: function(result){
+			BootstrapDialog.show({
+				closable: false,
+				title: "'._('Loading in progress').'",
+				message: result
+			});
+		}
+	});
 }
 
 function BackupUSB(){
@@ -105,7 +141,7 @@ function BackupUSB(){
 		url: "form/form_backup_usb.php",
 		complete: function(result, status){
 		}
-})
+	});
 }
 
 </script>';
