@@ -293,27 +293,34 @@ class MasterDaemon:
                 self.sql.mysql_handler_personnal_query(query);
 
     def backup_db_create_local(self, json_obj, connection):
-        filename = '/etc/greenleaf/sql/backup/mastercommand_backup_';
+        path = '/etc/greenleaf/sql/backup/';
+        filename = 'mastercommand_backup_';
         t = str(time.time());
         if '.' in t:
             t = t.split('.')[0];
         filename += t;
         filename += '.sql';
-        os.popen("mysqldump --defaults-file=/etc/mysql/debian.cnf mastercommand > " + filename);
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf mastercommand > " + path + filename);
+        os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
+        os.system('rm ' + path + filename);
 
     def backup_db_remove_local(self, json_obj, connection):
-        filename = '/etc/greenleaf/sql/backup/';
-        filename += json_obj;
-        filename += '.sql';
-        if json_obj[0] == '.' or json_obj[0] == '/':
-            print('The filename is corrupted. Aborting database file removing.')
+        filename = '/etc/greenleaf/sql/backup/mastercommand_backup_';
+        filename += str(json_obj['data']);
+        filename += '.sql.tar.gz';
+        if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
+            self.logger.error('The filename is corrupted. Aborting database file removing.')
             return;
         try:
             os.stat(filename);
         except Exception as e:
-            print("The database file to remove does not exists.")
-            print(e)
-            return;
+            try:
+                filename = filename.split('.tar.gz')[0];
+                os.stat(filename);
+            except Exception as e:
+                self.logger.error("The database file to remove does not exists.")
+                self.logger.error(e)
+                return;
         os.remove(filename);
 
     def backup_db_list_local(self, json_obj, connection):
@@ -329,19 +336,28 @@ class MasterDaemon:
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_restore_local(self, json_obj, connection):
-        filename = '/etc/greenleaf/sql/backup/';
-        filename += json_obj;
-        filename += '.sql';
-        if json_obj[0] == '.' or json_obj[0] == '/':
-            print('The filename is corrupted. Aborting database restoring.')
+        path = '/etc/greenleaf/sql/backup/';
+        filename = 'mastercommand_backup_';
+        filename += str(json_obj['data']);
+        filename += '.sql.tar.gz';
+        if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
+            self.logger.error('The filename is corrupted. Aborting database restoring.')
             return;
         try:
-            os.stat(filename);
-        except Exception as e:
-            print("The database file to restore does not exists.")
-            print(e)
+            os.stat(path + filename);
+            os.system('cd ' + path + ' && tar -xzf ' + filename);
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename.split('.tar.gz')[0]);
+            os.system('rm ' + path + filename.split('.tar.gz')[0]);
             return;
-        os.popen('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + filename);
+        except Exception as e:
+            try:
+                filename = filename.split('.tar.gz')[0];
+                os.stat(path + filename);
+            except Exception as e:
+                self.logger.error("The database file to restore does not exists.");
+                self.logger.error(e);
+                return;
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename);
 
     def monitor_knx(self, json_obj, connection):
         """
@@ -349,6 +365,7 @@ class MasterDaemon:
         Updates room_device_option values in the database.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
+        
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
         connection.close();
 

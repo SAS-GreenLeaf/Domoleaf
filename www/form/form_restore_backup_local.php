@@ -7,7 +7,7 @@ if (empty($_GET['filename']) or !($_GET['filename'] > 0)){
 }
 
 $request =  new Api();
-$request -> add_request('confDbRemoveLocal', array($_GET['filename']));
+$request -> add_request('confDbRestoreLocal', array($_GET['filename']));
 $result  =  $request -> send_request();
 
 ?>
