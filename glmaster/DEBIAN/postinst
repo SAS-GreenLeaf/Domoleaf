@@ -2,6 +2,10 @@
 
 echo -e "[ \033[32mok\033[0m ] Done installing Greenleaf master daemon"
 
+#Backups
+mkdir -p /etc/greenleaf/mnt
+mkdir -p /etc/greenleaf/sql/backup
+
 touch /etc/greenleaf/camera.conf
 
 if [ -f /etc/nginx/sites-enabled/default ]; then
