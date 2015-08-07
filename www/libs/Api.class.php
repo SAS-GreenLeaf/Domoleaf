@@ -93,6 +93,9 @@ class Api {
 			case 1: 
 				define('TEMPLATE', 'legacy');
 			break;
+			case 2:
+				define('TEMPLATE, '42');
+			break;
 			default:
 				define('TEMPLATE', 'default');
 			break;
