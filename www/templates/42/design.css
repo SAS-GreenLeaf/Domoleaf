@@ -1303,7 +1303,6 @@ margin-left: 16px;
 .thumb {
 	max-width: 500px;
 	cursor: pointer;
-<<<<<<< HEAD
 }
 
 .popContainer {
@@ -1403,6 +1402,4 @@ margin-left: 16px;
 }
 .draggable p {
 	margin-top: 12px;
-=======
->>>>>>> 0291d28... added new templates + added features to upload, delete, update the background image
 }
