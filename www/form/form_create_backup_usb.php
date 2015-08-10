@@ -3,13 +3,7 @@
 include('header.php');
 
 $request =  new Api();
+$request -> add_request('confDbCreateUsb');
 $result  =  $request -> send_request();
-
-echo '
-<div class="center">'.
-_('Please wait...').
-'<br/>'.
-'<br/>'.
-'</div>';
 
 ?>

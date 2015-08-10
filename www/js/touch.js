@@ -117,6 +117,19 @@ function popup_close() {
     });
 }
 
+function popup_close_last() {
+	var i = 0;
+	var j = 0;
+    $.each(BootstrapDialog.dialogs, function(id, dialog){
+    	i++;
+    });
+    $.each(BootstrapDialog.dialogs, function(id, dialog){
+    	if (++j == i){
+    		dialog.close();
+    	}
+    });
+}
+
 $(document).keyup(function(e) {
     if($('#eventSave') && $('#eventSave').length > 0 && e.keyCode == 13) {
     	$('#eventSave').click();

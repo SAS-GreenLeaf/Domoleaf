@@ -123,32 +123,17 @@ function format_date($time) {
 	textdomain("messages");
 }
 
-function format_size($bytes,$format = '%.2f') {
-	static $units = array(
-			'fr' => array(
-					'o',
-					'Ko',
-					'Mo',
-					'Go',
-					'To'
-			),
-			'en' => array(
-					'B',
-					'KB',
-					'MB',
-					'GB',
-					'TB'
-			));
-	if (LOCALE == 'fr_FR') {
-		$translatedUnits = &$units['fr'];
-	}
-	else {
-		$translatedUnits = &$units['en'];
-	}
+function format_size($bytes, $format = '%.2f') {
+	$units = array(
+			_('B'),
+			_('KB'),
+			_('MB'),
+			_('GB')
+	);
 	$b = (double)$bytes;
 	if($b > 0) {
 		$e = (int)(log($b, 1024));
-		if(isset($translatedUnits[$e]) === false) {
+		if(isset($units[$e]) === false) {
 			$e = 2;
 		}
 		$b = $b/pow(1024, $e);
@@ -157,7 +142,7 @@ function format_size($bytes,$format = '%.2f') {
 		$b = 0;
 		$e = 0;
 	}
-	return sprintf($format.' %s', $b, $translatedUnits[$e]);
+	return sprintf($format.' %s', $b, $units[$e]);
 }
 
 ?>
