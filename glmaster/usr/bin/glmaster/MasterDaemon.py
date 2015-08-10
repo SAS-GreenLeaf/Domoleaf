@@ -378,8 +378,6 @@ class MasterDaemon:
             json_obj = 1;
         json_str = json.JSONEncoder().encode(json_obj);
         connection.send(bytes(json_str, 'utf-8'));
-        #os.system('/bin/umount /etc/greenleaf/mnt');
-        #os.system('/bin/mount ' + sdx1 + ' /etc/greenleaf/mnt');
 
     def backup_db_list_usb(self, json_obj, connection):
         json_obj = [];
