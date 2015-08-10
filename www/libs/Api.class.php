@@ -604,11 +604,31 @@ class Api {
 								$res = $user->confDbRestoreLocal($var[0]);
 							}
 						break;
-						
-						case 'confDbBackupUSB':
-							$res = $user->confDbBackupUSB();
+
+						case 'confDbCheckUsb':
+							$res = $user->confDbCheckUsb();
 						break;
-							
+
+						case 'confDbListUsb':
+							$res = $user->confDbListUsb();
+						break;
+
+						case 'confDbCreateUsb':
+							$res = $user->confDbCreateUsb();
+						break;
+								
+						case 'confDbRemoveUsb':
+							if (!empty($var[0])){
+								$res = $user->confDbRemoveUsb($var[0]);
+							}
+						break;
+						
+						case 'confDbRestoreUsb':
+							if (!empty($var[0])){
+								$res = $user->confDbRestoreUsb($var[0]);
+							}
+						break;
+
 						/*** KNX action ***/
 						case 'knx_write_l':
 							if (!empty($var[0]) && !empty($var[1])){

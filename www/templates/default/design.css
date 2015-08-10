@@ -666,6 +666,12 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     animation:         ld 1s ease-in-out infinite;
 }
 
+.btn-disabled {
+	opacity: 0.5;
+	-ms-filter: "progid:DXImageTransform.Miscrosoft.Alpha(Opacity=0.5)";
+	cursor:default;
+}
+
 .btn-default.m-progress:before {
     border-left-color: #333333;
     border-right-color: #333333;

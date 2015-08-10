@@ -1426,6 +1426,8 @@ class Admin extends User {
 		}
 	}
 	
+	/*** Backup Database ***/
+	
 	function confDbListLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_list_local');
@@ -1445,27 +1447,73 @@ class Admin extends User {
 		$socket->receive();
 	}
 	
+	function confDbRemoveUsb($filename){
+		if (empty($filename) || sizeof($filename) < 1){
+			return NULL;
+		}
+		$socket = new Socket();
+		$socket->send('backup_db_remove_usb', $filename);
+		
+		$socket->receive();
+	}
+	
+	function confDbRestoreUsb($filename){
+		if (empty($filename) || sizeof($filename) < 1){
+			return NULL;
+		}
+		$socket = new Socket();
+		$socket->send('backup_db_restore_usb', $filename);
+		
+		$socket->receive();
+	}
+	
+	function confDbCheckUsb(){
+		$socket = new Socket();
+		$socket->send('check_usb');
+
+		$res = $socket->receive();
+		return $res;
+	}
+	
+	function confDbListUsb(){
+		$socket = new Socket();
+		$socket->send('backup_db_list_usb');
+		$listBackupUsb = $socket->receive();
+		if (!empty ($listBackupUsb)){
+			return json_decode($listBackupUsb);
+		}
+		else{
+			return NULL;
+		}
+	}
+
+	function confDbCreateUsb(){
+		$socket = new Socket();
+		$socket->send('backup_db_create_usb');
+	
+		$socket->receive();
+	}
+	
 	function confDbRemoveLocal($filename){
+		if (empty($filename) || sizeof($filename) < 1){
+			return NULL;
+		}
 		$socket = new Socket();
 		$socket->send('backup_db_remove_local', $filename);
-		
+	
 		$socket->receive();
 	}
 	
 	function confDbRestoreLocal($filename){
+		if (empty($filename) || sizeof($filename) < 1){
+			return NULL;
+		}
 		$socket = new Socket();
 		$socket->send('backup_db_restore_local', $filename);
-		
+	
 		$socket->receive();
 	}
-	
-	function confDbBackupUSB(){
-		$socket = new Socket();
-		$socket->send('backup_usb');
-		$listBackupUSB = $socket->receive();
-		return $listBackupUSB;
-	}
-	
+
 	/*** Option ***/
 	function confOptionList(){
 		$link = Link::get_link('mastercommand');

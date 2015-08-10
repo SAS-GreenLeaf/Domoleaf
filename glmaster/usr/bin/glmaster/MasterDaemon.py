@@ -9,6 +9,7 @@ import copy;
 import time;
 import os;
 import json;
+import glob;
 import select;
 import socket;
 import sys;
@@ -85,6 +86,11 @@ DATA_BACKUP_DB_CREATE_LOCAL   = 'backup_db_create_local';
 DATA_BACKUP_DB_REMOVE_LOCAL   = 'backup_db_remove_local';
 DATA_BACKUP_DB_LIST_LOCAL     = 'backup_db_list_local';
 DATA_BACKUP_DB_RESTORE_LOCAL  = 'backup_db_restore_local';
+DATA_CHECK_USB                = 'check_usb';
+DATA_BACKUP_DB_CREATE_USB     = 'backup_db_create_usb';
+DATA_BACKUP_DB_REMOVE_USB     = 'backup_db_remove_usb';
+DATA_BACKUP_DB_LIST_USB       = 'backup_db_list_usb';
+DATA_BACKUP_DB_RESTORE_USB    = 'backup_db_restore_usb';
 DATA_UPDATE                   = 'update';
 
 HOSTS_CONF                    = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
@@ -148,6 +154,11 @@ class MasterDaemon:
             DATA_BACKUP_DB_REMOVE_LOCAL       : self.backup_db_remove_local,
             DATA_BACKUP_DB_LIST_LOCAL         : self.backup_db_list_local,
             DATA_BACKUP_DB_RESTORE_LOCAL      : self.backup_db_restore_local,
+            DATA_CHECK_USB                    : self.check_usb,
+            DATA_BACKUP_DB_CREATE_USB         : self.backup_db_create_usb,
+            DATA_BACKUP_DB_REMOVE_USB         : self.backup_db_remove_usb,
+            DATA_BACKUP_DB_LIST_USB           : self.backup_db_list_usb,
+            DATA_BACKUP_DB_RESTORE_USB        : self.backup_db_restore_usb,
             DATA_UPDATE                       : self.update
         };
 
@@ -358,6 +369,112 @@ class MasterDaemon:
                 self.logger.error(e);
                 return;
         os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename);
+
+    def check_usb(self, json_obj, connection):
+        sdx1 = glob.glob('/dev/sd?1')[0];
+        if (os.path.exists(sdx1) == 0):
+            json_obj = 0;
+        else:
+            json_obj = 1;
+        json_str = json.JSONEncoder().encode(json_obj);
+        connection.send(bytes(json_str, 'utf-8'));
+        #os.system('/bin/umount /etc/greenleaf/mnt');
+        #os.system('/bin/mount ' + sdx1 + ' /etc/greenleaf/mnt');
+
+    def backup_db_list_usb(self, json_obj, connection):
+        json_obj = [];
+        sdx1 = glob.glob('/dev/sd?1')[0];
+        if (os.path.exists(sdx1) == 0):
+            return;
+        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
+        os.system('mkdir -p /etc/greenleaf/mnt/backup');
+        backup_list = os.listdir('/etc/greenleaf/mnt/backup/')
+        for f in backup_list:
+            s = os.stat('/etc/greenleaf/mnt/backup/' + f);
+            if '.sql' in f:
+                f = f.split('.sql')[0];
+                json_obj.append({"name": f, "size": s.st_size});
+        os.system('umount /etc/greenleaf/mnt');
+        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name']);
+        json_str = json.JSONEncoder().encode(json_sorted);
+        connection.send(bytes(json_str, 'utf-8'));
+
+    def backup_db_remove_usb(self, json_obj, connection):
+        filename = '/etc/greenleaf/mnt/backup/mastercommand_backup_';
+        filename += str(json_obj['data']);
+        filename += '.sql.tar.gz';
+        if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
+            self.logger.error('The filename is corrupted. Aborting database file removing.')
+            return;
+        sdx1 = glob.glob('/dev/sd?1')[0];
+        if (os.path.exists(sdx1) == 0):
+            return;
+        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
+        path = '/etc/greenleaf/mnt/backup/';
+        try:
+            os.stat(filename);
+        except Exception as e:
+            try:
+                filename = filename.split('.tar.gz')[0];
+                os.stat(filename);
+            except Exception as e:
+                self.logger.error("The database file to remove does not exists.")
+                self.logger.error(e)
+                os.system('umount /etc/greenleaf/mnt');
+                return;
+        os.remove(filename);
+        os.system('umount /etc/greenleaf/mnt');
+
+    def backup_db_restore_usb(self, json_obj, connection):
+        path = '/etc/greenleaf/mnt/backup/';
+        filename = 'mastercommand_backup_';
+        filename += str(json_obj['data']);
+        filename += '.sql';
+        if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
+            self.logger.error('The filename is corrupted. Aborting database restoring.')
+            return;
+        sdx1 = glob.glob('/dev/sd?1')[0];
+        if (os.path.exists(sdx1) == 0):
+            return;
+        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
+        try:
+            os.stat(path + filename);
+            os.system('cp ' + path + filename + ' /tmp/ && umount /etc/greenleaf/mnt && cd /tmp/');
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /tmp/' + filename);
+            os.remove('/tmp/' + filename);
+            return;
+        except Exception as e:
+            try:
+                filename = filename + '.tar.gz';
+                os.stat(path + filename);
+                os.system('cp ' + path + filename + ' /tmp/ && umount /etc/greenleaf/mnt && cd /tmp/ && tar -xzf ' + filename);
+            except Exception as e:
+                self.logger.error("The database file to restore does not exists.");
+                self.logger.error(e);
+                os.system('umount /etc/greenleaf/mnt');
+                return;
+        os.system('umount /etc/greenleaf/mnt');
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /tmp/' + filename.split('.tar.gz')[0]);
+        os.remove('/tmp/' + filename);
+        os.remove('/tmp/' + filename.split('.tar.gz')[0]);
+
+    def backup_db_create_usb(self, json_obj, connection):
+        sdx1 = glob.glob('/dev/sd?1')[0];
+        if (os.path.exists(sdx1) == 0):
+            return;
+        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
+        path = '/etc/greenleaf/mnt/backup/';
+        filename = 'mastercommand_backup_';
+        os.system('mkdir -p ' + path);
+        t = str(time.time());
+        if '.' in t:
+            t = t.split('.')[0];
+        filename += t;
+        filename += '.sql';
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf mastercommand > " + path + filename);
+        os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
+        os.system('rm ' + path + filename);
+        os.system('umount /etc/greenleaf/mnt');
 
     def monitor_knx(self, json_obj, connection):
         """

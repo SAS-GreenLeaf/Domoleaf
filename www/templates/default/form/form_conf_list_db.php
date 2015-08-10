@@ -24,7 +24,7 @@ if (!empty($listDbLocal) && sizeof($listDbLocal) > 0) {
 					<td>
 						'.format_date($parse[2]).'
 					</td>
-					<td>
+					<td class="center">
 						'.format_size($elem->size).'
 					</td>
 					<td class="center">
