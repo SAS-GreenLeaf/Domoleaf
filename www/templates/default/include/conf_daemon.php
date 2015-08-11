@@ -20,7 +20,7 @@ echo '
 					<th>'._('Name').'</th>
 					<th>'._('Serial').'</th>
 					<th>'._('Protocol').'</th>
-					<th>'._('Version').'</th>
+					<th class="center">'._('Version').'</th>
 					<th class="col-xs-1">'._('Validation').'</th>
 					<th class="col-sm-2 col-xs-2 center">&nbsp;</th>
 				</tr>
@@ -46,7 +46,7 @@ echo '
 							}
 						echo'
 						</td>
-						<td id="version-'.$elem->daemon_id.'">
+						<td id="version-'.$elem->daemon_id.'" class="center">
 							'.$elem->version.'
 						</td>
 						<td class="center">';
