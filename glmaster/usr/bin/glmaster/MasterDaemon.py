@@ -739,9 +739,9 @@ class MasterDaemon:
             return ;
         hostname = res[0][0];
         if hostname == socket.gethostname():
-            connection.send(bytes('1', 'utf-8'));
             file = open('/etc/greenleaf/.glslave.version', 'r');
             version = file.read().split('\n')[0];
+            connection.send(bytes(version, 'utf-8'));
             query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';
             self.sql.mysql_handler_personnal_query(query);
             connection.close();
@@ -785,7 +785,7 @@ class MasterDaemon:
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
                 version = resp['version'];
-            connection.send(bytes(val, 'utf-8'));
+            connection.send(bytes(version, 'utf-8'));
         connection.close();
         query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
         self.sql.mysql_handler_personnal_query(query);

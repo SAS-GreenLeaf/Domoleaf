@@ -871,7 +871,7 @@ class Admin extends User {
 		$link = Link::get_link('mastercommand');
 		$list = array();
 		
-		$sql = 'SELECT daemon_id, name, serial, validation
+		$sql = 'SELECT daemon_id, name, serial, validation, version
 		        FROM daemon
 		        ORDER BY name';
 		$req = $link->prepare($sql);
@@ -883,6 +883,7 @@ class Admin extends User {
 				'name'      => $do->name,
 				'serial'    => $do->serial,
 				'validation'=> $do->validation,
+				'version'   => $do->version,
 				'protocol'  => array()
 			);
 		}
