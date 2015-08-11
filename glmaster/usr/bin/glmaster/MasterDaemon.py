@@ -342,7 +342,7 @@ class MasterDaemon:
             if '.sql' in f:
                 f = f.split('.sql')[0];
                 json_obj.append({"name": f, "size": s.st_size});
-        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name']);
+        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name'], reverse=True);
         json_str = json.JSONEncoder().encode(json_sorted);
         connection.send(bytes(json_str, 'utf-8'));
 
@@ -393,7 +393,7 @@ class MasterDaemon:
                 f = f.split('.sql')[0];
                 json_obj.append({"name": f, "size": s.st_size});
         os.system('umount /etc/greenleaf/mnt');
-        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name']);
+        json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name'], reverse=True);
         json_str = json.JSONEncoder().encode(json_sorted);
         connection.send(bytes(json_str, 'utf-8'));
 
