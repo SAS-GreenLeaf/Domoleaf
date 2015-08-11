@@ -740,7 +740,9 @@ class MasterDaemon:
         hostname = res[0][0];
         if hostname == socket.gethostname():
             connection.send(bytes('1', 'utf-8'));
-            query = 'UPDATE daemon SET validation=1 WHERE serial="' + socket.gethostname() + '"';
+            file = open('/etc/greenleaf/.glslave.version', 'r');
+            version = file.read().split('\n')[0];
+            query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';
             self.sql.mysql_handler_personnal_query(query);
             connection.close();
             return ;
@@ -764,6 +766,7 @@ class MasterDaemon:
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (176 - len(obj_to_send)) * ' '));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
         val = '0';
+        version = '';
         for s in rlist:
             data = sock.recv(4096);
             if not data:
@@ -781,9 +784,10 @@ class MasterDaemon:
                 hostname = host._Hostname.split('.')[0];
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
+                version = resp['version'];
             connection.send(bytes(val, 'utf-8'));
         connection.close();
-        query = 'UPDATE daemon SET validation=' + val + ' WHERE serial="' + hostname + '"';
+        query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
         self.sql.mysql_handler_personnal_query(query);
 
     def get_secret_key(self, hostname):
