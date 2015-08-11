@@ -170,6 +170,9 @@ function FloorNew(){
 			type:"GET",
 			url: "/form/form_floor_new.php",
 			data: "name="+encodeURIComponent(name),
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			complete: function(result, status) {
 				location.href=\'/conf_installation\';
 			}
@@ -258,6 +261,9 @@ function 	RoomNew(){
 			type:"GET",
 			url: "/form/form_room_new.php",
 			data: "name="+encodeURIComponent(name)+"&idfloor="+idfloor,
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			complete: function(result, status) {
 				location.href=\'/conf_installation\';
 			}

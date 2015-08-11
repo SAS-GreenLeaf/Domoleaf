@@ -29,7 +29,7 @@ class Api {
 		$result = Api::action($this->token, $this->request);
 		
 		$result = json_decode(json_encode($result));
-		
+
 		if(!empty($result)) {
 			if(!empty($result->level)) {
 				$this->level = $result->level;
@@ -136,7 +136,7 @@ class Api {
 				'language'=> '',
 				'design'  => 0
 		);
-		
+
 		if(!empty($token)) {
 			$co = Guest::connect($token);
 			$answer['id']       = $co['id'];

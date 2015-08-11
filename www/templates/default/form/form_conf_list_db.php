@@ -6,7 +6,9 @@ $request =  new Api();
 $request -> add_request('confDbListLocal');
 $result  =  $request -> send_request();
 
-$listDbLocal = $result->confDbListLocal;
+if (!empty($result) && !empty($result->confDbListLocal)){
+	$listDbLocal = $result->confDbListLocal;	
+}
 
 if (!empty($listDbLocal) && sizeof($listDbLocal) > 0) {
 	echo '
