@@ -163,7 +163,6 @@ echo '
 		<link href="/css/font-awesome.min.css" rel="stylesheet">
 		<link href="/css/flaticon.css" rel="stylesheet">
 
-
 		<!-- Custom styles for this template -->
 		<link href="/templates/'.TEMPLATE.'/design.css" rel="stylesheet">
 
@@ -172,8 +171,7 @@ echo '
 		<script src="/js/bootstrap-toggle.min.js"></script>
 		<script src="/templates/'.TEMPLATE.'/scripts.js"></script>
 		<script type="text/javascript" src="/js/farbtastic.js"></script>
-
-
+		
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="/js/html5shiv.min.js"></script>

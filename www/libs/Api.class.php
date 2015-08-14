@@ -540,6 +540,13 @@ class Api {
 							}
 						break;
 						
+						case 'confUserDeviceEnable':
+							if (empty($var[0])) {
+								$var[0] = 0;
+							}
+							$res = $user->confUserDeviceEnable($var[0]);
+						break;
+						
 						case 'confUserPermissionDevice':
 							if (empty($var[2])){
 								$var[2] = 0;
@@ -584,6 +591,18 @@ class Api {
 								$res = $user->confUserPermissionFloor($var[0], $var[1], $var[2]);
 							}
 						break;
+						
+						case 'confUserDeviceBgimg':
+							if (empty($var[1])){
+								$var[1] = '';
+							}
+							if (empty($var[2])){
+								$var[2] = 0;
+							}
+							if (!empty($var[0])){
+								$res = $user->confUserDeviceBgimg($var[0], $var[1], $var[2]);
+							}
+							break;
 						
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();

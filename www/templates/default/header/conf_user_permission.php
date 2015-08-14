@@ -1,5 +1,7 @@
 <?php 
 
+echo '<title>'._('Users permission').'</title>';
+
 if (!empty($_GET['userid'])){
 	
 	$request =  new Api();

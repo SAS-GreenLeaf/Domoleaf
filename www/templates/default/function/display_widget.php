@@ -2,7 +2,7 @@
 
 // No echo here !!!
 
-function display_widget($info){
+function display_widget($info, $user_id = 0){
 	$icons = array(
 			1  => 'fa fa-question',
 			2  => 'fa fa-video-camera',
@@ -158,18 +158,29 @@ function display_widget($info){
 	if (!empty($icons[$info->device_id])){
 		$widgeticon = $icons[$info->device_id];
 	}
+
+	$dir = '/templates/default/custom/device/';
+
 	$display = '<div class="display-widget col-xs-12 col-sm-6 col-lg-4 room-'.$info->room_id.' app-'.$info->application_id.'">
 					<div class="box">
 						<div class="icon">
 							<div id="image-widget-'.$info->room_device_id.'" class="image">
 								<i id="image-widget-'.$info->room_device_id.'" class="'.$widgeticon.'"></i>
 							</div>
-							<div class="info col-sm-12 col-xs-12 custom-bg">';
-		//display device
-		if (!empty($widget[$info->device_id])){
-			$display.=$widget[$info->device_id];
-		}
-		$display.='			</div>
+							<div class="info col-sm-12 col-xs-12 widget-content">';
+								//display device
+								if (!empty($widget[$info->device_id])){
+									$display.=$widget[$info->device_id];
+								}
+								$display.='
+							</div>';
+							if (!empty($info->device_bgimg)) {
+								$display.='
+								<div class="info-bg"
+								     style="background-image: url(\''.$dir.$info->device_bgimg.'\')">
+								</div>';
+							}
+							$display.='
 						</div>
 					</div>
 				</div>';

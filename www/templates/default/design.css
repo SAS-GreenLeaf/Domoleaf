@@ -23,7 +23,7 @@ footer {
 	position:absolute;
 	bottom:0;
 	left:0;
-	right:0;	
+	right:0;
 }
 
 @media screen and (max-width : 767px){
@@ -34,6 +34,14 @@ footer {
 
 .margin-bottom {
 	margin-bottom:10px;
+}
+
+.margin-right {
+	margin-right:10px;
+}
+
+.margin-left {
+	margin-left:10px;
 }
 
 .alert-backup {
@@ -544,7 +552,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 .box > .icon > .image { 
 	position: relative; 
-	z-index: 2; 
+	z-index: 5; 
 	margin: auto; 
 	width: 66px; 
 	height: 66px; 
@@ -569,6 +577,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	background: rgba(0, 0, 0, 0.04); 
 	border: 1px solid #e0e0e0; 
 	box-shadow: 0 1px 5px;
+	z-index: 1;
 }
 
 .box > .icon > .info > h3.title { 
@@ -594,13 +603,21 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	color: #222; 
 }
 
+.info-bg {
+	background-position: center center;
+	background-size: cover;
+	margin-top: -24px;
+	opacity: 0.7;
+	z-index: -1;
+}
+
 .box .space { 
 	height: 30px; 
 }
 
-.custom-icon{
+/***.custom-icon{
 	margin: 1px 1px 0px 0px;
-}
+}**/
 
 .width {
 	width: 75%;
@@ -1053,6 +1070,9 @@ a.carousel-control-camera:hover {
     color: white;
 }
 
+.bootstrap-dialog .bootstrap-dialog-title {
+	display: inline;
+}
 
 /*** Partie deco ***/
 
@@ -1282,4 +1302,178 @@ a.carousel-control-camera:hover {
 
 #color{
 	color: rgba(0,0,0,0);
+}
+
+
+/*** click-drag popup custom ***/
+
+@charset "UTF-8";
+@import url(http://fonts.googleapis.com/css?family=Roboto:900,400);
+@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+.cd-body {
+	color: #fff;
+	font-family: "Roboto", sans-serif;
+}
+
+#head {
+	background: #fff;
+	padding: .5em 0;
+}
+
+#content {
+	padding: 4em 0 0;
+	position: relative;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.bg-image {
+	background-position: center center;
+	background-size: cover;
+}
+
+.bg-image.aspect-square:before {
+	content: "";
+	display: block;
+	padding-top: 50%;
+}
+
+[data-droppable] * {
+	pointer-events: none;
+}
+
+.cd-panel {
+	background: #f0f0f0;
+	color: #454547;
+	margin: 0 auto;
+	border-radius: 5px;
+}
+
+.cd-panel-content {
+	padding: 2em 1em;
+}
+.cd-panel-content label{
+	display: inline;
+}
+
+.image-select {
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	cursor:pointer;
+}
+
+.image-select input[type="file"] {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+	top: 0;
+	cursor: pointer;
+	display: block;
+	opacity: 0;
+	z-index: 15;
+}
+
+.image-select__message:after {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	background-color: #76af1a;
+	bottom: 0;
+	color: #fff;
+	content: "Browse for file...";
+	display: block;
+	font-weight: bold;
+	height: 3em;
+	line-height: 3em;
+	opacity: 0;
+	padding: 0 1em;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	transform: translateY(100%);
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+	z-index: 5;
+}
+
+.image-select:hover .image-select__message:after {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.image-select__icon {
+	bottom: .25em;
+	color: #fff;
+	position: absolute;
+	right: .5em;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	z-index: 10;
+}
+
+.image-select:hover .image-select__icon {
+	transform: scale(0.8, 0.8);
+}
+
+.file-hover {
+	position: relative;
+}
+
+.file-hover:before {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	content: "";
+	display: block;
+	z-index: 30;
+}
+
+.file-hover:after {
+	font-family: FontAwesome;
+	animation: 1.5s bounce infinite;
+	color: #fff;
+	content: "";
+	font-size: 5em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -0.5em 0 0 -0.5em;
+	z-index: 35;
+}
+
+@keyframes bounce {
+	0%
+	{
+		transform: translateY(0);
+	}
+	50%
+	{
+		transform: translateY(25%);
+	}
+	100%
+	{
+		transform: translateY(0);
+  }
+}
+
+#uploadSuccess{
+	color: green;
+	text-align: center;
+	display: none;
+}
+
+#uploadFail{
+	color: red;
+	text-align: center;
+	display: none;
+}
+
+#deleteBtn{
+	display: none;
 }

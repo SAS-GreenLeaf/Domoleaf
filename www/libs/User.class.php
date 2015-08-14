@@ -304,7 +304,7 @@ class User {
 	}
 	
 	function profileRemove($user_id) {
-		return null;
+		return 0;
 	}
 	
 	/**
@@ -645,7 +645,8 @@ class User {
 		$sql = 'SELECT room_device.name, room_device.room_device_id,
 		               room_device.room_id, room_order,
 		               user_device.device_order, application_id,
-		               room_device.device_id, room_device.protocol_id
+		               room_device.device_id, room_device.protocol_id,
+		               user_device.device_bgimg
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
 		        JOIN user_device ON room_device.room_device_id=user_device.room_device_id
@@ -669,6 +670,7 @@ class User {
 				'name' => $do->name,
 				'room_device_id' => $do->room_device_id,
 				'device_order' => $do->device_order,
+				'device_bgimg'  => $do->device_bgimg,
 				'device_opt' => array()
 			);
 			if(!in_array($do->application_id, $listApps)){
@@ -801,7 +803,7 @@ class User {
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.name, 
 		               room_device.room_id, room.floor, device_order, 
-		               device_allowed
+		               device_allowed, device_bgimg
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
 		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
@@ -815,6 +817,7 @@ class User {
 				'room_device_id'=> $do->room_device_id,
 				'name'          => $do->name,
 				'device_order'  => $do->device_order,
+				'device_bgimg'  => $do->device_bgimg,
 				'device_allowed'=> $do->device_allowed
 			);
 		}
@@ -1037,6 +1040,10 @@ class User {
 		}
 	}
 	
+	function confUserDeviceEnable($userid){
+		return null;
+	}
+	
 	function confUserPermissionDevice($iduser, $deviceid, $status){
 		return null;
 	}
@@ -1047,6 +1054,24 @@ class User {
 	
 	function confUserPermissionFloor($iduser, $floorid, $status){
 		return null;
+	}
+	
+	/*** User customisation ***/
+	
+	function confUserDeviceBgimg($iddevice, $bgimg, $userid=0){
+		$userid = $this->getId();
+
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'UPDATE user_device
+		        SET device_bgimg=:bgimg
+		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		$req = $link->prepare($sql);
+		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
 	}
 	
 	/*** KNX action ***/

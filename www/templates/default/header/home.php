@@ -2,8 +2,6 @@
 echo '<title>'._('Master Command').'</title>';
 
 $request =  new Api();
-$request -> send_request();
-$request -> add_request('mcDeviceAll');
 $request -> add_request('mcVisible');
 $request -> add_request('confApplicationAll');
 $result  =  $request -> send_request();
@@ -15,7 +13,6 @@ $roomallowed = $listAllVisible->ListRoom;
 $floorallowed = $listAllVisible->ListFloor;
 $allapp =  $listAllVisible->ListApp;
 
-$alldevice = $result->mcDeviceAll;
 $app = $result->confApplicationAll;
 
 $icons = array(
