@@ -2,6 +2,8 @@
 
 include('configuration-menu.php');
 
+$dir = "/templates/default/custom/device/";
+
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 echo '
@@ -33,41 +35,41 @@ echo '
 								</i> '.$room.' '._('rooms').'</small>
 							</p>
 							</div>
-							<div class="col-xs-4">';
+							<div class="col-xs-4 center">';
 							if (!empty($floor->floor_order)){
 									echo '
-									<div class="checkbox col-xs-3">
+									<div class="checkbox btn-group">
 										<input class="visi-floor-floor-'.$floor->floor_id.'" data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="floor-visible-'.$floor->floor_id.'" type="checkbox" onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" />
 									</div>';
 							}
 							else {
 								if ($floor->floor_allowed == 1){
 									echo '
-									<div class="checkbox col-xs-3">
+									<div class="checkbox btn-group">
 										<input data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="floor-visible-'.$floor->floor_id.'" type="checkbox" onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" />
 									</div>';
 								}
 								else {
 									echo '
-									<div class="checkbox col-xs-3">
+									<div class="checkbox btn-group">
 										<input disabled data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="floor-visible-'.$floor->floor_id.'" type="checkbox" onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" />
 									</div>';
 								}
 							}
 							if ($floor->floor_allowed == 1){
 								echo '
-								<div class="checkbox col-xs-3">
+								<div class="checkbox btn-group">
 									<input checked data-toggle="toggle" data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="floor-allow-'.$floor->floor_id.'" type="checkbox" onchange="OnOffFloor(\''.$floor->floor_id.'\')" />
 								</div>';
 							}
 							else {
 								echo '
-								<div class="checkbox col-xs-3">
+								<div class="checkbox btn-group">
 									<input data-toggle="toggle" data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="floor-allow-'.$floor->floor_id.'" type="checkbox" onchange="OnOffFloor(\''.$floor->floor_id.'\')" />
 								</div>';
 							}
 							echo '
-							<div class="padding-top btn-group col-xs-5">
+							<div class="btn-group">
 								<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$floor->floor_id.'\', -1, 0, \''.$floor->floor_order.'\')"><i class="glyphicon glyphicon-arrow-up"></i></button>
 								<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$floor->floor_id.'\', 1, 0, \''.$floor->floor_order.'\')"><i class="glyphicon glyphicon-arrow-down"></i></button>
 							</div>';
@@ -96,41 +98,41 @@ echo '
 														<h4 class="timeline-title">'.$room->room_name.'</h4>
 														<p><small class="text-muted"><i class="fa fa-cube"></i> '.$device.' '._('device').'</small></p>
 													</div>
-													<div class="col-xs-6">';
+													<div class="col-xs-6 center">';
 														if (!empty($room->room_order)){
 														echo '
-														<div class="checkbox col-xs-3">
+														<div class="checkbox btn-group">
 															<input class="visi-floor-room-'.$floor->floor_id.'" data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="room-visible-'.$room->room_id.'" type="checkbox" onchange="SetVisibleRoom(\''.$room->room_id.'\')" />
 														</div>';
 														}
 														else {
 															if ($room->room_allowed == 1){
 																echo '
-																<div class="checkbox col-xs-3">
+																<div class="checkbox btn-group">
 																	<input class="visi-floor-room-'.$floor->floor_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="room-visible-'.$room->room_id.'" type="checkbox" onchange="SetVisibleRoom(\''.$room->room_id.'\')" />
 																</div>';
 															}
 															else {
 																echo '
-																<div class="checkbox col-xs-3">
+																<div class="checkbox btn-group">
 																	<input disabled class="visi-floor-room-'.$floor->floor_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="room-visible-'.$room->room_id.'" type="checkbox" onchange="SetVisibleRoom(\''.$room->room_id.'\')" />
 																</div>';
 															}
 														}
 														if ($room->room_allowed == 1){
 															echo '
-															<div class="checkbox col-xs-3">
+															<div class="checkbox btn-group">
 																<input class="enable-floor-room-'.$floor->floor_id.'" checked data-toggle="toggle" checked data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="room-allow-'.$room->room_id.'" type="checkbox" onchange="OnOffRoom(\''.$room->room_id.'\')" />
 															</div>';
 															}
 															else {
 																echo '
-																<div class="checkbox col-xs-3">
+																<div class="checkbox btn-group">
 																	<input class="enable-floor-room-'.$floor->floor_id.'" data-toggle="toggle" data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="room-allow-'.$room->room_id.'" type="checkbox" onchange="OnOffRoom(\''.$room->room_id.'\')" />
 																</div>';
 															}
 															echo '
-															<div class="padding-top btn-group col-xs-5">
+															<div class="btn-group">
 																<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$room->room_id.'\', -1, 1, \''.$room->room_order.'\')"><i class="glyphicon glyphicon-arrow-up"></i></button>
 																<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$room->room_id.'\', 1, 1, \''.$room->room_order.'\')"><i class="glyphicon glyphicon-arrow-down"></i></button>
 															</div>';
@@ -142,52 +144,63 @@ echo '
 															<div id="widget-'.$device->room_device_id.'" class="box col-md-3 col-sm-6 col-xs-12">
 																<div class="icon">
 																	<div class="image"><i class="fa fa-cube"></i></div>
-																	<div class="info">
-																		<h3 class="title margin-top">'.$device->name.'</h3>
-																		<div>';
-																			if (!empty($device->device_order)){		
-																				echo '
-																				<div class="checkbox">
-																					<input class="visi-room-device-'.$room->room_id.'" checked data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
-																				</div>';
-																			}
-																			else {
-																				if ($device->device_allowed == 1){
-																					echo '
-																					<div class="checkbox">
-																						<input class="visi-room-device-'.$room->room_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
-																					</div>';
-																				}
-																				else {
-																					echo '
-																					<div class="checkbox">
-																						<input class="visi-room-device-'.$room->room_id.'" disabled data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
-																					</div>';
-																				}
-																			}
+																	<div class="info col-xs-12">
+																		<div class="info-widget">
+																			<button title="'._('Custom').'"
+																			        onclick="CustomPopup(0, '.$device->room_device_id.', '.$_GET['userid'].')"
+																			        class="btn btn-greenleaf"
+																			        type="button">
+																			        <span class="fa fa-paint-brush md"></span>
+																			</button>
+																		</div>
+																		<h3 class="title">'.$device->name.'</h3>';
+																		if (!empty($device->device_order)){
+																			echo '
+																			<div class="checkbox">
+																				<input class="visi-room-device-'.$room->room_id.'" checked data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
+																			</div>';
+																		}
+																		else {
 																			if ($device->device_allowed == 1){
 																				echo '
 																				<div class="checkbox">
-																					<input class="enable-room-device-'.$room->room_id.'" checked data-toggle="toggle" checked data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="device-allow-'.$device->room_device_id.'" type="checkbox" onchange="OnOffDevice(\''.$device->room_device_id.'\')" />
+																					<input class="visi-room-device-'.$room->room_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
 																				</div>';
 																			}
 																			else {
 																				echo '
 																				<div class="checkbox">
-																					<input class="enable-room-device-'.$room->room_id.'" data-toggle="toggle" data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="device-allow-'.$device->room_device_id.'" type="checkbox" onchange="OnOffDevice(\''.$device->room_device_id.'\')" />
-																				 </div>';
+																					<input class="visi-room-device-'.$room->room_id.'" disabled data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
+																				</div>';
 																			}
+																		}
+																		if ($device->device_allowed == 1){
 																			echo '
-																			<div class="padding-top btn-group">
-																				<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', -1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-up rotate--90"></i></button>
-																				<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', 1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-down rotate--90"></i></button>
+																			<div class="checkbox">
+																				<input class="enable-room-device-'.$room->room_id.'" checked data-toggle="toggle" checked data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="device-allow-'.$device->room_device_id.'" type="checkbox" onchange="OnOffDevice(\''.$device->room_device_id.'\')" />
 																			</div>';
+																		}
+																		else {
+																			echo '
+																			<div class="checkbox">
+																				<input class="enable-room-device-'.$room->room_id.'" data-toggle="toggle" data-onstyle="greenleaf" data-offstyle="danger" data-on="<i class=\'fa fa-check\'></i>" data-off="<i class=\'fa fa-times\'></i>" data-style="slow" id="device-allow-'.$device->room_device_id.'" type="checkbox" onchange="OnOffDevice(\''.$device->room_device_id.'\')" />
+																			</div>';
+																		}
 																		echo '
-																		</div>&nbsp;
+																		<div class="padding-bottom btn-group">
+																			<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', -1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-up rotate--90"></i></button>
+																			<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', 1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-down rotate--90"></i></button>
+																		</div>
 																	</div>
-																</div>
+																	<div id="widget-bg-'.$device->room_device_id.'" class="info-bg" ';
+																		if (!empty($device->device_bgimg)) {
+																			echo 'style="background-image: url(\''.$dir.$device->device_bgimg.'\');"';
+																		}
+																	echo '>
+																	</div>
+																</div>&nbsp;
 															</div>';
-														}
+													}
 													echo '
 													</div>
 										</li>
@@ -205,6 +218,8 @@ echo '
 
 echo '
 <script type="text/javascript">
+
+WidgetSize();
 
 function swap(elem, action){
 	if (action == 1){
@@ -405,7 +420,20 @@ function OnOffDevice(iddevice){
 		});
 	}
 }
-							
+
+function WidgetSize(){
+	$(".info").css("height", "auto");
+	var height = 200;
+		
+	$(".info").each(function(index){
+		if ($(this).height() > height){
+			height = $(this).height();
+		}
+		
+	});
+	$(".info").css("height", (height+10)+"px");
+	$(".info-bg").css("height", (height+10)+"px");
+}
 </script>';
 
 ?>

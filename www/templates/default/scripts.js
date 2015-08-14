@@ -177,21 +177,17 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 
 /*** Custom Configuration ***/
 
-function CustomPopup(type, iddevice){
-	var data = new Array("popup_custom.php", "Custom");
-	
-	if (data){
-		$.ajax({
-			type:"GET",
-			url: "/templates/default/popup/"+data[0],
-			data: "iddevice="+iddevice,
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: data[1],
-					message: msg
-				});
-			}
-		});
-	}
+function CustomPopup(type, iddevice, userid){
+	$.ajax({
+		type:"GET",
+		url: "/templates/default/popup/popup_custom_device.php",
+		data: "iddevice="+iddevice+"&userid="+userid,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
 }
 

@@ -107,6 +107,7 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		return $req->rowCount();
 	}
 	
 	function profileRename($lastname, $firstname, $gender, $phone, $language, $user_id=0) {
@@ -1082,7 +1083,8 @@ class Admin extends User {
 		$sql = 'SELECT room_device.name, room_device.room_device_id,
 		               room_device.room_id, room_order,
 		               user_device.device_order, application_id,
-		               room_device.device_id, room_device.protocol_id
+		               room_device.device_id, room_device.protocol_id,
+		               user_device.device_bgimg
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
 		        JOIN user_device ON room_device.room_device_id=user_device.room_device_id
@@ -1106,6 +1108,7 @@ class Admin extends User {
 				'name'          => $do->name,
 				'room_device_id'=> $do->room_device_id,
 				'device_order'  => $do->device_order,
+				'device_bgimg'  => $do->device_bgimg,
 				'device_opt'    => array()
 			);
 			if(!in_array($do->application_id, $listApps)){
@@ -1230,7 +1233,8 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.name, 
-		               room_device.room_id, room.floor, device_order
+		               room_device.room_id, room.floor, device_order,
+		               device_bgimg
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
 		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
@@ -1244,6 +1248,7 @@ class Admin extends User {
 				'room_device_id'=> $do->room_device_id,
 				'name'          => $do->name,
 				'device_order'  => $do->device_order,
+				'device_bgimg'  => $do->device_bgimg,
 				'device_allowed'=> 1
 			);
 		}
@@ -1254,10 +1259,14 @@ class Admin extends User {
 	//device
 	
 	function confUserDeviceEnable($userid){
+		if (empty($userid)) {
+			$userid = $this -> getId();
+		}
 		$link = Link::get_link('mastercommand');
 		$list = array();
-	
-		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order
+
+		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order,
+		               device_bgimg
 		        FROM user_device
 		        WHERE user_id=:user_id
 		        ORDER BY room_device_id ASC';
@@ -1269,6 +1278,7 @@ class Admin extends User {
 				'user_id'       => $do->user_id,
 				'room_device_id'=> $do->room_device_id,
 				'device_allowed'=> $do->device_allowed,
+				'device_bgimg'  => $do->device_bgimg,
 				'device_order'  => $do->device_order
 			);
 		}
@@ -1754,6 +1764,26 @@ class Admin extends User {
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 			}
 		}
+	}
+	
+	/*** User customisation ***/
+	
+	function confUserDeviceBgimg($iddevice, $bgimg, $userid=0){
+		if ($userid == 0) {
+			$userid = $this->getId();
+		}
+
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE user_device
+		        SET device_bgimg=:bgimg
+		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		$req = $link->prepare($sql);
+		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
 	}
 	
 	/*** KNX action ***/

@@ -32,7 +32,7 @@ echo '
 	<div id="bhoechie-tab" class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-9 col-xs-offset-3">';
 		if (!empty($deviceallowed)){
 			foreach ($deviceallowed as $elem){
-				echo display_widget($elem);
+				echo display_widget($elem, $request -> getId());
 			}
 		}
 	echo '
@@ -73,6 +73,7 @@ function WidgetSize(){
 		
 	});
 	$(".info").css("height", (height+10)+"px");
+	$(".info-bg").css("height", (height+10)+"px");
 }
 
 function displayRoom(idroom){
