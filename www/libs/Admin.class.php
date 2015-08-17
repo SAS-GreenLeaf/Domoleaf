@@ -1648,6 +1648,25 @@ class Admin extends User {
 		return $list;
 	}
 
+	function checkDevice($iddevice){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT user_id
+		        FROM user_device
+		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		$req = $link->prepare($sql);
+		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+	
+		if(empty($do->user_id)) {
+			return false;
+		}
+	
+		return true;
+	}
+
 	function monitorEnocean() {
 		$link = Link::get_link('mastercommand');
 		$list = array();
