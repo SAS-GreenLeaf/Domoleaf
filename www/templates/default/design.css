@@ -743,6 +743,10 @@ img {
 	width: 30px;	
 }
 
+.input-group {
+	width: 100%;
+}
+
 .input-group output {
 	font-size: 1.2em !important;
 	margin-left:10px;
@@ -1058,7 +1062,6 @@ a.carousel-control-camera:hover {
 .table-striped > tbody > tr:nth-child(2n) > td a {
     color: white;
 }
-
 
 /*** Partie deco ***/
 

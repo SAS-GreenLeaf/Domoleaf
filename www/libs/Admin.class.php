@@ -268,7 +268,116 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 	}
-	
+
+	function confMail($fromMail, $fromName, $smtpHost, $smtpSecure, $smtpPort, $smtpUsername, $smtpPassword){
+		$link = Link::get_link('mastercommand');
+
+		if (empty($fromMail) or filter_var($fromMail, FILTER_VALIDATE_EMAIL) == false){
+			$fromMail = '';
+		}
+		if (!empty($fromMail) && $fromMail != '' && filter_var($fromMail, FILTER_VALIDATE_EMAIL) == true){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :fromMail
+					WHERE configuration_id = 5';
+			$req = $link->prepare($sql);
+			$req->bindValue(':fromMail', $fromMail, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		if (!empty($fromName) && $fromName != ''){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :fromName
+					WHERE configuration_id = 6';
+			$req = $link->prepare($sql);
+			$req->bindValue(':fromName', $fromName, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		if (!empty($smtpHost) && $smtpHost != ''){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :smtpHost
+					WHERE configuration_id = 7';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smtpHost', $smtpHost, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+
+		if (empty($smtpSecure)){
+			(int)$smtpSecure = 0;
+		}
+		if ($smtpSecure >= 0 && $smtpSecure < 3){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :smtpSecure
+					WHERE configuration_id = 8';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smtpSecure', (int)$smtpSecure, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		if (!empty($smtpPort) && $smtpPort > 0 and $smtpPort <= 65535){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :smtpPort
+					WHERE configuration_id = 9';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smtpPort', (int)$smtpPort, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		if (empty($smtpUsername)){
+			$smtpUsername = '';
+			$smtpPassword = '';
+		}
+			$sql = 'UPDATE configuration
+					SET configuration_value = :smtpUsername
+					WHERE configuration_id = 10';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smtpUsername', $smtpUsername, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		
+		if (!empty($smtpPassword) || empty($smtpUsername)){
+			$sql = 'UPDATE configuration
+					SET configuration_value = :smtpPassword
+					WHERE configuration_id = 11';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smtpPassword', $smtpPassword, PDO::PARAM_STR);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		$socket = new Socket();
+		$socket->send('reload_d3config');
+	}
+
+	function confSendTestMail(){
+		$destinatorMail = $this->profileInfo()->user_mail;
+		if (empty($destinatorMail)){
+			$destinatorMail = $this->conf_load()[5]->configuration_value;
+		}
+		$objectMail = _('The test mail worked');
+		$messageMail = _('Your mail is configured from your D3 machine.');
+		return $this->confSendMail($destinatorMail, $objectMail, $messageMail);
+	}
+
+	function confSendMail($destinatorMail, $objectMail, $messageMail){
+		if (empty($destinatorMail) || sizeof($destinatorMail) < 1 || filter_var($destinatorMail, FILTER_VALIDATE_EMAIL) == false){
+			return NULL;
+		}
+		if (empty($objectMail) || sizeof($objectMail) < 1){
+			$objectMail = '';
+		}
+		if (empty($messageMail) || sizeof($messageMail) < 1){
+			$messageMail = '';
+		}
+		$data = array(
+				'destinator' => $destinatorMail,
+				'object' => $objectMail,
+				'message' => $messageMail
+		);
+		$socket = new Socket();
+		$socket->send('send_mail', $data);
+		return $socket->receive();
+		
+	}
+
 	/*** Floors ***/
 	function confFloorList() {
 		$link = Link::get_link('mastercommand');
@@ -1426,7 +1535,7 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 	}
-	
+
 	/*** Backup Database ***/
 	
 	function confDbListLocal(){
@@ -1466,6 +1575,9 @@ class Admin extends User {
 		$socket->send('backup_db_restore_usb', $filename);
 		
 		$socket->receive();
+		
+		$socket = new Socket();
+		$socket->send('reload_d3config');
 	}
 	
 	function confDbCheckUsb(){
@@ -1513,6 +1625,9 @@ class Admin extends User {
 		$socket->send('backup_db_restore_local', $filename);
 	
 		$socket->receive();
+		
+		$socket = new Socket();
+		$socket->send('reload_d3config');
 	}
 
 	/*** Option ***/
@@ -1532,7 +1647,7 @@ class Admin extends User {
 		
 		return $list;
 	}
-	
+
 	function monitorEnocean() {
 		$link = Link::get_link('mastercommand');
 		$list = array();
