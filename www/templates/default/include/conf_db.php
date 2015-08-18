@@ -224,19 +224,6 @@ function RestoreDbLocal(filename){
 	});
 }
 
-function PopupLoading(){
-	$.ajax({
-		url: "/templates/'.TEMPLATE.'/popup/popup_loading.php",
-		success: function(result){
-			BootstrapDialog.show({
-				closable: false,
-				title: "'._('Loading in progress').'",
-				message: result
-			});
-		}
-	});
-}
-
 </script>';
 
 ?>

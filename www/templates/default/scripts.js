@@ -21,6 +21,19 @@ function ShowTimeline(id){
 	$("#"+id).toggle();
 }
 
+function PopupLoading(){
+	$.ajax({
+		url: "/templates/default/popup/popup_loading.php",
+		success: function(result){
+			BootstrapDialog.show({
+				closable: false,
+				title: '<div id="popupLoading"></div>',
+				message: result
+			});
+		}
+	});
+}
+
 /*** Widget Audio ***/
 
 function Volume(iddevice, optionid, step){

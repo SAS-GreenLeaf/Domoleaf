@@ -4,7 +4,9 @@ import logging;
 from inspect import currentframe, getframeinfo;
 from Crypto.Cipher import AES;
 import smtplib;
+from email.mime.multipart import MIMEMultipart;
 from email.mime.text import MIMEText;
+from email.utils import formataddr;
 import copy;
 import time;
 import os;
@@ -720,8 +722,7 @@ class MasterDaemon:
         query = "SELECT configuration_id, configuration_value FROM configuration";
         res = self.sql.mysql_handler_personnal_query(query);
         for r in res:
-            if int(r[0]) <= 2:
-                self.d3config[str(r[0])] = r[1];
+            self.d3config[str(r[0])] = r[1];
 
     def check_slave(self, json_obj, connection):
         """
@@ -739,8 +740,10 @@ class MasterDaemon:
             return ;
         hostname = res[0][0];
         if hostname == socket.gethostname():
-            connection.send(bytes('1', 'utf-8'));
-            query = 'UPDATE daemon SET validation=1 WHERE serial="' + socket.gethostname() + '"';
+            file = open('/etc/greenleaf/.glslave.version', 'r');
+            version = file.read().split('\n')[0];
+            connection.send(bytes(version, 'utf-8'));
+            query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';
             self.sql.mysql_handler_personnal_query(query);
             connection.close();
             return ;
@@ -764,6 +767,7 @@ class MasterDaemon:
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (176 - len(obj_to_send)) * ' '));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
         val = '0';
+        version = '';
         for s in rlist:
             data = sock.recv(4096);
             if not data:
@@ -781,9 +785,10 @@ class MasterDaemon:
                 hostname = host._Hostname.split('.')[0];
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
-            connection.send(bytes(val, 'utf-8'));
+                version = resp['version'];
+            connection.send(bytes(version, 'utf-8'));
         connection.close();
-        query = 'UPDATE daemon SET validation=' + val + ' WHERE serial="' + hostname + '"';
+        query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
         self.sql.mysql_handler_personnal_query(query);
 
     def get_secret_key(self, hostname):
@@ -801,12 +806,34 @@ class MasterDaemon:
         Callback called each time a send_mail packet is received.
         The parameters are stored in 'json_obj'.
         """
-        # TODO all of this
-        mail = EmailManager(_from = 'example@mailbox.fr',
-                            _to = 'newexample@mailbox.fr');
-        mail.send('Ceci est un corps de mail', 'Ceci est un sujet de mail');
-        mail.quit();
-        connection.close();
+        try:
+            from_addr = formataddr((self.d3config['6'], self.d3config['5']));
+            host = self.d3config['7'];
+            secure = self.d3config['8']
+            port = self.d3config['9'];
+            username = self.d3config['10'];
+            password = self.d3config['11'];
+            msg = MIMEMultipart();
+            mdr = json_obj['data']['object'];
+            msg['Subject'] = json_obj['data']['object'];
+            msg['From'] = from_addr;
+            msg['To'] = json_obj['data']['destinator'];
+            msg.attach(MIMEText(json_obj['data']['message']));
+            server = smtplib.SMTP(host, port);
+            if (secure == 2):
+                server.ehlo();
+                server.starttls();
+                server.ehlo();
+            if (username != '' and password != ''):
+                server.login(self.d3config['5'], username);
+            server.sendmail(from_addr, json_obj['data']['destinator'], msg.as_string());
+            server.quit();
+            connection.close();
+        except Exception as e:
+            self.logger.error('Error for sending mail');
+            self.logger.error(e);
+            connection.send(bytes('Error', 'utf-8'));
+            connection.close();
 
     def get_slave_name(self, json_obj, daemons):
         """

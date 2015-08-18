@@ -20,6 +20,7 @@ echo '
 					<th>'._('Name').'</th>
 					<th>'._('Serial').'</th>
 					<th>'._('Protocol').'</th>
+					<th class="center">'._('Version').'</th>
 					<th class="col-xs-1">'._('Validation').'</th>
 					<th class="col-sm-2 col-xs-2 center">&nbsp;</th>
 				</tr>
@@ -44,6 +45,9 @@ echo '
 								$i++;
 							}
 						echo'
+						</td>
+						<td id="version-'.$elem->daemon_id.'" class="center">
+							'.$elem->version.'
 						</td>
 						<td class="center">';
 							if ($elem->validation == 0){
@@ -93,10 +97,11 @@ function Validation(iddaemon){
 		data: "iddaemon="+iddaemon,
 		timeout: 5000,
 		success: function(result) {
-			if (result == 1){
+			if (result != ""){
 				setTimeout(function(){
 					$("#btn-"+iddaemon).attr("class", "btn btn-greenleaf");
 					$("#icon-"+iddaemon).attr("class", "glyphicon glyphicon-ok");
+					$("#version-"+iddaemon).html(result);
 				}, 2000);
 			}
 			else {

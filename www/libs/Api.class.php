@@ -29,7 +29,7 @@ class Api {
 		$result = Api::action($this->token, $this->request);
 		
 		$result = json_decode(json_encode($result));
-		
+
 		if(!empty($result)) {
 			if(!empty($result->level)) {
 				$this->level = $result->level;
@@ -136,7 +136,7 @@ class Api {
 				'language'=> '',
 				'design'  => 0
 		);
-		
+
 		if(!empty($token)) {
 			$co = Guest::connect($token);
 			$answer['id']       = $co['id'];
@@ -296,6 +296,49 @@ class Api {
 							$res = $user->confRemote((int)$var[0], (int)$var[1], $var[2]);
 						break;
 						
+						case 'confMail':
+							if (empty($var[0])){
+								$var[0] = '';
+							}
+							if (empty($var[1])){
+								$var[1] = '';
+							}
+							if (empty($var[2])){
+								$var[2] = '';
+							}
+							if (empty($var[3]) or !($var[3] >= 0)){
+								$var[3] = 0;
+							}
+							if (empty($var[4]) or !($var[4] > 0)){
+								$var[4] = 0;
+							}
+							if (empty($var[5])){
+								$var[5] = '';
+								$var[6] = '';
+							}
+							if (empty($var[6])){
+								$var[6] = '';
+							}
+							$res = $user->confMail($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6]);
+						break;
+						
+						case 'confSendTestMail':
+							$res = $user->confSendTestMail();
+						break;
+						
+						case 'confSendMail':
+							if (empty($var[0])){
+								$var[0] = '';
+							}
+							if (empty($var[1])){
+								$var[1] = '';
+							}
+							if (empty($var[2])){
+								$var[2] = '';
+							}
+							$res = $user->confSendMail($var[0], $var[1], $var[2]);
+						break;
+
 						/*** Floor ***/
 						case 'confFloorList':
 							$res = $user->confFloorList();
