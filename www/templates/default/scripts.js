@@ -130,6 +130,21 @@ function UpdateTemp(iddevice, idoption, action){
 	});
 }
 
+function updateRGBColor(iddevice, value){
+	
+	//alert(iddevice);
+	//alert(value);
+
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_rgb_color.php",
+		data: "iddevice="+iddevice+"&value="+encodeURIComponent(value),
+		success: function(result) {
+			//$("#uploadSuccess).show();
+		},
+	});
+}
+
 /*** Widget return ***/
 
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
@@ -168,7 +183,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
 	if (idopt == 6){
-			$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
 	if (idopt == 388){
 		$("#output-mp-"+roomdeviceid).html(val.valeur);

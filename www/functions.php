@@ -145,4 +145,20 @@ function format_size($bytes, $format = '%.2f') {
 	return sprintf($format.' %s', $b, $units[$e]);
 }
 
+function convertRGB($color) {
+	if ($color[0] == '#') {		
+		$color = substr($color, 1);
+	}
+	$red = substr($color, 0, 2);
+	$green = substr($color, 2, 2);
+	$blue = substr($color, 4, 2);
+
+	$red = hexdec($red);
+	$green = hexdec($green);
+	$blue = hexdec($blue);
+
+	return array($red, $green, $blue);
+}
+
+
 ?>

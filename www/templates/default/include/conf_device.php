@@ -303,22 +303,22 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			foreach ($tabopt as $i => $elem){
 				if (!empty($tabopt[$i])){
 					echo '<tr>
-								<td>'.$tabopt[$i]['name'].'</td>
-								<td><input id="waddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Write address').'"></td>
-								<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>
-								<td>
-									<div class="checkbox">
-									  <label>
-										<input id="toggle-'.$tabopt[$i]['id'].'" data-onstyle="greenleaf" data-toggle="toggle" data-on="'._('Enable').'" data-off="'._('Disable').'" type="checkbox">
-									  </label>
-									<div>
-								</td>
-								<td>
-									 <div class="btn-group btn-group-greenleaf center">
-										<button data-loading-text="Loading..." type="button" id="saveoption-'.$tabopt[$i]['id'].'" title="'._('Save').'" class="btn btn-greenleaf save" onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">'._('Save').'</button>
-									</div>
-								</td>
-							</tr>';
+							<td>'.$tabopt[$i]['name'].'</td>
+							<td><input id="waddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Write address').'"></td>
+							<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>
+							<td>
+								<div class="checkbox">
+								  <label>
+									<input id="toggle-'.$tabopt[$i]['id'].'" data-onstyle="greenleaf" data-toggle="toggle" data-on="'._('Enable').'" data-off="'._('Disable').'" type="checkbox">
+								  </label>
+								<div>
+							</td>
+							<td>
+								 <div class="btn-group btn-group-greenleaf center">
+									<button data-loading-text="Loading..." type="button" id="saveoption-'.$tabopt[$i]['id'].'" title="'._('Save').'" class="btn btn-greenleaf save" onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">'._('Save').'</button>
+								</div>
+							</td>
+						</tr>';
 				}
 			}
 			echo '</tbody>';

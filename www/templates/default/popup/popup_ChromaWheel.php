@@ -3,10 +3,15 @@
 include('header.php');
 
 echo
-'<div id="colorpicker"></div>'.
-'<form><input type="text" id="color" name="color" value="#123456" disabled="disabled" /></form>'.
-'<script type="text/javascript">'.
-'$("#colorpicker").farbtastic("#color");'.
-'</script>';
-
+	'<form class="center padding-bottom">'.
+		'<input type="text" id="color" name="color" value="#123456" disabled="disabled" onchange="alert(\'dfghjk\')" />'.
+	'</form>'.
+	'<div id="colorpicker"></div>'.
+	
+	'<script type="text/javascript">'.
+		'$("#colorpicker").on("mouseup touchend", function(event){'.
+			'updateRGBColor('.$_GET['iddevice'].', $("#color").val());'.
+		'});'.
+		'$("#colorpicker").farbtastic("#color");'.
+	'</script>';
 ?>

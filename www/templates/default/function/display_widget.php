@@ -77,7 +77,7 @@ function display_widget($info, $user_id = 0){
 			75 => 'fa fa-question',
 			76 => 'fa fa-question',
 			77 => 'fa fa-question',
-			78 => 'fa fa-question',
+			78 => 'fa fa-lightbulb-o',
 			79 => 'fa fa-question',
 			80 => 'fa fa-question',
 			81 => 'fa fa-question'
@@ -365,7 +365,7 @@ function display_commande($info){
 
 //widget lampe
 function display_lampe($info){
-	if (!empty($info->device_id) && $info->device_id == 3){
+	if (!empty($info->device_id) && $info->device_id == 78){
 		$display = '<div class="info-widget">
 						<button title="'._('More').'" onclick="HandlePopup(3, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
 							<span class="fa fa-info-circle md"></span>
@@ -462,10 +462,15 @@ function display_OnOff($info){
 			if (!empty($info->device_opt->{12}->addr_plus)){
 				$display .= '<div class="checkbox">';
 						if (!empty($info->device_opt->{12}->valeur)){
-						 	$display.='<input data-toggle="toggle" data-onstyle="greenleaf" checked id="onoff-'.$info->room_device_id.'" type="checkbox" onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')" />';
+						 	$display.='<input data-toggle="toggle"
+						 				      data-onstyle="greenleaf"
+						 				      checked id="onoff-'.$info->room_device_id.'"
+						 				      type="checkbox"
+						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+						 				/>';
 						}
 						else {
-						$display.='<input data-toggle="toggle" data-onstyle="greenleaf" id="onoff-'.$info->room_device_id.'" type="checkbox" onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')" />';
+							$display.='<input data-toggle="toggle" data-onstyle="greenleaf" id="onoff-'.$info->room_device_id.'" type="checkbox" onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')" />';
 						}
 				$display.='</div>';
 			}

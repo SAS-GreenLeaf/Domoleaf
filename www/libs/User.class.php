@@ -1290,6 +1290,7 @@ class User {
 				'value'         => $value,
 				'option_id'     => $optionid
 			);
+			error_log(serialize($data));
 			$socket->send('send_to_device', $data);
 		}
 	}
