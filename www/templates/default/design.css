@@ -760,6 +760,10 @@ img {
 	width: 30px;	
 }
 
+.input-group {
+	width: 100%;
+}
+
 .input-group output {
 	font-size: 1.2em !important;
 	margin-left:10px;

@@ -6,6 +6,11 @@ $request =  new Api();
 $request -> add_request('confDbCheckUsb');
 $result  =  $request -> send_request();
 
-echo $result->confDbCheckUsb;
+if (!empty($result) && !empty($result->confDbCheckUsb)){
+	echo $result->confDbCheckUsb;
+}
+else{
+	echo 0;
+}
 
 ?>

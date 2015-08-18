@@ -12,4 +12,7 @@ _('Please wait...').
 '<br/>'.
 '</div>';
 
+echo '<script type="text/javascript">'.
+		'$("#popupLoading").html("'._('Loading in progress').'");'.
+		'</script>';
 ?>

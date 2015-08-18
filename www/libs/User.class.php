@@ -1094,6 +1094,37 @@ class User {
 		return null;
 	}
 	
+
+	/*** Backup Database ***/
+	
+	function confDbListLocal(){
+		return NULL;
+	}
+	
+	function confDbCreateLocal(){}
+	
+	function confDbRemoveUsb($filename){
+		return NULL;
+	}
+	
+	function confDbRestoreUsb($filename){
+		return NULL;
+	}
+	
+	function confDbCheckUsb(){
+		return NULL;
+	}
+	
+	function confDbListUsb(){
+		return NULL;
+	}
+	
+	function confDbCreateUsb(){}
+	
+	function confDbRemoveLocal($filename){}
+	
+	function confDbRestoreLocal($filename){}
+	
 	/*** Optiondef ***/
 	
 	function confOptionList(){
@@ -1294,7 +1325,7 @@ class User {
 			$socket->send('send_to_device', $data);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param unknown $iddevice
