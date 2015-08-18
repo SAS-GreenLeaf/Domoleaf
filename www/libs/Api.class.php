@@ -728,6 +728,16 @@ class Api {
 							}
 						break;
 						
+						case 'mcRGB':
+							if (!empty($var[0]) && !empty($var[1])){
+								list($red, $green, $blue) = convertRGB($var[1]);
+								
+								$res = $user->mcAction($var[0], $red, 392);
+								$res = $user->mcAction($var[0], $green, 393);
+								$res = $user->mcAction($var[0], $blue, 394);
+							}
+						break;
+						
 						case 'mcDeviceInfo':
 							if (!empty($var[0])){
 								$res = $user->mcDeviceInfo($var[0]);

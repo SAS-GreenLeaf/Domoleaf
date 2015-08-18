@@ -19,6 +19,9 @@ OPTION_STOP_UP_DOWN     = 365;
 OPTION_OPEN_CLOSE       = 96;   # Indice pour une action de type ouvrir/fermer
 OPTION_TEMPERATURE      = 72;   # Indice pour le traitement d'une temperature
 OPTION_TEMPERATURE_W    = 388;  # Indice pour l'ecriture d'une temperature
+OPTION_COLOR_R          = 392;
+OPTION_COLOR_G          = 393;
+OPTION_COLOR_B          = 394;
 
 KNX_RESPONSE            = 1;    # Donnee KNX de type RESPONSE
 KNX_WRITE_SHORT         = 2;    # Donnee KNX de type ecriture courte (0 | 1)
@@ -35,7 +38,10 @@ class KNXManager:
             OPTION_UP_DOWN      : self.send_knx_write_short_to_slave,
             OPTION_OPEN_CLOSE   : self.send_knx_write_short_to_slave,
             OPTION_STOP_UP_DOWN : self.send_knx_write_short_to_slave,
-            OPTION_TEMPERATURE_W: self.send_knx_write_temp
+            OPTION_TEMPERATURE_W: self.send_knx_write_temp,
+            OPTION_COLOR_R      : self.send_knx_write_long_to_slave,
+            OPTION_COLOR_G      : self.send_knx_write_long_to_slave,
+            OPTION_COLOR_B      : self.send_knx_write_long_to_slave
         };
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/greenleaf/master.conf');
