@@ -8,8 +8,9 @@ $result  =  $request -> send_request();
 
 $generalinfo = $result->conf_load;
 
-$httpport = $generalinfo->{'1'}->configuration_value;
+$httpport  = $generalinfo->{'1'}->configuration_value;
 $httpsport = $generalinfo->{'2'}->configuration_value;
+$forcessl  = $generalinfo->{'3'}->configuration_value;
 $mastersversion = $generalinfo->{'4'}->configuration_value;
 
 ?>

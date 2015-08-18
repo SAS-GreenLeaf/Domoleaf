@@ -23,7 +23,8 @@ echo '
 			</div>
 		</div>
 		<div class="clearfix"></div>
-		<input id="securemode" type="checkbox"> '._('Force securised mode').'
+		<input id="securemode" type="checkbox" '.(!empty($forcessl)?'checked="checked"':'').'> '.
+		_('Force securised mode').'
 		<div class="center">
 			<button type="button" class="btn btn-greenleaf" onclick="SaveChange()">'._('Save').'</button>
 		</div>
@@ -39,7 +40,7 @@ echo '
 				$("#http").val("6980");
 			}
 			if ($("#https").val() == "0" || $("#https").val() == ""){
-				$("https").val("6924");
+				$("#https").val("6924");
 			}
 		}
 		else {
@@ -48,6 +49,9 @@ echo '
 	});';
 	if (empty($httpport) && empty($httpsport)){
 		echo '$("#remoteaccess").hide()';
+	}
+	else {
+		echo '$("#checkboxaccess").attr("checked", "checked");';
 	}
 echo'
 
