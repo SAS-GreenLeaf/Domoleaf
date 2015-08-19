@@ -53,8 +53,6 @@ ln -s /etc/nginx/sites-available/master.conf /etc/nginx/sites-enabled/master.con
 
 systemctl restart nginx
 
-systemctl enable glmaster
-
 #Translation, .mo generation
 for inode in $(find /etc/greenleaf/www/locales -type d)
 do
@@ -64,4 +62,6 @@ do
 	fi
 done
 
+chmod +x /etc/init.d/glmaster
+systemctl enable glmaster
 systemctl start glmaster

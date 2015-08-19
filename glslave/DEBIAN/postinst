@@ -23,5 +23,6 @@ then
 fi
 pip3 install scapy-python3
 
+chmod +x /etc/init.d/glslave
 systemctl enable glslave
 systemctl start glslave
