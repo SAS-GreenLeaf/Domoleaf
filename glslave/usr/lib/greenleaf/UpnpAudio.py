@@ -33,7 +33,6 @@ class UpnpAudio(Upnp):
         """
         Returns a boolean saying whether the device is muted or not.
         """
-        # voir avec virgil
         mute = Upnp.send_request(self, 'GetMute', {'InstanceID': instance_id, 'Channel': channel});
         match = re.search("<CurrentMute>(.*)</CurrentMute>", mute).group(1);
         return match;
@@ -55,16 +54,16 @@ class UpnpAudio(Upnp):
         Retrieves the current volume value.
         """
         volume = Upnp.send_request(self, 'GetVolume', {'InstanceID': instance_id, 'Channel': channel});
-        self.logger.error(volume);
-        match = re.search('/<CurrentVolume>(.*)</CurrentVolume>/i', volume);
-        print(match);
-        return None;
+        match = re.search('<CurrentVolume>(.*)</CurrentVolume>', volume).group(1);
+        return int(match);
 
     def set_volume(self, desired_volume = 0, channel = 'Master', instance_id = 0):
         """
         Sets a volume value.
         """
-        self.logger.error('set_volume');
+        mute = self.get_mute(channel, instance_id);
+        if mute == '1':
+            Upnp.send_request(self, 'SetMute', {'InstanceID': instance_id, 'Channel': channel, 'DesiredMute': 0});
         return Upnp.send_request(self, 'SetVolume', {'InstanceID': instance_id,
                                                'Channel': channel,
                                                'DesiredVolume': desired_volume});

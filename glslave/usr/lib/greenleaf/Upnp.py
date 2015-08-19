@@ -1,6 +1,5 @@
 
 import pycurl;
-from Logger import *;
 from io import BytesIO;
 
 class Upnp:
@@ -8,7 +7,6 @@ class Upnp:
     Base class for communicating with an Upnp device.
     """
     def __init__(self, ip_addr, port):
-        self.logger = Logger(1, '/var/log/glmaster.log');
         self.ip = ip_addr;
         self.port = port;
 
