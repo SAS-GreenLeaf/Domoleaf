@@ -1,10 +1,14 @@
+
 import pycurl;
+from Logger import *;
+from io import BytesIO;
 
 class Upnp:
     """
     Base class for communicating with an Upnp device.
     """
     def __init__(self, ip_addr, port):
+        self.logger = Logger(1, '/var/log/glmaster.log');
         self.ip = ip_addr;
         self.port = port;
 
@@ -33,8 +37,12 @@ class Upnp:
                                   str(control_type) + ':1#' + command + '"']);
         ch.setopt(ch.POST, 1);
         ch.setopt(ch.POSTFIELDS, request);
+        res = BytesIO();
+        ch.setopt(ch.WRITEDATA, res);
         ch.perform();
         ch.close();
+        return (res.getvalue().decode('utf-8'));
+        
 
     def get_type(self, control_type):
         """

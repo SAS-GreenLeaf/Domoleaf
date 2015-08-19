@@ -35,16 +35,18 @@ class UpnpAudio(Upnp):
         """
         # voir avec virgil
         mute = Upnp.send_request(self, 'GetMute', {'InstanceID': instance_id, 'Channel': channel});
-        match = re.search("/<CurrentMute>(.*)<\/CurrentMute>/i", mute);
-        print(match);
-        return None;
+        match = re.search("<CurrentMute>(.*)</CurrentMute>", mute).group(1);
+        return match;
 
     def set_mute(self, mute = 0, channel = 'Master', instance_id = 0):
         """
         Mute or unmune a device.
         if 'mute' is 0 the device gets unmuted, and if 'mute' is 1, the device is muted.
         """
-        if mute != 1:
+        mute = self.get_mute(channel, instance_id);
+        if mute != '1':
+            mute = 1;
+        else:
             mute = 0;
         Upnp.send_request(self, 'SetMute', {'InstanceID': instance_id, 'Channel': channel, 'DesiredMute': mute});
 
@@ -52,8 +54,8 @@ class UpnpAudio(Upnp):
         """
         Retrieves the current volume value.
         """
-        # voir avec virgil
         volume = Upnp.send_request(self, 'GetVolume', {'InstanceID': instance_id, 'Channel': channel});
+        self.logger.error(volume);
         match = re.search('/<CurrentVolume>(.*)</CurrentVolume>/i', volume);
         print(match);
         return None;
@@ -62,6 +64,7 @@ class UpnpAudio(Upnp):
         """
         Sets a volume value.
         """
+        self.logger.error('set_volume');
         return Upnp.send_request(self, 'SetVolume', {'InstanceID': instance_id,
                                                'Channel': channel,
                                                'DesiredVolume': desired_volume});
