@@ -40,6 +40,8 @@ endif
 
 # ARMHF compilation rules
 compile:
+	@chmod 755 check_compiler
+	@chmod 755 eibd/build.sh
 	@echo "[ \033[33m..\033[0m ] Compiling for $(ARM_ARCH_NAME)..."
 	@export CC=arm-linux-gnueabihf-gcc # Tel to GCC to compile for ARMHF
 	@./check_compiler
@@ -55,6 +57,8 @@ compile:
 
 # Native compilation rules
 compile-native:
+	@chmod 755 check_compiler
+	@chmod 755 eibd/build.sh
 	@echo "[ \033[33m..\033[0m ] Compiling for native architecture $(ARCH_NAME)..."
 	@export CC=gcc
 	@./check_compiler
