@@ -619,7 +619,9 @@ class MasterDaemon:
         """
         Send "mute" command to the Upnp device described in dev
         """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute();
+        mute = UpnpAudio(json_obj['addr'], int(json_obj['port'])).get_mute();
+        mute = (int(mute)+1)%2;
+        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute(mute = mute);
         
     def upnp_set_next(self, json_obj, dev, hostname):
         """

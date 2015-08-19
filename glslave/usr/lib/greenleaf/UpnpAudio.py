@@ -42,10 +42,7 @@ class UpnpAudio(Upnp):
         Mute or unmune a device.
         if 'mute' is 0 the device gets unmuted, and if 'mute' is 1, the device is muted.
         """
-        mute = self.get_mute(channel, instance_id);
-        if mute != '1':
-            mute = 1;
-        else:
+        if mute != 1:
             mute = 0;
         Upnp.send_request(self, 'SetMute', {'InstanceID': instance_id, 'Channel': channel, 'DesiredMute': mute});
 
@@ -63,7 +60,7 @@ class UpnpAudio(Upnp):
         """
         mute = self.get_mute(channel, instance_id);
         if mute == '1':
-            Upnp.send_request(self, 'SetMute', {'InstanceID': instance_id, 'Channel': channel, 'DesiredMute': 0});
+            self.set_mute(0, channel, instance_id);
         return Upnp.send_request(self, 'SetVolume', {'InstanceID': instance_id,
                                                'Channel': channel,
                                                'DesiredVolume': desired_volume});
