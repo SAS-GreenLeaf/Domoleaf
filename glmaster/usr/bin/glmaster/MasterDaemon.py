@@ -633,7 +633,7 @@ class MasterDaemon:
         """
         Send "prev" command to the Upnp device described in dev
         """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_prev();
+        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_previous();
 
     def upnp_set_volume_up(self, json_obj, dev, hostname):
         """
