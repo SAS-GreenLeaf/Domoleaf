@@ -158,6 +158,21 @@ class Api {
 					$answer['design']   = $rep['design'];
 				}
 			}
+			elseif(!empty($request['confCheckResetKey'])){
+				if (!empty($request['confCheckResetKey'][0])){
+					$res = Guest::confCheckResetKey($request['confCheckResetKey'][0]);
+				}
+				else{
+					$res = False;
+				}
+				$answer['request']['confCheckResetKey'] = $res;
+			}
+			elseif(!empty($request['confResetPassword']) &&
+				   !empty($request['confResetPassword'][0]) &&
+				   !empty($request['confResetPassword'][1])){
+				$res = Guest::confResetPassword($request['confResetPassword'][0], $request['confResetPassword'][1]);
+				$answer['request']['confResetPassword'] = $res;
+			}		
 		}
 
 		if($answer['id'] > 0) {
@@ -321,11 +336,18 @@ class Api {
 							}
 							$res = $user->confMail($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6]);
 						break;
+
+						case 'confPreConfigurationMail':
+							if (empty($var[0])){
+								$var[0] = '';
+							}
+							$res = $user->confPreConfigurationMail($var[0]);
+						break;
 						
 						case 'confSendTestMail':
 							$res = $user->confSendTestMail();
 						break;
-						
+
 						case 'confSendMail':
 							if (empty($var[0])){
 								$var[0] = '';
