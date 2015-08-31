@@ -26,7 +26,7 @@ echo '<div id="signin-logo">
 				</label>
 				<input name="password" type="password" class="form-control" id="password" placeholder="'._('Password').'">
 			</div>
-			<p><a href="#">'._('Password lost').'</a></p>
+			<p><a href="#" onclick="PopupPasswordLost()" >'._('Password lost').'</a></p>
 		</div>
 		<div class="form-group">
 			<div>
@@ -53,5 +53,69 @@ if(!empty($login_error)){
 			$("#signerr").show();
 			</script>';
 }
-	
+
+echo '
+
+<script type="text/javascript">
+
+function PopupPasswordLost(){
+	$.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_password_lost.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Reset password').'",
+				message: result
+			});
+		}
+	});
+}
+
+function PopupPasswordReset(resetKeyval){
+	popup_close();
+	$.ajax({
+		type: "POST",
+		data: "resetKeyval="+encodeURIComponent(resetKeyval),
+		url: "/templates/'.TEMPLATE.'/popup/popup_password_reset.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Reset password').'",
+				message: result
+			});
+		}
+	});
+}
+
+function PopupPasswordReset(resetKeyval){
+	popup_close();
+	$.ajax({
+		type: "POST",
+		data: "resetKeyval="+encodeURIComponent(resetKeyval),
+		url: "/templates/'.TEMPLATE.'/popup/popup_password_reset.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Reset password').'",
+				message: result
+			});
+		}
+	});
+}
+
+function PopupShowUsername(usernameval){
+	popup_close();
+	$.ajax({
+		type: "GET",
+		data: "usernameval="+encodeURIComponent(usernameval),
+		url: "/templates/'.TEMPLATE.'/popup/popup_show_username.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "",
+				message: result
+			});
+		}
+	});
+}
+
+</script>';
+
 ?>

@@ -375,7 +375,10 @@ class MasterDaemon:
         os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename);
 
     def check_usb(self, json_obj, connection):
-        sdx1 = glob.glob('/dev/sd?1')[0];
+        try:
+            sdx1 = glob.glob('/dev/sd?1')[0];
+        except Exception as e:
+            return;
         if (os.path.exists(sdx1) == 0):
             json_obj = 0;
         else:
