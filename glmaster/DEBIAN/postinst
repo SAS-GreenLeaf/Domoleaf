@@ -24,7 +24,7 @@ bash /etc/greenleaf/sql/database.sh
 # check password mysql in /etc/greenleaf/master.conf
 if grep -q "^password=greenleaf$" /etc/greenleaf/master.conf; then
     echo -e "[ \033[33mINFO\033[0m ] Changing mysql default password..."
-    newpasswd=`echo \`date\` | sha1sum | sed 's/  -//g'`
+    newpasswd=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
     sed -i "s/password=greenleaf/password=$newpasswd/g" /etc/greenleaf/master.conf
     echo -e "[ \033[32mOK\033[0m ] Done."
     echo -e "[ \033[33mINFO\033[0m ] Initializing SQL user..."
