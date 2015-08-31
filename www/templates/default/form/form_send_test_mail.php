@@ -6,8 +6,6 @@ $request =  new Api();
 $request -> add_request('confSendTestMail');
 $result  =  $request -> send_request();
 
-error_log(serialize($result->confSendTestMail));
-
 if (!empty($result) && !empty($result->confSendTestMail && $result->confSendTestMail == "Error")){
 	echo ' 
 		<div class="alert alert-danger alert-dismissible center" role="alert">

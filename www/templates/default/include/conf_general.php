@@ -31,7 +31,12 @@ echo '
 	</div>
 	<div class="clearfix"></div>
 	<div class="col-xs-12 col-md-6">
-		<div class="center"><h3>'._('Email configuration').'</h3></div>
+		<div class="center">
+			<h3>'
+				._('Email configuration').'
+				<button type="button" class="btn btn-primary margin-left" title="'._('Pre-configuration email').'" onclick="PopupPreConfigurationMail()"><span class="fa fa-cog"></span></button>
+			</h3>
+		</div>
 		<div class="control-group">
 			<label class="control-label" for="fromMail">'._('From Mail').'</label>
 			<input id="fromMail" name="fromMail" title="'._('From Mail').'" type="email" value="'.$fromMail.'" class="form-control">
@@ -178,6 +183,22 @@ echo '
 			  $("#authentificationaccess").show();';
 	}
 echo'
+
+function PopupPreConfigurationMail(){
+	var fromMailval = $("#fromMail").val();
+
+	$.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_pre_configuration_mail.php",
+		data: "fromMailval="+encodeURIComponent(fromMailval),
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Pre-configuration mail').'",
+				message: result
+			});
+		}
+	});
+}
 
 function SaveChangeMail(){
 	var fromMailval = $("#fromMail").val();
