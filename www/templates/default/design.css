@@ -775,12 +775,6 @@ img {
 	margin:auto;
 }
 
-.btn-greenleaf {
-	background-color:#6b981e;
-	border-color:#6b981e;
-	color:#fff;
-}
-
 a.carousel-control-camera:focus,
 a.carousel-control-camera:hover {
 	color:#fff;
@@ -842,28 +836,13 @@ a.carousel-control-camera:hover {
 	right:0;
 }
 
-
-.label-greenleaf, 
-.btn-greenleaf, 
-.btn-greenleaf:focus, 
-.btn-group-greenleaf 
-.dropdown-menu, 
-.btn-group-greenleaf 
-.dropdown-menu li > a:hover, 
-.btn-group-greenleaf 
-.dropdown-menu li > a:focus {
-    background-color: #86bf2b !important;
-    border-color: #7eb527;
-    color: #ffffff;
-}
-
 .label-greenleaf, 
 .btn-greenleaf, 
 .btn-greenleaf:focus, 
 .btn-group-greenleaf .dropdown-menu, 
 .btn-group-greenleaf .dropdown-menu li > a:hover, 
 .btn-group-greenleaf .dropdown-menu li > a:focus {
-    background-color: #86bf2b !important;
+    background-color: #86bf2b;
     border-color: #7eb527;
     color: #ffffff;
 }
@@ -886,17 +865,6 @@ a.carousel-control-camera:hover {
     border-color: #449d44;
     cursor:pointer;
     color:white;
-}
-
-.label-greenleaf, .btn-catalog, 
-.btn-greenleaf, .btn-greenleaf:focus, 
-.btn-group-greenleaf .dropdown-menu, 
-.btn-group-greenleaf .dropdown-menu li > a:hover, 
-.btn-group-greenleaf 
-.dropdown-menu li > a:focus {
-    background-color: #86bf2b !important;
-    border-color: #7eb527;
-    color: #ffffff;
 }
 
 .checkbox + .checkbox, .radio + .radio {
