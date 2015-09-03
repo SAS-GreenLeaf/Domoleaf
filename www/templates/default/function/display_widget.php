@@ -301,13 +301,13 @@ function display_audio($info){
 										<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
 									</button>';
 			}
+			$display.='</div>';
 			break;
 		default :
 			// TODO
 			// infra rouge
 			break;
 	}
-	$display.='</div>';
 
 	if (!empty($info->device_opt->{383})){
 		$display.='<div class="col-xs-12">
