@@ -101,7 +101,7 @@ VALUES
 	(78, 'Controleur RGB', 1, 1, 0, '', '', 'Controleur RGB', '', 0),
 	(80, 'Enceintes Amplifiées', 6, 6, 0, '', '', 'Enceintes Amplifiées', '', 0),
 	(81, 'Ecoute Bébé', 6, 13, 0, '', '', 'Ecoute Bébé', '', 0),
-	(82, 'Circuit Eclairage', 1, 9, 0, '', '', 'Circuit Eclairage', '', 0);
+	(82, 'Circuit Eclairage', 1, 9, 0, '', '', 'Circuit Eclairage', '', 0),
 	(83, 'Circuit Audio Vidéo', 1, 9, 0, '', '', 'Circuit Audio Vidéo', '', 0),
 	(84, 'Circuit Electromenager', 1, 9, 0, '', '', 'Circuit Electromenager', '', 0);
 
