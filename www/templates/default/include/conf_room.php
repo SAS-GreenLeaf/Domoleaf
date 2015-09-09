@@ -76,7 +76,6 @@ function GetDeviceList(){
 					}
 				},
 				error: function(result, status, error){
-
 				}
 			});
 }
@@ -84,7 +83,7 @@ function GetDeviceList(){
 function SelectRow(id){
 	location.href=\'/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'/\'+id;
 }
-						
+
 </script>';
 
 ?>

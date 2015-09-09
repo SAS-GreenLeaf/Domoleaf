@@ -29,9 +29,9 @@ if (!empty($_GET['iddevice']) && $_GET['iddevice'] > 0) {
 		echo
 			'<script type="text/javascript" src="/templates/default/popup/popup_custom_device.js"></script>'.
 				'<div class="cd-body">'.
-					'<div class="cd-panel">'.
-						'<h3 id="uploadSuccess">Success</h3>'.
-						'<h3 id="uploadFail">Fail</h3>'.
+					'<h3 id="uploadSuccess">Success</h3>'.
+					'<h3 id="uploadFail">Fail</h3>'.
+						'<div class="cd-panel">'.
 						'<div class="cd-panel-content">'.
 							'<label for="image">'.
 								'<form id="formUpload" action="" method="post" enctype="multipart/form-data" class="image-select" data-droppable="">'.

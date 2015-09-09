@@ -9,7 +9,6 @@ echo '
 		<fieldset class="center">
 			<h2>'._('Personal informations').'</h2>
 			<div class="control-group control-group-profile">
-					
 				<label class="control-label" for="username">'._('Username').'</label>
 				<div class="input-group">
 					<label for="username" class="input-group-addon">

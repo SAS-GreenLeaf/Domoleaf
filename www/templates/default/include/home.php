@@ -1,6 +1,7 @@
 <?php 
 
 include('templates/'.TEMPLATE.'/function/display_widget.php');
+include('templates/'.TEMPLATE.'/function/display_smartcmd.php');
 
 echo '
 <input type="hidden" id="current-room" value="0">
@@ -32,7 +33,12 @@ echo '
 	<div id="bhoechie-tab" class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-9 col-xs-offset-3">';
 		if (!empty($deviceallowed)){
 			foreach ($deviceallowed as $elem){
-				echo display_widget($elem, $request -> getId());
+				echo display_widget($elem);
+			}
+		}
+		if (!empty($smartcmdLinked)){
+			foreach ($smartcmdLinked as $elem){
+				echo display_smartcmd($elem, $icons[7]);
 			}
 		}
 	echo '

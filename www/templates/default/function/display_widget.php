@@ -2,7 +2,7 @@
 
 // No echo here !!!
 
-function display_widget($info, $user_id = 0){
+function getIcon($iddevice = 1){
 	$icons = array(
 			1  => 'fa fa-question',
 			2  => 'fa fa-video-camera',
@@ -83,6 +83,12 @@ function display_widget($info, $user_id = 0){
 			81 => 'fa fa-question'
 	);
 	
+	return $icons[$iddevice];
+}
+
+function display_widget($info){
+	
+	
 	$widget = array(
 			2  => display_cam($info),
 			3  => display_lampe($info),
@@ -155,8 +161,8 @@ function display_widget($info, $user_id = 0){
 	);
 	
 	$widgeticon = 'fa fa-question';
-	if (!empty($icons[$info->device_id])){
-		$widgeticon = $icons[$info->device_id];
+	if (!empty(getIcon($info->device_id))){
+		$widgeticon = getIcon($info->device_id);
 	}
 
 	$dir = '/templates/default/custom/device/';
@@ -375,7 +381,14 @@ function display_lampe($info){
 	}
 	else
 	{
-		$display = '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(2, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-info-circle md"></span></button></div>
+		$display = '<div class="info-widget">
+						<button title="'._('More').'"
+								onclick="HandlePopup(2, '.$info->room_device_id.')"
+								class="btn btn-greenleaf"
+								type="button">
+									<span class="fa fa-info-circle md"></span>
+						</button>
+					</div>
 					<h3 class="title">'.$info->name.'</h3>';
 	}
 
@@ -464,13 +477,19 @@ function display_OnOff($info){
 						if (!empty($info->device_opt->{12}->valeur)){
 						 	$display.='<input data-toggle="toggle"
 						 				      data-onstyle="greenleaf"
-						 				      checked id="onoff-'.$info->room_device_id.'"
+						 				      checked
+						 				      id="onoff-'.$info->room_device_id.'"
 						 				      type="checkbox"
 						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
 						 				/>';
 						}
 						else {
-							$display.='<input data-toggle="toggle" data-onstyle="greenleaf" id="onoff-'.$info->room_device_id.'" type="checkbox" onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')" />';
+							$display.='<input data-toggle="toggle"
+											  data-onstyle="greenleaf"
+											  id="onoff-'.$info->room_device_id.'"
+											  type="checkbox"
+											  onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+										/>';
 						}
 				$display.='</div>';
 			}

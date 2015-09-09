@@ -94,7 +94,7 @@ function Variation(iddevice, optionid, step){
 		
 function outputUpdate(iddevice, val) {
 
-		val = Math.ceil((parseInt(val)*100)/255);
+		val = Math.round((parseInt(val)*100)/255);
 		$("#range-"+iddevice).html(val+"%");
 }	
 		
@@ -144,16 +144,11 @@ function UpdateTemp(iddevice, idoption, action){
 }
 
 function updateRGBColor(iddevice, value){
-	
-	//alert(iddevice);
-	//alert(value);
-
 	$.ajax({
 		type:"GET",
 		url: "/form/form_mc_rgb_color.php",
 		data: "iddevice="+iddevice+"&value="+encodeURIComponent(value),
 		success: function(result) {
-			//$("#uploadSuccess).show();
 		},
 	});
 }
@@ -219,3 +214,139 @@ function CustomPopup(type, iddevice, userid){
 	});
 }
 
+/*** Smartcommand ***/
+
+function smartcmdOnOff(room_id_device) {
+	var val;
+	
+	val = $("#smartcmdOnOff-"+room_id_device).bootstrapSwitch('state');
+	if (val) {
+		val = "0";
+	}
+	else {
+		val = "1";
+	}
+	$("#smartcmdPopupValue-"+room_id_device).val(val);
+}
+
+function smartcmdVarie(room_id_device) {
+	var val;
+	
+	val = $("#slider-value-"+room_id_device).val();
+	$("#smartcmdPopupValue-"+room_id_device).val(val);
+}
+
+function saveSmartcmdOption(id_smartcmd, room_id_device, id_option, id_exec, modif) {
+	var val;
+
+	val = $("#smartcmdPopupValue-"+room_id_device).val();
+	$.ajax({
+			type: "GET",
+			url: "/templates/default/form/form_save_smartcmd_elem.php",
+			data: "id_smartcmd="+id_smartcmd
+					+"&room_id_device="+room_id_device
+					+"&id_option="+id_option
+					+"&option_value="+val
+					+"&id_exec="+id_exec
+					+"&time_lapse="+0
+					+"&modif="+modif,
+			success: function(result) {
+				popup_close();
+				displaySmartcmd(id_smartcmd);
+			}
+		});
+}
+
+function selectDelay(smartcmd_id, exec_id) {
+	
+	var hours;
+	var minutes;
+	var seconds;
+	var delay;
+	
+	hours = parseInt($("#selectHours-"+exec_id).val());
+	minutes = parseInt($("#selectMinutes-"+exec_id).val());
+	seconds =parseInt($("#selectSeconds-"+exec_id).val());
+	
+	delay = hours * 3600;
+	delay = delay + minutes * 60;
+	delay = delay + seconds;
+	
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_smartcmd_update_delay.php",
+		data: "smartcmd_id="+smartcmd_id
+				+"&exec_id="+exec_id
+				+"&delay="+delay,
+		success: function(result) {
+		}
+	});
+}
+
+function dropZoneAnimate() {
+	$(".smartcmdElemDrop").addClass("drop-zone-activate", "800");
+}
+
+function dropZoneStop() {
+	$(".smartcmdElemDrop").removeClass("drop-zone-activate");
+}
+
+function listRoomsLR(smartcmd_id) {
+	var floor_id;
+	
+	floor_id = parseInt($("#selectFloor-"+smartcmd_id).val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_list_rooms_lr.php",
+		data: "smartcmd_id="+smartcmd_id
+				+"&floor_id="+floor_id,
+		success: function(result) {
+			if (result) {
+				$("#selectRoom-"+smartcmd_id).html(result);
+				$('.selectpicker').selectpicker('refresh');
+			}
+		}
+	});
+	changeSaveBtn();
+}
+
+function saveLinkedRoom(smartcmd_id) {
+	var room_id;
+	
+	room_id = parseInt($("#selectRoom-"+smartcmd_id).val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_save_linked_room.php",
+		data: "smartcmd_id="+smartcmd_id+"&room_id="+room_id,
+		success: function(result) {
+			if (result == 0) {
+				$("#saveLR_btn").removeClass("btn-primary");
+				$("#saveLR_btn").addClass("btn-success");
+				$("#saveLR_btn").text("Saved !");
+			}
+			else {
+				$("#saveLR_btn").removeClass("btn-success");
+				$("#saveLR_btn").addClass("btn-danger");
+				$("#saveLR_btn").text("ERROR !");
+			}
+			
+		}
+	});
+}
+
+function changeSaveBtn() {
+	$("#saveLR_btn").removeClass("btn-success");
+	$("#saveLR_btn").addClass("btn-primary");
+	$("#saveLR_btn").text("Save");
+}
+
+function launchSmartcmd(smartcmd_id){
+	
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_smartcmd.php",
+		data: "smartcmd_id="+smartcmd_id,
+		complete: function(result, status) {
+		}
+	});
+}
