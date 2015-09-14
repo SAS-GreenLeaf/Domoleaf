@@ -33,9 +33,6 @@ from MasterSql import *;
 from KNXManager import *;
 from UpnpAudio import *;
 from Smartcommand import *;
-
-from Smartcommand import *;
-
 import utils;
 
 LOG_FILE                = '/var/log/glmaster.log'

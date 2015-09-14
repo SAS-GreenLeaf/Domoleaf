@@ -1,4 +1,4 @@
-#!/usr/bin/python3                                                                                                                                             
+#!/usr/bin/python3
 
 import logging;
 import json;
@@ -24,10 +24,10 @@ class Smartcommand:
             self.logger.error('Invalid Smartcommand');
             return;
 
-        query = 'SELECT room_device_id, option_id, option_value FROM smartcommand WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'"';
+        query = 'SELECT room_device_id, option_id, option_value, time_lapse FROM smartcommand WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'"';
         res = self.sql.mysql_handler_personnal_query(query);
-
         for r in res:
+            self.logger.info(r);
             obj = {};
             obj['sync'] = 0;
             data = {};
@@ -36,4 +36,7 @@ class Smartcommand:
             data['value'] = r[2];
             obj['data'] = data;
             obj['packet_type'] = 'smartcmd_launch';
+            delay = r[3];
+            if (delay > 0):
+                time.sleep(delay);
             self.daemon.send_to_device(obj, connection);

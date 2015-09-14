@@ -2,7 +2,7 @@
 
 include('header.php');
 
-if (!empty($_GET['smartcmd_id']) && !empty($_GET['exec_id']) && !empty($_GET['delay'])) {
+if (!empty($_GET['smartcmd_id']) && !empty($_GET['exec_id'])) {
 	
 	$request =  new Api();
 	$request -> add_request('smartcmdUpdateDelay',
