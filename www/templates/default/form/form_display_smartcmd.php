@@ -138,7 +138,7 @@ function display_option_on_off($exec_id, $room_device_id, $option_value) {
 					<input data-toggle="toggle"
 					      data-onstyle="greenleaf"
 					      id="smartcmdOnOff-'.$room_device_id.''.$exec_id.'" ';
-							if ($option_value == 0) {
+							if ($option_value == 1) {
 								$display.= ' checked ';
 							}
 							$display.= '

@@ -221,10 +221,10 @@ function smartcmdOnOff(room_id_device) {
 	
 	val = $("#smartcmdOnOff-"+room_id_device).bootstrapSwitch('state');
 	if (val) {
-		val = "0";
+		val = "1";
 	}
 	else {
-		val = "1";
+		val = "0";
 	}
 	$("#smartcmdPopupValue-"+room_id_device).val(val);
 }

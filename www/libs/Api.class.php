@@ -880,7 +880,9 @@ class Api {
 						
 						case 'mcSmartcmd':
 							if (!empty($var[0])){
-								$res = $user->mcSmartcmd($var[0]);
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->mcSmartcmd($var[0]);
+								}
 							}
 						break;
 						

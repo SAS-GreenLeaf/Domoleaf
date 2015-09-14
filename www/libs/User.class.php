@@ -1732,10 +1732,9 @@ class User {
 	}
 	
 	function mcSmartcmd($smartcmd_id){
-		error_log("SMARTCMD GO");
-		/*
+		error_log("SEND SOCKET");
 		$socket = new Socket();
-		$socket->send('send_to_device', $smartcmd_id);*/
+		$socket->send('smartcmd_launch', $smartcmd_id);
 	}
 }
 

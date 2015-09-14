@@ -11,7 +11,7 @@ function display_smartcmd($info, $icon) {
 				<div class="info col-sm-12 col-xs-12 widget-content">
 					<h3 class="title margin-top">'.$info->name.'</h3>
 					<div>
-						<button type="button" class="btn btn-warning" onclick="launchSmartcmd('.$info->smartcmd_id.')">
+						<button type="button" class="btn btn-warning lg" onclick="launchSmartcmd('.$info->smartcmd_id.')">
 							'._('Go').'
 						</button>
 					</div>
