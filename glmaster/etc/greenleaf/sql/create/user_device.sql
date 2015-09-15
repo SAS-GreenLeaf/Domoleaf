@@ -1,4 +1,4 @@
-CREATE TABLE `user_device` (
+CREATE TABLE IF NOT EXISTS `user_device` (
   `user_id` int(10) unsigned NOT NULL,
   `room_device_id` int(10) unsigned NOT NULL,
   `device_allowed` tinyint(3) unsigned NOT NULL DEFAULT '0',

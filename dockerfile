@@ -16,7 +16,6 @@ RUN apt-get install nano screen -y
 RUN apt-get install make gcc gcc-arm-none-eabi g++ libconfig-dev autoconf libtool libxml2-dev -y
 
 #Copy directories
-ADD eibd /root/mastercommand/eibd
 ADD glmaster /root/mastercommand/glmaster
 ADD glslave /root/mastercommand/glslave
 ADD monitor_enocean /root/mastercommand/monitor_enocean

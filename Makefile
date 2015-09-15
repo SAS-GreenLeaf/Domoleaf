@@ -41,16 +41,11 @@ endif
 # ARMHF compilation rules
 compile:
 	@chmod 755 check_compiler
-	@chmod 755 eibd/build.sh
+	@chmod 755 glmaster/DEBIAN/*
+	@chmod 755 glslave/DEBIAN/*
 	@echo "[ \033[33m..\033[0m ] Compiling for $(ARM_ARCH_NAME)..."
 	@export CC=arm-linux-gnueabihf-gcc # Tel to GCC to compile for ARMHF
 	@./check_compiler
-	cd eibd && ./build.sh
-	@cp eibd/eibdbuild/build/libeibclient.a  /usr/lib
-	@cp eibd/eibdbuild/build/libeibclient.la /usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.a     /usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.la    /usr/lib
-	@cp eibd/eibdbuild/build/pthsem.pc       /usr/lib
 	@make -C monitor_knx
 	@make -C monitor_enocean
 	@echo "[ \033[32mok\033[0m ] Done compiling for ARM"
@@ -58,16 +53,11 @@ compile:
 # Native compilation rules
 compile-native:
 	@chmod 755 check_compiler
-	@chmod 755 eibd/build.sh
+	@chmod 755 glmaster/DEBIAN/*
+	@chmod 755 glslave/DEBIAN/*
 	@echo "[ \033[33m..\033[0m ] Compiling for native architecture $(ARCH_NAME)..."
 	@export CC=gcc
 	@./check_compiler
-	@cd eibd && ./build.sh
-	@cp eibd/eibdbuild/build/libeibclient.a  /usr/lib
-	@cp eibd/eibdbuild/build/libeibclient.la /usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.a     /usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.la    /usr/lib
-	@cp eibd/eibdbuild/build/pthsem.pc       /usr/lib
 	@make -C monitor_knx
 	@make -C monitor_enocean
 	@echo "[ \033[32mok\033[0m ] Done compiling for native architecture"
@@ -77,16 +67,6 @@ packages-native:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/greenleaf
-	@cp eibd/eibdbuild/build/eibd            glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupread       glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupwrite      glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupswrite     glslave/usr/bin
-	@cp eibd/eibdbuild/build/vbusmonitor1    glslave/usr/bin
-	@cp eibd/eibdbuild/build/libeibclient.a  glslave/usr/lib
-	@cp eibd/eibdbuild/build/libeibclient.la glslave/usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.a     glslave/usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.la    glslave/usr/lib
-	@cp eibd/eibdbuild/build/pthsem.pc       glslave/usr/lib
 	@rm -rf glmaster/etc/greenleaf/www
 	@mkdir -p glmaster/etc/greenleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php
@@ -106,16 +86,6 @@ packages:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/greenleaf
-	@cp eibd/eibdbuild/build/eibd            glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupread       glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupwrite      glslave/usr/bin
-	@cp eibd/eibdbuild/build/groupswrite     glslave/usr/bin
-	@cp eibd/eibdbuild/build/vbusmonitor1    glslave/usr/bin
-	@cp eibd/eibdbuild/build/libeibclient.a  glslave/usr/lib
-	@cp eibd/eibdbuild/build/libeibclient.la glslave/usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.a     glslave/usr/lib
-	@cp eibd/eibdbuild/build/libpthsem.la    glslave/usr/lib
-	@cp eibd/eibdbuild/build/pthsem.pc       glslave/usr/lib
 	@rm -rf glmaster/etc/greenleaf/www
 	@mkdir -p glmaster/etc/greenleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php

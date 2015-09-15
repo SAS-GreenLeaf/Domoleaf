@@ -1,4 +1,4 @@
-CREATE TABLE `room` (
+CREATE TABLE IF NOT EXISTS `room` (
   `room_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `room_name` varchar(63) NOT NULL DEFAULT '',
   `floor` int(10) unsigned DEFAULT '0',

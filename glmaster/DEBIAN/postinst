@@ -43,9 +43,9 @@ else
 fi
 
 user=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT user_id FROM user WHERE user_id = 1;"`
-if [ '$user' = '' ]; then
+if [ "$user" = "" ]; then
     adminpasswd=`echo '1_admin' | sha256sum | sed 's/  -//g'`
-    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, $adminpasswd)"
+    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
 fi
 
 rm -f /etc/nginx/sites-enabled/master.conf
@@ -62,6 +62,10 @@ do
 	fi
 done
 
+chown www-data:www-data /etc/greenleaf/www/templates/default/custom/device
+chown www-data:www-data /etc/greenleaf/www/templates/default/custom/room
+
+chmod +x /usr/bin/master.py
 chmod +x /etc/init.d/glmaster
 systemctl enable glmaster
 systemctl start glmaster

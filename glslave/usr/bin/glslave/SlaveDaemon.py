@@ -194,7 +194,7 @@ class SlaveDaemon:
         """
         System call of "groupread" with parameters.
         """
-        call([CALL_GROUPREAD, EIB_URL, json_obj['addr_to_read']]);
+        call(['knxtool', CALL_GROUPREAD, EIB_URL, json_obj['addr_to_read']]);
 
     def knx_write_temp(self, json_obj, connection):
         """
@@ -202,19 +202,19 @@ class SlaveDaemon:
         Almost the same as "knx_write_long" function, except that parameters are not the same
         """
         val = json_obj['value'].split(' ')
-        call([CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], val[0], val[1]]);
+        call(['knxtool', CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], val[0], val[1]]);
 
     def knx_write_short(self, json_obj, connection):
         """
         System call of "groupswrite" with parameters.
         """
-        call([CALL_GROUPSWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
+        call(['knxtool', CALL_GROUPSWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
 
     def knx_write_long(self, json_obj, connection):
         """
         System call of "groupwrite" with parameters.
         """
-        call([CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
+        call(['knxtool', CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
 
     def receive_from_masters(self, masters_to_read):
         """
