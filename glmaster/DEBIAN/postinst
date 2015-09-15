@@ -44,7 +44,7 @@ fi
 
 user=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT user_id FROM user WHERE user_id = 1;"`
 if [ "$user" = "" ]; then
-    adminpasswd=`echo '1_admin' | sha256sum | sed 's/  -//g'`
+    adminpasswd=`echo -n '1_admin' | sha256sum | sed 's/  -//g'`
     mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
 fi
 
