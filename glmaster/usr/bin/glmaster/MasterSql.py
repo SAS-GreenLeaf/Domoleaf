@@ -44,6 +44,7 @@ class MasterSql:
                                      {"last_update": str(time.time()).split('.')[0],
                                       "ip_addr": host._IpAddr,
                                       "hostname": host._Hostname.split('.')[0]});
+        db.personnal_query("DELETE FROM ip_monitor WHERE last_update<"+str(time.time()-7200).split('.')[0]);
         db.updatedb();
         db.close();
 
