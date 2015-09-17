@@ -145,7 +145,7 @@ function format_size($bytes, $format = '%.2f') {
 	return sprintf($format.' %s', $b, $units[$e]);
 }
 
-function convertRGB($color) {
+function convertHexaToRGB($color) {
 	if ($color[0] == '#') {		
 		$color = substr($color, 1);
 	}
@@ -160,5 +160,15 @@ function convertRGB($color) {
 	return array($red, $green, $blue);
 }
 
+function convertRGBToHexa($red, $green, $blue) {
+		
+	$red = dechex($red);
+	$green = dechex($green);
+	$blue = dechex($blue);
+	
+	$hexa_color = "#".$red.$green.$blue;
+
+	return $hexa_color;
+}
 
 ?>

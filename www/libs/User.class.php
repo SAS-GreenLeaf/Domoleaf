@@ -1185,6 +1185,10 @@ class User {
 	
 	function getSmartcmdElems($id_smartcmd) {
 		$link = Link::get_link('mastercommand');
+		$red = 0;
+		$green = 0;
+		$blue = 0;
+		$exec_id = 0;
 		
 		$sql = 'SELECT exec_id, smartcommand.room_device_id AS room_device_id,
 				       optiondef.option_id, option_value, time_lapse,
@@ -1202,6 +1206,7 @@ class User {
 		$list ='';
 		
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			
 			$list[$do->exec_id] = array(
 					'smartcmd_id'       => $id_smartcmd,
 					'exec_id'           => $do->exec_id,
@@ -1210,11 +1215,32 @@ class User {
 					'option_value'      => $do->option_value,
 					'time_lapse'        => $do->time_lapse,
 					'device_name'       => $do->device_name,
-					'device_id'       => $do->device_id,
+					'device_id'         => $do->device_id,
 					'option_name'       => $do->option_name
 			);
+			
+			if ($do->option_id == 392 && empty($red)) {
+				$red = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			if ($do->option_id == 393 && empty($green)) {
+				$green = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			if ($do->option_id == 394 && empty($blue)) {
+				$blue = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			
+			if (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue);
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			
 		}
-		
 		return $list;
 	}
 	
@@ -1254,21 +1280,19 @@ class User {
 		return $smartcmd_id;
 	}
 	
-	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse){
+	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse, $no_update = 0){
 		$link = Link::get_link('mastercommand');
 		
-		if (empty($idexec)) {
-			$idexec = $this->countElemSmartcmd($idsmartcmd) + 1;
+		if ($no_update == 0) {
+			$sql = 'UPDATE smartcommand
+					SET exec_id=exec_id+1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
+		
+			$req = $link->prepare($sql);
+			$req->bindValue(':idexec', $idexec, PDO::PARAM_INT);
+			$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-		
-		$sql = 'UPDATE smartcommand
-				SET exec_id=exec_id+1
-				WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
-		
-		$req = $link->prepare($sql);
-		$req->bindValue(':idexec', $idexec, PDO::PARAM_INT);
-		$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$sql = 'INSERT INTO smartcommand
 				VALUES
@@ -1283,16 +1307,17 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
-	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval) {
+	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval, $id_option) {
 		$link = Link::get_link('mastercommand');
-		
+
 		$sql = 'UPDATE smartcommand
 				SET option_value=:option_val
-				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
+				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':option_val', $optionval, PDO::PARAM_STR);
 		$req->bindValue(':smartcmd_id', $idsmartcmd, PDO::PARAM_INT);
 		$req->bindValue(':exec_id', $idexec, PDO::PARAM_INT);
+		$req->bindValue(':option_id', $id_option, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	

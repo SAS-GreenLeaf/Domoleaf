@@ -316,14 +316,27 @@ function display_audio($info){
 	$display.='</div>';
 
 	if (!empty($info->device_opt->{383})){
-		$display.='<div class="col-xs-12">
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor" onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', -1)"><i class="glyphicon glyphicon-volume-down"></i></div>
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><output id="vol-'.$info->room_device_id.'" for="volume-'.$info->room_device_id.'">50%</output></div>
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor" onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', 1)"><i class="glyphicon glyphicon-volume-up"></i></div>
-				<div class="row">
-					<input onchange="SetVolume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\')" value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'" oninput="UpdateVol(\''.$info->room_device_id.'\', value)" type="range">
-				</div>
-			</div>';
+		$display.='
+				<div class="col-xs-12">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', -1)">
+						<i class="glyphicon glyphicon-volume-down"></i>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<output id="vol-'.$info->room_device_id.'" for="volume-'.$info->room_device_id.'">
+							50%
+						</output>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', 1)">
+						<i class="glyphicon glyphicon-volume-up"></i>
+					</div>
+					<div class="row">
+						<input onchange="SetVolume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\')"
+						       value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'"
+						       oninput="UpdateVol(\''.$info->room_device_id.'\', value)" type="range">
+					</div>
+				</div>';
 	}
 	return $display;
 }
@@ -399,8 +412,6 @@ function display_lampe($info){
 		$display.=display_varie($info);
 	}
 	
-	$display.=display_ChromatiqueWheel($info);
-
 	return $display;
 }
 
@@ -433,13 +444,6 @@ function display_consumption($info){
 }
 
 /*   Option   */
-
-// Chromatique wheel
-function display_ChromatiqueWheel($info){
-	$display = '';
-	
-	return $display;
-}
 
 //Open Close
 function display_OpenClose($info){

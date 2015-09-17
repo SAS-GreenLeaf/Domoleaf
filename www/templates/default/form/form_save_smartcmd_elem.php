@@ -15,7 +15,7 @@ if (!empty($_GET['id_smartcmd']) && !empty($_GET['room_id_device'])
 	}
 	else if ($_GET['modif'] == 2) {
 		$request -> add_request('updateSmartcmdElemOptionValue', array($_GET['id_smartcmd'], $_GET['id_exec'],
-								$_GET['option_value']));
+								$_GET['option_value'], $_GET['id_option']));
 	}
 	
 	$result  =  $request -> send_request();

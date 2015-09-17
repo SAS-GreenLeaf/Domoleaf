@@ -150,7 +150,7 @@ function HandlePopup(type, iddevice){
 		var data = new Array("popup_info_device.php", "'._('Information').'");
 	}
 	else if (type == 3){
-		var data = new Array("popup_ChromaWheel.php", "'._('Information').'");
+		var data = new Array("popup_ChromaWheel.php", "'._('ChromaWheel').'");
 	}
 	
 	if (data){
@@ -163,7 +163,7 @@ function HandlePopup(type, iddevice){
 					title: data[1],
 					message: msg,
 					onhide: function(){
-						if ($("#cmd-camera-display").length){
+						if ($("#cmd-camera-display").length) {
 							$("#cmd-camera-display").removeAttr("src");
 						}
 					}

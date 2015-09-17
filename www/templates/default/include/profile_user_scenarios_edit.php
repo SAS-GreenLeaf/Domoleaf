@@ -139,27 +139,33 @@ echo
 		
 	};
 
-	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id) {
+	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id, tab_without_params) {
 		var id_option;
 		var id_exec;
+		without_params = [363, 364, 365, 366, 367, 368];
 
-		id_option = $(ui.draggable).find("input").val();
+		id_option = parseInt($(ui.draggable).find("input").val());
 		id_exec = parseInt(drop_id) + 1;
-		$.ajax({
-			type:"GET",
-			url: "/templates/default/popup/popup_smartcmd_device_option.php",
-			data: "id_smartcmd="+id_smartcmd
-					+"&room_id_device="+room_id_device
-					+"&id_option="+id_option
-					+"&id_exec="+id_exec
-					+"&modif="+1,
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: \'<div id="popupTitle" class="center"></div>\',
-					message: msg
-				});
-			}
-		});
+		if (without_params.indexOf(id_option) > -1) {
+			saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exec)
+		}
+		else {
+			$.ajax({
+				type:"GET",
+				url: "/templates/default/popup/popup_smartcmd_device_option.php",
+				data: "id_smartcmd="+id_smartcmd
+						+"&room_id_device="+room_id_device
+						+"&id_option="+id_option
+						+"&id_exec="+id_exec
+						+"&modif="+1,
+				success: function(msg) {
+					BootstrapDialog.show({
+						title: \'<div id="popupTitle" class="center"></div>\',
+						message: msg
+					});
+				}
+			});
+		}
 	}
 
 	function changeElemsOrder(id_smartcmd, old_id_exec, drop_id) {
@@ -266,4 +272,5 @@ echo
 	}
 	
 </script>';
+
 ?>

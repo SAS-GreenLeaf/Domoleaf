@@ -1495,6 +1495,8 @@ a.carousel-control-camera:hover {
 	display: none;
 }
 
+/*** Smartcommands ***/
+
 .box-scenar-rooms {
 	background-color: #fff;
 	border: 1px solid #ddd;
@@ -1581,8 +1583,8 @@ a.carousel-control-camera:hover {
 	display: inline-block;
 }
 
-.delay .btn {
-	opacity: 1;
+.disabled-with-opacity {
+	opacity: 1 !important;
 }
 
 .smartcmdElemDrop {
@@ -1625,4 +1627,16 @@ a.carousel-control-camera:hover {
 #linked-room {
 	float: right;
 	margin-top: -5px;
+}
+
+#popup_smartcmd_content .input-group {
+	width: 50% !important;
+	margin: auto;
+}
+
+.smartcmd-color-option {
+	height: 45px;
+	width: 50%;
+	border-radius: 20px;
+	box-shadow: 1px 1px 4px;
 }

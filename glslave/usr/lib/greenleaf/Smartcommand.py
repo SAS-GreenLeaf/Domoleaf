@@ -24,8 +24,9 @@ class Smartcommand:
             self.logger.error('Invalid Smartcommand');
             return;
 
-        query = 'SELECT room_device_id, option_id, option_value, time_lapse FROM smartcommand WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'"';
+        query = 'SELECT room_device_id, option_id, option_value, time_lapse FROM smartcommand WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" ORDER BY exec_id';
         res = self.sql.mysql_handler_personnal_query(query);
+        delay_color = 0;
         for r in res:
             self.logger.info(r);
             obj = {};
@@ -37,6 +38,10 @@ class Smartcommand:
             obj['data'] = data;
             obj['packet_type'] = 'smartcmd_launch';
             delay = r[3];
-            if (delay > 0):
+            if (data['option_id'] ==  392 or data['option_id'] ==  393 or data['option_id'] ==  394):
+                delay_color = delay_color + 1;
+            if (delay > 0 and delay_color <= 1):
                 time.sleep(delay);
+            if (delay_color >= 3):
+                delay_color = 0;
             self.daemon.send_to_device(obj, connection);

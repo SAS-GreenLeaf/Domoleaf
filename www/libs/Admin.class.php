@@ -1264,21 +1264,6 @@ class Admin extends User {
 			}
 		}
 		
-		$sql = 'SELECT smartcommand_id, name, user_id, room_id
-		        FROM smartcommand_list
-		        WHERE user_id=:user_id';
-		$req = $link->prepare($sql);
-		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$listSmartcmd[$do->smartcommand_id] = array(
-					'smartcmd_id' => $do->smartcommand_id,
-					'name'            => $do->name,
-					'user_id'         => $do->user_id,
-					'room_id'         => $do->room_id
-			);
-		}
-		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
 		               optiondef.hidden_arg, room_device.device_id, 
 		               optiondef.option_id,
@@ -1301,6 +1286,21 @@ class Admin extends User {
 					'valeur'    => $do->valeur
 				);
 			}
+		}
+		
+		$sql = 'SELECT smartcommand_id, name, user_id, room_id
+		        FROM smartcommand_list
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$listSmartcmd[$do->smartcommand_id] = array(
+					'smartcmd_id' => $do->smartcommand_id,
+					'name'            => $do->name,
+					'user_id'         => $do->user_id,
+					'room_id'         => $do->room_id
+			);
 		}
 		
 		return array(

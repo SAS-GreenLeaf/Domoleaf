@@ -37,8 +37,8 @@ function PopupLoading(){
 /*** Widget Audio ***/
 
 function Volume(iddevice, optionid, step){
+
 	var vol = $("#volume-"+iddevice).val();
-	
 	vol = parseInt(vol) + step;
 	if (vol == 0 || vol > 0 && vol <= 100){
 		$("#volume-"+iddevice).val(vol);
@@ -93,9 +93,8 @@ function Variation(iddevice, optionid, step){
 }
 		
 function outputUpdate(iddevice, val) {
-
-		val = Math.round((parseInt(val)*100)/255);
-		$("#range-"+iddevice).html(val+"%");
+	val = Math.round((parseInt(val)*100)/255);
+	$("#range-"+iddevice).html(val+"%");
 }	
 		
 function onOffToggle(iddevice, optionid){
@@ -236,6 +235,26 @@ function smartcmdVarie(room_id_device) {
 	$("#smartcmdPopupValue-"+room_id_device).val(val);
 }
 
+function smartcmdVolume(room_id_device) {
+	var val;
+	
+	val = $("#volume-"+room_id_device).val();
+	$("#smartcmdPopupValue-"+room_id_device).val(val);
+}
+
+function smartcmdUpdateTemp(room_id_device, modif) {
+	var val;
+	
+	val = parseInt($("#temp-"+room_id_device).val()) + modif;
+	$("#smartcmdPopupValue-"+room_id_device).val(val);
+	$("#temp-"+room_id_device).val(val);
+	$("#output-temp-"+room_id_device).html(val);
+}
+
+function smartcmdUpdateRGBColor(room_id_device, val) {
+	$("#smartcmdPopupValue-"+room_id_device).val(encodeURIComponent(val));
+}
+
 function saveSmartcmdOption(id_smartcmd, room_id_device, id_option, id_exec, modif) {
 	var val;
 
@@ -252,6 +271,43 @@ function saveSmartcmdOption(id_smartcmd, room_id_device, id_option, id_exec, mod
 					+"&modif="+modif,
 			success: function(result) {
 				popup_close();
+				displaySmartcmd(id_smartcmd);
+			}
+		});
+}
+
+function saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exec) {
+	var val;
+
+	if (id_option == 363) {
+		val = 'play';
+	}
+	if (id_option == 364) {
+		val = 'pause';
+	}
+	if (id_option == 365) {
+		val = 0;
+	}
+	if (id_option == 366) {
+		val = 'next';
+	}
+	if (id_option == 367) {
+		val = 'prev';
+	}
+	if (id_option == 368) {
+		val = 'mute';
+	}
+	$.ajax({
+			type: "GET",
+			url: "/templates/default/form/form_save_smartcmd_elem.php",
+			data: "id_smartcmd="+id_smartcmd
+					+"&room_id_device="+room_id_device
+					+"&id_option="+id_option
+					+"&option_value="+val
+					+"&id_exec="+id_exec
+					+"&time_lapse="+0
+					+"&modif="+1,
+			success: function(result) {
 				displaySmartcmd(id_smartcmd);
 			}
 		});
