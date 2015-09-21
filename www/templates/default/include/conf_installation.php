@@ -19,7 +19,9 @@ echo '
 				<button type="button" class="btn btn-greenleaf" onclick="PopupNewRoom()">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '._('New room').'
 				</button>
-				<button type="button" class="btn btn-greenleaf dropdown-toggle" data-toggle="dropdown">
+				<button type="button"
+				        class="btn btn-greenleaf dropdown-toggle"
+				        data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-confgreenleaf  dropdown-menu-right">

@@ -190,12 +190,15 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 						<td>
 							<div class="checkbox">
 								<input id="toggle-'.$tmp['id'].'"
-								       data-onstyle="greenleaf"
-								       data-toggle="toggle"
-								       data-on="'._('Enable').'"
-								       data-off="'._('Disable').'"
+								       data-on-color="greenleaf"
+						 		       data-label-width="0"
+								       data-on-text="'._('Enable').'"
+								       data-off-text="'._('Disable').'"
 								       type="checkbox">
 							<div>
+							<script type="text/javascript">
+								$("#toggle-'.$tmp['id'].'").bootstrapSwitch();
+							</script>
 						</td>
 						<td>
 							<div class="btn-group btn-group-greenleaf center">
@@ -232,12 +235,15 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 						<td>
 							<div class="checkbox">
 								<input id="toggle-'.$tmp['id'].'"
-								       data-onstyle="greenleaf"
-								       data-toggle="toggle"
-								       data-on="'._('Enable').'"
-								       data-off="'._('Disable').'"
+								       data-on-color="greenleaf"
+						 		       data-label-width="0"
+								       data-on-text="'._('Enable').'"
+								       data-off-text="'._('Disable').'"
 								       type="checkbox">
 							<div>
+							<script type="text/javascript">
+								$("#toggle-'.$tmp['id'].'").bootstrapSwitch();
+							</script>
 						</td>
 						<td>
 							<div class="btn-group btn-group-greenleaf center">
@@ -262,12 +268,15 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 							<td>
 								<div class="checkbox">
 									<input id="toggle-'.$tabopt[$i]['id'].'"
-									       data-onstyle="greenleaf"
-									       data-toggle="toggle"
-									       data-on="'._('Enable').'"
-									       data-off="'._('Disable').'"
+									       data-on-color="greenleaf"
+						 			       data-label-width="0"
+									       data-on-text="'._('Enable').'"
+									       data-off-text="'._('Disable').'"
 									       type="checkbox">
 								</div>
+								<script type="text/javascript">
+									$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
+								</script>
 							</td>
 							<td>
 								 <div class="btn-group btn-group-greenleaf center">
@@ -308,10 +317,18 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 							<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>
 							<td>
 								<div class="checkbox">
-								  <label>
-									<input id="toggle-'.$tabopt[$i]['id'].'" data-onstyle="greenleaf" data-toggle="toggle" data-on="'._('Enable').'" data-off="'._('Disable').'" type="checkbox">
-								  </label>
+									<label>
+										<input id="toggle-'.$tabopt[$i]['id'].'
+										       data-on-color="greenleaf"
+										       data-label-width="0"
+										       data-on-text="'._('Enable').'"
+										       data-off-text="'._('Disable').'"
+										       type="checkbox">
+									</label>
 								<div>
+								<script type="text/javascript">
+									$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
+								</script>
 							</td>
 							<td>
 								 <div class="btn-group btn-group-greenleaf center">
@@ -383,9 +400,17 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 									<td class="center">
 										<div class="checkbox">
 											<label>
-												<input id="toggle-'.$tabopt[$i]['id'].'" data-onstyle="greenleaf" data-toggle="toggle" data-on="'._('Enable').'" data-off="'._('Disable').'" type="checkbox">
+												<input id="toggle-'.$tabopt[$i]['id'].'"
+												       data-on-color="greenleaf"
+						 						       data-label-width="0"
+												       data-on-text="'._('Enable').'"
+												       data-off-text="'._('Disable').'"
+												       type="checkbox">
 											 </label>
 										<div>
+										<script type="text/javascript">
+											$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
+										</script>
 									</td>
 									<td>
 										<div class="btn-group btn-group-greenleaf center">

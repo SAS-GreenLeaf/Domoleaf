@@ -169,7 +169,7 @@ echo '
 		<link href="/css/jquery-ui.min.css" rel="stylesheet">
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/css/bootstrap-dialog.min.css" rel="stylesheet">
-		<link href="/css/bootstrap-toggle.min.css" rel="stylesheet">
+		
 		<link href="/css/font-awesome.min.css" rel="stylesheet">
 		<link href="/css/flaticon.css" rel="stylesheet">
 		<link href="/css/bootstrap-switch.css" rel="stylesheet">
@@ -181,12 +181,11 @@ echo '
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/jquery-ui.min.js"></script>
 		<script src="/js/touch.js"></script>
-		<script src="/js/bootstrap-toggle.min.js"></script>
+		
 		<script src="/templates/'.TEMPLATE.'/scripts.js"></script>
 		<script type="text/javascript" src="/js/farbtastic.js"></script>
 		<script src="/js/bootstrap-switch.js"></script>
 		<script src="/js/bootstrap-select.js"></script>
-		
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="/js/html5shiv.min.js"></script>

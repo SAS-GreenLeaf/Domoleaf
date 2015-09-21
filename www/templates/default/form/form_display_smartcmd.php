@@ -107,7 +107,7 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 				<button type="button"
 				        title="'._('Edit Smartcommand Element').'"
 				        class="btn btn-primary btn-elem-smartcmd"
-				        onclick="updateValue('.$smartcmd_id.', '.$room_device_id.','.$option_id.','.$exec_id.')">
+				        onclick="smartcmdUpdateValue('.$smartcmd_id.', '.$room_device_id.','.$option_id.','.$exec_id.')">
 					<i class="glyphicon glyphicon-edit"></i>
 				</button>';
 		}
@@ -153,18 +153,21 @@ function display_option($exec_id, $option_id, $option_value, $room_device_id) {
 function display_option_on_off($exec_id, $room_device_id, $option_value) {
 	$display = '';
 	$display = '<div class="checkbox">
-					<input data-toggle="toggle"
-					      data-onstyle="greenleaf disabled-with-opacity"
-					      id="smartcmdOnOff-'.$room_device_id.''.$exec_id.'" ';
-							if ($option_value == 1) {
-								$display.= ' checked ';
-							}
-							$display.= '
-					      type="checkbox"
-					      disabled/>
+					<input data-label-width="0"
+					       data-on-color="greenleaf disabled-with-opacity"
+					       data-off-color="disabled-with-opacity"
+					       data-on-text="On"
+					       data-off-text="Off"
+					       id="smartcmdOnOff-'.$room_device_id.''.$exec_id.'" ';
+					       if ($option_value == 1) {
+					        	$display.= ' checked ';
+					       }
+					       $display.= '
+					       type="checkbox"
+					       disabled/>
 				</div>
 			<script>
-				$("#smartcmdOnOff-'.$room_device_id.''.$exec_id.'").bootstrapToggle();
+				$("#smartcmdOnOff-'.$room_device_id.''.$exec_id.'").bootstrapSwitch();
 			</script>';
 	return $display;
 }
@@ -204,20 +207,21 @@ function display_option_varie($exec_id, $room_id_device, $option_value) {
 function display_option_up_down($exec_id, $room_device_id, $option_value) {
 	$display = '';
 	$display = '<div class="checkbox">
-					<input data-toggle="toggle"
-					      data-onstyle="greenleaf disabled-with-opacity"
-					      data-on="Up"
-					      data-off="Down"
-					      id="smartcmdUpDown-'.$room_device_id.''.$exec_id.'" ';
-							if ($option_value == 1) {
-								$display.= ' checked ';
-							}
-							$display.= '
-					      type="checkbox"
-					      disabled/>
+					<input data-label-width="0"
+					       data-on-color="greenleaf disabled-with-opacity"
+					       data-off-color="disabled-with-opacity"
+					       data-on-text="Up"
+					       data-off-text="Down"
+					       id="smartcmdUpDown-'.$room_device_id.''.$exec_id.'" ';
+					       if ($option_value == 1) {
+					        	$display.= ' checked ';
+					       }
+					       $display.= '
+					       type="checkbox"
+					       disabled/>
 				</div>
 			<script>
-				$("#smartcmdUpDown-'.$room_device_id.''.$exec_id.'").bootstrapToggle();
+				$("#smartcmdUpDown-'.$room_device_id.''.$exec_id.'").bootstrapSwitch();
 			</script>';
 	return $display;
 }
@@ -225,20 +229,21 @@ function display_option_up_down($exec_id, $room_device_id, $option_value) {
 function display_option_open_close($exec_id, $room_device_id, $option_value) {
 	$display = '';
 	$display = '<div class="checkbox">
-					<input data-toggle="toggle"
-					      data-onstyle="greenleaf disabled-with-opacity"
-					      data-on="Open"
-					      data-off="Close"
-					      id="smartcmdOpenClose-'.$room_device_id.''.$exec_id.'" ';
-							if ($option_value == 1) {
-								$display.= ' checked ';
+					<input data-label-width="0"
+					       data-on-color="greenleaf disabled-with-opacity"
+					       data-off-color="disabled-with-opacity"
+					       data-on-text="Open"
+					       data-off-text="Close"
+					       id="smartcmdOpenClose-'.$room_device_id.''.$exec_id.'" ';
+					       if ($option_value == 1) {
+					        	$display.= ' checked ';
 							}
 							$display.= '
 					      type="checkbox"
 					      disabled/>
 				</div>
 			<script>
-				$("#smartcmdOpenClose-'.$room_device_id.''.$exec_id.'").bootstrapToggle();
+				$("#smartcmdOpenClose-'.$room_device_id.''.$exec_id.'").bootstrapSwitch();
 			</script>';
 	return $display;
 }
@@ -343,7 +348,7 @@ function display_option_color($exec_id, $room_device_id, $option_value) {
 echo
 '<script type="text/javascript">
 		
-	function updateValue(id_smartcmd, room_id_device, id_option, id_exec) {
+	function smartcmdUpdateValue(id_smartcmd, room_id_device, id_option, id_exec) {
 		$.ajax({
 			type:"GET",
 			url: "/templates/default/popup/popup_smartcmd_device_option.php",

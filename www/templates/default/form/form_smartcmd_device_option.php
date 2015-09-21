@@ -38,7 +38,7 @@ function showPopup($id_smartcmd, $room_id_device, $id_option, $id_exec, $modif) 
 	$display.=$tab_func[$id_option]($room_id_device);
 	
 	$display.='
-				</br>
+				<br/>
 				<div>
 					<button class="btn btn-greenleaf margin-top"
 					        onclick="saveSmartcmdOption('.$id_smartcmd.', '.$room_id_device.', '.$id_option.', '.$id_exec.', '.$modif.')">

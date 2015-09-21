@@ -479,8 +479,10 @@ function display_OnOff($info){
 			if (!empty($info->device_opt->{12}->addr_plus)){
 				$display .= '<div class="checkbox">';
 						if (!empty($info->device_opt->{12}->valeur)){
-						 	$display.='<input data-toggle="toggle"
-						 				      data-onstyle="greenleaf"
+						 	$display.='<input data-on-color="greenleaf"
+						 				      data-label-width="0"
+										      data-on-text="'._('On').'"
+										      data-off-text="'._('Off').'"
 						 				      checked
 						 				      id="onoff-'.$info->room_device_id.'"
 						 				      type="checkbox"
@@ -488,11 +490,11 @@ function display_OnOff($info){
 						 				/>';
 						}
 						else {
-							$display.='<input data-toggle="toggle"
-											  data-onstyle="greenleaf"
-											  id="onoff-'.$info->room_device_id.'"
-											  type="checkbox"
-											  onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+							$display.='<input data-on-color="greenleaf"
+										      data-label-width="0"
+										      id="onoff-'.$info->room_device_id.'"
+										      type="checkbox"
+										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
 										/>';
 						}
 				$display.='</div>';
@@ -515,6 +517,10 @@ function display_OnOff($info){
 			$display.='';
 		break;
 	}
+
+	$display.='<script type="text/javascript">
+					$("#onoff-'.$info->room_device_id.'").bootstrapSwitch();
+				</script>';
 	return $display;
 }
 

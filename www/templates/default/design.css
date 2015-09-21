@@ -1283,6 +1283,7 @@ a.carousel-control-camera:hover {
 }
 
 /*** color-wheel ***/
+
 .farbtastic {
   position: relative;
   margin: auto;
@@ -1495,6 +1496,18 @@ a.carousel-control-camera:hover {
 	display: none;
 }
 
+/*** Bootstrap Switch ***/
+
+.bootstrap-switch-greenleaf {
+	background-color:#86BF2B;
+	border-color:#6b981e;
+	color:#fff;
+}
+
+.bootstrap-switch-disabled-with-opacity {
+	opacity: 1 !important;
+}
+
 /*** Smartcommands ***/
 
 .box-scenar-rooms {
@@ -1542,11 +1555,7 @@ a.carousel-control-camera:hover {
 	position: absolute;
 }
 
-.bootstrap-switch-greenleaf {
-	background-color:#86BF2B;
-	border-color:#6b981e;
-	color:#fff;
-}
+
 
 .center-div {
 	float: none;
