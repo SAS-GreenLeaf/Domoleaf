@@ -27,7 +27,7 @@ echo '
 			echo '
 			<div class="control-group" >
 				<label class="control-label" for="listdaemon">'._('Daemon').'</label>
-				<select class="form-control" id="listdaemon">';
+				<select class="selectpicker form-control" id="listdaemon">';
 					foreach ($daemonlist as $elem){
 						if (in_array(1, $elem->protocol)){
 							if ($device->daemon_id == $elem->daemon_id){
@@ -47,7 +47,7 @@ echo '
 	<div class="col-md-6 col-xs-12">
 		<div class="control-group" id="selectFloor">
 			<label class="control-label" for="listfloor">'._('Floor').'</label>
-			<select class="form-control" selected id="listfloor" onchange="GetRoomByFloor()">';
+			<select class="selectpicker form-control" selected id="listfloor" onchange="GetRoomByFloor()">';
 				foreach ($floorlistroom as $elem){
 					if ($_GET['floor'] == $elem->floor_id){
 						echo '
@@ -64,7 +64,7 @@ echo '
 		<br/>
 		<div id="selectRoom" class="control-group">
 			<label for="listroom" class="control-label">Room</label>
-			<select onchange="" id="listroom" selected="" class="form-control">';
+			<select class="selectpicker form-control" onchange="" id="listroom" selected="">';
 				foreach ($roomlist as $elem){
 					if ($_GET['room'] == $elem->room_id){
 						echo '<option value="'.$elem->room_id.'" selected>'.$elem->room_name.'</option>';
@@ -181,7 +181,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 							       placeholder="'._('Address').'">
 						</td>
 						<td>
-							<select class="form-control" id="raddr-'.$tmp['id'].'">
+							<select class="selectpicker form-control" id="raddr-'.$tmp['id'].'">
 								<option value="°C">'._('Celsius').'</option>
 								<option value="°F">'._('Fahrenheit').'</option>
 								<option value="°K">'._('kelvin').'</option>
@@ -226,7 +226,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 							       placeholder="'._('Address').'">
 						</td>
 						<td>
-							<select class="form-control" id="raddr-'.$tmp['id'].'">
+							<select class="selectpicker form-control" id="raddr-'.$tmp['id'].'">
 								<option value="lx">'._('Lux').'</option>
 								<option value="lm">'._('Lumen').'</option>
 								<option value="cd">'._('Candela').'</option>
@@ -299,16 +299,16 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 		else if (!empty($tabopt) && sizeof($tabopt) > 0){
 			echo '<table class="table" id="tabopt">';
 			echo ' 
-						<thead>
-							<tr>
-								<th>'._('Option').'</th>
-								<th>'._('Write address').'</th>
-								<th>'._('Return address').'</th>
-								<th>
-								</th>
-							</tr>
-						</thead>
-						<tbody>';
+				<thead>
+					<tr>
+						<th>'._('Option').'</th>
+						<th>'._('Write address').'</th>
+						<th>'._('Return address').'</th>
+						<th>
+						</th>
+					</tr>
+				</thead>
+				<tbody>';
 			foreach ($tabopt as $i => $elem){
 				if (!empty($tabopt[$i])){
 					echo '<tr>
@@ -318,7 +318,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 							<td>
 								<div class="checkbox">
 									<label>
-										<input id="toggle-'.$tabopt[$i]['id'].'
+										<input id="toggle-'.$tabopt[$i]['id'].'"
 										       data-on-color="greenleaf"
 										       data-label-width="0"
 										       data-on-text="'._('Enable').'"
@@ -566,6 +566,7 @@ function GetRoomByFloor(){
 		data: "floor="+idfloor,
 		success: function(result) {
 			$("#listroom").html(result);
+			$(".selectpicker").selectpicker(\'refresh\');
 		},
 		error: function(result, status, error){
 			location.href=\'/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'/'.$_GET['device'].'\';

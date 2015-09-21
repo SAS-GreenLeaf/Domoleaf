@@ -44,10 +44,10 @@ echo '
 		'</div>
 	</div>';
 
-echo '
+/*echo '
 	<script type="text/javascript">
 		$(".selectpicker").selectpicker();
-	</script>';
+	</script>';*/
 echo '
 	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-top save-navbar">
 		<div id="navbarSmartcmdName" class="navbar-brand">

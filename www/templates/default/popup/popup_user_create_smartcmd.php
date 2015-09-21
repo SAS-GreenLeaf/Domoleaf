@@ -5,7 +5,9 @@ include('header.php');
 
 echo
 	'<div>'.
-		'<div id="errorMsg"></div>'.
+		'<div id="popupError" class="alert alert-danger alert-dismissible center" role="alert" hidden>'.
+			'<p id="errorMsg"><p>'.
+		'</div>'.
 		'<div class ="center">'._('Please enter the Smartcommand name :').'</div>'.
 		'<div class="input-group margin-top">'.
 			'<label class="input-group-addon left" for="smartcmdName">'._('Name').'</label>'.
@@ -41,8 +43,13 @@ echo
 				'url: "/templates/default/form/form_create_new_smartcmd.php",'.
 				'data: "smartcmd_name="+name,'.
 				'success: function(result) {'.
-					'if (result && result.split("-1")[1]) {'.
-						'$("#errorMsg").html(result.split("-1")[1]);'.
+					'if (result && result == -1) {'.
+						'$("#popupError").show();'.
+						'$("#errorMsg").html("'._('Name already existing').'");'.
+					'}'.
+					'else if (result && result == -2) {'.
+						'$("#popupError").show();'.
+						'$("#errorMsg").html("'._('Invalid Name').'");'.
 					'}'.
 					'else if (result) {'.
 						'popup_close();'.

@@ -48,10 +48,6 @@ echo '
 echo '
 <script type="text/javascript">
 
-	/*$(document).ready(function() {
-    $("#colorpicker").farbtastic("#color");
-  });*/
-
 $("#current-room").val(0);
 $("#current-application").val(0);
 WidgetSize();

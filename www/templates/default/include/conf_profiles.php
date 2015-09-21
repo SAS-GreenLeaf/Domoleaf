@@ -61,16 +61,21 @@ echo '
 				</div>
 							
 				<label class="control-label" for="language">'._('Language').'</label>
-				<select id="selectLanguage" name="selectbasic" class="input-xlarge center form-control medium-input">';
-					foreach ($language as $k => $lang){
-						if ($k == $profilInfo->language)
-							echo '<option value="'.$k.'" selected="selected">'.$lang.'</option>';
-						else
-							echo '<option value="'.$k.'">'.$lang.'</option>';
-					
-					}
-				echo '
-				</select>
+				<div class="input-group">
+					<label class="input-group-addon" for="username">
+						<span aria-hidden="true" class="fa fa-language"></span>
+					</label>
+					<select id="selectLanguage" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
+						foreach ($language as $k => $lang){
+							if ($k == $profilInfo->language)
+								echo '<option value="'.$k.'" selected="selected">'.$lang.'</option>';
+							else
+								echo '<option value="'.$k.'">'.$lang.'</option>';
+						
+						}
+					echo '
+					</select>
+				</div>
 			</div>
 		</fieldset>
 	</div>

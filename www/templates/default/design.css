@@ -1555,8 +1555,6 @@ a.carousel-control-camera:hover {
 	position: absolute;
 }
 
-
-
 .center-div {
 	float: none;
 	display: inline-block;
@@ -1648,4 +1646,8 @@ a.carousel-control-camera:hover {
 	width: 50%;
 	border-radius: 20px;
 	box-shadow: 1px 1px 4px;
+}
+
+.testTime {
+	border: 1px solid red;
 }

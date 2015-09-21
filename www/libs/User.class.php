@@ -28,7 +28,10 @@ class User {
 	}
 	
 	function getLanguage() {
-		return $this->language;
+		if ($this->language != 'en') {
+			return $this->language;
+		}
+		return '';
 	}
 	
 	function setLanguage($language) {
@@ -1295,6 +1298,7 @@ class User {
 		}
 		
 		$sql = 'INSERT INTO smartcommand
+				(smartcommand_id, exec_id, room_device_id, option_id, option_value, time_lapse)
 				VALUES
 				(:smartcommand_id, :exec_id, :room_device_id, :option_id, :option_value, :time_lapse)';
 		$req = $link->prepare($sql);

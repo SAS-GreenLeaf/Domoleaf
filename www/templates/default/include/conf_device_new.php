@@ -20,7 +20,7 @@ echo '
 			</div><br/>
 			<div class="control-group" id="selectFloor">
 				<label class="control-label" for="listfloor">'._('Floor').'</label>
-				<select class="form-control" id="listfloor" onchange="GetRoomByFloor()">
+				<select class="selectpicker form-control" id="listfloor" onchange="GetRoomByFloor()">
 					<option value="0">'._('Choose the floor').'</option>';
 					foreach($devfloorlist as $elem){
 						echo '
@@ -31,7 +31,7 @@ echo '
 			</div><br/>
 			<div class="control-group" id="selectRoom">
 				<label class="control-label" for="listroom">'._('Room').'</label>
-				<select class="form-control" id="listroom">
+				<select class="selectpicker form-control" id="listroom">
 				</select>
 			</div><br/>	
 		</div>	
@@ -40,7 +40,7 @@ echo '
 				<label class="control-label" for="applist">'.
 					_('Application').'
 				</label>
-				<select class="form-control" id="applist" onchange="GetAppList()">
+				<select class="selectpicker form-control" id="applist" onchange="GetAppList()">
 					<option value="0">'._('Choose your application').'</option>';
 					foreach($Applist as $elem){
 						echo '
@@ -51,19 +51,19 @@ echo '
 			</div><br/>
 			<div class="control-group" id="selectDev">
 				<label class="control-label" for="listdevice">'._('Device').'</label>
-				<select class="form-control" id="listdevice" onchange="GetProtoList()">
+				<select class="selectpicker form-control" id="listdevice" onchange="GetProtoList()">
 				</select>
 			</div><br/>
 			<div class="control-group" id="selectProto">
 				<label class="control-label" for="listproto">'._('Protocol').'</label>
-				<select class="form-control" id="listproto" onchange="CheckProto()">	
+				<select class="selectpicker form-control" id="listproto" onchange="CheckProto()">	
 				</select>
 			</div><br/>
 			<div class="control-group" id="selectDae">
 				<label class="control-label" for="listdaemon">'.
 					_('Daemon').'
 				</label>
-				<select class="form-control" id="listdaemon">	
+				<select class="selectpicker form-control" id="listdaemon">	
 				</select>
 			</div>
 		</div>
@@ -283,6 +283,7 @@ function GetRoomByFloor(){
 				data: "floor="+floor,
 				success: function(result) {
 					$("#listroom").html(result);
+					$(".selectpicker").selectpicker(\'refresh\');
 					$("#selectRoom").show();
 				},
 				error: function(result, status, error){
@@ -330,6 +331,7 @@ function GetDeviceList(idapp){
 			data: "idapp="+idapp,
 			success: function(result) {
 				$("#listdevice").html(result);
+				$(".selectpicker").selectpicker(\'refresh\');
 				GetProtoList();
 			},
 			error: function(result, status, error){
@@ -350,6 +352,7 @@ function GetProtoList(){
 			data: "iddevice="+iddevice,
 			success: function(result) {
 				$("#listproto").html(result);
+				$(".selectpicker").selectpicker(\'refresh\');
 				CheckProto();
 					
 				if (result.split("</option>").length > 2) {
@@ -405,6 +408,7 @@ function GetDaemonList(){
 			url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_list.php",
 			success: function(result) {
 				$("#listdaemon").html(result);
+				$(".selectpicker").selectpicker(\'refresh\');
 			},
 			error: function(result, status, error){
 				location.href=\'/conf_device_new\';
