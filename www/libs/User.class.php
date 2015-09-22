@@ -1153,7 +1153,7 @@ class User {
 		$link = Link::get_link('mastercommand');
 		
 		$sql = 'SELECT COUNT(smartcommand_id) AS nb
-				FROM smartcommand
+				FROM smartcommand_elems
 				WHERE smartcommand_id=:smartcommand_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
@@ -1193,13 +1193,13 @@ class User {
 		$blue = 0;
 		$exec_id = 0;
 		
-		$sql = 'SELECT exec_id, smartcommand.room_device_id AS room_device_id,
+		$sql = 'SELECT exec_id, smartcommand_elems.room_device_id AS room_device_id,
 				       optiondef.option_id, option_value, time_lapse,
 				       room_device.name AS device_name, room_device.device_id AS device_id,
 				       if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') AS option_name
-				FROM smartcommand
-				JOIN room_device ON room_device.room_device_id = smartcommand.room_device_id
-				JOIN optiondef ON optiondef.option_id = smartcommand.option_id
+				FROM smartcommand_elems
+				JOIN room_device ON room_device.room_device_id = smartcommand_elems.room_device_id
+				JOIN optiondef ON optiondef.option_id = smartcommand_elems.option_id
 				WHERE smartcommand_id=:smartcmd_id
 				ORDER BY exec_id';
 		$req = $link->prepare($sql);
@@ -1287,7 +1287,7 @@ class User {
 		$link = Link::get_link('mastercommand');
 
 		if ($no_update == 0) {
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
 		
@@ -1297,7 +1297,7 @@ class User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		
-		$sql = 'INSERT INTO smartcommand
+		$sql = 'INSERT INTO smartcommand_elems
 				(smartcommand_id, exec_id, room_device_id, option_id, option_value, time_lapse)
 				VALUES
 				(:smartcommand_id, :exec_id, :room_device_id, :option_id, :option_value, :time_lapse)';
@@ -1314,7 +1314,7 @@ class User {
 	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval, $id_option) {
 		$link = Link::get_link('mastercommand');
 
-		$sql = 'UPDATE smartcommand
+		$sql = 'UPDATE smartcommand_elems
 				SET option_value=:option_val
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND option_id=:option_id';
 		$req = $link->prepare($sql);
@@ -1333,7 +1333,7 @@ class User {
 		}
 		
 		if ($new_exec_id > $old_exec_id) {
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id <= :idexec';
 
@@ -1342,7 +1342,7 @@ class User {
 			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id-1';
 			$req = $link->prepare($sql);
@@ -1351,7 +1351,7 @@ class User {
 			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id < :idexec';
 			
@@ -1361,7 +1361,7 @@ class User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
 			
@@ -1370,7 +1370,7 @@ class User {
 			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id+1';
 			$req = $link->prepare($sql);
@@ -1379,7 +1379,7 @@ class User {
 			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE smartcommand
+			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id > :idexec';
 			
@@ -1405,14 +1405,14 @@ class User {
 	function removeSmartcmdElem($smartcmd_id, $exec_id) {
 		$link = Link::get_link('mastercommand');
 	
-		$sql = 'DELETE FROM smartcommand
+		$sql = 'DELETE FROM smartcommand_elems
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
-		$sql = 'UPDATE smartcommand
+		$sql = 'UPDATE smartcommand_elems
 				SET exec_id=exec_id-1
 				WHERE smartcommand_id=:smartcmd_id AND exec_id > :exec_id';
 		$req = $link->prepare($sql);
@@ -1424,7 +1424,7 @@ class User {
 	function smartcmdUpdateDelay($smartcmd_id, $exec_id, $delay) {
 		$link = Link::get_link('mastercommand');
 		
-		$sql = 'UPDATE smartcommand
+		$sql = 'UPDATE smartcommand_elems
 				SET time_lapse=:delay
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
 		$req = $link->prepare($sql);

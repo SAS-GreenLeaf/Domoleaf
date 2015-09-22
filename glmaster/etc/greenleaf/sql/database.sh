@@ -24,7 +24,8 @@ mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/c
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/user_floor.sql
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/user_room.sql
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/user_device.sql
-mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/smartcommand.sql
+mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/smartcommand_list.sql
+mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/smartcommand_elems.sql
 
 #LOG
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/enocean_log.sql

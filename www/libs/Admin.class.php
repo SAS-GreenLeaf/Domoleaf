@@ -636,14 +636,14 @@ class Admin extends User {
 		
 		
 		$sql = 'SELECT smartcommand_id, exec_id
-				FROM smartcommand
+				FROM smartcommand_elems
 				WHERE room_device_id=:room_device_id
 				ORDER BY smartcommand_id, exec_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
-		$sql2 = 'UPDATE smartcommand
+		$sql2 = 'UPDATE smartcommand_elems
 		         SET exec_id=exec_id-1
 		         WHERE smartcommand_id=:smartcmd_id AND exec_id > :exec_id';
 		$req2 = $link->prepare($sql2);
@@ -669,8 +669,8 @@ class Admin extends User {
 		
 		$sql = 'DELETE smartcommand_list
 				FROM smartcommand_list
-				LEFT JOIN smartcommand ON smartcommand_list.smartcommand_id = smartcommand.smartcommand_id
-				WHERE smartcommand.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
+				LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
+				WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	

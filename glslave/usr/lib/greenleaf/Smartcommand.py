@@ -24,7 +24,7 @@ class Smartcommand:
             self.logger.error('Invalid Smartcommand');
             return;
 
-        query = 'SELECT room_device_id, option_id, option_value, time_lapse FROM smartcommand WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" ORDER BY exec_id';
+        query = 'SELECT room_device_id, option_id, option_value, time_lapse FROM smartcommand_elems WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" ORDER BY exec_id';
         res = self.sql.mysql_handler_personnal_query(query);
         delay_color = 0;
         for r in res:
