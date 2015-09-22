@@ -653,9 +653,15 @@ class Api {
 							}
 						break;
 						
+						case 'countElemSmartcmd' :
+							if (!empty($var[0])){
+								$res = $user->countElemSmartcmd($var[0]);
+							}
+						break;
+						
 						case 'listSmartcmd' :
 							$res = $user->listSmartcmd();
-						break;
+							break;
 						
 						case 'getSmartcmdElems' :
 							if (!empty($var[0])){

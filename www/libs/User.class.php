@@ -1196,7 +1196,7 @@ class User {
 		$sql = 'SELECT exec_id, smartcommand.room_device_id AS room_device_id,
 				       optiondef.option_id, option_value, time_lapse,
 				       room_device.name AS device_name, room_device.device_id AS device_id,
-				       optiondef.namefr AS option_name
+				       if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') AS option_name
 				FROM smartcommand
 				JOIN room_device ON room_device.room_device_id = smartcommand.room_device_id
 				JOIN optiondef ON optiondef.option_id = smartcommand.option_id
@@ -1285,7 +1285,7 @@ class User {
 	
 	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse, $no_update = 0){
 		$link = Link::get_link('mastercommand');
-		
+
 		if ($no_update == 0) {
 			$sql = 'UPDATE smartcommand
 					SET exec_id=exec_id+1

@@ -70,4 +70,5 @@ div.bhoechie-tab-menu-right div.list-group-app > a
 }
 .flaticon-playbutton17:before {
 	content: "\e007";
+	font-weight: normal;
 }

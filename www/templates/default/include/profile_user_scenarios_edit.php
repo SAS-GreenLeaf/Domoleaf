@@ -44,10 +44,6 @@ echo '
 		'</div>
 	</div>';
 
-/*echo '
-	<script type="text/javascript">
-		$(".selectpicker").selectpicker();
-	</script>';*/
 echo '
 	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-top save-navbar">
 		<div id="navbarSmartcmdName" class="navbar-brand">
@@ -61,7 +57,7 @@ echo '
 		</button>
 		<div id="linked-room" class="navbar-brand">
 			'._('Linked Room').'
-			<select class="selectpicker" id="selectFloor-'.$id_smartcmd.'" data-width="auto" data-size="10"
+			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
 			        onchange="listRoomsLR('.$id_smartcmd.')">
 				<option value="0">'._('No floor selected').'</option>';
 				foreach ($installation_info as $floor) {
@@ -69,7 +65,7 @@ echo '
 				}
 				echo '
 			</select>
-			<select class="selectpicker" id="selectRoom-'.$id_smartcmd.'" data-width="auto" data-size="10"
+			<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
 			        onchange="changeSaveBtn()">
 				<option value="0">'._('No floor selected').'</option>
 			</select>
@@ -134,12 +130,12 @@ echo
 		$("#optionList").hide();
 		$("li div.active").removeClass("active");
 		$("#device-"+room_id_device).addClass("active");
-		getDeviceOptions(room_id_device);
+		getDeviceOptions(room_id_device, id_smartcmd);
 		$("#optionList").show("slow");
 		
 	};
 
-	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id, tab_without_params) {
+	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id) {
 		var id_option;
 		var id_exec;
 		without_params = [363, 364, 365, 366, 367, 368];
@@ -166,6 +162,24 @@ echo
 				}
 			});
 		}
+	}
+	
+	function onclickDropNewElem(id_smartcmd, room_id_device, id_option, id_exec) {
+		$.ajax({
+				type:"GET",
+				url: "/templates/default/popup/popup_smartcmd_device_option.php",
+				data: "id_smartcmd="+id_smartcmd
+						+"&room_id_device="+room_id_device
+						+"&id_option="+id_option
+						+"&id_exec="+id_exec
+						+"&modif="+1,
+				success: function(msg) {
+					BootstrapDialog.show({
+						title: \'<div id="popupTitle" class="center"></div>\',
+						message: msg
+					});
+				}
+			});
 	}
 
 	function changeElemsOrder(id_smartcmd, old_id_exec, drop_id) {
@@ -220,12 +234,13 @@ echo
 		$("#deviceList-"+room_id).toggle("slow");
 	}
 
-	function getDeviceOptions(room_id_device) {
+	function getDeviceOptions(room_id_device, id_smartcmd) {
 		if (room_id_device > 0) {
 			$.ajax({
 				type: "GET",
 				url: "/templates/default/form/form_user_scenarios_opt_list.php",
-				data: "room_id_device="+room_id_device,
+				data: "room_id_device="+room_id_device
+				       +"&id_smartcmd="+id_smartcmd,
 				success: function(result) {
 					$("#optionList").html(result);
 				}

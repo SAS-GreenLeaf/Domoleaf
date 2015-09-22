@@ -835,7 +835,8 @@ class Admin extends User {
 		$link = Link::get_link('mastercommand');
 		$list = array();
 		
-		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, status, valeur, optiondef.namefr
+		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, status, valeur,
+		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
 		        FROM room_device_option
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
 		        WHERE room_device_id=:room_device_id';

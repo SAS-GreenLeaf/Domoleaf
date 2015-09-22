@@ -340,7 +340,7 @@ function selectDelay(smartcmd_id, exec_id) {
 }
 
 function dropZoneAnimate() {
-	$(".smartcmdElemDrop").addClass("drop-zone-activate", "800");
+	$(".smartcmdElemDrop").addClass("drop-zone-activate", "100");
 }
 
 function dropZoneStop() {

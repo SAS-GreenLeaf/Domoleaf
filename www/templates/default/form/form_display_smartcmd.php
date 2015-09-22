@@ -45,6 +45,7 @@ if (!empty($_GET['id_smartcmd'])) {
 					appendTo: "#drop-smartcmd",
 					helper: "clone",
 					revert: "invalid",
+					delay: 300,
 					start: function() {
 						dropZoneAnimate();
 					},
@@ -322,7 +323,7 @@ function display_option_temp($exec_id, $room_device_id, $option_value) {
 }
 
 function display_option_color($exec_id, $room_device_id, $option_value) {
-	$display.=
+	$display =
 			'<div class="lg smartcmd-color-option" id="color-'.$room_device_id.''.$exec_id.'"></div>
 			<script type="text/javascript">
 				$("#color-'.$room_device_id.''.$exec_id.'").css("background-color", "'.$option_value.'");

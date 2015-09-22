@@ -43,8 +43,10 @@ echo '
 				<select class="selectpicker form-control" id="applist" onchange="GetAppList()">
 					<option value="0">'._('Choose your application').'</option>';
 					foreach($Applist as $elem){
-						echo '
-						<option value="'.$elem->application_id.'">'.$elem->name.'</option>';
+						if ($elem->application_id != 7) {
+							echo '
+							<option value="'.$elem->application_id.'">'.$elem->name.'</option>';
+						}
 					}
 				echo '
 				</select>
