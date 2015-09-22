@@ -171,7 +171,7 @@ function display_widget($info){
 					<div class="box">
 						<div class="icon">
 							<div id="image-widget-'.$info->room_device_id.'" class="image">
-								<i id="image-widget-'.$info->room_device_id.'" class="'.$widgeticon.'"></i>
+								<i id="icon-image-widget-'.$info->room_device_id.'" class="'.$widgeticon.'"></i>
 							</div>
 							<div class="info col-sm-12 col-xs-12 widget-content">';
 								//display device

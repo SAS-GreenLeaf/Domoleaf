@@ -571,11 +571,11 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 .box > .icon > .image > i { 
 	font-size: 27px !important; 
-	color: #fff !important; 
+	color: #fff; 
 }
 	
 .box > .icon:hover > .image > i { 
-	color: white !important; 
+	color: white; 
 }
 
 .box > .icon > .info { 

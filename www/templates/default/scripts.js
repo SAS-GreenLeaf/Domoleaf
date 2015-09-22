@@ -10,6 +10,12 @@ jQuery(function(){
     jQuery(document).keydown(Kpress);
 });
 
+String.prototype.replaceAt = function(index, character) {
+	if (!character) {
+		character = "0";
+	}
+	return this.substr(0, index) + character + this.substr(index+character.length);
+}
 
 function kExec(){
 	alert("Draggable widget enable");
@@ -175,7 +181,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			}
 		}
 	}
-	if (idopt == 13){
+	else if (idopt == 13){
 		if (val.valeur >= 0 && val.valeur < 256){
 			$("#slider-value-"+roomdeviceid).removeAttr("onchange");
 			outputUpdate(roomdeviceid, val.valeur);
@@ -183,17 +189,38 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#slider-value-"+roomdeviceid).attr("onchange", "getVariation(\'"+roomdeviceid+"\', \'"+idopt+"\')");
 		}
 	}
-	if (idopt == 72){
+	else if (idopt == 72){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	if (idopt == 79){
+	else if (idopt == 79){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	if (idopt == 6){
+	else if (idopt == 6){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	if (idopt == 388){
+	else if (idopt == 388){
 		$("#output-mp-"+roomdeviceid).html(val.valeur);
+	}
+	else if (idopt == 392){
+		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
+		var red = parseInt((val.valeur)).toString(16);
+		current_color = current_color.replaceAt(1, red[0]);
+		current_color = current_color.replaceAt(2, red[1]);
+		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
+	}
+	else if (idopt == 393){
+		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
+		var green = parseInt((val.valeur)).toString(16);
+		current_color = current_color.replaceAt(3, green[0]);
+		current_color = current_color.replaceAt(4, green[1]);
+		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
+	}
+	else if (idopt == 394){
+		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
+		var blue = parseInt((val.valeur)).toString(16);
+		current_color = current_color.replaceAt(5, blue[0]);
+		current_color = current_color.replaceAt(6, blue[1]);
+		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
 }
 
@@ -405,4 +432,32 @@ function launchSmartcmd(smartcmd_id){
 		complete: function(result, status) {
 		}
 	});
+}
+
+function getElemHexaColor(selector) {
+	var rgb = $(selector).css("color").match(/\d+/g);
+	var r   = parseInt(rgb[0], 10).toString(16);
+	if (r == 0) {
+		r = "00";
+	}
+	if (r.lenght < 2) {
+		r = "0" + r;
+	}
+	var g   = parseInt(rgb[1], 10).toString(16);
+	if (g == 0) {
+		g = "00";
+	}
+	if (g.lenght < 2) {
+		g = "0" + g;
+	}
+	var b   = parseInt(rgb[2], 10).toString(16);
+	if (b == 0) {
+		b = "00";
+	}
+	if (b.lenght < 2) {
+		b = "0" + b;
+	}
+	var hex = '#'+ r + g + b;
+	
+	return (hex);
 }
