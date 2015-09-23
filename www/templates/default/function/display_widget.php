@@ -2,7 +2,7 @@
 
 // No echo here !!!
 
-function display_widget($info, $user_id = 0){
+function getIcon($iddevice = 1){
 	$icons = array(
 			1  => 'fi flaticon-chip',
 			2  => 'fa fa-video-camera',
@@ -86,6 +86,12 @@ function display_widget($info, $user_id = 0){
 			83 => 'fa fa-question'
 	);
 	
+	return $icons[$iddevice];
+}
+
+function display_widget($info){
+	
+	
 	$widget = array(
 			2  => display_cam($info),
 			3  => display_lampe($info),
@@ -158,8 +164,8 @@ function display_widget($info, $user_id = 0){
 	);
 	
 	$widgeticon = 'fa fa-question';
-	if (!empty($icons[$info->device_id])){
-		$widgeticon = $icons[$info->device_id];
+	if (!empty(getIcon($info->device_id))){
+		$widgeticon = getIcon($info->device_id);
 	}
 
 	$dir = '/templates/default/custom/device/';
@@ -168,7 +174,7 @@ function display_widget($info, $user_id = 0){
 					<div class="box">
 						<div class="icon">
 							<div id="image-widget-'.$info->room_device_id.'" class="image">
-								<i id="image-widget-'.$info->room_device_id.'" class="'.$widgeticon.'"></i>
+								<i id="icon-image-widget-'.$info->room_device_id.'" class="'.$widgeticon.'"></i>
 							</div>
 							<div class="info col-sm-12 col-xs-12 widget-content">';
 								//display device
@@ -313,14 +319,27 @@ function display_audio($info){
 	}
 
 	if (!empty($info->device_opt->{383})){
-		$display.='<div class="col-xs-12">
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor" onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', -1)"><i class="glyphicon glyphicon-volume-down"></i></div>
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><output id="vol-'.$info->room_device_id.'" for="volume-'.$info->room_device_id.'">50%</output></div>
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor" onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', 1)"><i class="glyphicon glyphicon-volume-up"></i></div>
-				<div class="row">
-					<input onchange="SetVolume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\')" value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'" oninput="UpdateVol(\''.$info->room_device_id.'\', value)" type="range">
-				</div>
-			</div>';
+		$display.='
+				<div class="col-xs-12">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', -1)">
+						<i class="glyphicon glyphicon-volume-down"></i>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<output id="vol-'.$info->room_device_id.'" for="volume-'.$info->room_device_id.'">
+							50%
+						</output>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', 1)">
+						<i class="glyphicon glyphicon-volume-up"></i>
+					</div>
+					<div class="row">
+						<input onchange="SetVolume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\')"
+						       value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'"
+						       oninput="UpdateVol(\''.$info->room_device_id.'\', value)" type="range">
+					</div>
+				</div>';
 	}
 	return $display;
 }
@@ -378,7 +397,14 @@ function display_lampe($info){
 	}
 	else
 	{
-		$display = '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(2, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-info-circle md"></span></button></div>
+		$display = '<div class="info-widget">
+						<button title="'._('More').'"
+								onclick="HandlePopup(2, '.$info->room_device_id.')"
+								class="btn btn-greenleaf"
+								type="button">
+									<span class="fa fa-info-circle md"></span>
+						</button>
+					</div>
 					<h3 class="title">'.$info->name.'</h3>';
 	}
 
@@ -389,8 +415,6 @@ function display_lampe($info){
 		$display.=display_varie($info);
 	}
 	
-	$display.=display_ChromatiqueWheel($info);
-
 	return $display;
 }
 
@@ -423,13 +447,6 @@ function display_consumption($info){
 }
 
 /*   Option   */
-
-// Chromatique wheel
-function display_ChromatiqueWheel($info){
-	$display = '';
-	
-	return $display;
-}
 
 //Open Close
 function display_OpenClose($info){
@@ -465,15 +482,23 @@ function display_OnOff($info){
 			if (!empty($info->device_opt->{12}->addr_plus)){
 				$display .= '<div class="checkbox">';
 						if (!empty($info->device_opt->{12}->valeur)){
-						 	$display.='<input data-toggle="toggle"
-						 				      data-onstyle="greenleaf"
-						 				      checked id="onoff-'.$info->room_device_id.'"
+						 	$display.='<input data-on-color="greenleaf"
+						 				      data-label-width="0"
+										      data-on-text="'._('On').'"
+										      data-off-text="'._('Off').'"
+						 				      checked
+						 				      id="onoff-'.$info->room_device_id.'"
 						 				      type="checkbox"
 						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
 						 				/>';
 						}
 						else {
-							$display.='<input data-toggle="toggle" data-onstyle="greenleaf" id="onoff-'.$info->room_device_id.'" type="checkbox" onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')" />';
+							$display.='<input data-on-color="greenleaf"
+										      data-label-width="0"
+										      id="onoff-'.$info->room_device_id.'"
+										      type="checkbox"
+										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+										/>';
 						}
 				$display.='</div>';
 			}
@@ -495,6 +520,10 @@ function display_OnOff($info){
 			$display.='';
 		break;
 	}
+
+	$display.='<script type="text/javascript">
+					$("#onoff-'.$info->room_device_id.'").bootstrapSwitch();
+				</script>';
 	return $display;
 }
 

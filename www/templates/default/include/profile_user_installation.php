@@ -30,25 +30,58 @@ echo '
 							}
 									echo '
 									<h4 class="timeline-title">'.$floor->floor_name.'</h4>
-									<p><small class="text-muted"><i class="glyphicon glyphicon-home"></i> '.$room.' '._('rooms').'</small></p>
+									<p>
+										<small class="text-muted">
+											<i class="glyphicon glyphicon-home"></i>
+											'.$room.' '._('rooms').'
+										</small>
+									</p>
 								</div>
 							<div class="col-xs-4 center">';
 							if (!empty($floor->floor_order)){
 								echo '
 								<div class="checkbox btn-group">
-									<input class="visi-floor-floor-'.$floor->floor_id.'" data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="floor-visible-'.$floor->floor_id.'" type="checkbox" onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" />
-								</div>';
+									<input class="visi-floor-floor-'.$floor->floor_id.'"
+									       id="floor-visible-'.$floor->floor_id.'"
+									       type="checkbox"
+									       onchange="SetVisibleFloor(\''.$floor->floor_id.'\')"
+									       checked
+									       data-on-color="primary"
+					 				       data-label-width="0"
+									       data-on-text="<i class=\'fa fa-eye\'></i>"
+									       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+								</div>
+								<script type="text/javascript">
+									$("#floor-visible-'.$floor->floor_id.'").bootstrapSwitch();
+								</script>';
 							}
 							else {
 								echo '
 								<div class="checkbox btn-group">
-									<input data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="floor-visible-'.$floor->floor_id.'" type="checkbox" onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" />
-								</div>';
+									<input id="floor-visible-'.$floor->floor_id.'"
+									       type="checkbox"
+									       onchange="SetVisibleFloor(\''.$floor->floor_id.'\')"
+									       data-on-color="primary"
+					 				       data-label-width="0"
+									       data-on-text="<i class=\'fa fa-eye\'></i>"
+									       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+								</div>
+								<script type="text/javascript">
+									$("#floor-visible-'.$floor->floor_id.'").bootstrapSwitch();
+								</script>';
 							}
 							echo '
 							<div class="btn-group">
-								<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$floor->floor_id.'\', -1, 0, \''.$floor->floor_order.'\')"><i class="glyphicon glyphicon-arrow-up"></i></button>
-								<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$floor->floor_id.'\', 1, 0, \''.$floor->floor_order.'\')"><i class="glyphicon glyphicon-arrow-down"></i></button>
+								<button type="button"
+								        class="btn btn-warning"
+								        onclick="SetOrder(\''.$floor->floor_id.'\', -1, 0, \''.$floor->floor_order.'\')">
+									<i class="glyphicon glyphicon-arrow-up"></i>
+								</button>
+								<button type="button"
+								        class="btn btn-warning"
+								        onclick="SetOrder(\''.$floor->floor_id.'\', 1, 0, \''.$floor->floor_order.'\')">
+									<i class="glyphicon glyphicon-arrow-down"></i>
+								</button>
 							</div>';
 						echo '
 						</div>
@@ -65,28 +98,57 @@ echo '
 										<div class="timeline-panel">';
 											if ($room->room_allowed == 1){
 												echo '
-												<div id="room-heading-'.$room->room_id.'" onclick="ShowTimeline(\'room-body-'.$room->room_id.'\')" class="timeline-heading cursor col-xs-6">';
+												<div id="room-heading-'.$room->room_id.'"
+												     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\')"
+												     class="timeline-heading cursor col-xs-6">';
 											}
 											else {
 												echo '
-												<div id="room-heading-'.$room->room_id.'" class="timeline-heading cursor col-xs-4">';
+												<div id="room-heading-'.$room->room_id.'"
+												     class="timeline-heading cursor col-xs-4">';
 											}
 												echo '
 													<h4 class="timeline-title">'.$room->room_name.'</h4>
-													<p><small class="text-muted"><i class="fa fa-cube"></i> '.$device.' '._('device').'</small></p>
+													<p>
+														<small class="text-muted">
+															<i class="fa fa-cube"></i>
+															'.$device.' '._('device').'
+														</small>
+													</p>
 												</div>
 										<div class="col-xs-6 center">';
 											if (!empty($room->room_order)){
 												echo '
 												<div class="checkbox btn-group">
-													<input class="visi-floor-room-'.$floor->floor_id.'" data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="room-visible-'.$room->room_id.'" type="checkbox" onchange="SetVisibleRoom(\''.$room->room_id.'\')" />
-												</div>';
+													<input class="visi-floor-room-'.$floor->floor_id.'"
+													       id="room-visible-'.$room->room_id.'"
+													       type="checkbox"
+													       onchange="SetVisibleRoom(\''.$room->room_id.'\')"
+													       checked
+													       data-on-color="primary"
+									 				       data-label-width="0"
+													       data-on-text="<i class=\'fa fa-eye\'></i>"
+													       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+												</div>
+												<script type="text/javascript">
+													$("#room-visible-'.$room->room_id.'").bootstrapSwitch();
+												</script>';
 											}
 											else {
 												echo '
 												<div class="checkbox btn-group">
-													<input class="visi-floor-room-'.$floor->floor_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="room-visible-'.$room->room_id.'" type="checkbox" onchange="SetVisibleRoom(\''.$room->room_id.'\')" />
-												</div>';
+													<input class="visi-floor-room-'.$floor->floor_id.'"
+													       id="room-visible-'.$room->room_id.'"
+													       type="checkbox"
+													       onchange="SetVisibleRoom(\''.$room->room_id.'\')"
+													       data-on-color="primary"
+									 				       data-label-width="0"
+													       data-on-text="<i class=\'fa fa-eye\'></i>"
+													       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+												</div>
+												<script type="text/javascript">
+													$("#room-visible-'.$room->room_id.'").bootstrapSwitch();
+												</script>';
 											}
 											echo '
 											<div class="btn-group">
@@ -114,14 +176,35 @@ echo '
 															if (!empty($device->device_order)){
 																echo '
 																<div class="checkbox">
-																	<input class="visi-room-device-'.$room->room_id.'" checked data-toggle="toggle" checked data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
-																</div>';
+																	<input class="visi-room-device-'.$room->room_id.'"
+																	       id="device-visible-'.$device->room_device_id.'"
+																	       type="checkbox"
+																	       onchange="SetVisibleDevice(\''.$device->room_device_id.'\')"
+																	       checked=""
+																	       data-on-color="primary"
+													 				       data-label-width="0"
+																	       data-on-text="<i class=\'fa fa-eye\'></i>"
+																	       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+																</div>
+																<script type="text/javascript">
+																	$("#device-visible-'.$device->room_device_id.'").bootstrapSwitch();
+																</script>';
 															}
 															else {
 																echo '
 																<div class="checkbox">
-																	<input class="visi-room-device-'.$room->room_id.'" data-toggle="toggle" data-onstyle="primary" data-off="<i class=\'fa fa-eye-slash\'></i>" data-on="<i class=\'fa fa-eye\'></i>" id="device-visible-'.$device->room_device_id.'" type="checkbox" onchange="SetVisibleDevice(\''.$device->room_device_id.'\')" />
-																</div>';
+																	<input class="visi-room-device-'.$room->room_id.'"
+																	       id="device-visible-'.$device->room_device_id.'"
+																	       type="checkbox"
+																	       onchange="SetVisibleDevice(\''.$device->room_device_id.'\')"
+																	       data-on-color="primary"
+													 				       data-label-width="0"
+																	       data-on-text="<i class=\'fa fa-eye\'></i>"
+																	       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+																</div>
+																<script type="text/javascript">
+																	$("#device-visible-'.$device->room_device_id.'").bootstrapSwitch();
+																</script>';
 															}
 															echo '
 															<div class="padding-bottom btn-group">

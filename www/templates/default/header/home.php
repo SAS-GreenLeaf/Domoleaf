@@ -11,6 +11,7 @@ $listAllVisible = $result->mcVisible;
 $deviceallowed = $listAllVisible->ListDevice;
 $roomallowed = $listAllVisible->ListRoom;
 $floorallowed = $listAllVisible->ListFloor;
+$smartcmdLinked = $listAllVisible->ListSmartcmd;
 $allapp =  $listAllVisible->ListApp;
 
 $app = $result->confApplicationAll;
@@ -22,6 +23,7 @@ $icons = array(
 			4 => 'fa fa-bolt',
 			5 => 'fi flaticon-snowflake149',
 			6 => 'fa fa-volume-up',
+			7 => 'fi flaticon-playbutton17',
 			8 => 'fa fa-tree',
 			9 => 'fi flaticon-winds4',
 			10 => 'fa fa-fire',

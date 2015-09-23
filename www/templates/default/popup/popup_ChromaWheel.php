@@ -4,7 +4,7 @@ include('header.php');
 
 echo
 	'<form class="center padding-bottom">'.
-		'<input type="text" id="color" name="color" value="#123456" disabled="disabled" onchange="alert(\'dfghjk\')" />'.
+		'<input type="text" id="color" name="color" value="#123456" disabled="disabled"/>'.
 	'</form>'.
 	'<div id="colorpicker"></div>'.
 	

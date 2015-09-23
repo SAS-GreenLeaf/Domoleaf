@@ -32,6 +32,7 @@ from CommandReceiver import *;
 from MasterSql import *;
 from KNXManager import *;
 from UpnpAudio import *;
+from Smartcommand import *;
 import utils;
 
 LOG_FILE                = '/var/log/glmaster.log'
@@ -95,6 +96,7 @@ DATA_BACKUP_DB_REMOVE_USB     = 'backup_db_remove_usb';
 DATA_BACKUP_DB_LIST_USB       = 'backup_db_list_usb';
 DATA_BACKUP_DB_RESTORE_USB    = 'backup_db_restore_usb';
 DATA_UPDATE                   = 'update';
+DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
 
 HOSTS_CONF                    = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/greenleaf/camera.conf';         # Path for the cameras configuration file
@@ -163,6 +165,7 @@ class MasterDaemon:
             DATA_BACKUP_DB_REMOVE_USB         : self.backup_db_remove_usb,
             DATA_BACKUP_DB_LIST_USB           : self.backup_db_list_usb,
             DATA_BACKUP_DB_RESTORE_USB        : self.backup_db_restore_usb,
+            DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
             DATA_UPDATE                       : self.update
         };
 
@@ -873,3 +876,6 @@ class MasterDaemon:
         self.logger.info('Reloading web server...');
         call(RELOAD_WEB_SERVER_COMMAND);
         self.logger.info('[ OK ] Done reloading web server.');
+
+    def smartcmd_launch(self, json_obj, connection):
+        Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);

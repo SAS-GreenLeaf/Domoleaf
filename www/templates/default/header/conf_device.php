@@ -23,7 +23,6 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$device = $roomdevice->$_GET['device'];
 	$deviceconf = $deviceall->{$device->device_id};
 	
-	
 	$tabopt = array();
 
 	if (!empty($deviceconf->protocol_option->{0})){
