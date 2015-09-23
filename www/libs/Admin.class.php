@@ -664,6 +664,8 @@ class Admin extends User {
 	}
 	
 	function confRoomDeviceRemove($iddevice, $idroom){
+		$listSmartcmd = array();
+		
 		$link = Link::get_link('mastercommand');
 		
 		$sql = 'UPDATE user_device
@@ -678,11 +680,46 @@ class Admin extends User {
 		$req->bindValue(':room_id', $idroom, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
+		
+		$sql = 'SELECT smartcommand_id, exec_id
+				FROM smartcommand_elems
+				WHERE room_device_id=:room_device_id
+				ORDER BY smartcommand_id, exec_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql2 = 'UPDATE smartcommand_elems
+		         SET exec_id=exec_id-1
+		         WHERE smartcommand_id=:smartcmd_id AND exec_id > :exec_id';
+		$req2 = $link->prepare($sql2);
+		$req2->bindParam(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req2->bindParam(':exec_id', $exec_id, PDO::PARAM_INT);
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$smartcmd_id = $do->smartcommand_id;
+			$exec_id = $do->exec_id;
+			
+			$listSmartcmd[] = $smartcmd_id;
+			
+			$req2->execute() or die (error_log(serialize($req2->errorInfo())));
+		}
+		
+		$listSmartcmd = array_unique($listSmartcmd);
+		$listSmartcmd = implode(', ', $listSmartcmd);
+		
 		$sql = 'DELETE FROM room_device
 		        WHERE room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'DELETE smartcommand_list
+				FROM smartcommand_list
+				LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
+				WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
 	}
 	
 	/**
@@ -844,8 +881,10 @@ class Admin extends User {
 		$link = Link::get_link('mastercommand');
 		$list = array();
 		
-		$sql = 'SELECT option_id, addr, addr_plus, status, valeur
-		        FROM  room_device_option
+		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, status, valeur,
+		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
+		        FROM room_device_option
+		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
 		        WHERE room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
@@ -853,7 +892,6 @@ class Admin extends User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->option_id] = clone $do;
 		}
-		
 		return $list;
 	}
 	
@@ -1198,6 +1236,7 @@ class Admin extends User {
 		$listFloor = array();
 		$listRoom  = array();
 		$listDevice= array();
+		$listSmartcmd = array();
 		$listApps  = array();
 		
 		$sql = 'SELECT floor_name, user_floor.floor_id, user_floor.floor_order
@@ -1296,11 +1335,27 @@ class Admin extends User {
 			}
 		}
 		
+		$sql = 'SELECT smartcommand_id, name, user_id, room_id
+		        FROM smartcommand_list
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$listSmartcmd[$do->smartcommand_id] = array(
+					'smartcmd_id' => $do->smartcommand_id,
+					'name'            => $do->name,
+					'user_id'         => $do->user_id,
+					'room_id'         => $do->room_id
+			);
+		}
+		
 		return array(
-			'ListFloor' => $listFloor,
-			'ListRoom'  => $listRoom,
-			'ListDevice'=> $listDevice,
-			'ListApp'	=> $listApps
+			'ListFloor'    => $listFloor,
+			'ListRoom'     => $listRoom,
+			'ListDevice'   => $listDevice,
+			'ListSmartcmd' => $listSmartcmd,
+			'ListApp'      => $listApps
 		);
 	}
 	
@@ -1312,7 +1367,7 @@ class Admin extends User {
 		$listDevice = array();
 		$listApps= array();
 		
-		$listall = $this->mcallowed();
+		$listall = $this->mcAllowed();
 		
 		foreach ($listall['ListFloor'] as $elem) {
 			if($elem['floor_order'] > 0) {
@@ -1335,11 +1390,21 @@ class Admin extends User {
 			}
 		}
 		
+		foreach ($listall['ListSmartcmd'] as $elem) {
+			if(!empty($elem['room_id'])) {
+				$listSmartcmd[$elem['smartcmd_id']] = $elem;
+			}
+		}
+
+		if (!empty($listSmartcmd)) {
+			$listApps[] = 7;
+		}
 		return array(
-				'ListFloor'  => $listFloor,
-				'ListRoom'   => $listRoom,
-				'ListDevice' => $listDevice,
-				'ListApp'    => $listApps
+				'ListFloor'    => $listFloor,
+				'ListRoom'     => $listRoom,
+				'ListDevice'   => $listDevice,
+				'ListSmartcmd' => $listSmartcmd,
+				'ListApp'      => $listApps
 		);
 	}
 	
@@ -1390,7 +1455,7 @@ class Admin extends User {
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.name, 
 		               room_device.room_id, room.floor, device_order,
-		               device_bgimg
+		               device_bgimg, device_id
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
 		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
@@ -1405,6 +1470,7 @@ class Admin extends User {
 				'name'          => $do->name,
 				'device_order'  => $do->device_order,
 				'device_bgimg'  => $do->device_bgimg,
+				'device_id'     => $do->device_id,
 				'device_allowed'=> 1
 			);
 		}

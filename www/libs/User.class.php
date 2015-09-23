@@ -28,7 +28,10 @@ class User {
 	}
 	
 	function getLanguage() {
-		return $this->language;
+		if ($this->language != 'en') {
+			return $this->language;
+		}
+		return '';
 	}
 	
 	function setLanguage($language) {
@@ -605,6 +608,7 @@ class User {
 		$listFloor = array();
 		$listRoom = array();
 		$listDevice = array();
+		$listSmartcmd = array();
 		$listApps= array();
 		
 		$sql = 'SELECT floor_name, user_floor.floor_id, user_floor.floor_order
@@ -678,6 +682,21 @@ class User {
 			}
 		}
 		
+		$sql = 'SELECT smartcommand_id, name, user_id, room_id
+		        FROM smartcommand_list
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$listSmartcmd[$do->smartcommand_id] = array(
+					'smartcmd_id' => $do->smartcommand_id,
+					'name'            => $do->name,
+					'user_id'         => $do->user_id,
+					'room_id'         => $do->room_id
+			);
+		}
+		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
 		               optiondef.hidden_arg, room_device.device_id, 
 		               optiondef.option_id, optiondef.name, 
@@ -703,10 +722,11 @@ class User {
 		}
 		
 		return array(
-			'ListFloor' => $listFloor,
-			'ListRoom'  => $listRoom,
-			'ListDevice' => $listDevice,
-			'ListApp'	=>  $listApps
+			'ListFloor'    => $listFloor,
+			'ListRoom'     => $listRoom,
+			'ListDevice'   => $listDevice,
+			'ListSmartcmd' => $listSmartcmd,
+			'ListApp'      => $listApps
 		);
 	}
 	
@@ -720,9 +740,10 @@ class User {
 		$listFloor = array();
 		$listRoom = array();
 		$listDevice = array();
+		$listSmartcmd = array();
 		$listApps= array();
 		
-		$listall = $this->mcallowed();
+		$listall = $this->mcAllowed();
 		
 		foreach ($listall['ListFloor'] as $elem) {
 			if($elem['floor_order'] > 0) {
@@ -745,11 +766,22 @@ class User {
 			}
 		}
 		
+		foreach ($listall['ListSmartcmd'] as $elem) {
+			if(!empty($elem['room_id'])) {
+				$listSmartcmd[$elem['smartcmd_id']] = $elem;
+			}
+		}
+		
+		if (!empty($listSmartcmd)) {
+			$listApps[] = 7;
+		}
+
 		return array(
-				'ListFloor'  => $listFloor,
-				'ListRoom'   => $listRoom,
-				'ListDevice' => $listDevice,
-				'ListApp'    => $listApps
+				'ListFloor'    => $listFloor,
+				'ListRoom'     => $listRoom,
+				'ListDevice'   => $listDevice,
+				'ListSmartcmd' => $listSmartcmd,
+				'ListApp'      => $listApps
 		);
 	}
 	
@@ -1074,6 +1106,349 @@ class User {
 		
 	}
 	
+	/*** Smartcommand ***/
+	
+	function searchSmartcmdByName($smartcmd_name){
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'SELECT smartcommand_id, user_id
+				FROM smartcommand_list
+				WHERE name=:smartcmd_name';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
+		
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do->smartcommand_id;
+	}
+	
+	function searchSmartcmdById($smartcmd_id){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT name, user_id
+				FROM smartcommand_list
+				WHERE smartcommand_id=:smartcmd_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do->name;
+	}
+	
+	function countElemSmartcmd($idsmartcmd) {
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'SELECT COUNT(smartcommand_id) AS nb
+				FROM smartcommand_elems
+				WHERE smartcommand_id=:smartcommand_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do->nb;
+	}
+	
+	function listSmartcmd(){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT smartcommand_id, name
+				FROM smartcommand_list
+				WHERE user_id=:user_id
+				ORDER BY name';
+		
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->smartcommand_id] = array(
+					'smartcommand_id'     => $do->smartcommand_id,
+					'name'                => $do->name
+			);
+		}
+		
+		return $list;
+	}
+	
+	function getSmartcmdElems($id_smartcmd) {
+		$link = Link::get_link('mastercommand');
+		$red = 0;
+		$green = 0;
+		$blue = 0;
+		$exec_id = 0;
+		
+		$sql = 'SELECT exec_id, smartcommand_elems.room_device_id AS room_device_id,
+				       optiondef.option_id, option_value, time_lapse,
+				       room_device.name AS device_name, room_device.device_id AS device_id,
+				       if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') AS option_name
+				FROM smartcommand_elems
+				JOIN room_device ON room_device.room_device_id = smartcommand_elems.room_device_id
+				JOIN optiondef ON optiondef.option_id = smartcommand_elems.option_id
+				WHERE smartcommand_id=:smartcmd_id
+				ORDER BY exec_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $id_smartcmd, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$list ='';
+		
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			
+			$list[$do->exec_id] = array(
+					'smartcmd_id'       => $id_smartcmd,
+					'exec_id'           => $do->exec_id,
+					'room_device_id'    => $do->room_device_id,
+					'option_id'         => $do->option_id,
+					'option_value'      => $do->option_value,
+					'time_lapse'        => $do->time_lapse,
+					'device_name'       => $do->device_name,
+					'device_id'         => $do->device_id,
+					'option_name'       => $do->option_name
+			);
+			
+			if ($do->option_id == 392 && empty($red)) {
+				$red = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			if ($do->option_id == 393 && empty($green)) {
+				$green = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			if ($do->option_id == 394 && empty($blue)) {
+				$blue = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			
+			if (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue);
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			
+		}
+		return $list;
+	}
+	
+	function createNewSmartcmd($smartcmd_name){
+	
+		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'INSERT INTO smartcommand_list
+		        (name, user_id)
+				VALUES
+				(:smartcmd_name, :user_id)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		return $link->lastInsertId();
+	}
+	
+	function updateSmartcmdName($smartcmd_id, $smartcmd_name){
+		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE smartcommand_list
+				SET name=:smartcmd_name
+				WHERE smartcommand_id=:smartcmd_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+
+		return $smartcmd_id;
+	}
+	
+	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse, $no_update = 0){
+		$link = Link::get_link('mastercommand');
+
+		if ($no_update == 0) {
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=exec_id+1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
+		
+			$req = $link->prepare($sql);
+			$req->bindValue(':idexec', $idexec, PDO::PARAM_INT);
+			$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		$sql = 'INSERT INTO smartcommand_elems
+				(smartcommand_id, exec_id, room_device_id, option_id, option_value, time_lapse)
+				VALUES
+				(:smartcommand_id, :exec_id, :room_device_id, :option_id, :option_value, :time_lapse)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
+		$req->bindValue(':exec_id', $idexec, PDO::PARAM_INT);
+		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
+		$req->bindValue(':option_id', $idoption, PDO::PARAM_INT);
+		$req->bindValue(':option_value', $valoption, PDO::PARAM_STR);
+		$req->bindValue(':time_lapse', $timelapse, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval, $id_option) {
+		$link = Link::get_link('mastercommand');
+
+		$sql = 'UPDATE smartcommand_elems
+				SET option_value=:option_val
+				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND option_id=:option_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':option_val', $optionval, PDO::PARAM_STR);
+		$req->bindValue(':smartcmd_id', $idsmartcmd, PDO::PARAM_INT);
+		$req->bindValue(':exec_id', $idexec, PDO::PARAM_INT);
+		$req->bindValue(':option_id', $id_option, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function smartcmdChangeElemsOrder($smartcmd_id, $old_exec_id, $new_exec_id) {
+		$link = Link::get_link('mastercommand');
+		
+		if ($old_exec_id == $new_exec_id) {
+			return;
+		}
+		
+		if ($new_exec_id > $old_exec_id) {
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=exec_id-1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id <= :idexec';
+
+			$req = $link->prepare($sql);
+			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=:new_exec_id
+					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id-1';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
+			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=exec_id+1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id < :idexec';
+			
+			$req = $link->prepare($sql);
+			$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
+			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		else {
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=exec_id+1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
+			
+			$req = $link->prepare($sql);
+			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=:new_exec_id
+					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id+1';
+			$req = $link->prepare($sql);
+			$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
+			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			$sql = 'UPDATE smartcommand_elems
+					SET exec_id=exec_id-1
+					WHERE smartcommand_id=:smartcommand_id AND exec_id > :idexec';
+			
+			$req = $link->prepare($sql);
+			$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
+			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		
+	}
+	
+	function removeSmartcmd($smartcmd_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM smartcommand_list
+				WHERE smartcommand_id=:smartcmd_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function removeSmartcmdElem($smartcmd_id, $exec_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM smartcommand_elems
+				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$sql = 'UPDATE smartcommand_elems
+				SET exec_id=exec_id-1
+				WHERE smartcommand_id=:smartcmd_id AND exec_id > :exec_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function smartcmdUpdateDelay($smartcmd_id, $exec_id, $delay) {
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'UPDATE smartcommand_elems
+				SET time_lapse=:delay
+				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
+		$req->bindValue(':delay', $delay, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function smartcmdSaveLinkedRoom($smartcmd_id, $room_id) {
+		$link = Link::get_link('mastercommand');
+	
+		if ($room_id == 0) {
+			$room_id = NULL;
+		}
+		$sql = 'UPDATE smartcommand_list
+				SET room_id=:room_id
+				WHERE smartcommand_id=:smartcmd_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_id', $room_id, PDO::PARAM_INT);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){
@@ -1383,6 +1758,12 @@ class User {
 				'value'          => $val
 		);
 		$socket->send('send_to_device', $data);
+	}
+	
+	function mcSmartcmd($smartcmd_id){
+		error_log("SEND SOCKET");
+		$socket = new Socket();
+		$socket->send('smartcmd_launch', $smartcmd_id);
 	}
 }
 

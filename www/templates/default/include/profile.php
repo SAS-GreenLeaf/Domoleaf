@@ -10,13 +10,12 @@ echo ' <title>'._('Profile').'</title>
 			<h2>'._('Personal informations').'</h2>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="lastname">'._('Last Name').'</label>
-			<div class="input-group">
-				<label for="username" class="input-group-addon">
-					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-				</label>
-				<input name="lastname" type="text" class="form-control" id="lastname" placeholder="'._('Enter your last name').'" value="'.$profilInfo->lastname.'">
-			</div>
-							
+				<div class="input-group">
+					<label for="username" class="input-group-addon">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					</label>
+					<input name="lastname" type="text" class="form-control" id="lastname" placeholder="'._('Enter your last name').'" value="'.$profilInfo->lastname.'">
+				</div>
 			</div>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="firstname">'._('First Name').'</label>
@@ -26,24 +25,22 @@ echo ' <title>'._('Profile').'</title>
 				</label>
 				<input name="firstname" type="text" class="form-control" id="firstname" placeholder="'._('Enter your first name').'" value="'.$profilInfo->firstname.'">
 			</div>
-							
-			</div>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="sexe">'._('Gender').'</label>
 				<div class="controls">';
-				if ($profilInfo->gender == 0){
-					echo ' <input name="sexe" id="sexe-0" value="0" checked="checked" type="radio"> 
-					'._('Male').'&nbsp;&nbsp;
-					 <input name="sexe" id="sexe-1" value="1" type="radio"> 
-					'._('Female');
-				}
-				else{
-					echo ' <input name="sexe" id="sexe-0" value="0" type="radio"> 
-					'._('Male').'&nbsp;&nbsp;
-					 <input name="sexe" id="sexe-1" value="1" type="radio" checked="checked" > 
-					'._('Female');
-				}
-				echo '
+					if ($profilInfo->gender == 0){
+						echo ' <input name="sexe" id="sexe-0" value="0" checked="checked" type="radio"> 
+						'._('Male').'&nbsp;&nbsp;
+						 <input name="sexe" id="sexe-1" value="1" type="radio"> 
+						'._('Female');
+					}
+					else{
+						echo ' <input name="sexe" id="sexe-0" value="0" type="radio"> 
+						'._('Male').'&nbsp;&nbsp;
+						 <input name="sexe" id="sexe-1" value="1" type="radio" checked="checked" > 
+						'._('Female');
+					}
+					echo '
 				</div>
 			</div>
 			<div class="control-group control-group-profile">
@@ -53,8 +50,6 @@ echo ' <title>'._('Profile').'</title>
 					<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 				</label>
 				<input name="phone" type="text" class="form-control" id="phone" placeholder="'._('Enter your phone number (mobile)').'" value="'.$profilInfo->phone.'">
-			</div>			
-				
 			</div>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="language">'._('Language').'</label>
@@ -62,18 +57,17 @@ echo ' <title>'._('Profile').'</title>
 		  			<label class="input-group-addon" for="username">
 							<span aria-hidden="true" class="fa fa-language"></span>
 					</label>
-				<select id="selectLanguage" name="selectbasic" class="input-xlarge center form-control medium-input">';
-				foreach ($language as $k => $lang){
-				if ($k == $profilInfo->language)
-					echo '<option value="'.$k.'" selected="selected">'.$lang.'</option>';
-				else
-					echo '<option value="'.$k.'">'.$lang.'</option>';
-				
-				}
-				
-		echo '</select>
+					<select id="selectLanguage" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
+					foreach ($language as $k => $lang){
+						if ($k == $profilInfo->language)
+							echo '<option value="'.$k.'" selected="selected">'.$lang.'</option>';
+						else
+							echo '<option value="'.$k.'">'.$lang.'</option>';
+					}
+					echo
+					'</select>
 			</div>
-				</fieldset>
+		</fieldset>
 		<div class="control-group control-group-profile btn-saveProfile">
 			<div class="controls save-button">
 				<button onclick="saveProfile()" id="saveProfile" name="saveProfile" class="btn btn-greenleaf center">'._('Save').'</button>

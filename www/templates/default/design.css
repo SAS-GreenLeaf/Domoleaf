@@ -269,6 +269,12 @@ div.bhoechie-tab-menu div.list-group>a .glyphicon,
 div.bhoechie-tab-menu div.list-group>a .fa {
   color: #76AF1A;
 }
+
+div.bhoechie-tab-menu div.list-group>a .glyphicon,
+div.bhoechie-tab-menu div.list-group>a .fi {
+	color: #76AF1A;
+}
+
 div.bhoechie-tab-menu div.list-group>a:first-child{
   border-top-right-radius: 0;
   -moz-border-top-right-radius: 0;
@@ -565,11 +571,11 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 .box > .icon > .image > i { 
 	font-size: 27px !important; 
-	color: #fff !important; 
+	color: #fff; 
 }
 	
 .box > .icon:hover > .image > i { 
-	color: white !important; 
+	color: white; 
 }
 
 .box > .icon > .info { 
@@ -984,7 +990,8 @@ a.carousel-control-camera:hover {
 	background-color: #76af1a;
 }
 
-.navbar-fixed-top {
+.navbar-fixed-top,
+.navbar-fixed-bottom {
 	font-size: 15px;
 	border: 0;
 }
@@ -1244,6 +1251,7 @@ a.carousel-control-camera:hover {
 }
 
 /*** color-wheel ***/
+
 .farbtastic {
   position: relative;
   margin: auto;
@@ -1454,4 +1462,160 @@ a.carousel-control-camera:hover {
 
 #deleteBtn{
 	display: none;
+}
+
+/*** Bootstrap Switch ***/
+
+.bootstrap-switch-greenleaf {
+	background-color:#86BF2B;
+	border-color:#6b981e;
+	color:#fff;
+}
+
+.bootstrap-switch-disabled-with-opacity {
+	opacity: 1 !important;
+}
+
+/*** Smartcommands ***/
+
+.box-scenar-rooms {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 5px;
+	font-weight: bold;
+	font-size: 1.1em;
+	color: #76af1a;
+}
+
+.box-scenar-devices {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 5px;
+	color: #333;
+}
+
+.box-scenar-devices:hover {
+	background-color: #f5f5f5;
+}
+
+.list-item > .active {
+	background-color: #76af1a;
+	color: #fff;
+}
+
+.floor-scenar{
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+.btn-draggable {
+	margin-top:10px!important;
+	margin-right: 10px;
+}
+
+.border-color {	
+	border: 5px solid red;
+}
+
+#drop-smartcmd {
+	top: 100px;
+	bottom: 50px;
+	position: absolute;
+}
+
+.center-div {
+	float: none;
+	display: inline-block;
+}
+
+.save-navbar {
+	top: 50px;
+	border: 1px solid #F5F5F5;
+}
+
+.smartcmdElem {
+	background-color: #F5F5F5;
+	border: 1px solid #AAAAAA;
+	border-radius: 10px;
+	padding-bottom: 5px;
+}
+
+.delay {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.smartcmd-device-name {
+	height: 50px;
+	line-height: 50px;
+}
+
+.listSmartcmd {
+	padding-bottom: 100px;
+}
+
+.timePicker {
+	display: inline-block;
+}
+
+.disabled-with-opacity {
+	opacity: 1 !important;
+}
+
+.smartcmdElemDrop {
+	margin: 0;
+	height: 50px;
+	margin-bottom: 2px;
+	margin-top: 2px;
+}
+
+.drop-zone-activate {
+	border: 1px dashed black;
+	border-radius: 5px;
+	height: 100px;
+}
+
+#smartcmdElemDrop-0 {
+	margin-top: 10px;
+}
+
+.smartcmdElem input[type="range"] {
+	background-color: #fff;
+}
+
+.btn-elem-smartcmd {
+	position: absolute;
+}
+
+.btn-elem-smartcmd.btn-primary{
+	right: 50px;
+}
+
+.btn-elem-smartcmd.btn-danger {
+	right: 10px;
+}
+
+.save-navbar > .btn-primary {
+	margin-top: 10px;
+}
+
+#linked-room {
+	float: right;
+	margin-top: -5px;
+}
+
+#popup_smartcmd_content .input-group {
+	width: 50% !important;
+	margin: auto;
+}
+
+.smartcmd-color-option {
+	height: 45px;
+	width: 50%;
+	border-radius: 20px;
+	box-shadow: 1px 1px 4px;
+}
+
+.testTime {
+	border: 1px solid red;
 }

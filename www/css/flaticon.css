@@ -64,6 +64,7 @@ div.bhoechie-tab-menu-right div.list-group-app > a
 }
 .flaticon-playbutton17:before {
 	content: "\e00c";
+	font-weight: normal;
 }
 .flaticon-sign35:before {
 	content: "\e00d";

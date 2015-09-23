@@ -1,6 +1,7 @@
 <?php 
 
 include('templates/'.TEMPLATE.'/function/display_widget.php');
+include('templates/'.TEMPLATE.'/function/display_smartcmd.php');
 
 echo '
 <input type="hidden" id="current-room" value="0">
@@ -32,7 +33,12 @@ echo '
 	<div id="bhoechie-tab" class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-9 col-xs-offset-3">';
 		if (!empty($deviceallowed)){
 			foreach ($deviceallowed as $elem){
-				echo display_widget($elem, $request -> getId());
+				echo display_widget($elem);
+			}
+		}
+		if (!empty($smartcmdLinked)){
+			foreach ($smartcmdLinked as $elem){
+				echo display_smartcmd($elem, $icons[7]);
 			}
 		}
 	echo '
@@ -41,10 +47,6 @@ echo '
 
 echo '
 <script type="text/javascript">
-
-	/*$(document).ready(function() {
-    $("#colorpicker").farbtastic("#color");
-  });*/
 
 $("#current-room").val(0);
 $("#current-application").val(0);
@@ -144,7 +146,7 @@ function HandlePopup(type, iddevice){
 		var data = new Array("popup_info_device.php", "'._('Information').'");
 	}
 	else if (type == 3){
-		var data = new Array("popup_ChromaWheel.php", "'._('Information').'");
+		var data = new Array("popup_ChromaWheel.php", "'._('ChromaWheel').'");
 	}
 	
 	if (data){
@@ -157,7 +159,7 @@ function HandlePopup(type, iddevice){
 					title: data[1],
 					message: msg,
 					onhide: function(){
-						if ($("#cmd-camera-display").length){
+						if ($("#cmd-camera-display").length) {
 							$("#cmd-camera-display").removeAttr("src");
 						}
 					}

@@ -667,7 +667,129 @@ class Api {
 							if (!empty($var[0])){
 								$res = $user->confUserDeviceBgimg($var[0], $var[1], $var[2]);
 							}
+						break;
+						
+						case 'searchSmartcmdById' :
+							if (!empty($var[0])){
+								$res = $user->searchSmartcmdById($var[0]);
+							}
+						break;
+						
+						case 'countElemSmartcmd' :
+							if (!empty($var[0])){
+								$res = $user->countElemSmartcmd($var[0]);
+							}
+						break;
+						
+						case 'listSmartcmd' :
+							$res = $user->listSmartcmd();
 							break;
+						
+						case 'getSmartcmdElems' :
+							if (!empty($var[0])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->getSmartcmdElems($var[0]);
+								}
+							}
+						break;
+						
+						case 'createNewSmartcmd' :
+							if (!empty($var[0])){
+								$res = $user->createNewSmartcmd($var[0]);
+							}
+						break;
+							
+						case 'updateSmartcmdName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->updateSmartcmdName($var[0], $var[1]);
+								}
+							}
+						break;
+	
+						case 'saveNewElemSmartcmd' :
+							if (empty($var[4])){
+								$var[4] = 0;
+							}
+							if (empty($var[5])){
+								$var[5] = 0;
+							}
+							
+							if (!empty($var[0]) && !empty($var[2]) && !empty($var[3])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									
+									if ($var[3] == 392 || $var[3] == 393 || $var[3] == 394) {
+										list($red, $green, $blue) = convertHexaToRGB($var[4]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 392, $red, $var[5]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
+									}
+									else {
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
+									}
+								}
+							}
+						break;
+						
+						case 'updateSmartcmdElemOptionValue' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									
+									if ($var[3] == 392 || $var[3] == 393 || $var[3] == 394) {
+										list($red, $green, $blue) = convertHexaToRGB($var[2]);
+										$res = $user->updateSmartcmdElemOptionValue($var[0], $var[1], $red, 392);
+										$res = $user->updateSmartcmdElemOptionValue($var[0], $var[1], $green, 393);
+										$res = $user->updateSmartcmdElemOptionValue($var[0], $var[1], $blue, 394);
+									}
+									else {
+										$res = $user->updateSmartcmdElemOptionValue($var[0], $var[1], $var[2], $var[3]);
+									}
+								}
+							}
+						break;
+						
+						case 'smartcmdChangeElemsOrder' :
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->smartcmdChangeElemsOrder($var[0], $var[1], $var[2]);
+								}
+							}
+						break;
+						
+						case 'removeSmartcmd' :
+							if (!empty($var[0])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->removeSmartcmd($var[0]);
+								}
+							}
+						break;
+						
+						case 'removeSmartcmdElem' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->removeSmartcmdElem($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'smartcmdUpdateDelay' :
+							if (empty($var[2])) {
+								$var[2] = 0;
+							}
+							if (!empty($var[0]) && !empty($var[1])) {
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->smartcmdUpdateDelay($var[0], $var[1], $var[2]);
+								}
+							}
+						break;
+						
+						case 'smartcmdSaveLinkedRoom' :
+							if (!empty($var[0])) {
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->smartcmdSaveLinkedRoom($var[0], $var[1]);
+								}
+							}
+						break;
 						
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
@@ -795,11 +917,19 @@ class Api {
 						
 						case 'mcRGB':
 							if (!empty($var[0]) && !empty($var[1])){
-								list($red, $green, $blue) = convertRGB($var[1]);
+								list($red, $green, $blue) = convertHexaToRGB($var[1]);
 								
 								$res = $user->mcAction($var[0], $red, 392);
 								$res = $user->mcAction($var[0], $green, 393);
 								$res = $user->mcAction($var[0], $blue, 394);
+							}
+						break;
+						
+						case 'mcSmartcmd':
+							if (!empty($var[0])){
+								if (!empty($user->searchSmartcmdById($var[0]))) {
+									$res = $user->mcSmartcmd($var[0]);
+								}
 							}
 						break;
 						
