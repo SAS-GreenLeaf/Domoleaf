@@ -1,0 +1,28 @@
+#!/bin/bash
+
+packages=''
+
+check_package()
+{
+	echo -e "[ \033[33m..\033[0m ] Checking for $1..."
+	dpkg -s $1 > /dev/null 2>&1
+	if [ $? -gt 0 ];
+	then
+		packages+=" $1"
+	else
+		echo -e "[ \033[32mok\033[0m ] $1"
+	fi
+}
+
+check_package build-essential
+check_package debhelper
+check_package cdbs
+check_package libusb-1.0-0-dev
+check_package libsystemd-daemon-dev
+check_package libtool
+check_package automake
+
+if [ "$packages" != "" ];
+then
+	apt-get install -y $packages
+fi

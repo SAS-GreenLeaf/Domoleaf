@@ -1,4 +1,4 @@
-CREATE TABLE `daemon` (
+CREATE TABLE IF NOT EXISTS `daemon` (
   `daemon_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(127) NOT NULL DEFAULT '',
   `serial` varchar(127) NOT NULL,

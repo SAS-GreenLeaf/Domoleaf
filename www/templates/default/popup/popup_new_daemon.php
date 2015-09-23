@@ -35,7 +35,7 @@ echo '	<div class="col-xs-6">
 			'<table id="tableinfo" class="table table-bordered table-striped table-condensed">'.
 				'<thead>'.
 					'<tr>'.
-					'<th class="center">'._('Sedial number').'</th>'.
+					'<th class="center">'._('Serial number').'</th>'.
 					'<th class="center">'._('Ip address').'</th>'.
 					'</tr>'.
 				'</thead>'.

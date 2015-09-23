@@ -1,10 +1,10 @@
 @font-face {
 	font-family: "Flaticon";
-	src: url("../fonts/flaticon.eot");
-	src: url("../fonts/flaticon.eot#iefix") format("embedded-opentype"),
-	url("../fonts/flaticon.woff") format("woff"),
-	url("../fonts/flaticon.ttf") format("truetype"),
-	url("../fonts/flaticon.svg") format("svg");
+	src: url("/fonts/flaticon.eot");
+	src: url("/fonts/flaticon.eot#iefix") format("embedded-opentype"),
+	url("/fonts/flaticon.woff") format("woff"),
+	url("/fonts/flaticon.ttf") format("truetype"),
+	url("/fonts/flaticon.svg") format("svg");
 	font-style: normal;
 }
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
@@ -12,63 +12,75 @@
 	font-family: Flaticon;
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
- 	-moz-osx-font-smoothing: grayscale;
- 	font-weight: bold;
+	-moz-osx-font-smoothing: grayscale;
+	font-weight: bold;
 }
 
 div.bhoechie-tab-menu-right 
 div.list-group-app > a .glyphicon, 
 div.bhoechie-tab-menu-right div.list-group-app > a 
 .fi {
-    color: #76af1a;
+	color: #76af1a;
 }
 
 .fi {
 	line-height: 1;
 }
-.flaticon-:before {
+.flaticon-chip:before {
 	content: "\e000";
 }
 .flaticon-computer210:before {
-	content: "\e000";
-}
-.flaticon-connection81:before {
 	content: "\e001";
 }
-.flaticon-engineering:before {
+.flaticon-connection81:before {
 	content: "\e002";
 }
-.flaticon-heating1:before {
+.flaticon-engineering:before {
 	content: "\e003";
 }
-.flaticon-logotype56:before {
+.flaticon-heating1:before {
 	content: "\e004";
 }
-.flaticon-measure20:before {
+.flaticon-logotype56:before {
 	content: "\e005";
 }
-.flaticon-person206:before {
+.flaticon-measure20:before {
 	content: "\e006";
 }
-.flaticon-sign35:before {
+.flaticon-minisplit:before {
 	content: "\e007";
 }
-.flaticon-snowflake149:before {
+.flaticon-open203:before {
 	content: "\e008";
 }
-.flaticon-thermometer2:before {
+.flaticon-password4:before {
 	content: "\e009";
 }
-.flaticon-vintage62:before {
+.flaticon-person199:before {
 	content: "\e00a";
 }
-.flaticon-wind34:before {
+.flaticon-person206:before {
 	content: "\e00b";
 }
-.flaticon-winds4:before {
-	content: "\e00c";
-}
 .flaticon-playbutton17:before {
-	content: "\e007";
+	content: "\e00c";
 	font-weight: normal;
+}
+.flaticon-sign35:before {
+	content: "\e00d";
+}
+.flaticon-snowflake149:before {
+	content: "\e00e";
+}
+.flaticon-thermometer2:before {
+	content: "\e00f";
+}
+.flaticon-vintage62:before {
+	content: "\e010";
+}
+.flaticon-wind34:before {
+	content: "\e011";
+}
+.flaticon-winds4:before {
+	content: "\e012";
 }

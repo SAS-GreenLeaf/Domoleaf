@@ -24,7 +24,7 @@ bash /etc/greenleaf/sql/database.sh
 # check password mysql in /etc/greenleaf/master.conf
 if grep -q "^password=greenleaf$" /etc/greenleaf/master.conf; then
     echo -e "[ \033[33mINFO\033[0m ] Changing mysql default password..."
-    newpasswd=`echo \`date\` | sha1sum | sed 's/  -//g'`
+    newpasswd=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
     sed -i "s/password=greenleaf/password=$newpasswd/g" /etc/greenleaf/master.conf
     echo -e "[ \033[32mOK\033[0m ] Done."
     echo -e "[ \033[33mINFO\033[0m ] Initializing SQL user..."
@@ -43,17 +43,15 @@ else
 fi
 
 user=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT user_id FROM user WHERE user_id = 1;"`
-if [ '$user' = '' ]; then
-    adminpasswd=`echo '1_admin' | sha256sum | sed 's/  -//g'`
-    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, $adminpasswd)"
+if [ "$user" = "" ]; then
+    adminpasswd=`echo -n '1_admin' | sha256sum | sed 's/  -//g'`
+    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
 fi
 
 rm -f /etc/nginx/sites-enabled/master.conf
 ln -s /etc/nginx/sites-available/master.conf /etc/nginx/sites-enabled/master.conf
 
 systemctl restart nginx
-
-systemctl enable glmaster
 
 #Translation, .mo generation
 for inode in $(find /etc/greenleaf/www/locales -type d)
@@ -64,4 +62,10 @@ do
 	fi
 done
 
+chown www-data:www-data /etc/greenleaf/www/templates/default/custom/device
+chown www-data:www-data /etc/greenleaf/www/templates/default/custom/room
+
+chmod +x /usr/bin/master.py
+chmod +x /etc/init.d/glmaster
+systemctl enable glmaster
 systemctl start glmaster

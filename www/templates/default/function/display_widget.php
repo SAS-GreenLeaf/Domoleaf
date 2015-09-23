@@ -4,14 +4,14 @@
 
 function getIcon($iddevice = 1){
 	$icons = array(
-			1  => 'fa fa-question',
+			1  => 'fi flaticon-chip',
 			2  => 'fa fa-video-camera',
 			3  => 'fa fa-lightbulb-o',
 			4  => 'fa fa-lightbulb-o',
 			5  => 'fa fa-tachometer',
 			6  => 'fa fa-lightbulb-o',
-			7  => 'fa fa-question',
-			8  => 'fa fa-question',
+			7  => 'fi flaticon-heating1',
+			8  => 'fi flaticon-heating1',
 			9  => 'fa fa-question',
 			10 => 'fa fa-bars',
 			11 => 'fa fa-bars',
@@ -22,20 +22,20 @@ function getIcon($iddevice = 1){
 			17 => 'fa fa-volume-up',
 			18 => 'fa fa-tree',
 			19 => 'fi flaticon-winds4',
-			20 => 'fa fa-fire lg',
+			20 => 'fa fa-fire',
 			21 => 'fa fa-question',
 			22 => 'fi flaticon-engineering',
-			23 => 'fa fa-question',
-			24 => 'fa fa-question',
+			23 => 'fi flaticon-person199',
+			24 => 'fi flaticon-heating1',
 			25 => 'fi flaticon-wind34',
 			26 => 'fi flaticon-wind34',
 			27 => 'fi flaticon-person206',
-			28 => 'fa fa-question',
+			28 => 'fi flaticon-person206',
 			29 => 'fa fa-video-camera',
 			30 => 'fi flaticon-sign35',
 			31 => 'fa fa-sort-amount-asc rotate--90',
-			32 => 'fa fa-question',
-			33 => 'fa fa-question',
+			32 => 'fi flaticon-password4',
+			33 => 'fa fa-fire',
 			34 => 'fi flaticon-snowflake149',
 			35 => 'fa fa-question',
 			36 => 'fa fa-question',
@@ -51,36 +51,39 @@ function getIcon($iddevice = 1){
 			46 => 'fa fa-question',
 			47 => 'fa fa-bolt',
 			48 => 'fa fa-question',
-			49 => 'flaticon-thermometer2',
+			49 => 'fi flaticon-thermometer2',
 			50 => 'fa fa-volume-up',
 			51 => 'fa fa-question',
 			52 => 'fa fa-sort-amount-asc rotate--90',
 			53 => 'fa fa-wifi',
-			55 => 'fa fa-question',
-			56 => 'fa fa-question',
-			57 => 'fa fa-question',
+			54 => 'fi flaticon-open203',
+			55 => 'fa fa-lightbulb-o',
+			56 => 'fa fa-lightbulb-o',
+			57 => 'fa fa-lightbulb-o',
 			58 => 'fa fa-question',
 			59 => 'fa fa-question',
 			60 => 'fa fa-question',
-			61 => 'flaticon-measure20',
-			62 => 'fa fa-question',
-			63 => 'fa fa-question',
-			65 => 'fa fa-question',
-			66 => 'fa fa-question',
-			67 => 'fa fa-question',
-			68 => 'fa fa-question',
-			69 => 'fa fa-question',
-			70 => 'fa fa-question',
-			71 => 'fa fa-question',
-			72 => 'fa fa-question',
-			73 => 'fa fa-question',
-			75 => 'fa fa-question',
-			76 => 'fa fa-question',
-			77 => 'fa fa-question',
+			61 => 'fi flaticon-measure20',
+			62 => 'fi flaticon-minisplit',
+			63 => 'fi flaticon-minisplit',
+			65 => 'fi flaticon-minisplit',
+			66 => 'fi flaticon-minisplit',
+			67 => 'fi flaticon-minisplit',
+			68 => 'fi flaticon-minisplit',
+			69 => 'fi flaticon-minisplit',
+			70 => 'fi flaticon-minisplit',
+			71 => 'fi flaticon-minisplit',
+			72 => 'fi flaticon-minisplit',
+			73 => 'fi flaticon-minisplit',
+			75 => 'fi flaticon-minisplit',
+			76 => 'fi flaticon-minisplit',
+			77 => 'fi flaticon-minisplit',
 			78 => 'fa fa-lightbulb-o',
 			79 => 'fa fa-question',
-			80 => 'fa fa-question',
-			81 => 'fa fa-question'
+			80 => 'fa fa-volume-up',
+			81 => 'fa fa-question',
+			82 => 'fa fa-question',
+			83 => 'fa fa-question'
 	);
 	
 	return $icons[$iddevice];
@@ -307,13 +310,13 @@ function display_audio($info){
 										<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
 									</button>';
 			}
+			$display.='</div>';
 			break;
 		default :
 			// TODO
 			// infra rouge
 			break;
 	}
-	$display.='</div>';
 
 	if (!empty($info->device_opt->{383})){
 		$display.='

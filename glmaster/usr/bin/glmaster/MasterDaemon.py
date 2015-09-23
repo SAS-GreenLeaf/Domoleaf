@@ -65,6 +65,7 @@ UPNP_PAUSE          = 'pause';              # Pause command id
 UPNP_NEXT           = 'next';               # Next command id
 UPNP_PREVIOUS       = 'prev';               # Prev command id
 UPNP_STOP           = 'stop';               # Stop command id
+UPNP_MUTE           = 'mute';               # Mute command id
 UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
 UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
@@ -135,6 +136,7 @@ class MasterDaemon:
             UPNP_NEXT           : self.upnp_set_next,
             UPNP_PREVIOUS       : self.upnp_set_prev,
             UPNP_STOP           : self.upnp_set_stop,
+            UPNP_MUTE           : self.upnp_set_mute,
             UPNP_VOLUME_UP      : self.upnp_set_volume_up,
             UPNP_VOLUME_DOWN    : self.upnp_set_volume_down,
             UPNP_SET_VOLUME     : self.upnp_set_volume
@@ -376,7 +378,10 @@ class MasterDaemon:
         os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename);
 
     def check_usb(self, json_obj, connection):
-        sdx1 = glob.glob('/dev/sd?1')[0];
+        try:
+            sdx1 = glob.glob('/dev/sd?1')[0];
+        except Exception as e:
+            return;
         if (os.path.exists(sdx1) == 0):
             json_obj = 0;
         else:
@@ -602,23 +607,28 @@ class MasterDaemon:
         """
         Send "play" command to the Upnp device described in dev
         """
-        print(json_obj);
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_play();
 
     def upnp_set_pause(self, json_obj, dev, hostname):
         """
         Send "pause" command to the Upnp device described in dev
         """
-        print(json_obj);
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_pause();
 
     def upnp_set_stop(self, json_obj, dev, hostname):
         """
         Send "stop" command to the Upnp device described in dev
         """
-        print(json_obj);
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_stop();
 
+    def upnp_set_mute(self, json_obj, dev, hostname):
+        """
+        Send "mute" command to the Upnp device described in dev
+        """
+        mute = UpnpAudio(json_obj['addr'], int(json_obj['port'])).get_mute();
+        mute = (int(mute)+1)%2;
+        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute(mute = mute);
+        
     def upnp_set_next(self, json_obj, dev, hostname):
         """
         Send "next" command to the Upnp device described in dev
@@ -629,7 +639,7 @@ class MasterDaemon:
         """
         Send "prev" command to the Upnp device described in dev
         """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_prev();
+        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_previous();
 
     def upnp_set_volume_up(self, json_obj, dev, hostname):
         """

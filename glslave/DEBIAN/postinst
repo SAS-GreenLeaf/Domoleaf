@@ -4,10 +4,7 @@ echo -e "[ \033[32mOK\033[0m ] Done installing Greenleaf slave daemon"
 sed -i 's/files dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
 sed -i 's/files mdns4_minimal \[NOTFOUND=return\] dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
 
-if [ `getent passwd eibd | wc -l` -eq 0 ];
-then
-    useradd eibd -s /bin/false -U -M -G dialout
-fi
+usermod -a -G dialout knxd
 
 sed -i 's/#net.ipv4.ip_forward/net.ipv4.ip_forward/g' /etc/sysctl.conf
 sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/g' /etc/sysctl.conf
@@ -23,5 +20,12 @@ then
 fi
 pip3 install scapy-python3
 
+#KNXD
+systemctl enable knxd
+cp /etc/greenleaf/knxd.conf /etc/
+systemctl start knxd
+
+chmod +x /usr/bin/slave.py
+chmod +x /etc/init.d/glslave
 systemctl enable glslave
 systemctl start glslave

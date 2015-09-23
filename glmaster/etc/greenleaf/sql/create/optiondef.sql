@@ -396,6 +396,12 @@ VALUES
 	(385, NULL, 0, 0, 0.0, 1, '', '', '2 Fils', '', 0),
 	(386, NULL, 0, 0, 0.0, 1, '', '', '3 Fils', '', 0),
 	(387, NULL, 0, 0, 0.0, 0, '', '', 'Fond de Boîte RF', '', 0),
-	(388, NULL, 0, 0, 0.0, 0, '', '', 'Température de consigne', '', 4);
+	(388, NULL, 0, 0, 0.0, 0, '', '', 'Température de consigne', '', 4),
+	(389, NULL, 0, 0, 0.0, 0, '', '', 'Tension Continue', '', 0),
+	(390, NULL, 0, 0, 0.0, 0, '', '', 'Courant Continu', '', 0),
+	(391, NULL, 1, 2, 0.7, 1, '', '', '700mA', '', 0),
+	(392, NULL, 0, 0, 0.0, 0, '', '', 'Varié Rouge', '', 4),
+	(393, NULL, 0, 0, 0.0, 0, '', '', 'Varié Vert', '', 4),
+	(394, NULL, 0, 0, 0.0, 0, '', '', 'Varié Bleu', '', 4);
 
 SET FOREIGN_KEY_CHECKS=1;

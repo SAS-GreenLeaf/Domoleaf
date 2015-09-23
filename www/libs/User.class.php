@@ -1696,7 +1696,6 @@ class User {
 				'value'         => $value,
 				'option_id'     => $optionid
 			);
-			error_log(serialize($data));
 			$socket->send('send_to_device', $data);
 		}
 	}
@@ -1707,13 +1706,14 @@ class User {
 	 * @param unknown $val
 	 * @param unknown $optionid
 	 */
-	function mcAudio($iddevice, $val, $optionid){
+	function mcAudio($iddevice, $val, $optionid, $optionval=0){
 		if($this->checkDevice($iddevice)){
 			$socket = new Socket();
 			$data = array(
 				'room_device_id' => $iddevice,
 				'option_id'      => $optionid,
-				'action'         => $val
+				'action'         => $val,
+				'value'          => $optionval
 			);
 			$socket->send('send_to_device', $data);
 		}

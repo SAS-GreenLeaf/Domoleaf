@@ -36,7 +36,7 @@ typedef struct __attribute__((packed)) s_telegram
 	uint16_t dst_addr;
 	uint8_t  data_length;
 	uint8_t  data[255];
-	} Telegram;
+} Telegram;
 
 /*
 ** Connection to a slave daemon

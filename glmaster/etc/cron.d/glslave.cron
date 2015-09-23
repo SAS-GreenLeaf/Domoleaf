@@ -1,2 +1,0 @@
-15 * * * * root /usr/bin/CronOpenPort.py
-15 * * * * root /usr/bin/CronRefreshNetwork.py

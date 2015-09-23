@@ -108,6 +108,36 @@ class Guest {
 			1 => 'Legacy'
 		);
 	}
+
+	/**
+	 * Check reset key
+	 */
+	public static function confCheckResetKey($resetKey){
+		$link = Link::get_link('mastercommand');
+		
+		$sql = 'SELECT configuration_value
+		        FROM configuration
+		        WHERE configuration_id=12';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+
+		if (!empty($resetKey) && !empty($do->configuration_value) && $resetKey == $do->configuration_value){
+			return True;
+		}
+		else{
+			return False;
+		}
+	}
+	
+	public static function confResetPassword($resetKey, $newPassword){
+		if (self::confCheckResetKey($resetKey)){
+			$admin = new Admin(1);
+			$admin->passwordRename('', $newPassword, 1);
+			return '1'.$admin->profileInfo(1)->username;
+		}
+		return False;
+	}
 }
 
 ?>

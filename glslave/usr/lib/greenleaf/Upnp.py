@@ -1,4 +1,6 @@
+
 import pycurl;
+from io import BytesIO;
 
 class Upnp:
     """
@@ -33,8 +35,12 @@ class Upnp:
                                   str(control_type) + ':1#' + command + '"']);
         ch.setopt(ch.POST, 1);
         ch.setopt(ch.POSTFIELDS, request);
+        res = BytesIO();
+        ch.setopt(ch.WRITEDATA, res);
         ch.perform();
         ch.close();
+        return (res.getvalue().decode('utf-8'));
+        
 
     def get_type(self, control_type):
         """

@@ -348,6 +348,52 @@ class Admin extends User {
 		$socket->send('reload_d3config');
 	}
 
+	function confPreConfigurationMail($fromMail){
+		if (empty($fromMail) or filter_var($fromMail, FILTER_VALIDATE_EMAIL) == false){
+			return '2';
+		}
+		$parse = explode("@", $fromMail)[1];
+		$fromName = explode("@", $fromMail)[0];
+		$smtpHost = "";
+		if ($parse == "greenleaf.fr"){
+			$smtpHost = "smtp.free.fr";
+			$smtpSecure = 0;
+			$smtpPort = 25;
+		}
+		else if ($parse == "sfr.fr"){
+			$smtpHost = "smtp.sfr.fr";
+			$smtpSecure = 1;
+			$smtpPort = 465;
+		}
+		else if ($parse == "bbox.fr"){
+			$smtpHost = "smtp.bbox.fr";
+			$smtpSecure = 1;
+			$smtpPort = 587;
+		}
+		else if ($parse == "free.fr"){
+			$smtpHost = "smtp.free.fr";
+			$smtpSecure = 0;
+			$smtpPort = 25;
+		}
+		else if ($parse == "orange.fr"){
+			$smtpHost = "smtp.orange.fr";
+			$smtpSecure = 1;
+			$smtpPort = 465;
+		}
+		else if ($parse == "gmail.com"){
+			$smtpHost = "smtp.gmail.com";
+			$smtpSecure = 2;
+			$smtpPort = 587;
+		}
+		if ($smtpHost == ""){
+			return '1';
+		}
+		else{
+			$this->confMail($fromMail, $fromName, $smtpHost, $smtpSecure, $smtpPort, '', '');
+			return '|'.$fromMail.'|'.$fromName.'|'.$smtpHost.'|'.$smtpSecure.'|'.$smtpPort;
+		}
+	}
+
 	function confSendTestMail(){
 		$destinatorMail = $this->profileInfo()->user_mail;
 		if (empty($destinatorMail)){
