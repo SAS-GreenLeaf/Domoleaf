@@ -91,77 +91,77 @@ function getIcon($iddevice = 1){
 
 function display_widget($info){
 	
-	
 	$widget = array(
-			2  => display_cam($info),
-			3  => display_lampe($info),
-			4  => display_lampe($info),
-			5  => display_commande($info),
-			6  => display_lampe($info),
-			7  => display_warming($info),
-			8  => display_warming($info),
-			9  => display_warming($info),
-			10 => display_shutter($info),
-			11 => display_shutter($info),
-			12 => display_clim($info),
-			13 => display_clim($info),
-			14 => display_audio($info),
-			15 => display_audio($info),
-			17 => display_audio($info),
-			18 => display_garden($info),
-			19 => display_aspiration($info),
-			20 => display_furnace($info),
-			21 => display_furnace($info),
-			22 => display_garden($info),
-			23 => display_garden($info),
-			24 => display_warming($info),
-			25 => display_fan($info),
-			26 => display_fan($info),
-			27 => display_spa($info),
-			28 => display_spa($info),
-			29 => display_cam($info),
-			30 => display_alarm($info),
-			31 => display_portal($info),
-			32 => display_portal($info),
-			33 => display_furnace($info),
-			34 => display_clim($info),
-			38 => display_commande($info),
-			43 => display_commande($info),
-			47 => display_consumption($info),
-			48 => display_commande($info),
-			49 => display_warming($info),
-			50 => display_audio($info),
-			51 => display_commande($info),
-			52 => display_portal($info),
-			53 => display_audio($info),
-			54 => display_portal($info),
-			55 => display_lampe($info),
-			56 => display_lampe($info),
-			57 => display_lampe($info),
-			58 => display_warming($info),
-			59 => display_warming($info),
-			60 => display_commande($info),
-			61 => display_commande($info),
-			62 => display_clim($info),
-			63 => display_clim($info),
-			64 => display_clim($info),
-			65 => display_clim($info),
-			66 => display_clim($info),
-			67 => display_clim($info),
-			68 => display_clim($info),
-			69 => display_clim($info),
-			70 => display_clim($info),
-			71 => display_clim($info),
-			72 => display_clim($info),
-			73 => display_clim($info),
-			74 => display_clim($info),
-			75 => display_clim($info),
-			76 => display_clim($info),
-			77 => display_clim($info),
-			78 => display_lampe($info),
-			80 => display_audio($info),
-			81 => display_cam($info)
+			2  => "display_cam",
+			3  => "display_lampe",
+			4  => "display_lampe",
+			5  => "display_commande",
+			6  => "display_lampe",
+			7  => "display_warming",
+			8  => "display_warming",
+			9  => "display_warming",
+			10 => "display_shutter",
+			11 => "display_shutter",
+			12 => "display_clim",
+			13 => "display_clim",
+			14 => "display_audio",
+			15 => "display_audio",
+			17 => "display_audio",
+			18 => "display_garden",
+			19 => "display_aspiration",
+			20 => "display_furnace",
+			21 => "display_furnace",
+			22 => "display_garden",
+			23 => "display_garden",
+			24 => "display_warming",
+			25 => "display_fan",
+			26 => "display_fan",
+			27 => "display_spa",
+			28 => "display_spa",
+			29 => "display_cam",
+			30 => "display_alarm",
+			31 => "display_portal",
+			32 => "display_portal",
+			33 => "display_furnace",
+			34 => "display_clim",
+			38 => "display_commande",
+			43 => "display_commande",
+			47 => "display_consumption",
+			48 => "display_commande",
+			49 => "display_warming",
+			50 => "display_audio",
+			51 => "display_commande",
+			52 => "display_portal",
+			53 => "display_audio",
+			54 => "display_portal",
+			55 => "display_lampe",
+			56 => "display_lampe",
+			57 => "display_lampe",
+			58 => "display_warming",
+			59 => "display_warming",
+			60 => "display_commande",
+			61 => "display_commande",
+			62 => "display_clim",
+			63 => "display_clim",
+			64 => "display_clim",
+			65 => "display_clim",
+			66 => "display_clim",
+			67 => "display_clim",
+			68 => "display_clim",
+			69 => "display_clim",
+			70 => "display_clim",
+			71 => "display_clim",
+			72 => "display_clim",
+			73 => "display_clim",
+			74 => "display_clim",
+			75 => "display_clim",
+			76 => "display_clim",
+			77 => "display_clim",
+			78 => "display_lampe",
+			80 => "display_audio",
+			81 => "display_cam"
 	);
+	
 	
 	$widgeticon = 'fa fa-question';
 	if (!empty(getIcon($info->device_id))){
@@ -179,7 +179,7 @@ function display_widget($info){
 							<div class="info col-sm-12 col-xs-12 widget-content">';
 								//display device
 								if (!empty($widget[$info->device_id])){
-									$display.=$widget[$info->device_id];
+									$display.=$widget[$info->device_id]($info);
 								}
 								$display.='
 							</div>';
@@ -365,7 +365,6 @@ function display_shutter($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
-	
 	return $display;
 }
 
@@ -379,9 +378,7 @@ function display_commande($info){
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
 	}
-	if (!empty($info->device_opt->{79})){
-		$display.=display_luminosity($info);
-	}
+
 	return $display;
 }
 
