@@ -89,7 +89,7 @@ function RemoteAudio(action, iddevice, optionid){
 
 function Variation(iddevice, optionid, step){
 	var varie = $("#slider-value-"+iddevice).val();
-	
+
 	varie = parseInt(varie) + step;
 	if (varie == 0 || varie > 0 && varie <= 255){
 		$("#slider-value-"+iddevice).val(varie);
@@ -126,7 +126,9 @@ function getVariation(iddevice, optionid){
 	$.ajax({
 		type:"GET",
 		url: "/form/form_mc_varie.php",
-		data: "iddevice="+iddevice+"&val="+value+"&optionid="+optionid,
+		data: "iddevice="+iddevice
+				+"&val="+value
+				+"&optionid="+optionid,
 		complete: function(result, status) {
 		
 		}

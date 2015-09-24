@@ -365,6 +365,9 @@ function display_shutter($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+	if (!empty($info->device_opt->{13})){
+		$display.=display_varie($info, 2);
+	}
 	return $display;
 }
 
@@ -458,13 +461,32 @@ function display_OpenClose($info){
 
 //Up Down
 function display_UpDown($info){
+	if (!empty($info->device_opt->{13})){
+		$icon_up = "fa fa-angle-double-up";
+		$icon_pause = "fa fa-pause";
+		$icon_down = "fa fa-angle-double-down";
+	}
+	else {
+		$icon_up = "fa fa-angle-double-up lg";
+		$icon_pause = "fa fa-pause lg";
+		$icon_down = "fa fa-angle-double-down lg";
+	}
 	$display ='
 			<div class="margin-bottom btn-group btn-group-greenleaf">
-				<button type="button" class="btn btn-warning" onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{54}->option_id.'\')"><span class="fa fa-angle-double-up lg"></span></button>';
+				<button type="button" class="btn btn-warning"
+				        onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{54}->option_id.'\')">
+					<span class="'.$icon_up.'"></span>
+				</button>';
 				if (!empty($info->device_opt->{365})){
-					$display.='<button type="button" class="btn btn-warning" onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{365}->option_id.'\')" ><span class="fa fa-pause lg"></button>';
+					$display.='<button type="button" class="btn btn-warning"
+								       onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{365}->option_id.'\')">
+									<span class="'.$icon_pause.'"></span>
+								</button>';
 				}
-	$display.='<button type="button" class="btn btn-warning" onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{54}->option_id.'\')" ><span class="fa fa-angle-double-down lg"></button>
+	$display.='<button type="button" class="btn btn-warning"
+				       onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{54}->option_id.'\')">
+					<span class="'.$icon_down.'"></span>
+				</button>
 			</div>';
 	
 	return $display;
@@ -525,38 +547,64 @@ function display_OnOff($info){
 }
 
 //Varie
-function display_varie($info){
+function display_varie($info, $var_icon = 1){
 	$display = '<div class="col-xs-12">';
+	if ($var_icon == 1) {
+		$left_icon = "fa-certificate";
+		$right_icon = "fa-sun-o";
+	}
+	else if ($var_icon == 2) {
+		$left_icon = "fa-sort-amount-asc";
+		$right_icon = "fa-sort-amount-desc rotate-180";
+	}
 	switch($info->protocol_id){
 		// KNX
 		case 1:
-				$display .= '<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
-								<i class="fa fa-certificate"></i>
+				$display .= 
+							'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+								<i class="fa '.$left_icon.'"></i>
 							</div>';
-					if ($info->device_opt->{13}->valeur > 0){
-						$val = ceil(($info->device_opt->{13}->valeur*100)/255);
-							$display.='<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-											<output id="range-'.$info->room_device_id.'" for="slider-value-'.$info->room_device_id.'">'.$val.'%</output>
+							if ($info->device_opt->{13}->valeur > 0){
+								$val = ceil(($info->device_opt->{13}->valeur * 100) / 255);
+								$display.=
+										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											<output id="range-'.$info->room_device_id.'"
+											        for="slider-value-'.$info->room_device_id.'">
+												'.$val.'%
+											</output>
 										</div>';
-					}
-					else {
-						$display.='<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-									  <output id="range-'.$info->room_device_id.'" for="slider-value-'.$info->room_device_id.'">50%</output>
-								   </div>';
-					}
-					$display.= '<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
-									<i class="fa fa-sun-o"></i>
-								</div>';
-					if (!empty($info->device_opt->{13}->valeur)){
-						$display.='<div class="row">
-									<input value="'.$info->device_opt->{13}->valeur.'" min="0" step="1" max="255" oninput="outputUpdate(\''.$info->room_device_id.'\', value)" onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')" id="slider-value-'.$info->room_device_id.'" type="range">
-								   </div>';
-					}
-					else {
-						$display.='<div class="row">
-									<input value="128" min="0" step="1" max="255" oninput="outputUpdate(\''.$info->room_device_id.'\', value)" onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')" id="slider-value-'.$info->room_device_id.'" type="range">
-								   </div>';
-					}
+							}
+							else {
+								$display.=
+										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											<output id="range-'.$info->room_device_id.'"
+											        for="slider-value-'.$info->room_device_id.'">
+												50%
+											</output>
+										</div>';
+							}
+							$display.=
+										'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+											<i class="fa '.$right_icon.'"></i>
+										</div>';
+							if (!empty($info->device_opt->{13}->valeur)){
+								$display.=
+										'<div class="row">
+											<input value="'.$info->device_opt->{13}->valeur.'" min="0" step="1" max="255"
+											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
+											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
+											       id="slider-value-'.$info->room_device_id.'" type="range">
+										</div>';
+							}
+							else {
+								$display.=
+										'<div class="row">
+											<input value="128" min="0" step="1" max="255"
+											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
+											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
+											       id="slider-value-'.$info->room_device_id.'" type="range">
+										</div>';
+							}
 		break;
 			//  EnOcean
 		case 2:

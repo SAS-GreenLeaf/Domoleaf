@@ -2,7 +2,7 @@
 
 include('header.php');
 
-if (!empty($_GET['iddevice']) && !empty($_GET['optionid'])){
+if (!empty($_GET['iddevice']) && !empty($_GET['optionid'])) {
 	if(empty($_GET['val'])) {
 		$_GET['val'] = 0;
 	}
