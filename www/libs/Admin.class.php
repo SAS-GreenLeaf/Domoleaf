@@ -1366,6 +1366,7 @@ class Admin extends User {
 		$listRoom = array();
 		$listDevice = array();
 		$listApps= array();
+		$listSmartcmd = array();
 		
 		$listall = $this->mcAllowed();
 		
