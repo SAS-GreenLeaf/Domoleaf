@@ -1132,8 +1132,12 @@ class User {
 	function searchSmartcmdById($smartcmd_id){
 		$link = Link::get_link('mastercommand');
 	
-		$sql = 'SELECT name, user_id
+		$sql = 'SELECT smartcommand_list.name, user_id,
+				       smartcommand_list.room_id AS room_id,
+				       room.floor AS floor_id, floor.floor_name AS floor_name
 				FROM smartcommand_list
+				LEFT OUTER JOIN room ON room.room_id = smartcommand_list.room_id
+				LEFT OUTER JOIN floor ON floor.floor_id = room.floor
 				WHERE smartcommand_id=:smartcmd_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
@@ -1146,7 +1150,7 @@ class User {
 		if($do->user_id != $this->getId()) {
 			return 0;
 		}
-		return $do->name;
+		return $do;
 	}
 	
 	function countElemSmartcmd($idsmartcmd) {
@@ -1504,6 +1508,18 @@ class User {
 	
 	function confOptionList(){
 		return null;
+	}
+	
+	/*** Updates ***/
+	
+	function confCheckUpdates() {
+		error_log("GO");
+		$socket = new Socket();
+		$socket->send('check_updates');
+		
+		$res = $socket->receive();
+		
+		error_log("RES = ".$res);
 	}
 	
 	/*** Master command ***/

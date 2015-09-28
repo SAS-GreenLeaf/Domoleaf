@@ -256,6 +256,9 @@ echo
 			success: function(result) {
 				$("#drop-smartcmd").html(result);
 				setDroppable();
+				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
+					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
+				}
 			}
 		});
 	}
@@ -284,6 +287,12 @@ echo
 				popup_close();
 			}
 		});
+	}
+						
+	function setLinkedRoom(floor_id, room_id) {
+		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
+		listRoomsLR('.$id_smartcmd.');
+		$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
 	}
 	
 </script>';
