@@ -2,7 +2,12 @@
 
 echo -e "[ \033[32mOK\033[0m ] Done removing Greenleaf master daemon"
 
-rm -rf /usr/bin/glmaster /etc/greenleaf/www
+rm -f /etc/cron.d/glmaster.cron
+rm -f /etc/greenleaf/www
+rm -f /etc/greenleaf/sql
+rm -f /init.d/glmaster
+rm -f /etc/nginx/sites-available/master.conf
+rm -rf /usr/bin/glmaster 
 
 rm -f /var/run/glmaster.pid
 rm -f /var/log/glmaster.log

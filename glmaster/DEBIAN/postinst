@@ -62,6 +62,12 @@ do
 	fi
 done
 
+#Copy saved images
+if [ -d /etc/greenleaf/custom ]; then
+	cp -r /etc/greenleaf/custom/* /etc/greenleaf/www/templates/default/custom/
+	rm -rf /etc/greenleaf/custom
+fi
+
 chown www-data:www-data /etc/greenleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/greenleaf/www/templates/default/custom/room
 
