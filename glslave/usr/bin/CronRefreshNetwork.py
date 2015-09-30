@@ -4,7 +4,6 @@ import time
 import socket
 import json
 
-MASTER_PREFIX = "MD3"
 SLAVE_PREFIX = "SD3"
 
 def send_command(ip, port):
@@ -23,7 +22,8 @@ def send_command(ip, port):
 
 if __name__ == "__main__":
     hostname = socket.gethostname()
-    if MASTER_PREFIX in hostname:
-        send_command('127.0.0.1', 4224)
-    elif SLAVE_PREFIX in hostname:
+    if SLAVE_PREFIX in hostname:
         send_command('127.0.0.1', 4243)
+    #master by default
+    else:
+        send_command('127.0.0.1', 4224)

@@ -44,7 +44,7 @@ echo '	<div class="col-xs-6">
 					
 				$pos = strpos($elem->hostname, 'MD3');
 				$pos1 = strpos($elem->hostname, 'SD3');
-				if ($pos !== false 	or $pos1 !== false){
+				if ($pos !== false or $pos1 !== false or $elem->ip_addr == '127.0.0.1') {
 					echo '	<tr>'.
 							'<td class="cursor" onclick="AutoFill(\''.$elem->hostname.'\')">'.$elem->hostname.'</td>'.
 							'<td>'.$elem->ip_addr.'</td>'.

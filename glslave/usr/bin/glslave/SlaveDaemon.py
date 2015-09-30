@@ -326,6 +326,7 @@ class SlaveDaemon:
         Stored every device on network which have his hostname beginning by "MD3" and stores it
         in the self.connected_masters dict(), with hostnames as keys and sockets freshly open as values.
         """
+        hostname = socket.gethostname()
         self.connected_masters = {};
         for host in self._hostlist:
             if MASTER_NAME_PREFIX in host._Hostname:
@@ -334,7 +335,7 @@ class SlaveDaemon:
                     self.logger.error('in connect_to_masters: No ' + SLAVE_CONF_CONNECT_PORT_ENTRY + ' in ' + SLAVE_CONF_CONNECT_SECTION + ' section or maybe no such ' + SLAVE_CONF_CONNECT_SECTION + ' defined');
                     sys.exit(1);
                 try:
-                    self.logger.info('Connecting to ' + str(host._IpAddr) + ":" + str(port));
+                    self.logger.info('Connecting to ' + str(host._IpAddr) + ':' + str(port));
                     sock = socket.create_connection((host._IpAddr, port));
                     hostname = host._Hostname.split('.')[0];
                     self.connected_masters[host._Hostname] = sock;
@@ -342,6 +343,19 @@ class SlaveDaemon:
                     frameinfo = getframeinfo(currentframe());
                     self.logger.error('in connect_to_masters: ' + str(e));
                     pass;
+        if MASTER_NAME_PREFIX not in hostname:
+            port = self._parser.getValueFromSection(SLAVE_CONF_CONNECT_SECTION, SLAVE_CONF_CONNECT_PORT_ENTRY);
+            if not port:
+                self.logger.error('in connect_to_masters: No ' + SLAVE_CONF_CONNECT_PORT_ENTRY + ' in ' + SLAVE_CONF_CONNECT_SECTION + ' section or maybe no such ' + SLAVE_CONF_CONNECT_SECTION + ' defined');
+                sys.exit(1);
+            try:
+                self.logger.info('Connecting to 127.0.0.1:' + str(port));
+                sock = socket.create_connection(('127.0.0.1', port));
+                self.connected_masters[hostname] = sock;
+            except Exception as e:
+                frameinfo = getframeinfo(currentframe());
+                self.logger.error('in connect_to_masters: ' + str(e));
+                pass;
 
     def send_knx_data_to_masters(self, data):
         """
