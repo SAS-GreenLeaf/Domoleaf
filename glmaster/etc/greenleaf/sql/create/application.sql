@@ -26,6 +26,7 @@ VALUES
 	(4, 'Consumption', '', '', '', 'Consommation', ''),
 	(5, 'Air conditioning', '', '', '', 'Air conditionné', ''),
 	(6, 'Audio', '', '', '', 'Audio/Vidéo', ''),
+	(7, 'Smartcommands', '', '', '', 'Smartcommands', ''),
 	(8, 'Garden', '', '', '', 'Jardin', ''),
 	(9, 'Aspiration', '', '', '', 'Aspiration', ''),
 	(10, 'Furnace', '', '', '', 'Chaudière', ''),
