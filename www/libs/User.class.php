@@ -1132,8 +1132,12 @@ class User {
 	function searchSmartcmdById($smartcmd_id){
 		$link = Link::get_link('mastercommand');
 	
-		$sql = 'SELECT name, user_id
+		$sql = 'SELECT smartcommand_list.name, user_id,
+				       smartcommand_list.room_id AS room_id,
+				       room.floor AS floor_id, floor.floor_name AS floor_name
 				FROM smartcommand_list
+				LEFT OUTER JOIN room ON room.room_id = smartcommand_list.room_id
+				LEFT OUTER JOIN floor ON floor.floor_id = room.floor
 				WHERE smartcommand_id=:smartcmd_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
@@ -1146,7 +1150,7 @@ class User {
 		if($do->user_id != $this->getId()) {
 			return 0;
 		}
-		return $do->name;
+		return $do;
 	}
 	
 	function countElemSmartcmd($idsmartcmd) {
@@ -1167,8 +1171,9 @@ class User {
 	function listSmartcmd(){
 		$link = Link::get_link('mastercommand');
 	
-		$sql = 'SELECT smartcommand_id, name
+		$sql = 'SELECT smartcommand_id, name, room.room_name
 				FROM smartcommand_list
+				LEFT OUTER JOIN room ON smartcommand_list.room_id = room.room_id
 				WHERE user_id=:user_id
 				ORDER BY name';
 		
@@ -1177,9 +1182,13 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			if (empty($do->room_name)) {
+				$do->room_name = 0;
+			}
 			$list[$do->smartcommand_id] = array(
 					'smartcommand_id'     => $do->smartcommand_id,
-					'name'                => $do->name
+					'name'                => $do->name,
+					'room_name'           => $do->room_name
 			);
 		}
 		
@@ -1506,6 +1515,19 @@ class User {
 		return null;
 	}
 	
+	/*** Updates ***/
+	
+	function confCheckUpdates() {
+		$socket = new Socket();
+		$socket->send('check_updates');
+	}
+	
+	function confUpdateVersion() {
+		$socket = new Socket();
+		$socket->send('update');
+	}
+	
+	
 	/*** Master command ***/
 	
 	/**
@@ -1677,7 +1699,6 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(!empty($do->device_allowed)){
 			if(!empty($do->addr_plus)){
 				$sql ='UPDATE room_device_option
@@ -1761,7 +1782,6 @@ class User {
 	}
 	
 	function mcSmartcmd($smartcmd_id){
-		error_log("SEND SOCKET");
 		$socket = new Socket();
 		$socket->send('smartcmd_launch', $smartcmd_id);
 	}

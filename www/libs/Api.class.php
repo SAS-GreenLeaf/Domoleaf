@@ -834,6 +834,14 @@ class Api {
 								$res = $user->confDbRestoreUsb($var[0]);
 							}
 						break;
+						
+						case 'confCheckUpdates':
+							$res = $user->confCheckUpdates($var[0]);
+						break;
+						
+						case 'confUpdateVersion':
+							$res = $user->confUpdateVersion();
+						break;
 
 						/*** KNX action ***/
 						case 'knx_write_l':

@@ -35,8 +35,13 @@ echo '
 			<table id="table-'.$elem['id'].'" class="table table-bordered table-striped table-condensed">
 				<thead>
 					<tr>
-						<th id="thfield-'.$elem['id'].'"><a href="/conf_installation/'.$elem['id'].'" >'.$elem['name'].'</a></th>
+						<th id="thfield-'.$elem['id'].'">
+							<a href="/conf_installation/'.$elem['id'].'" >'.$elem['name'].'</a>
+						</th>
 						<th class="col-sm-2 col-xs-2 center">
+							<a href="/conf_installation/'.$elem['id'].'" class="btn btn-info">
+								<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							</a>
 							<button type="button" title="'._('Edit').'" class="btn btn-primary" id="btn-edit-'.$elem['id'].'" onclick="PopupRenameFloor('.$elem['id'].')">
 								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							</button>
@@ -50,8 +55,13 @@ echo '
 					foreach ($elem['room'] as $room){
 						echo '
 							<tr>
-								<td id="tdfield-'.$room['id'].'" class="cursor" onclick="SelectRoom(\''.$elem['id'].'\', \''.$room['id'].'\')">'.$room['name'].'</td>
+								<td class="cursor">
+									<a href="/conf_installation/'.$elem['id'].'/'.$room['id'].'">'.$room['name'].'</a>
+								</td>
 								<td class="center">
+									<a href="/conf_installation/'.$elem['id'].'/'.$room['id'].'" class="btn btn-info">
+										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+									</a>
 									<button type="button" title="'._('Edit').'" class="btn btn-primary" id="btn-edit-'.$room['id'].'" onclick="PopupRenameRoom('.$room['id'].','.$elem['id'].')">
 										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 									</button>
@@ -70,13 +80,6 @@ echo '
 		
 <script type="text/javascript">
 
-function SelectRoom(floorid, roomid){
-	
-	if (floorid && roomid){
-		location.href="/conf_installation/"+floorid+"/"+roomid;
-	}
-}
-		
 function PopupRenameFloor(idfloor){
 		
 	$.ajax({

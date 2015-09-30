@@ -21,7 +21,15 @@ $roomallowed = $listAllVisible->ListRoom;
 $deviceallowed = $listAllVisible->ListDevice;
 
 $installation_info = $result->confUserInstallation;
-$name_smartcmd = $result->searchSmartcmdById;
+$smartcmd_infos = $result->searchSmartcmdById;
+if (empty($smartcmd_infos)) {
+	redirect();
+}
+$name_smartcmd = $smartcmd_infos->name;
+if (empty($smartcmd_infos->floor_id) || empty($smartcmd_infos->room_id)) {
+	$smartcmd_infos->floor_id = 0;
+	$smartcmd_infos->room_id = 0;
+}
 
 if(!empty($installation_info) || !empty($name_smartcmd) ||
 	!empty($floorallowed) || !empty($roomallowed) || !empty($deviceallowed)) {
