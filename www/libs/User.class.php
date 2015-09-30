@@ -1171,8 +1171,9 @@ class User {
 	function listSmartcmd(){
 		$link = Link::get_link('mastercommand');
 	
-		$sql = 'SELECT smartcommand_id, name
+		$sql = 'SELECT smartcommand_id, name, room.room_name
 				FROM smartcommand_list
+				LEFT OUTER JOIN room ON smartcommand_list.room_id = room.room_id
 				WHERE user_id=:user_id
 				ORDER BY name';
 		
@@ -1181,9 +1182,13 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			if (empty($do->room_name)) {
+				$do->room_name = 0;
+			}
 			$list[$do->smartcommand_id] = array(
 					'smartcommand_id'     => $do->smartcommand_id,
-					'name'                => $do->name
+					'name'                => $do->name,
+					'room_name'           => $do->room_name
 			);
 		}
 		
