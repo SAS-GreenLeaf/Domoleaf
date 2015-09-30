@@ -1619,3 +1619,8 @@ a.carousel-control-camera:hover {
 	border-radius: 20px;
 	box-shadow: 1px 1px 4px;
 }
+
+#checkUpdateBtn, #updateBtn {
+	margin-left: 25px;
+	margin-top: -25px;
+}

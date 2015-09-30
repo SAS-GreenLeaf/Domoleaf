@@ -1513,14 +1513,15 @@ class User {
 	/*** Updates ***/
 	
 	function confCheckUpdates() {
-		error_log("GO");
 		$socket = new Socket();
 		$socket->send('check_updates');
-		
-		$res = $socket->receive();
-		
-		error_log("RES = ".$res);
 	}
+	
+	function confUpdateVersion() {
+		$socket = new Socket();
+		$socket->send('update');
+	}
+	
 	
 	/*** Master command ***/
 	
@@ -1776,7 +1777,6 @@ class User {
 	}
 	
 	function mcSmartcmd($smartcmd_id){
-		error_log("SEND SOCKET");
 		$socket = new Socket();
 		$socket->send('smartcmd_launch', $smartcmd_id);
 	}

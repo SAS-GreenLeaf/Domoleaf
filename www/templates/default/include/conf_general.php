@@ -4,11 +4,22 @@ include('configuration-menu.php');
 
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">
-	<div class="center"><h2>'._('General configuration').'</h2></div><br/><br/>
+	<div class="center">
+		<h2>'._('General configuration').'</h2>
+	</div><br/><br/>
 
 	<div class="col-xs-12 col-md-6">
+		<div id="noUpdate" class="alert alert-warning center" role="alert" hidden>
+			<p>'._('No update available').'<p>
+		</div>
 		<b>'._('Version').'</b><br/>
 		'._('Current:').' '.$mastersversion.'
+		<button id="checkUpdateBtn" type="button" class="btn btn-info" onclick="popupCheckUpdates()" title="'._('Check Updates').'">
+			<i class="fa fa-refresh"></i>
+		</button>
+		<button id="updateBtn" type="button" class="btn btn-info hide" onclick="popupUpdateVersion()" title="'._('Update').'">
+			<i class="fa fa-download"></i>
+		</button>
 	</div>
 	<div class="col-xs-12 col-md-6">
 		<input id="checkboxaccess" type="checkbox"> '._('Activate remote access').'
@@ -249,6 +260,77 @@ function SendTestMail(){
 			}
 		});
 	}
+}
+
+var idIntervalCheck = null;
+
+function popupCheckUpdates(){
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_check_updates.php",
+		success: function(result) {
+			idIntervalCheck = setInterval(function() { getEndCheck(); }, 10000);
+			BootstrapDialog.show({
+				title: "'._('Checking updates').'",
+				message: result,
+				closable: false,
+			});
+		}
+	});
+}
+
+function getEndCheck(){
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/form/form_conf_check_version.php",
+		data:"idVersion="+13,
+		success: function(result){
+			if (result != "") {
+				clearInterval(idIntervalCheck);
+				if (result != "'.$mastersversion.'") {
+					$("#checkUpdateBtn").addClass("hide");
+					$("#updateBtn").removeClass("hide");
+					$("#noUpdate").hide();
+				}
+				else {
+					$("#updateBtn").addClass("hide");
+					$("#checkUpdateBtn").removeClass("hide");
+					$("#noUpdate").show();
+				}
+				popup_close();
+			}
+		}
+	});
+}
+
+function popupUpdateVersion(){
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_conf_update_version.php",
+		success: function(result) {
+			idIntervalUpdate = setInterval(function() { getEndUpdate(); }, 10000);
+			BootstrapDialog.show({
+				title: "'._('Updating box').'",
+				message: result,
+				closable: false,
+			});
+		}
+	});
+}
+						
+function getEndUpdate(){
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/form/form_conf_check_version.php",
+		data:"idVersion="+4,
+		success: function(result){
+			if (result != "'.$mastersversion.'") {
+				clearInterval(idIntervalUpdate);
+				popup_close();
+				location.reload();
+			}
+		}
+	});
 }
 
 </script>';

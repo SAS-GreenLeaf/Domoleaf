@@ -100,7 +100,7 @@ class SlaveDaemon:
 
     def update(self, json_obj, connection):
         call(['apt-get', 'update']);
-        call(['apt-get', 'install', 'glslave', '-y']);
+        call(['DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', 'glslave', '-y']);
         version_file = open('/etc/greenleaf/.glslave.version', 'r');
         if not version_file:
             self.logger.error('/etc/greenleaf/.glslave.version: no such file or directory');

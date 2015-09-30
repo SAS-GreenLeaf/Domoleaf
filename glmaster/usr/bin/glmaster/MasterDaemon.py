@@ -95,6 +95,7 @@ DATA_BACKUP_DB_CREATE_USB     = 'backup_db_create_usb';
 DATA_BACKUP_DB_REMOVE_USB     = 'backup_db_remove_usb';
 DATA_BACKUP_DB_LIST_USB       = 'backup_db_list_usb';
 DATA_BACKUP_DB_RESTORE_USB    = 'backup_db_restore_usb';
+DATA_CHECK_UPDATES            = 'check_updates';
 DATA_UPDATE                   = 'update';
 DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
 
@@ -166,6 +167,7 @@ class MasterDaemon:
             DATA_BACKUP_DB_LIST_USB           : self.backup_db_list_usb,
             DATA_BACKUP_DB_RESTORE_USB        : self.backup_db_restore_usb,
             DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
+            DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update
         };
 
@@ -277,9 +279,29 @@ class MasterDaemon:
         else:
             frameinfo = getframeinfo(currentframe());
 
+    def check_updates(self, json_obj, connection):
+        self.logger.info('CHECKING UPDATES');
+        query = 'SELECT configuration_value FROM configuration WHERE configuration_id=4';
+        actual_version = self.sql.mysql_handler_personnal_query(query);
+        if not actual_version:
+            self.logger.error("NO MASTER VERSION");
+            return;
+        query = 'UPDATE configuration SET configuration_value="" WHERE configuration_id=13';
+        self.sql.mysql_handler_personnal_query(query);
+        p = Popen(['apt-show-versions',  '-u', 'glmaster'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
+        output, error = p.communicate();
+        if p.returncode == 0:
+            tab = output.decode("utf-8").split(" ");
+            version = tab[-1].rsplit("\n")[0];
+        else:
+            version = actual_version[0][0];
+        query = 'UPDATE configuration SET configuration_value="' + version + '" WHERE configuration_id=13';
+        self.sql.mysql_handler_personnal_query(query);
+        self.logger.info('END');
+
     def update(self, json_obj, connection):
         call(['apt-get', 'update']);
-        call(['apt-get', 'install', 'glmaster', 'glslave', '-y']);
+        call(['DEBIAN_FRONTED=noninteractive', 'apt-get', 'install', 'glmaster', 'glslave', '-y']);
         hostname = socket.gethostname();
         if '.' in hostname:
             hostname = hostname.split('.')[0];
@@ -490,7 +512,7 @@ class MasterDaemon:
         Updates room_device_option values in the database.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-        
+
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
         connection.close();
 
@@ -628,7 +650,7 @@ class MasterDaemon:
         mute = UpnpAudio(json_obj['addr'], int(json_obj['port'])).get_mute();
         mute = (int(mute)+1)%2;
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute(mute = mute);
-        
+
     def upnp_set_next(self, json_obj, dev, hostname):
         """
         Send "next" command to the Upnp device described in dev
