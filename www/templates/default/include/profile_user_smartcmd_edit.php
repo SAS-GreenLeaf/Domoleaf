@@ -238,7 +238,7 @@ echo
 		if (room_id_device > 0) {
 			$.ajax({
 				type: "GET",
-				url: "/templates/default/form/form_user_scenarios_opt_list.php",
+				url: "/templates/default/form/form_user_smartcmd_opt_list.php",
 				data: "room_id_device="+room_id_device
 				       +"&id_smartcmd="+id_smartcmd,
 				success: function(result) {

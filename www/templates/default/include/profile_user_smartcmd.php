@@ -30,7 +30,7 @@ echo '
 								echo '
 								<td>'.$elem->room_name.'</td>
 								<td class="center">
-									<a href="/profile_user_scenarios/'.$elem->smartcommand_id.'">
+									<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'">
 										<button type="button"
 										        title="'._('Edit Smartcommand').'"
 										        class="btn btn-primary">

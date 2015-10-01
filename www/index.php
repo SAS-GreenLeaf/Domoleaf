@@ -34,13 +34,13 @@ if($request->is_co()) {
 				$page = $_GET['page'];
 			break;
 			
-			//Profile scenarios
-			case 'profile_user_scenarios':
+			//Profile smartcmd
+			case 'profile_user_smartcmd':
 				$page = $_GET['page'];
 			break;
 			
-			//Profile edit scenarios
-			case 'profile_user_scenarios_edit':
+			//Profile edit smartcmd
+			case 'profile_user_smartcmd_edit':
 				$page = $_GET['page'];
 				break;
 			
