@@ -58,7 +58,7 @@ echo '
 		<div id="linked-room" class="navbar-brand">
 			'._('Linked Room').'
 			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
-			        onchange="listRoomsLR('.$id_smartcmd.')">
+			        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
 				<option value="0">'._('No floor selected').'</option>';
 				foreach ($installation_info as $floor) {
 					echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
@@ -291,8 +291,10 @@ echo
 						
 	function setLinkedRoom(floor_id, room_id) {
 		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
-		listRoomsLR('.$id_smartcmd.');
-		$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
+		listRoomsOfFloor('.$id_smartcmd.', 1);
+		setTimeout(function(){
+						$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
+					}, 500);
 	}
 	
 </script>';
