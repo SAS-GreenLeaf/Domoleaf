@@ -91,6 +91,19 @@ echo
 	
 	displaySmartcmd('.$id_smartcmd.');
 	
+	function openDivs(floor_id = 0, room_id = 0) {
+		if (floor_id == 0) {
+			floor_id = $(".list-group").find("div").attr("id");
+			floor_id = floor_id.split("floor-")[1];
+		}
+		ShowRoomList(floor_id);
+		if (room_id == 0) {
+			room_id = $("#roomList-"+floor_id).find("div").attr("id");
+			room_id = room_id.split("room-")[1];
+		}
+		ShowDeviceList(room_id);
+	}
+	
 	function popupUpdateSmartcmdName(smartcmd_id) {
 		$.ajax({
 			type: "GET",
@@ -259,6 +272,7 @@ echo
 				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
 					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 				}
+				openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 			}
 		});
 	}
