@@ -368,31 +368,61 @@ function selectDelay(smartcmd_id, exec_id) {
 	});
 }
 
-function dropZoneAnimate() {
-	$(".smartcmdElemDrop").addClass("drop-zone-activate", "100");
+function dropZoneAnimate(trigger = 0) {
+	if (trigger == 0) {
+		$(".smartcmdElemDrop").addClass("drop-zone-activate", "100");
+	}
+	else {
+		$(".triggerElemDrop").addClass("drop-zone-activate", "100");
+	}
 }
 
-function dropZoneStop() {
-	$(".smartcmdElemDrop").removeClass("drop-zone-activate");
+function dropZoneStop(trigger = 0) {
+	if (trigger == 0) {
+		$(".smartcmdElemDrop").removeClass("drop-zone-activate");
+	}
+	else {
+		$(".triggerElemDrop").removeClass("drop-zone-activate");
+	}
 }
 
-function listRoomsLR(smartcmd_id) {
+function listRoomsOfFloor(elem_id, smartcmd = 0) {
 	var floor_id;
 	
-	floor_id = parseInt($("#selectFloor-"+smartcmd_id).val());
+	floor_id = parseInt($("#selectFloor-"+elem_id).val());
 	$.ajax({
 		type: "GET",
-		url: "/templates/default/form/form_list_rooms_lr.php",
-		data: "smartcmd_id="+smartcmd_id
-				+"&floor_id="+floor_id,
+		url: "/templates/default/form/form_list_rooms_of_floor.php",
+		data: "floor_id="+floor_id,
 		success: function(result) {
 			if (result) {
-				$("#selectRoom-"+smartcmd_id).html(result);
+				$("#selectRoom-"+elem_id).html(result);
 				$('.selectpicker').selectpicker('refresh');
 			}
 		}
 	});
-	changeSaveBtn();
+	if (smartcmd == 1) {
+		changeSaveBtn();
+	}
+}
+
+function listDevicesOfRoom(elem_id) {
+	var floor_id;
+	var room_id;
+	
+	floor_id = parseInt($("#selectFloor-"+elem_id).val());
+	room_id = parseInt($("#selectRoom-"+elem_id).val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_list_devices_of_room.php",
+		data: "floor_id="+floor_id+"&room_id="+room_id,
+		success: function(result) {
+			if (result) {
+				$("#selectDevice-"+elem_id).html(result);
+				$('.selectpicker').selectpicker('refresh');
+			}
+		}
+	});
 }
 
 function saveLinkedRoom(smartcmd_id) {
@@ -435,6 +465,140 @@ function launchSmartcmd(smartcmd_id){
 		}
 	});
 }
+
+/*** Smartcommands and Triggers ***/
+
+function ShowRoomList(floor_id){
+	
+	if ($("#roomList-"+floor_id).hasClass("open")) {
+		$("#roomList-"+floor_id).removeClass("open");
+		$("#roomList-"+floor_id+" ul.open").toggle("slow");
+		$("#roomList-"+floor_id+" ul.open").removeClass("open");
+		$("li div.active").removeClass("active");
+		$("#floor-"+floor_id+" #arrow-icon").removeClass("fa-caret-up");
+		$("#floor-"+floor_id+" #arrow-icon").addClass("fa-caret-down");
+	}
+	else {
+		$("#roomList-"+floor_id).addClass("open");
+		$("#floor-"+floor_id+" #arrow-icon").addClass("fa-caret-up");
+		$("#floor-"+floor_id+" #arrow-icon").removeClass("fa-caret-down");
+	}
+	$("#roomList-"+floor_id).toggle("slow");
+}
+
+function ShowDeviceList(room_id){
+	if ($("#deviceList-"+room_id).hasClass("open")) {
+		$("#deviceList-"+room_id).removeClass("open");
+		$("li div.active").removeClass("active");
+	}
+	else {
+		$("#deviceList-"+room_id).addClass("open");
+	}
+	$("#deviceList-"+room_id).toggle("slow");
+}
+
+function openDivs(floor_id = 0, room_id = 0) {
+	if (floor_id == 0) {
+		floor_id = $(".list-group").find("div").attr("id");
+		floor_id = floor_id.split("floor-")[1];
+	}
+	ShowRoomList(floor_id);
+	if (room_id == 0) {
+		room_id = $("#roomList-"+floor_id).find("div").attr("id");
+		room_id = room_id.split("room-")[1];
+	}
+	ShowDeviceList(room_id);
+}
+
+function selectDevice(id_trigger, room_id_device) {
+	
+	$("#optionList").hide();
+	$("li div.active").removeClass("active");
+	$("#device-"+room_id_device).addClass("active");
+	getDeviceOptions(room_id_device, id_trigger);
+	$("#optionList").show("slow");	
+}
+
+/*** Triggers ***/
+
+function triggerOnOff(room_id_device) {
+	var val;
+	
+	val = $("#triggerOnOff-"+room_id_device).bootstrapSwitch('state');
+	if (val) {
+		val = "1";
+	}
+	else {
+		val = "0";
+	}
+	$("#triggerPopupValue-"+room_id_device).val(val);
+}
+
+function triggerVarie(room_id_device) {
+	var val;
+	
+	val = $("#slider-value-"+room_id_device).val();
+	$("#triggerPopupValue-"+room_id_device).val(val);
+}
+
+function triggerSetVal(room_id_device) {
+	var val;
+	
+	val = $("#number-value-"+room_id_device).val();
+	$("#triggerPopupValue-"+room_id_device).val(val);
+}
+
+function triggerSetOperator(room_id_device) {
+	var op;
+	
+	op = $("#selectOperator-"+room_id_device).val();
+	$("#triggerPopupOperator-"+room_id_device).val(op);
+}
+
+function triggerVolume(room_id_device) {
+	var val;
+	
+	val = $("#volume-"+room_id_device).val();
+	$("#triggerPopupValue-"+room_id_device).val(val);
+}
+
+function triggerUpdateTemp(room_id_device, modif) {
+	var val;
+	
+	val = parseInt($("#temp-"+room_id_device).val()) + modif;
+	$("#triggerPopupValue-"+room_id_device).val(val);
+	$("#temp-"+room_id_device).val(val);
+	$("#output-temp-"+room_id_device).html(val);
+}
+
+function triggerUpdateRGBColor(room_id_device, val) {
+	$("#triggerPopupValue-"+room_id_device).val(encodeURIComponent(val));
+}
+
+function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, modif) {
+	var val = 0;
+	var op = 0;
+
+	val = $("#triggerPopupValue-"+room_id_device).val();
+	op = $("#triggerPopupOperator-"+room_id_device).val();
+	$.ajax({
+			type: "GET",
+			url: "/templates/default/form/form_save_trigger_elem.php",
+			data: "id_trigger="+id_trigger
+					+"&room_id_device="+room_id_device
+					+"&id_option="+id_option
+					+"&option_value="+val
+					+"&id_condition="+id_condition
+					+"&operator="+op
+					+"&modif="+modif,
+			success: function(result) {
+				popup_close();
+				displayTrigger(id_trigger);
+			}
+		});
+}
+
+/*** Color ***/
 
 function getElemHexaColor(selector) {
 	var rgb = $(selector).css("color").match(/\d+/g);

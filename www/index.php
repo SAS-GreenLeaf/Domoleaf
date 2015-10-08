@@ -42,7 +42,17 @@ if($request->is_co()) {
 			//Profile edit smartcmd
 			case 'profile_user_smartcmd_edit':
 				$page = $_GET['page'];
-				break;
+			break;
+			
+			//Profile trigger events
+			case 'profile_user_trigger_events':
+				$page = $_GET['page'];
+			break;
+			
+			//Profile edit trigger events
+			case 'profile_user_trigger_events_edit':
+				$page = $_GET['page'];
+			break;
 			
 			//Conf_general
 			case 'conf_general':

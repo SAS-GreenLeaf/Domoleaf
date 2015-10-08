@@ -9,9 +9,9 @@ if (empty($_GET['id_smartcmd'])) {
 $id_smartcmd = $_GET['id_smartcmd'];
 
 $request = new Api();
-$request -> add_request('confUserInstallation',array(''));
+$request -> add_request('confUserInstallation');
 $request -> add_request('mcVisible');
-$request -> add_request('searchSmartcmdById',array($id_smartcmd));
+$request -> add_request('searchSmartcmdById', array($id_smartcmd));
 $result  =  $request -> send_request();
 
 $listAllVisible = $result->mcVisible;

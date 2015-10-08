@@ -26,7 +26,7 @@ echo '
 										<li class="list-item">
 											<div href="#" id="device-'.$device->room_device_id.'"
 												 class="box-scenar-devices cursor"
-												 onclick="selectDevice('.$id_smartcmd.','.$device->room_device_id.')">
+												 onclick="selectDevice('.$id_trigger.','.$device->room_device_id.')">
 												<i class="margin-right '.getIcon($device->device_id).'"></i>
 												'.$device->name.'
 											</div>
@@ -46,37 +46,31 @@ echo '
 
 echo '
 	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-top save-navbar">
-		<div id="navbarSmartcmdName" class="navbar-brand">
-			'.$name_smartcmd.'
+		<div id="navbarTriggerName" class="navbar-brand">
+			'.$name_trigger.'
 		</div>
 		<button type="button"
-		        title="'._('Edit Smartcommand Name').'"
+		        title="'._('Edit Trigger Name').'"
 		        class="btn btn-primary"
-		        onclick="popupUpdateSmartcmdName('.$id_smartcmd.')">
+		        onclick="popupUpdateTriggerName('.$id_trigger.')">
 			<i class="glyphicon glyphicon-edit"></i>
 		</button>
-		<div id="linked-room" class="navbar-brand">
-			'._('Linked Room').'
-			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
-			        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
-				<option value="0">'._('No floor selected').'</option>';
-				foreach ($installation_info as $floor) {
-					echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
+		<div id="linked-smartcmd" class="navbar-brand">
+			'._('Linked Smartcommand').'
+			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10">';
+				foreach ($smartcmdList as $smartcmd) {
+					echo '<option value="'.$smartcmd->smartcommand_id.'">'.$smartcmd->name.'</option>';
 				}
 				echo '
 			</select>
-			<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
-			        onchange="changeSaveBtn()">
-				<option value="0">'._('No floor selected').'</option>
-			</select>
-			<button id="saveLR_btn"
-			        onclick="saveLinkedRoom('.$id_smartcmd.')"
+			<button id="saveLS_btn"
+			        onclick="saveLinkedSmartcmd('.$id_trigger.')"
 			        class="btn btn-primary">
 				'._('Save').'
 			</button> 
 		</div>
 	</div>
-	<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
+	<div id="drop-conditions" class="col-xs-8 col-xs-offset-4">
 	</div>
 	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-bottom">
 		<div class="navbar-brand">
@@ -89,13 +83,13 @@ echo '
 echo
 '<script type="text/javascript">
 	
-	displaySmartcmd('.$id_smartcmd.');
+	displayTrigger('.$id_trigger.');
 	
-	function popupUpdateSmartcmdName(smartcmd_id) {
+	function popupUpdateTriggerName(trigger_id) {
 		$.ajax({
 			type: "GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_user_update_smartcmd_name.php",
-			data: "smartcmd_id="+smartcmd_id,
+			url: "/templates/'.TEMPLATE.'/popup/popup_user_update_trigger_name.php",
+			data: "trigger_id="+trigger_id,
 			success: function(msg) {
 				BootstrapDialog.show({
 					title: \'<div id="popupTitle" class="center"></div>\',
@@ -106,43 +100,43 @@ echo
 	}
 
 	function setDroppable() {
-		$(".smartcmdElemDrop").droppable({
+		$(".triggerElemDrop").droppable({
 				drop: function(event, ui) {
 					var id_exec;
 					var drop_id;
 					var room_id_device;
 					if ($(ui.draggable).find("div").attr("id")) {
-						id_exec = $(ui.draggable).find("div").attr("id").split("smartcmdElem-")[1];
-						drop_id = this.id.split("smartcmdElemDrop-")[1];
-						changeElemsOrder('.$id_smartcmd.', id_exec, drop_id);
+						id_exec = $(ui.draggable).find("div").attr("id").split("triggerElem-")[1];
+						drop_id = this.id.split("triggerElemDrop-")[1];
+						changeElemsOrder('.$id_trigger.', id_exec, drop_id);
 					}
 					else {
 						room_id_device = $(ui.draggable).attr("id").split("btn-option-")[1];
-						dropNewElem('.$id_smartcmd.', ui, room_id_device, this.id.split("smartcmdElemDrop-")[1]);
+						dropNewElem('.$id_trigger.', ui, room_id_device, this.id.split("triggerElemDrop-")[1]);
 					}
 				},
-				accept: \'.btn-draggable, .smartcmdElem\'
+				accept: \'.btn-draggable, .triggerElem\'
 			});
 	}
 	
-	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id) {
+	function dropNewElem(id_trigger, ui, room_id_device, drop_id) {
 		var id_option;
-		var id_exec;
+		var id_condition;
 		without_params = [363, 364, 365, 366, 367, 368];
 
 		id_option = parseInt($(ui.draggable).find("input").val());
-		id_exec = parseInt(drop_id) + 1;
+		id_condition = parseInt(drop_id) + 1;
 		if (without_params.indexOf(id_option) > -1) {
-			saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exec)
+			saveTriggerWithoutParam(id_trigger, room_id_device, id_option, id_condition)
 		}
 		else {
 			$.ajax({
 				type:"GET",
-				url: "/templates/default/popup/popup_smartcmd_device_option.php",
-				data: "id_smartcmd="+id_smartcmd
+				url: "/templates/default/popup/popup_trigger_device_option.php",
+				data: "id_trigger="+id_trigger
 						+"&room_id_device="+room_id_device
 						+"&id_option="+id_option
-						+"&id_exec="+id_exec
+						+"&id_condition="+id_condition
 						+"&modif="+1,
 				success: function(msg) {
 					BootstrapDialog.show({
@@ -154,14 +148,14 @@ echo
 		}
 	}
 	
-	function onclickDropNewElem(id_smartcmd, room_id_device, id_option, id_exec) {
+	function onclickDropNewElem(id_trigger, room_id_device, id_option, id_condition) {
 		$.ajax({
 				type:"GET",
-				url: "/templates/default/popup/popup_smartcmd_device_option.php",
-				data: "id_smartcmd="+id_smartcmd
+				url: "/templates/default/popup/popup_trigger_device_option.php",
+				data: "id_trigger="+id_trigger
 						+"&room_id_device="+room_id_device
 						+"&id_option="+id_option
-						+"&id_exec="+id_exec
+						+"&id_condition="+id_condition
 						+"&modif="+1,
 				success: function(msg) {
 					BootstrapDialog.show({
@@ -172,36 +166,36 @@ echo
 			});
 	}
 
-	function changeElemsOrder(id_smartcmd, old_id_exec, drop_id) {
-		var new_id_exec;
+	function changeElemsOrder(id_trigger, old_id_condition, drop_id) {
+		var new_id_condition;
 
-		new_id_exec = parseInt(drop_id) + 1;
-		if (old_id_exec < new_id_exec) {
-			new_id_exec = new_id_exec - 1;
+		new_id_condition = parseInt(drop_id) + 1;
+		if (old_id_condition < new_id_condition) {
+			new_id_condition = new_id_condition - 1;
 		}
 		$.ajax({
 			type:"GET",
-			url: "/templates/default/form/form_smartcmd_elem_order.php",
-			data: "id_smartcmd="+id_smartcmd
-					+"&old_id_exec="+old_id_exec
-					+"&new_id_exec="+new_id_exec,
+			url: "/templates/default/form/form_trigger_elem_order.php",
+			data: "id_trigger="+id_trigger
+					+"&old_id_condition="+old_id_condition
+					+"&new_id_condition="+new_id_condition,
 			beforeSend:function(result, status){
 				PopupLoading();
 			},
 			success: function(result) {
-				displaySmartcmd(id_smartcmd);
+				displayTrigger(id_trigger);
 				popup_close();
 			}
 		});
 	}
 
-	function getDeviceOptions(room_id_device, id_smartcmd) {
+	function getDeviceOptions(room_id_device, id_trigger) {
 		if (room_id_device > 0) {
 			$.ajax({
 				type: "GET",
-				url: "/templates/default/form/form_user_smartcmd_opt_list.php",
+				url: "/templates/default/form/form_user_trigger_opt_list.php",
 				data: "room_id_device="+room_id_device
-				       +"&id_smartcmd="+id_smartcmd,
+				       +"&id_trigger="+id_trigger,
 				success: function(result) {
 					$("#optionList").html(result);
 				}
@@ -209,56 +203,49 @@ echo
 		}
 	}
 		
-	function displaySmartcmd(id_smartcmd) {
+	function displayTrigger(id_trigger) {
 		$.ajax({
 			type: "GET",
-			url: "/templates/default/form/form_display_smartcmd.php",
-			data: "id_smartcmd="+id_smartcmd,
+			url: "/templates/default/form/form_display_trigger.php",
+			data: "id_trigger="+id_trigger,
 			success: function(result) {
-				$("#drop-smartcmd").html(result);
+				$("#drop-conditions").html(result);
 				setDroppable();
-				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
-					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
-				}
-				openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
+				openDivs(0, 0);
+				setLinkedSmartcmd('.$trigger_info->id_smartcmd.');
 			}
 		});
 	}
 	
-	function PopupRemoveSmartcmdElem(exec_id) {
+	function PopupRemoveTriggerElem(condition_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_remove_smartcmd_elem.php",
-			data: "exec_id="+exec_id,
+			url: "/templates/'.TEMPLATE.'/popup/popup_remove_trigger_elem.php",
+			data: "condition_id="+condition_id,
 			success: function(result) {
 				BootstrapDialog.show({
-					title: "'._('Delete Smartcommand Elem').'",
+					title: "'._('Delete Condition').'",
 					message: result
 				});
 			}
 		});
 	}
 	
-	function RemoveSmartcmdElem(exec_id) {
+	function RemoveTriggerElem(condition_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_smartcmd_elem.php",
-			data: "id_exec="+exec_id+"&id_smartcmd="+'.$id_smartcmd.',
+			url: "/templates/'.TEMPLATE.'/form/form_remove_trigger_elem.php",
+			data: "condition_id="+condition_id+"&id_trigger="+'.$id_trigger.',
 			success: function(result) {
-				displaySmartcmd('.$id_smartcmd.');
+				displayTrigger('.$id_trigger.');
 				popup_close();
 			}
 		});
 	}
 						
-	function setLinkedRoom(floor_id, room_id) {
-		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
-		listRoomsOfFloor('.$id_smartcmd.', 1);
-		setTimeout(function(){
-						$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
-					}, 500);
+	function setLinkedSmartcmd(smartcmd_id) {
+		$("#selectSmartcmd-'.$id_trigger.'").selectpicker(\'val\', smartcmd_id);
 	}
 	
 </script>';
-
 ?>

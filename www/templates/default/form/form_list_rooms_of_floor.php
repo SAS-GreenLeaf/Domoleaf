@@ -2,12 +2,12 @@
 
 include('header.php');
 
-$listRooms = '';
+$listRooms = '<option value="0">'._('No Room selected').'</option>';
 
-if (!empty($_GET['smartcmd_id']) && !empty($_GET['floor_id'])) {
+if (!empty($_GET['floor_id'])) {
 
 	$request = new Api();
-	$request -> add_request('confUserInstallation', array(''));
+	$request -> add_request('confUserInstallation');
 	$result  =  $request -> send_request();
 	
 	$install_info = $result->confUserInstallation;
@@ -18,9 +18,6 @@ if (!empty($_GET['smartcmd_id']) && !empty($_GET['floor_id'])) {
 	foreach ($floor->room as $room) {
 		$listRooms.='<option value="'.$room->room_id.'">'.$room->room_name.'</option>';
 	}
-}
-else {
-	$listRooms.='<option value="0">'._('No floor selected').'</option>';
 }
 
 echo $listRooms;

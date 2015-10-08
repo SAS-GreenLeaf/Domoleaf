@@ -683,7 +683,7 @@ class Api {
 						
 						case 'listSmartcmd' :
 							$res = $user->listSmartcmd();
-							break;
+						break;
 						
 						case 'getSmartcmdElems' :
 							if (!empty($var[0])){
@@ -791,6 +791,124 @@ class Api {
 							}
 						break;
 						
+						case 'searchTriggerById' :
+							if (!empty($var[0])){
+								$res = $user->searchTriggerById($var[0]);
+							}
+						break;
+						
+						case 'countTriggerConditions' :
+							if (!empty($var[0])){
+								$res = $user->countTriggerConditions($var[0]);
+							}
+						break;
+						
+						case 'listTriggers' :
+							$res = $user->listTriggers();
+						break;
+						
+						case 'createNewTrigger' :
+							if (!empty($var[0]) && !empty($var[1])){
+								$res = $user->createNewTrigger($var[0], $var[1]);
+							}
+						break;
+						
+						case 'getTriggerElems' :
+							if (!empty($var[0])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->getTriggerElems($var[0]);
+								}
+							}
+						break;
+
+						case 'updateTriggerName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->updateTriggerName($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'saveNewElemTrigger' :
+							if (empty($var[4])){
+								$var[4] = 0;
+							}
+							if (empty($var[5])){
+								$var[5] = 0;
+							}
+								
+							if (!empty($var[0]) && !empty($var[2]) && !empty($var[3])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+										
+									if ($var[3] == 392 || $var[3] == 393 || $var[3] == 394) {
+										list($red, $green, $blue) = convertHexaToRGB($var[4]);
+										$res = $user->saveNewElemTrigger($var[0], $var[1], $var[2], 392, $red, $var[5]);
+										$res = $user->saveNewElemTrigger($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
+										$res = $user->saveNewElemTrigger($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
+									}
+									else {
+										$res = $user->saveNewElemTrigger($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
+									}
+								}
+							}
+						break;
+						
+						case 'updateTriggerElemOptionValue' :
+							error_log("API");
+							if (empty($var[4])) {
+								$var[4] = 0;
+							}
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[3])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+										
+									if ($var[3] == 392 || $var[3] == 393 || $var[3] == 394) {
+										list($red, $green, $blue) = convertHexaToRGB($var[2]);
+										$res = $user->updateTriggerElemOptionValue($var[0], $var[1], $red, 392);
+										$res = $user->updateTriggerElemOptionValue($var[0], $var[1], $green, 393);
+										$res = $user->updateTriggerElemOptionValue($var[0], $var[1], $blue, 394);
+									}
+									else {
+										$res = $user->updateTriggerElemOptionValue($var[0], $var[1], $var[2], $var[3], $var[4]);
+									}
+								}
+							}
+						break;
+						
+						case 'triggerChangeElemsOrder' :
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->triggerChangeElemsOrder($var[0], $var[1], $var[2]);
+								}
+							}
+						break;
+						
+						case 'changeTriggerState' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->changeTriggerState($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'removeTrigger' :
+							if (!empty($var[0])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->removeTrigger($var[0]);
+								}
+							}
+						break;
+						
+						case 'removeTriggerElem' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->removeTriggerElem($var[0], $var[1]);
+								}
+							}
+						break;
+							
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
 						break;
@@ -878,6 +996,12 @@ class Api {
 						
 						case 'confOptionList':
 							$res = $user->confOptionList();
+						break;
+						
+						/*** Room_device_option ***/
+						
+						case 'listUnits':
+							$res = $user->listUnits();
 						break;
 						
 						/*** Master command ***/
