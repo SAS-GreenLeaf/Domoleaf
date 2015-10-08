@@ -148,6 +148,9 @@ function HandlePopup(type, iddevice){
 	else if (type == 3){
 		var data = new Array("popup_ChromaWheel.php", "'._('ChromaWheel').' <i id=\"icon-image-widget-1\" class=\"fa fa-lightbulb-o\"></i>");
 	}
+	else if (type == 4){
+		var data = new Array("popup_clim.php", "'._('Air conditioner').' <i id=\"icon-image-widget-5\" class=\"fi flaticon-snowflake149\"></i>");
+	}
 	
 	if (data){
 		$.ajax({

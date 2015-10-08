@@ -264,7 +264,9 @@ function display_spa($info){
 
 // Widget Clim
 function display_clim($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '';
+	$display.= '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
+				<h3 class="title">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
