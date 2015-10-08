@@ -356,6 +356,7 @@ function display_audio($info){
 	return $display;
 }
 
+/* Warning latch with On/Off and Open/Close */
 //widget portail
 function display_portal($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
