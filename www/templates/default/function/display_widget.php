@@ -240,6 +240,9 @@ function display_warming($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+	if (!empty($info->device_opt->{13})){
+		$display.=display_varie($info);
+	}
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
 	}
