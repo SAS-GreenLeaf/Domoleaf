@@ -223,6 +223,13 @@ function display_fan($info){
 		$display.=display_OnOff($info);
 	}
 	
+	//if option speed
+	$display.= '<div class="center"><b>Speed</b><br/>';
+	$display.= '<button onclick="" class="btn btn-info">'._('1').'</button> ';
+	$display.= '<button onclick="" class="btn btn-info">'._('2').'</button> ';
+	$display.= '<button onclick="" class="btn btn-info">'._('3').'</button> ';
+	$display.= '</div>';
+	
 	return $display;
 }
 
