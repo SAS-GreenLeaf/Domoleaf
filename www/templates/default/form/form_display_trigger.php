@@ -76,7 +76,7 @@ function displayBtns($trigger_id, $condition_id, $room_device_id, $option_id) {
 		$display.='
 			<button type="button"
 			        title="'._('Edit Condition').'"
-			        class="btn btn-primary btn-elem-trigger"
+			        class="btn btn-primary btn-elem-trigger margin-btn-group"
 			        onclick="triggerUpdateValue('.$trigger_id.', '.$room_device_id.','.$option_id.','.$condition_id.')">
 				<i class="glyphicon glyphicon-edit"></i>
 			</button>';
