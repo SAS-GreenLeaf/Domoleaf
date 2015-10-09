@@ -388,6 +388,9 @@ function display_shutter($info){
 function display_commande($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	if (!empty($info->device_opt->{79})){
+		$display.=display_luminosity($info);
+	}
 	if (!empty($info->device_opt->{72})){
 		$display.=display_temperature($info);
 	}
