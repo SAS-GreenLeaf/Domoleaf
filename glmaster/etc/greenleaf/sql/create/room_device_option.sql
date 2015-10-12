@@ -1,4 +1,4 @@
-CREATE TABLE `room_device_option` (
+CREATE TABLE IF NOT EXISTS `room_device_option` (
   `room_device_id` int(11) unsigned NOT NULL,
   `option_id` int(11) unsigned NOT NULL,
   `addr` varchar(255) DEFAULT NULL,
