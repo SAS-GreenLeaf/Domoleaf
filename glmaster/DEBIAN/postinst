@@ -41,7 +41,7 @@ if grep -q "^password=greenleaf$" /etc/greenleaf/master.conf; then
     echo -e "[ \033[32mOK\033[0m ] Done."
     sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
 else
-    newpasswd=grep -q "^password=" /etc/greenleaf/master.conf | cut -d = -f 2
+    newpasswd=$(grep "^password=" /etc/greenleaf/master.conf | cut -d = -f 2)
     sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
 fi
 
