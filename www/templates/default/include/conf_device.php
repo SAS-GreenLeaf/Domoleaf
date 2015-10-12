@@ -154,7 +154,7 @@ echo '
 if (!empty($tabopt) && sizeof($tabopt) > 0){
 	//KNX
 	if ($device->protocol_id == 1){
-		if (!empty($device->application_id) && $device->application_id == 17){
+		if (!empty($device->application_id) && $device->application_id == 17 || $device->application_id == 2){
 			echo '
 			<table class="table" id="tabopt">
 				<thead>

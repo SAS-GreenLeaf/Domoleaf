@@ -243,6 +243,9 @@ function display_warming($info){
 	if (!empty($info->device_opt->{13})){
 		$display.=display_varie($info);
 	}
+	if (!empty($info->device_opt->{72})){
+		$display.= display_temperature($info);
+	}
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
 	}
@@ -392,7 +395,7 @@ function display_commande($info){
 		$display.=display_luminosity($info);
 	}
 	if (!empty($info->device_opt->{72})){
-		$display.=display_temperature($info);
+		$display.= display_temperature($info);
 	}
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
