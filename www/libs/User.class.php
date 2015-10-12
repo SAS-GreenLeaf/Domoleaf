@@ -1170,6 +1170,7 @@ class User {
 	
 	function listSmartcmd(){
 		$link = Link::get_link('mastercommand');
+		$list = array();
 	
 		$sql = 'SELECT smartcommand_id, name, room.room_name
 				FROM smartcommand_list
@@ -1201,6 +1202,7 @@ class User {
 		$green = 0;
 		$blue = 0;
 		$exec_id = 0;
+		$list = array();
 		
 		$sql = 'SELECT exec_id, smartcommand_elems.room_device_id AS room_device_id,
 				       optiondef.option_id, option_value, time_lapse,
@@ -1214,8 +1216,6 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $id_smartcmd, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
-		$list ='';
 		
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			
