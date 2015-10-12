@@ -20,11 +20,15 @@ then
 fi
 pip3 install scapy-python3
 
+#Upgrade
 if [ -f /etc/greenleaf/slave.conf.save ]; then 
 	aes=$(grep "^aes=" /etc/greenleaf/slave.conf.save | cut -d = -f 2)
-	sed -i "s/aes=greenleaf/aes=$aes/g" /etc/greenleaf/slave.conf
 	rm /etc/greenleaf/slave.conf.save
+else
+	aes=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
 fi
+
+sed -i "s/aes=greenleaf/aes=$aes/g" /etc/greenleaf/slave.conf
 
 #KNXD
 systemctl enable knxd

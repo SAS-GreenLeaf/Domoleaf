@@ -53,7 +53,8 @@ fi
 
 daemon=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
 if [ "$daemon" = "" ]; then
-    secretkey=`echo -n 'greenleaf' | md5sum | sed 's/  -//g'`
+    key=$(grep "^aes=" /etc/greenleaf/slave.conf | cut -d = -f 2)
+    secretkey=`echo -n $key | md5sum | sed 's/  -//g'`
     mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('$hostname','$hostname','$secretkey',1,'$glslave')"
     daemon=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -B -N -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
     mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO daemon_protocol (daemon_id, protocol_id) VALUES ('$daemon',1)"
