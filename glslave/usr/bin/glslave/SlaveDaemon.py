@@ -16,13 +16,16 @@ from Host import *;
 from Logger import *;
 import AESManager;
 from Crypto.Cipher import AES;
+from GLManager import *;
 
 SLAVE_CONF_FILE                 = '/etc/greenleaf/slave.conf';
 HOST_CONF_FILE                  = '/etc/greenleaf/hosts.conf';
 MASTER_NAME_PREFIX              = 'MD3';
+SLAVE_NAME_PREFIX               = 'SD3';
 MAX_MASTERS                     = 100;
 MAX_KNX                         = 100;
 MAX_ENOCEAN                     = 100;
+MAX_CRON                        = 100;
 SELECT_TIMEOUT                  = 0.05;
 TELEGRAM_LENGTH                 = 6 + 255;
 SLAVE_CONF_KNX_SECTION          = 'knx';
@@ -34,6 +37,8 @@ SLAVE_CONF_LISTEN_PORT_ENTRY    = 'port';
 SLAVE_CONF_CONNECT_SECTION      = 'connect';
 SLAVE_CONF_CONNECT_PORT_ENTRY   = 'port';
 SLAVE_CONF_PKEY_AES_ENTRY       = 'aes';
+SLAVE_CONF_CRON_SECTION         = 'cron';
+SLAVE_CONF_CRON_PORT_ENTRY      = 'port';
 CALL_GROUPSWRITE                = 'groupswrite';
 CALL_GROUPWRITE                 = 'groupwrite';
 CALL_GROUPREAD                  = 'groupread';
@@ -53,6 +58,8 @@ KNX_WRITE_TEMP          = 'knx_write_temp';
 CHECK_SLAVE             = 'check_slave';
 MONITOR_IP              = 'monitor_ip';
 DATA_UPDATE             = 'update';
+SEND_TECH               = 'send_tech';
+SEND_ALIVE              = 'send_alive';
 
 def individual2string(addr):
     """
@@ -78,6 +85,7 @@ class SlaveDaemon:
         self.connected_masters = {};
         self.connected_knx = [];
         self.connected_enocean = [];
+        self.connected_cron = [];
         self.clients = [];
         self._scanner = Scanner(HOST_CONF_FILE);
         self._scanner.scan(False);
@@ -87,6 +95,7 @@ class SlaveDaemon:
         self.knx_sock = None;
         self.master_sock = None;
         self.enocean_sock = None;
+        self.cron_sock = None;
         self.private_aes = hashlib.md5(self._parser.getValueFromSection('personnal_key', 'aes').encode()).hexdigest();
         self.functions = {
             KNX_READ_REQUEST    : self.knx_read_request,
@@ -95,7 +104,9 @@ class SlaveDaemon:
             KNX_WRITE_TEMP      : self.knx_write_temp,
             CHECK_SLAVE         : self.check_slave,
             MONITOR_IP          : self.monitor_ip,
-            DATA_UPDATE         : self.update
+            DATA_UPDATE         : self.update,
+            SEND_TECH           : self.send_tech,
+            SEND_ALIVE          : self.send_alive
         };
 
     def update(self, json_obj, connection):
@@ -123,9 +134,12 @@ class SlaveDaemon:
         Calls the loop function.
         """
         self.run = True;
+        
         self.knx_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.master_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.enocean_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.cron_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        
         port = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_PORT_ENTRY);
         if not port:
             sys.exit(2);
@@ -135,15 +149,25 @@ class SlaveDaemon:
         port_enocean = self._parser.getValueFromSection(SLAVE_CONF_ENOCEAN_SECTION, SLAVE_CONF_ENOCEAN_PORT_ENTRY);
         if not port_enocean:
             sys.exit(2);
+        port_cron = self._parser.getValueFromSection(SLAVE_CONF_CRON_SECTION, SLAVE_CONF_CRON_PORT_ENTRY);
+        if not port_cron:
+            sys.exit(2);
+        
         self.knx_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         self.master_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         self.enocean_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
+        self.cron_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
+        
         self.knx_sock.bind(('', int(port)));
         self.master_sock.bind(('', int(port_master)));
         self.enocean_sock.bind(('', int(port_enocean)));
+        self.cron_sock.bind(('127.0.0.1', int(port_cron)));
+        
         self.knx_sock.listen(MAX_KNX);
         self.master_sock.listen(MAX_MASTERS);
         self.enocean_sock.listen(MAX_ENOCEAN);
+        self.cron_sock.listen(MAX_CRON);
+        
         self.loop();
 
     def accept_knx(self):
@@ -178,7 +202,19 @@ class SlaveDaemon:
             enocean_socks.append(new_conn);
             self.connected_enocean.append(new_conn);
         self.receive_from_enocean(enocean_socks);
-
+    
+    def accept_cron(self):
+        """
+        Get available sockets for reading on the Cron socket.
+        """
+        rlist, wlist, elist = select.select([self.cron_sock], [], [], SELECT_TIMEOUT);
+        cron_socks = [];
+        for item in rlist:
+            new_conn, addr = item.accept();
+            cron_socks.append(new_conn);
+            self.connected_cron.append(new_conn);
+        self.receive_from_cron(cron_socks);
+    
     def parse_data(self, data, connection):
         """
         Calls the wanted function with the packet_type described in 'data' (JSON syntax)
@@ -252,7 +288,25 @@ class SlaveDaemon:
                 if enocean in self.connected_enocean:
                     enocean.close();
                     self.connected_enocean.remove(enocean);
-
+    
+    def receive_from_cron(self, cron_to_read):
+        """
+        Receive data from Cron and execute it.
+        """
+        for cron in cron_to_read:
+            data = cron.recv(4096);
+            if data:
+                json_str = json.JSONEncoder().encode(
+                    {
+                        "packet_type": data.decode()
+                    }
+                );
+                self.parse_data(json_str, cron);
+            else:
+                if cron in self.connected_cron:
+                    cron.close();
+                    self.parse_data.remove(cron);
+    
     def check_slave(self, json_obj, connection):
         """
         Callback called each time a check_slave packet is received.
@@ -310,7 +364,16 @@ class SlaveDaemon:
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
-
+            try:
+                self.accept_cron();
+            except Exception as e:
+                frameinfo = getframeinfo(currentframe());
+                self.logger.error('in loop accept_cron: ' + str(e));
+                print('in loop accept_cron: ' + str(e));
+            except KeyboardInterrupt as e:
+                frameinfo = getframeinfo(currentframe());
+                self.logger.error('in loop: Keyboard interrupt');
+            
     def stop(self):
         """
         Stop the daemon and closes all sockets.
@@ -329,7 +392,7 @@ class SlaveDaemon:
         hostname = socket.gethostname()
         self.connected_masters = {};
         for host in self._hostlist:
-            if MASTER_NAME_PREFIX in host._Hostname:
+            if MASTER_NAME_PREFIX in host._Hostname or str(host._IpAddr) == '127.0.0.1':
                 port = self._parser.getValueFromSection(SLAVE_CONF_CONNECT_SECTION, SLAVE_CONF_CONNECT_PORT_ENTRY);
                 if not port:
                     self.logger.error('in connect_to_masters: No ' + SLAVE_CONF_CONNECT_PORT_ENTRY + ' in ' + SLAVE_CONF_CONNECT_SECTION + ' section or maybe no such ' + SLAVE_CONF_CONNECT_SECTION + ' defined');
@@ -343,7 +406,7 @@ class SlaveDaemon:
                     frameinfo = getframeinfo(currentframe());
                     self.logger.error('in connect_to_masters: ' + str(e));
                     pass;
-        if MASTER_NAME_PREFIX not in hostname:
+        if SLAVE_NAME_PREFIX in hostname:
             port = self._parser.getValueFromSection(SLAVE_CONF_CONNECT_SECTION, SLAVE_CONF_CONNECT_PORT_ENTRY);
             if not port:
                 self.logger.error('in connect_to_masters: No ' + SLAVE_CONF_CONNECT_PORT_ENTRY + ' in ' + SLAVE_CONF_CONNECT_SECTION + ' section or maybe no such ' + SLAVE_CONF_CONNECT_SECTION + ' defined');
@@ -448,3 +511,21 @@ class SlaveDaemon:
                 self.logger.error('in send_data_to_all_masters: ' + str(e));
                 print(e);
                 pass;
+    
+    def send_tech(self, json_obj, connection):
+        json_str = json.JSONEncoder().encode(
+            {
+                "packet_type": "send_tech",
+                "info": GLManager.TechInfo()
+            }
+        );
+        self.send_data_to_all_masters(json_str);
+        
+    def send_alive(self, json_obj, connection):
+        json_str = json.JSONEncoder().encode(
+            {
+                "packet_type": "send_alive",
+                "info": GLManager.TechAlive()
+            }
+        );
+        self.send_data_to_all_masters(json_str);

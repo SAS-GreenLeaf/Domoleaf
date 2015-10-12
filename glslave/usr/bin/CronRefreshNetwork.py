@@ -23,7 +23,7 @@ def send_command(ip, port):
 if __name__ == "__main__":
     hostname = socket.gethostname()
     if SLAVE_PREFIX in hostname:
-        send_command('127.0.0.1', 4243)
+        send_command('127.0.0.1', 4244)
     #master by default
     else:
         send_command('127.0.0.1', 4224)
