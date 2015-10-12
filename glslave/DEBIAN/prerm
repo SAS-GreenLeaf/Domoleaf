@@ -1,3 +1,5 @@
 #!/bin/bash
 
 echo -e "[ \033[33m..\033[0m ] Removing Greenleaf slave daemon..."
+
+mv /etc/greenleaf/slave.conf /etc/greenleaf/slave.conf.save
