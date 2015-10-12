@@ -459,6 +459,11 @@ function display_furnace($info){
 function display_consumption($info){
 	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	//conso électrique
+	if (!empty($info->device_opt->{399})){
+		$display.= display_consumption_option($info);
+	}
+	
 	return $display;
 }
 
@@ -659,6 +664,21 @@ function display_temperature($info){
 					<i class="fi flaticon-thermometer2"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{72}->addr_plus.'</span>
+				</div>';
+
+	return $display;
+}
+
+//Consumption 
+function display_consumption_option($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{399}->valeur)){
+		$tmp = $info->device_opt->{399}->valeur;
+	}
+	$display = '<div>
+					<i class="fa fa-bolt"></i>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
+					<span>'.$info->device_opt->{399}->addr_plus.'</span>
 				</div>';
 
 	return $display;
