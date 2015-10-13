@@ -908,7 +908,15 @@ class Api {
 								}
 							}
 						break;
-							
+						
+						case 'triggerSaveLinkedSmartcmd' :
+							if (!empty($var[0]) && !empty($var[1])) {
+								if (!empty($user->searchTriggerById($var[0]))) {
+									$res = $user->triggerSaveLinkedSmartcmd($var[0], $var[1]);
+								}
+							}
+						break;
+						
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
 						break;

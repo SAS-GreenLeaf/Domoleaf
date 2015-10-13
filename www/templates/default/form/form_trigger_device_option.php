@@ -176,10 +176,8 @@ function display_trigger_set_volume($room_id_device) {
 
 function display_trigger_with_operator($room_id_device, $id_option, $optionList, $unitsList) {
 	$opList = array(
-			0 => "=",
-			1 => ">",
-			2 => "<",
-			3 => "!=",
+			1 => _('Greater or Equal'),
+			2 => _('Lesser or Equal'),
 	);
 	
 	$display =
@@ -197,9 +195,10 @@ function display_trigger_with_operator($room_id_device, $id_option, $optionList,
 			</select>
 			&nbsp
 			<input type="text" id="number-value-'.$room_id_device.'"
-					name="option-val" value="0" size="5" oninput="triggerSetVal('.$room_id_device.')"/>
+			       name="option-val" value="0" size="5" oninput="triggerSetVal('.$room_id_device.')"/>
 			<script type="text/javascript">
 				$("#selectOperator-'.$room_id_device.'").selectpicker();
+				triggerSetOperator('.$room_id_device.');
 			</script>';
 	
 	return $display;

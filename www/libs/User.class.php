@@ -1506,9 +1506,9 @@ class User {
 	
 		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name, activated
 				FROM trigger_events_list
-				JOIN smartcommand_list ON trigger_events_list.id_smartcmd= smartcommand_list.smartcommand_id
+				JOIN smartcommand_list ON trigger_events_list.id_smartcmd = smartcommand_list.smartcommand_id
 				WHERE smartcommand_list.user_id=:user_id
-				ORDER BY name';
+				ORDER BY trigger_name';
 	
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1606,7 +1606,7 @@ class User {
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+		$this->udpateTriggersList();
 		return $link->lastInsertId();
 	}
 	
@@ -1623,7 +1623,7 @@ class User {
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+
 		return $trigger_id;
 	}
 	
@@ -1653,6 +1653,7 @@ class User {
 		$req->bindValue(':operator', $operator, PDO::PARAM_INT);
 		$req->bindValue(':option_value', $valoption, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
 	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
@@ -1668,6 +1669,7 @@ class User {
 		$req->bindValue(':option_id', $id_option, PDO::PARAM_INT);
 		$req->bindValue(':operator', $operator, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
 	function triggerChangeElemsOrder($id_trigger, $old_condition_id, $new_condition_id) {
@@ -1718,6 +1720,7 @@ class User {
 		$req->bindValue(':idexec', $old_condition_id, PDO::PARAM_INT);
 		$req->bindValue(':id_trigger', $id_trigger, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
 	function changeTriggerState($trigger_id, $state) {
@@ -1730,6 +1733,7 @@ class User {
 		$req->bindValue(':state', $state, PDO::PARAM_INT);
 		$req->bindValue(':id_trigger', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
 	function removeTrigger($trigger_id) {
@@ -1740,6 +1744,7 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
 	function removeTriggerElem($trigger_id, $condition_id) {
@@ -1759,8 +1764,29 @@ class User {
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->bindValue(':condition_id', $condition_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
 	}
 	
+	function triggerSaveLinkedSmartcmd($trigger_id, $smartcmd_id) {
+		$link = Link::get_link('mastercommand');
+	
+		if ($smartcmd_id == 0) {
+			return;
+		}
+		$sql = 'UPDATE trigger_events_list
+				SET id_smartcmd=:smartcmd_id
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function udpateTriggersList(){
+		$socket = new Socket();
+		$socket->send('triggers_list_update');
+	}
+
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){

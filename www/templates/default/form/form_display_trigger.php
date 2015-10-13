@@ -288,17 +288,15 @@ function display_option_volume($condition_id, $room_id_device, $option_value) {
 
 function display_option_temp($condition_id, $room_device_id, $option_value, $operator) {
 	$opList = array(
-			0 => "=",
-			1 => ">",
-			2 => "<",
-			3 => "!=",
+			1 => _('Greater or Equal'),
+			2 => _('Lesser or Equal'),
 	);
 	
 	$display =
-				'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+				'<button type="button" class="btn btn-info disabled-with-opacity value-trigger" disabled>
 					'.$opList[$operator].'
 				</button>
-				<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+				<button type="button" class="btn btn-info disabled-with-opacity value-trigger" disabled>
 					'.$option_value.'
 				</button>';
 	return $display;

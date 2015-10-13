@@ -402,7 +402,7 @@ function listRoomsOfFloor(elem_id, smartcmd = 0) {
 		}
 	});
 	if (smartcmd == 1) {
-		changeSaveBtn();
+		changeSaveLRBtn();
 	}
 }
 
@@ -449,7 +449,7 @@ function saveLinkedRoom(smartcmd_id) {
 	});
 }
 
-function changeSaveBtn() {
+function changeSaveLRBtn() {
 	$("#saveLR_btn").removeClass("btn-success");
 	$("#saveLR_btn").addClass("btn-primary");
 	$("#saveLR_btn").text("Save");
@@ -596,6 +596,36 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 				displayTrigger(id_trigger);
 			}
 		});
+}
+
+function saveLinkedSmartcmd(trigger_id) {
+	var smartcmd_id;
+	
+	smartcmd_id = parseInt($("#selectSmartcmd-"+trigger_id).val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_save_linked_smartcmd.php",
+		data: "trigger_id="+trigger_id+"&smartcmd_id="+smartcmd_id,
+		success: function(result) {
+			if (result == 0) {
+				$("#saveLS_btn").removeClass("btn-primary");
+				$("#saveLS_btn").addClass("btn-success");
+				$("#saveLS_btn").text("Saved !");
+			}
+			else {
+				$("#saveLS_btn").removeClass("btn-success");
+				$("#saveLS_btn").addClass("btn-danger");
+				$("#saveLS_btn").text("ERROR !");
+			}
+			
+		}
+	});
+}
+
+function changeSaveLSBtn() {
+	$("#saveLS_btn").removeClass("btn-success");
+	$("#saveLS_btn").addClass("btn-primary");
+	$("#saveLS_btn").text("Save");
 }
 
 /*** Color ***/

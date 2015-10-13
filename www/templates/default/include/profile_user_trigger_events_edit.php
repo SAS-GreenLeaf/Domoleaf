@@ -57,7 +57,7 @@ echo '
 		</button>
 		<div id="linked-smartcmd" class="navbar-brand">
 			'._('Linked Smartcommand').'
-			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10">';
+			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10" onchange="changeSaveLSBtn()">';
 				foreach ($smartcmdList as $smartcmd) {
 					echo '<option value="'.$smartcmd->smartcommand_id.'">'.$smartcmd->name.'</option>';
 				}

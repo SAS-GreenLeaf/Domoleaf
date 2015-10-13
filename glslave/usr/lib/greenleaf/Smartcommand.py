@@ -28,7 +28,7 @@ class Smartcommand:
         res = self.sql.mysql_handler_personnal_query(query);
         delay_color = 0;
         for r in res:
-            self.logger.info(r);
+            #self.logger.info(r);
             obj = {};
             obj['sync'] = 0;
             data = {};
