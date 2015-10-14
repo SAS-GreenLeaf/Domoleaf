@@ -1770,6 +1770,22 @@ class Admin extends User {
 		
 		return $list;
 	}
+	
+	function confOptionDptList(){
+		$link = Link::get_link('mastercommand');
+		$list = array();
+		
+		$sql = 'SELECT dpt_optiondef.dpt_id, option_id, unit
+		        FROM dpt_optiondef
+		        JOIN dpt ON dpt.dpt_id=dpt_optiondef.dpt_id';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->option_id][] = clone $do;
+		}
+		
+		return $list;
+	}
 
 	function checkDevice($iddevice){
 		$link = Link::get_link('mastercommand');

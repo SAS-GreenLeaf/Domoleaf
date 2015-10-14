@@ -1515,6 +1515,10 @@ class User {
 		return null;
 	}
 	
+	function confOptionDptList(){
+		return null;
+	}
+	
 	/*** Updates ***/
 	
 	function confCheckUpdates() {

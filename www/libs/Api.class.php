@@ -880,6 +880,10 @@ class Api {
 							$res = $user->confOptionList();
 						break;
 						
+						case 'confOptionDptList':
+							$res = $user->confOptionDptList();
+						break;
+						
 						/*** Master command ***/
 						case 'mcValueDef':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){

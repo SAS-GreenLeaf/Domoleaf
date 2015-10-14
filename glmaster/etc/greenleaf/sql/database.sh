@@ -12,6 +12,7 @@ mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/c
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/device_protocol.sql
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/device_option.sql
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/configuration.sql
+mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/dpt_optiondef.sql
 
 #INSTALLATION
 mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /etc/greenleaf/sql/create/daemon.sql
