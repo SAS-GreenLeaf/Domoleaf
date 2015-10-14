@@ -844,7 +844,7 @@ class Admin extends User {
 		
 		if(!empty($do->room_device_id)) {
 			$sql = 'UPDATE room_device_option
-			        SET option_id=:option_id, addr=:addr, addr_plus=:addr_plus, 
+			        SET option_id=:option_id, addr=:addr, addr_plus=:addr_plus, dpt_id=:dpt_id, 
 			            status=:status
 			        WHERE room_device_id=:room_device_id AND 
 			              option_id=:option_id';
@@ -853,19 +853,21 @@ class Admin extends User {
 			$req->bindValue(':option_id', $options['id'], PDO::PARAM_INT);
 			$req->bindValue(':addr', $options['addr'], PDO::PARAM_STR);
 			$req->bindValue(':addr_plus', $options['addr_plus'], PDO::PARAM_STR);
+			$req->bindValue(':dpt_id', $options['dpt_id'], PDO::PARAM_INT);
 			$req->bindValue(':status', $status, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
 			$sql = 'INSERT INTO room_device_option
-			        (room_device_id, option_id, addr, addr_plus, status)
+			        (room_device_id, option_id, addr, addr_plus, dpt_id, status)
 			        VALUES
-			        (:room_device_id, :option_id, :addr, :addr_plus, :status)';
+			        (:room_device_id, :option_id, :addr, :addr_plus, :dpt_id, :status)';
 			$req = $link->prepare($sql);
 			$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
 			$req->bindValue(':option_id', $options['id'], PDO::PARAM_INT);
 			$req->bindValue(':addr', $options['addr'], PDO::PARAM_STR);
 			$req->bindValue(':addr_plus', $options['addr_plus'], PDO::PARAM_STR);
+			$req->bindValue(':dpt_id', $options['dpt_id'], PDO::PARAM_INT);
 			$req->bindValue(':status', $status, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -1315,11 +1317,14 @@ class Admin extends User {
 		               optiondef.hidden_arg, room_device.device_id, 
 		               optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr, room_device_option.addr_plus, 
+		               room_device_option.addr, room_device_option.addr_plus,
+		               dpt.dpt_id,
+		               dpt.unit,
 		               room_device_option.valeur
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
+		        LEFT JOIN dpt ON room_device_option.dpt_id = dpt.dpt_id
 		        WHERE room_device_option.status = 1';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1330,6 +1335,8 @@ class Admin extends User {
 					'name'      => $do->name,
 					'addr'      => $do->addr,
 					'addr_plus' => $do->addr_plus,
+					'dpt_id'    => $do->dpt_id,
+					'unit'      => $do->unit,
 					'valeur'    => $do->valeur
 				);
 			}

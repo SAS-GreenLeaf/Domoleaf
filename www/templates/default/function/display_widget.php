@@ -665,7 +665,7 @@ function display_temperature($info){
 	$display = '<div>
 					<i class="fi flaticon-thermometer2"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
-					<span>'.$info->device_opt->{72}->addr_plus.'</span>
+					<span>'.$info->device_opt->{72}->unit.'</span>
 				</div>';
 
 	return $display;
@@ -710,7 +710,7 @@ function display_luminosity($info){
 	$display = '<div>
 					<i class="fa fa-sun-o"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$current_id.'">'.$lum.'</span>
-					<span>'.$info->device_opt->{$current_id}->addr_plus.'</span>
+					<span>'.$info->device_opt->{$current_id}->unit.'</span>
 				</div>';
 
 	return $display;

@@ -153,118 +153,41 @@ echo '
 
 if (!empty($tabopt) && sizeof($tabopt) > 0){
 	//KNX
-	if ($device->protocol_id == 1){
-		if (!empty($device->application_id) && $device->application_id == 17 || $device->application_id == 2){
+	if ($device->protocol_id != 6){
+		if (!empty($device->application_id)){
 			echo '
 			<table class="table" id="tabopt">
 				<thead>
 					<tr>
 						<th>'._('Option').'</th>
-						<th>'._('Address').'</th>
-						<th>'._('Unity').'</th>
+						<th>'._('Write address').'</th>
+						<th>'._('Return address').'</th>
+						<th></th>
+						<th></th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>';
-				
-				
-				if (!empty($tabopt[72])){
-					$tmp = $tabopt[72];
-					unset($tabopt[72]);
-					echo '
-					<tr>
-						<td>'.$tmp['name'].'</td>
-						<td>
-							<input id="waddr-'.$tmp['id'].'"
-							       class="form-control knx"
-							       type="text"
-							       placeholder="'._('Address').'">
-						</td>
-						<td>
-							<select class="selectpicker form-control" id="raddr-'.$tmp['id'].'">
-								<option value="°C">'._('Celsius').'</option>
-								<option value="°F">'._('Fahrenheit').'</option>
-								<option value="°K">'._('kelvin').'</option>
-							</select>
-						</td>
-						<td>
-							<div class="checkbox">
-								<input id="toggle-'.$tmp['id'].'"
-								       data-on-color="greenleaf"
-						 		       data-label-width="0"
-								       data-on-text="'._('Enable').'"
-								       data-off-text="'._('Disable').'"
-								       type="checkbox">
-							<div>
-							<script type="text/javascript">
-								$("#toggle-'.$tmp['id'].'").bootstrapSwitch();
-							</script>
-						</td>
-						<td>
-							<div class="btn-group btn-group-greenleaf center">
-								<button type="button"
-								        id="saveoption-'.$tmp['id'].'"
-								        title="'._('Save').'"
-								        class="btn btn-greenleaf save"
-								        onclick="SaveOption(\''.$tmp['id'].'\')">'._('Save').'
-								</button>
-							</div>
-						</td>
-					</tr>';
-				}
-				
-				if (!empty($tabopt[79])){
-					$tmp = $tabopt[79];
-					unset($tabopt[79]);
-					echo '
-					<tr>
-						<td>'.$tmp['name'].'</td>
-						<td>
-							<input id="waddr-'.$tmp['id'].'"
-							       class="form-control knx"
-							       type="text"
-							       placeholder="'._('Address').'">
-						</td>
-						<td>
-							<select class="selectpicker form-control" id="raddr-'.$tmp['id'].'">
-								<option value="lx">'._('Lux').'</option>
-								<option value="lm">'._('Lumen').'</option>
-								<option value="cd">'._('Candela').'</option>
-							</select>
-						</td>
-						<td>
-							<div class="checkbox">
-								<input id="toggle-'.$tmp['id'].'"
-								       data-on-color="greenleaf"
-						 		       data-label-width="0"
-								       data-on-text="'._('Enable').'"
-								       data-off-text="'._('Disable').'"
-								       type="checkbox">
-							<div>
-							<script type="text/javascript">
-								$("#toggle-'.$tmp['id'].'").bootstrapSwitch();
-							</script>
-						</td>
-						<td>
-							<div class="btn-group btn-group-greenleaf center">
-								<button type="button"
-								        id="saveoption-'.$tmp['id'].'"
-								        title="'._('Save').'"
-								        class="btn btn-greenleaf save"
-								        onclick="SaveOption(\''.$tmp['id'].'\')">'._('Save').'
-								</button>
-							</div>
-						</td>
-					</tr>';
-				}
-				
 				foreach ($tabopt as $i => $elem){
 					if (!empty($tabopt[$i])){
 						echo '
 						<tr>
 							<td>'.$tabopt[$i]['name'].'</td>
 							<td><input id="waddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Write address').'"></td>
-							<td></td>
+							<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>
+							<td>';
+								echo '<select class="selectpicker form-control" id="unity-'.$tmp['id'].'">';
+								if (size == 1){
+									echo '<option hidden value="'.$dpt_opt->dpt_id.'"></option>';
+								}
+								else{
+									echo '<select class="selectpicker form-control" id="unity-'.$tmp['id'].'">';
+									foreach ($dpt_optiondef as $dpt_opt){
+										echo '<option value="'.$dpt_opt->dpt_id.'">'.$dpt_opt->dpt_type.'</option>';
+									}
+								}
+								echo '
+							</td>
 							<td>
 								<div class="checkbox">
 									<input id="toggle-'.$tabopt[$i]['id'].'"
@@ -295,51 +218,6 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 				echo '
 				</tbody>
 			</table>';
-		}
-		else if (!empty($tabopt) && sizeof($tabopt) > 0){
-			echo '<table class="table" id="tabopt">';
-			echo ' 
-				<thead>
-					<tr>
-						<th>'._('Option').'</th>
-						<th>'._('Write address').'</th>
-						<th>'._('Return address').'</th>
-						<th>
-						</th>
-					</tr>
-				</thead>
-				<tbody>';
-			foreach ($tabopt as $i => $elem){
-				if (!empty($tabopt[$i])){
-					echo '<tr>
-							<td>'.$tabopt[$i]['name'].'</td>
-							<td><input id="waddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Write address').'"></td>
-							<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input id="toggle-'.$tabopt[$i]['id'].'"
-										       data-on-color="greenleaf"
-										       data-label-width="0"
-										       data-on-text="'._('Enable').'"
-										       data-off-text="'._('Disable').'"
-										       type="checkbox">
-									</label>
-								<div>
-								<script type="text/javascript">
-									$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
-								</script>
-							</td>
-							<td>
-								 <div class="btn-group btn-group-greenleaf center">
-									<button data-loading-text="Loading..." type="button" id="saveoption-'.$tabopt[$i]['id'].'" title="'._('Save').'" class="btn btn-greenleaf save" onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">'._('Save').'</button>
-								</div>
-							</td>
-						</tr>';
-				}
-			}
-			echo '</tbody>';
-			echo '</table>';
 		}
 		echo				'
 				<div class="center">
@@ -538,15 +416,19 @@ function SaveOption(optid){
 	var status = $("#toggle-"+optid).prop(\'checked\');
 	var addr = $("#waddr-"+optid).val();
 	var addr_plus = $("#raddr-"+optid).val();
+	var dpt_id = $("#unity-"+optid).val();
 	
 	if (!addr_plus){
 		addr_plus = "";
+	}
+	if (!dpt_id){
+		dpt_id = 1;
 	}
 	if (CheckAddr(addr, addr_plus, optid)){
 		$.ajax({
 				type:"GET",
 				url: "/form/form_device_info_opt.php",
-				data: "idroomdevice="+idroomdevice+"&opt="+optid+"&addr="+addr+"&addr_plus="+addr_plus+"&status="+status,
+				data: "idroomdevice="+idroomdevice+"&opt="+optid+"&addr="+addr+"&addr_plus="+addr_plus+"&dpt_id="+dpt_id+"&status="+status,
 				complete: function(result, status) {
 					LoadingButton("saveoption-"+optid, 0);
 				}
