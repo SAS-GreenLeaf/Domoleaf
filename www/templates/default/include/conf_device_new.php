@@ -140,6 +140,12 @@ echo '
 
 <script type="text/javascript">
 
+lol();
+
+function lol(){
+	
+}
+
 function HideAll(){
 	$("#ip").hide("slow");
 	$("#knx").hide("slow");
@@ -286,6 +292,7 @@ function GetRoomByFloor(){
 				success: function(result) {
 					$("#listroom").html(result);
 					$(".selectpicker").selectpicker(\'refresh\');
+					$("#listroom").selectpicker(\'val\', '.$_GET['room'].');
 					$("#selectRoom").show();
 				},
 				error: function(result, status, error){
