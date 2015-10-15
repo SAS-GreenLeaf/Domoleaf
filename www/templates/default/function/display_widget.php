@@ -413,8 +413,9 @@ function display_lampe($info){
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
 	}
-	else
-	{
+	
+	else{
+		/*
 		$display = '<div class="info-widget">
 						<button title="'._('More').'"
 								onclick="HandlePopup(2, '.$info->room_device_id.')"
@@ -424,6 +425,8 @@ function display_lampe($info){
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
+		*/
+		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
 
 	if (!empty($info->device_opt->{12})){
