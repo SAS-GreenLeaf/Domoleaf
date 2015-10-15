@@ -168,6 +168,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 					</tr>
 				</thead>
 				<tbody>';
+
 				foreach ($tabopt as $i => $elem){
 					if (!empty($tabopt[$i])){
 						echo '
@@ -194,7 +195,12 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 								else{
 									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
 									foreach ($listdpt->$i as $list){
-										echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+										if (!empty($listoptdevice->dpt_id) && $listoptdevice->dpt_id == $list->dpt_id){
+											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+										}
+										else{
+											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+										}
 									}
 									echo '</select>';
 								}
@@ -242,6 +248,10 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			}
 			if (!empty($elem->addr_plus)){
 				echo '$("#raddr-'.$elem->option_id.'").val(\''.$elem->addr_plus.'\');';
+			}
+			if (!empty($elem->dpt_id)){
+				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'refresh\');';
+				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'val\', \''.$elem->dpt_id.'\');';
 			}
 			if ($elem->status == 1){
 				echo '$("#toggle-'.$elem->option_id.'").prop(\'checked\', true).change();';
