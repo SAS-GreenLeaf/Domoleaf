@@ -408,7 +408,7 @@ function display_lampe($info){
 	if (!empty($info->device_id) && $info->device_id == 78){
 		$display = '<div class="info-widget">
 						<button title="'._('More').'" onclick="HandlePopup(3, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
-							<span class="fa fa-info-circle md"></span>
+							<span class="fa fa-plus md"></span>
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
