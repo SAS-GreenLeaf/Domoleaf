@@ -223,6 +223,13 @@ function display_fan($info){
 		$display.=display_OnOff($info);
 	}
 	
+	//if option speed
+	$display.= '<div class="center"><b>Speed</b><br/>';
+	$display.= '<button onclick="" class="btn btn-info">'._('1').'</button> ';
+	$display.= '<button onclick="" class="btn btn-info">'._('2').'</button> ';
+	$display.= '<button onclick="" class="btn btn-info">'._('3').'</button> ';
+	$display.= '</div>';
+	
 	return $display;
 }
 
@@ -232,6 +239,12 @@ function display_warming($info){
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
+	}
+	if (!empty($info->device_opt->{13})){
+		$display.=display_varie($info);
+	}
+	if (!empty($info->device_opt->{72})){
+		$display.= display_temperature($info);
 	}
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
@@ -264,7 +277,9 @@ function display_spa($info){
 
 // Widget Clim
 function display_clim($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '';
+	$display.= '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
+				<h3 class="title">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -348,7 +363,7 @@ function display_audio($info){
 function display_portal($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
-	if (!empty($info->device_opt->{96})){
+	if (!empty($info->device_opt->{12}) or !empty($info->device_opt->{96})){
 		$display.=display_OpenClose($info);
 	}
 	
@@ -375,8 +390,11 @@ function display_shutter($info){
 function display_commande($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	if (!empty($info->device_opt->{79})){
+		$display.=display_luminosity($info);
+	}
 	if (!empty($info->device_opt->{72})){
-		$display.=display_temperature($info);
+		$display.= display_temperature($info);
 	}
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
@@ -443,6 +461,11 @@ function display_furnace($info){
 function display_consumption($info){
 	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	//conso électrique
+	if (!empty($info->device_opt->{399})){
+		$display.= display_consumption_option($info);
+	}
+	
 	return $display;
 }
 
@@ -452,8 +475,8 @@ function display_consumption($info){
 function display_OpenClose($info){
 	$display ='
 			<div class="margin-bottom btn-group btn-group-greenleaf">
-				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{96}->option_id.'\')">'._('Open').'</button>
-				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{96}->option_id.'\')">'._('Close').'</button>
+				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, 96)">'._('Open').'</button>
+				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, 96)">'._('Close').'</button>
 			</div>';
 	
 	return $display;
@@ -642,7 +665,22 @@ function display_temperature($info){
 	$display = '<div>
 					<i class="fi flaticon-thermometer2"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
-					<span>'.$info->device_opt->{72}->addr_plus.'</span>
+					<span>'.$info->device_opt->{72}->unit.'</span>
+				</div>';
+
+	return $display;
+}
+
+//Consumption 
+function display_consumption_option($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{399}->valeur)){
+		$tmp = $info->device_opt->{399}->valeur;
+	}
+	$display = '<div>
+					<i class="fa fa-bolt"></i>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
+					<span>'.$info->device_opt->{399}->unit.'</span>
 				</div>';
 
 	return $display;
@@ -672,7 +710,7 @@ function display_luminosity($info){
 	$display = '<div>
 					<i class="fa fa-sun-o"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$current_id.'">'.$lum.'</span>
-					<span>'.$info->device_opt->{$current_id}->addr_plus.'</span>
+					<span>'.$info->device_opt->{$current_id}->unit.'</span>
 				</div>';
 
 	return $display;
