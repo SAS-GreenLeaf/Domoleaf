@@ -140,12 +140,6 @@ echo '
 
 <script type="text/javascript">
 
-lol();
-
-function lol(){
-	
-}
-
 function HideAll(){
 	$("#ip").hide("slow");
 	$("#knx").hide("slow");

@@ -252,37 +252,6 @@ function display_fan($info){
 		$display.= '</select>';
 	}
 
-	/*
-	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) || 
-		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
-		$display.= '<div class="center"><b>Speed</b><br/>';
-	}
-
-	if (!empty($info->device_opt->{400})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 400)" class="btn btn-info">'._('1').'</button> ';
-	}
-	if (!empty($info->device_opt->{401})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 401)" class="btn btn-info">'._('2').'</button> ';
-	}
-	if (!empty($info->device_opt->{402})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 402)" class="btn btn-info">'._('3').'</button> ';
-	}
-	if (!empty($info->device_opt->{403})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 403)" class="btn btn-info">'._('4').'</button> ';
-	}
-	if (!empty($info->device_opt->{404})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 404)" class="btn btn-info">'._('5').'</button> ';
-	}
-	if (!empty($info->device_opt->{405})){
-		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 405)" class="btn btn-info">'._('6').'</button> ';
-	}
-	
-	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) || 
-		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
-		$display.= '</div>';
-	}
-	*/
-
 	return $display;
 }
 
@@ -513,11 +482,11 @@ function display_furnace($info){
 	return $display; 
 }
 
-//widget consommation électrique
+//widget electric consumption
 function display_consumption($info){
 	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
-	//conso électrique
+	//consumption option
 	if (!empty($info->device_opt->{399})){
 		$display.= display_consumption_option($info);
 	}
