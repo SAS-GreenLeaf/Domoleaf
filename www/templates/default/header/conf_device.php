@@ -57,4 +57,32 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	}
 }
 
+/*** Modify options name***/
+$option_overload = array(
+	400 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	),
+	401 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	),
+	402 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	),
+	403 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	),
+	404 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	),
+	405 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
+	)
+);
+
 ?>

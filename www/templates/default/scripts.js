@@ -101,7 +101,7 @@ function Variation(iddevice, optionid, step){
 function outputUpdate(iddevice, val) {
 	val = Math.round((parseInt(val)*100)/255);
 	$("#range-"+iddevice).html(val+"%");
-}	
+}
 		
 function onOffToggle(iddevice, optionid){
 	var value = $("#onoff-"+iddevice).prop("checked") ? 1 : 0;
@@ -118,7 +118,7 @@ function onOff(iddevice, value, optionid){
 		complete: function(result, status) {
 		}
 	});
-}	
+}
 
 function getVariation(iddevice, optionid){
 	var value = $("#slider-value-"+iddevice).val();
@@ -157,6 +157,18 @@ function updateRGBColor(iddevice, value){
 		data: "iddevice="+iddevice+"&value="+encodeURIComponent(value),
 		success: function(result) {
 		},
+	});
+}
+
+function changeSpeedFan(iddevice, value){
+	var optionid = $("#speed-fan").val();
+
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_change_speed_fan.php",
+		data: "iddevice="+iddevice+"&value="+value+"&optionid="+optionid,
+		complete: function(result, status) {
+		}
 	});
 }
 

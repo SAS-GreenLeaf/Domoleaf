@@ -222,14 +222,67 @@ function display_fan($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1)" id="speed-fan">';
+	}
+
+	if (!empty($info->device_opt->{400})){
+		$display.= '<option value="400">'._('Speed 1').'</option>';
+	}
+	if (!empty($info->device_opt->{401})){
+		$display.= '<option value="401">'._('Speed 2').'</option>';
+	}
+	if (!empty($info->device_opt->{402})){
+		$display.= '<option value="402">'._('Speed 3').'</option>';
+	}
+	if (!empty($info->device_opt->{403})){
+		$display.= '<option value="403">'._('Speed 4').'</option>';
+	}
+	if (!empty($info->device_opt->{404})){
+		$display.= '<option value="404">'._('Speed 5').'</option>';
+	}
+	if (!empty($info->device_opt->{405})){
+		$display.= '<option value="405">'._('Speed 6').'</option>';
+	}
 	
-	//if option speed
-	$display.= '<div class="center"><b>Speed</b><br/>';
-	$display.= '<button onclick="" class="btn btn-info">'._('1').'</button> ';
-	$display.= '<button onclick="" class="btn btn-info">'._('2').'</button> ';
-	$display.= '<button onclick="" class="btn btn-info">'._('3').'</button> ';
-	$display.= '</div>';
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+		$display.= '</select>';
+	}
+
+	/*
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) || 
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+		$display.= '<div class="center"><b>Speed</b><br/>';
+	}
+
+	if (!empty($info->device_opt->{400})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 400)" class="btn btn-info">'._('1').'</button> ';
+	}
+	if (!empty($info->device_opt->{401})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 401)" class="btn btn-info">'._('2').'</button> ';
+	}
+	if (!empty($info->device_opt->{402})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 402)" class="btn btn-info">'._('3').'</button> ';
+	}
+	if (!empty($info->device_opt->{403})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 403)" class="btn btn-info">'._('4').'</button> ';
+	}
+	if (!empty($info->device_opt->{404})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 404)" class="btn btn-info">'._('5').'</button> ';
+	}
+	if (!empty($info->device_opt->{405})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 405)" class="btn btn-info">'._('6').'</button> ';
+	}
 	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) || 
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+		$display.= '</div>';
+	}
+	*/
+
 	return $display;
 }
 

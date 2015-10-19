@@ -195,11 +195,13 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 								else{
 									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
 									foreach ($listdpt->$i as $list){
-										if (!empty($listoptdevice->dpt_id) && $listoptdevice->dpt_id == $list->dpt_id){
-											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
-										}
-										else{
-											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+										if (!empty($list->dpt_id)){
+											if (!empty($option_overload[$list->option_id][$list->dpt_id])){
+												echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+											}
+											else{
+												echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+											}
 										}
 									}
 									echo '</select>';
