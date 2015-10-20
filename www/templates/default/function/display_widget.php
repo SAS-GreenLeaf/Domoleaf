@@ -225,7 +225,7 @@ function display_fan($info){
 
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
 	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
-		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1)" id="speed-fan">';
+		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1, 0)" id="speed-fan">';
 	}
 
 	if (!empty($info->device_opt->{400})){
@@ -309,6 +309,34 @@ function display_clim($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
+		$display.= '<div class="center">';
+		$display.= ''._('Fans').'<br/><br/>';
+	}
+	
+	if (!empty($info->device_opt->{400})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 400)" class="btn btn-info">'._('0').'</button> ';
+	}
+	if (!empty($info->device_opt->{401})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 401)" class="btn btn-info">'._('1').'</button> ';
+	}
+	if (!empty($info->device_opt->{402})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 402)" class="btn btn-info">'._('2').'</button> ';
+	}
+	if (!empty($info->device_opt->{403})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 403)" class="btn btn-info">'._('3').'</button> ';
+	}
+	if (!empty($info->device_opt->{404})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 404)" class="btn btn-info">'._('4').'</button> ';
+	}
+	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
+		$display.= '</div><br/>';
+	}
+	
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
 	}

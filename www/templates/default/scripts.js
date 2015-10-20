@@ -171,8 +171,10 @@ function updateRGBColor(iddevice, value){
 	});
 }
 
-function changeSpeedFan(iddevice, value){
-	var optionid = $("#speed-fan").val();
+function changeSpeedFan(iddevice, value, optionid){
+	if (optionid == 0){
+		optionid = $("#speed-fan").val();
+	}
 
 	$.ajax({
 		type:"GET",

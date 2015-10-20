@@ -20,8 +20,45 @@ if (!empty($_GET['iddevice'])){
 	if (!empty($device->device_opt->{12})){
 		$display.=display_OnOff($device, 1);
 	}
+
+	if (!empty($device->device_opt->{400}) || !empty($device->device_opt->{401}) || !empty($device->device_opt->{402}) ||
+		!empty($device->device_opt->{403}) || !empty($device->device_opt->{404}) || !empty($device->device_opt->{405}) || !empty($device->device_opt->{406})){
+		echo '<div class="center">';
+		echo ''._('Fans').'<br/><br/>';
+	}
+
+	if (!empty($device->device_opt->{400})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 400)" class="btn btn-info">'._('0').'</button> ';
+	}
+	if (!empty($device->device_opt->{401})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 401)" class="btn btn-info">'._('1').'</button> ';
+	}
+	if (!empty($device->device_opt->{402})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 402)" class="btn btn-info">'._('2').'</button> ';
+	}
+	if (!empty($device->device_opt->{403})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 403)" class="btn btn-info">'._('3').'</button> ';
+	}
+	if (!empty($device->device_opt->{404})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 404)" class="btn btn-info">'._('4').'</button> ';
+	}
+	if (!empty($device->device_opt->{405})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 405)" class="btn btn-info">'._('5').'</button> ';
+	}
+	if (!empty($device->device_opt->{406})){
+		echo '<button onclick="changeSpeedFan('.$device->room_device_id.', 1, 406)" class="btn btn-info">'._('6').'</button> ';
+	}
+	
+	if (!empty($device->device_opt->{400}) || !empty($device->device_opt->{401}) || !empty($device->device_opt->{402}) ||
+		!empty($device->device_opt->{403}) || !empty($device->device_opt->{404}) || !empty($device->device_opt->{405}) || !empty($device->device_opt->{406})){
+		echo '</div><br/>';
+	}
+	
 	if (!empty($device->device_opt->{388})){
+		$display.= '<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-12">';
 		$display.=display_minusplus($device, 1);
+		$display.= '<br/></div>';
+		$display.= '<div class="clearfix">';
 	}
 	
 	$display.= '</div>';
@@ -29,29 +66,16 @@ if (!empty($_GET['iddevice'])){
 	$display = str_replace("\n", '', $display);
 	
 	echo $display;
-
-	echo '<div class="center">';
 	
 	//if option 'type' actived
+	echo '<div class="center">';
 	echo '<button onclick="" class="btn btn-info">'._('Confort').'</button> ';
 	echo '<button onclick="" class="btn btn-info">'._('Nuit').'</button> ';
 	echo '<button onclick="" class="btn btn-info">'._('Eco').'</button> ';
 	echo '<button onclick="" class="btn btn-info">'._('Hors Gel').'</button> ';
+	echo '</div>';
 	
-	//if fan > 0
-	echo '<br/><br/><b>'._('Fans').'</b><br/>';
-	
-	//if 1 fan
-	echo '<button onclick="" class="btn btn-info">'._('1').'</button> ';
-	//if 2 fans
-	echo '<button onclick="" class="btn btn-info">'._('2').'</button> ';
-	//if 3 fan
-	echo '<button onclick="" class="btn btn-info">'._('3').'</button> ';
-	//if 4 fan
-	echo '<button onclick="" class="btn btn-info">'._('4').'</button> ';
-	//if x fans...
-		
-	 echo '</div>'.
+	echo '</div>'.
 		'</div>
 		<div class="center">'.
 			'<button onclick="popup_close()" class="btn btn-danger">'._('Close').' <span class="glyphicon glyphicon-remove"></span></button>'.
