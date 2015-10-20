@@ -156,7 +156,6 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
-        self.logger.error(json_str);
 
     def send_knx_write_temp(self, hostname, json_obj):
         """
