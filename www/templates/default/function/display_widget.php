@@ -224,31 +224,34 @@ function display_fan($info){
 	}
 
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
-	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
 		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1)" id="speed-fan">';
 	}
 
 	if (!empty($info->device_opt->{400})){
-		$display.= '<option value="400">'._('Speed 1').'</option>';
+		$display.= '<option value="400">'._('Speed 0').'</option>';
 	}
 	if (!empty($info->device_opt->{401})){
-		$display.= '<option value="401">'._('Speed 2').'</option>';
+		$display.= '<option value="401">'._('Speed 1').'</option>';
 	}
 	if (!empty($info->device_opt->{402})){
-		$display.= '<option value="402">'._('Speed 3').'</option>';
+		$display.= '<option value="402">'._('Speed 2').'</option>';
 	}
 	if (!empty($info->device_opt->{403})){
-		$display.= '<option value="403">'._('Speed 4').'</option>';
+		$display.= '<option value="403">'._('Speed 3').'</option>';
 	}
 	if (!empty($info->device_opt->{404})){
-		$display.= '<option value="404">'._('Speed 5').'</option>';
+		$display.= '<option value="404">'._('Speed 4').'</option>';
 	}
 	if (!empty($info->device_opt->{405})){
-		$display.= '<option value="405">'._('Speed 6').'</option>';
+		$display.= '<option value="405">'._('Speed 5').'</option>';
+	}
+	if (!empty($info->device_opt->{406})){
+		$display.= '<option value="406">'._('Speed 6').'</option>';
 	}
 	
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
-	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405})){
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
 		$display.= '</select>';
 	}
 

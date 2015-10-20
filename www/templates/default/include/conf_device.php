@@ -183,7 +183,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 								echo '<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>';
 							}
 							echo '
-							<td>';
+							<td>'; 
 							$list = $listdpt->$i;
 								if (sizeof($listdpt->$i) == 1){
 									echo '<div hidden>';
@@ -196,7 +196,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
 									foreach ($listdpt->$i as $list){
 										if (!empty($list->dpt_id)){
-											if (!empty($option_overload[$list->option_id][$list->dpt_id])){
+											if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
 												echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
 											}
 											else{

@@ -82,6 +82,10 @@ $option_overload = array(
 	405 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits')
+	),
+	406 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits')
 	)
 );
 
