@@ -541,7 +541,7 @@ function display_UpDown($info){
 }
 
 // On/Off
-function display_OnOff($info){
+function display_OnOff($info, $popup = 0){
 	$display = '';
 	switch($info->protocol_id){
 		// KNX
@@ -553,18 +553,32 @@ function display_OnOff($info){
 						 				      data-label-width="0"
 										      data-on-text="'._('On').'"
 										      data-off-text="'._('Off').'"
-						 				      checked
-						 				      id="onoff-'.$info->room_device_id.'"
+						 				      checked ';
+						 						if ($popup == 0){
+						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
+						 						}
+						 				      	else{ 
+						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
+						 				      	}	      			
+						 		   $display.='class="onoff-switch"
 						 				      type="checkbox"
-						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\', '.$popup.')"
 						 				/>';
 						}
 						else {
 							$display.='<input data-on-color="greenleaf"
 										      data-label-width="0"
-										      id="onoff-'.$info->room_device_id.'"
+										      data-on-text="'._('On').'"
+										      data-off-text="'._('Off').'" ';
+						 						if ($popup == 0){
+						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
+						 						}
+						 				      	else{ 
+						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
+						 				      	}	      			
+						 		   $display.='class="onoff-switch"
 										      type="checkbox"
-										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\', '.$popup.')"
 										/>';
 						}
 				$display.='</div>';
@@ -589,7 +603,7 @@ function display_OnOff($info){
 	}
 
 	$display.='<script type="text/javascript">
-					$("#onoff-'.$info->room_device_id.'").bootstrapSwitch();
+					$(".onoff-switch").bootstrapSwitch();
 				</script>';
 	return $display;
 }
@@ -667,15 +681,20 @@ function display_varie($info, $var_icon = 1){
 
 // Minus plus
 
-function display_minusplus($info){
+function display_minusplus($info, $popup = 0){
 	$temp = $info->device_opt->{388}->valeur;
 	if (empty($temp)){
 		$temp = '0.0';
 	}
 	$display = '<div class="input-group">
-					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, -1)" class="btn btn-warning input-group-addon"><i class="fa fa-minus md"></i></span>
-					<output class="margin-top-4" id="output-mp-'.$info->room_device_id.'">'.$temp.'</output>
-					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, 1)" class="btn btn-warning input-group-addon"><i class="fa fa-plus md"></i></span>
+					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, -1)" class="btn btn-warning input-group-addon"><i class="fa fa-minus md"></i></span> ';
+					if ($popup == 0){
+						$display.='<output class="margin-top-4" id="output-mp-'.$info->room_device_id.'">'.$temp.'</output> ';
+					}
+					else{
+						$display.='<output class="margin-top-4" id="output-mp-popup-'.$info->room_device_id.'">'.$temp.'</output> ';
+					}
+					$display.='<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, 1)" class="btn btn-warning input-group-addon"><i class="fa fa-plus md"></i></span>
 			    </div>';
 	
 	return  $display;

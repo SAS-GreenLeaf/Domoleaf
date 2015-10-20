@@ -6,12 +6,6 @@ include('../function/display_widget.php');
 
 if (!empty($_GET['iddevice'])){
 	
-	/*
-	$request = new Api();
-	$request->send_request();
-	$result = $request->send_request();
-	*/
-	
 	$request =  new Api();
 	$request -> send_request();
 	$request -> add_request('mcVisible');
@@ -21,23 +15,21 @@ if (!empty($_GET['iddevice'])){
 	$deviceallowed = $listAllVisible->ListDevice;
 	
 	$device = $deviceallowed->{$_GET['iddevice']};
-
-	/* Pour faire comme le Sonos   */
-	/*
-	$display = '<div class="center"';
+	
+	$display = '<div class="center">';
 	if (!empty($device->device_opt->{12})){
-		$display.=display_OnOff($device);
+		$display.=display_OnOff($device, 1);
 	}
 	if (!empty($device->device_opt->{388})){
-		$display.=display_minusplus($device);
+		$display.=display_minusplus($device, 1);
 	}
 	
-	$display = str_replace("\n", '', $display);
 	$display.= '</div>';
 	
-	echo $display;
-	*/
+	$display = str_replace("\n", '', $display);
 	
+	echo $display;
+
 	echo '<div class="center">';
 	
 	//if option 'type' actived
