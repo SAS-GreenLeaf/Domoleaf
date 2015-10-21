@@ -28,6 +28,10 @@ mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/user_device.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/smartcommand_list.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/smartcommand_elems.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/trigger_schedules_list.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/trigger_events_conditions.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/trigger_events_list.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/trigger_events_relations.sql
 
 #LOG
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/enocean_log.sql
