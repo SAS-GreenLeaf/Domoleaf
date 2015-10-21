@@ -407,6 +407,13 @@ VALUES
 	(396, NULL, 0, 0, 0.0, 4, '', '', 'Graphite', '', 0),
 	(397, NULL, 0, 0, 0.0, 4, '', '', 'Platine', '', 0),
 	(398, NULL, 0, 0, 0.0, 0, '', '', 'Pile', '', 0),
-	(399, 'Consumption', 0, 0, 0.0, 0, '', '', 'Consommation', '', 4);
+	(399, 'Consumption', 0, 0, 0.0, 0, '', '', 'Consommation', '', 4),
+	(400, 'Ventilation 0', 0, 0, 0.0, 0, '', '', 'Ventilation 0', '', 4),
+	(401, 'Ventilation 1', 0, 0, 0.0, 0, '', '', 'Ventilation 1', '', 4),
+	(402, 'Ventilation 2', 0, 0, 0.0, 0, '', '', 'Ventilation 2', '', 4),
+	(403, 'Ventilation 3', 0, 0, 0.0, 0, '', '', 'Ventilation 3', '', 4),
+	(404, 'Ventilation 4', 0, 0, 0.0, 0, '', '', 'Ventilation 4', '', 4),
+	(405, 'Ventilation 5', 0, 0, 0.0, 0, '', '', 'Ventilation 5', '', 4),
+	(406, 'Ventilation 6', 0, 0, 0.0, 0, '', '', 'Ventilation 6', '', 4);
 
 SET FOREIGN_KEY_CHECKS=1;
