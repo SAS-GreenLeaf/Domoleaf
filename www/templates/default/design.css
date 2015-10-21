@@ -52,6 +52,10 @@ footer {
 	margin-top:30px!important;
 }
 
+.margin-bottom {
+	margin-bottom:30px!important;
+}
+
 .padding-bottom {
 	padding-bottom:10px;
 }
@@ -1480,6 +1484,12 @@ a.carousel-control-camera:hover {
 	color:#fff;
 }
 
+.bootstrap-switch-error {
+	background-color:#C9302C;
+	border-color:#6b981e;
+	color:#fff;
+}
+
 .bootstrap-switch-disabled-with-opacity {
 	opacity: 1 !important;
 }
@@ -1517,11 +1527,11 @@ a.carousel-control-camera:hover {
 }
 
 .btn-draggable {
-	margin-top:10px!important;
+	margin-top: 10px!important;
 	margin-right: 10px;
 }
 
-#drop-smartcmd {
+#drop-smartcmd, #drop-conditions {
 	top: 100px;
 	bottom: 50px;
 	position: absolute;
@@ -1537,7 +1547,7 @@ a.carousel-control-camera:hover {
 	border: 1px solid #F5F5F5;
 }
 
-.smartcmdElem {
+.smartcmdElem, .triggerElem {
 	background-color: #F5F5F5;
 	border: 1px solid #AAAAAA;
 	border-radius: 10px;
@@ -1566,7 +1576,7 @@ a.carousel-control-camera:hover {
 	opacity: 1 !important;
 }
 
-.smartcmdElemDrop {
+.smartcmdElemDrop, .triggerElemDrop {
 	margin: 0;
 	height: 50px;
 	margin-bottom: 2px;
@@ -1579,7 +1589,7 @@ a.carousel-control-camera:hover {
 	height: 100px;
 }
 
-#smartcmdElemDrop-0 {
+#smartcmdElemDrop-0, #triggerElemDrop-0 {
 	margin-top: 10px;
 }
 
@@ -1599,11 +1609,13 @@ a.carousel-control-camera:hover {
 	right: 10px;
 }
 
-.save-navbar > .btn-primary {
+.save-navbar > .btn-primary,
+.save-navbar > .btn-success,
+.save-navbar > .btn-danger {
 	margin-top: 10px;
 }
 
-#linked-room {
+#linked-room, #linked-smartcmd{
 	float: right;
 	margin-top: -5px;
 }
@@ -1623,4 +1635,45 @@ a.carousel-control-camera:hover {
 #checkUpdateBtn, #updateBtn {
 	margin-left: 25px;
 	margin-top: -25px;
+}
+
+/*** Trigger events ***/
+
+.form-inline .input-group-addon {
+	width:1% !important;
+}
+
+.trigger-btns {
+	margin-top: -50px;
+	float: right;
+}
+
+.trigger-device-name {
+	margin-top: 5px;
+}
+
+.margin-btn-group {
+	margin-bottom: 5px;
+}
+
+.value-trigger {
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.triggerScheduleElems {
+	margin-top: 5px;
+}
+
+.triggerScheduleBtns {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.selectSchedule {
+	margin-top: 5%;
+}
+
+.selectSchedule hr {
+	border: 1px solid;
 }

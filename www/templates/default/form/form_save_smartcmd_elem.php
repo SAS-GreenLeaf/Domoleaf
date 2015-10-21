@@ -3,8 +3,7 @@
 include('header.php');
 
 if (!empty($_GET['id_smartcmd']) && !empty($_GET['room_id_device'])
-	&& !empty($_GET['id_option']) && !empty($_GET['room_id_device'])
-	&& !empty($_GET['modif'])) {
+	&& !empty($_GET['id_option']) && !empty($_GET['modif'])) {
 
 	$request =  new Api();
 	

@@ -58,7 +58,7 @@ echo '
 		<div id="linked-room" class="navbar-brand">
 			'._('Linked Room').'
 			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
-			        onchange="listRoomsLR('.$id_smartcmd.')">
+			        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
 				<option value="0">'._('No floor selected').'</option>';
 				foreach ($installation_info as $floor) {
 					echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
@@ -125,16 +125,6 @@ echo
 			});
 	}
 	
-	function selectDevice(id_smartcmd, room_id_device) {
-		
-		$("#optionList").hide();
-		$("li div.active").removeClass("active");
-		$("#device-"+room_id_device).addClass("active");
-		getDeviceOptions(room_id_device, id_smartcmd);
-		$("#optionList").show("slow");
-		
-	};
-
 	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id) {
 		var id_option;
 		var id_exec;
@@ -204,41 +194,12 @@ echo
 			}
 		});
 	}
-			
-	function ShowRoomList(floor_id){
-		
-		if ($("#roomList-"+floor_id).hasClass("open")) {
-			$("#roomList-"+floor_id).removeClass("open");
-			$("#roomList-"+floor_id+" ul.open").toggle("slow");
-			$("#roomList-"+floor_id+" ul.open").removeClass("open");
-			$("li div.active").removeClass("active");
-			$("#floor-"+floor_id+" #arrow-icon").removeClass("fa-caret-up");
-			$("#floor-"+floor_id+" #arrow-icon").addClass("fa-caret-down");
-		}
-		else {
-			$("#roomList-"+floor_id).addClass("open");
-			$("#floor-"+floor_id+" #arrow-icon").addClass("fa-caret-up");
-			$("#floor-"+floor_id+" #arrow-icon").removeClass("fa-caret-down");
-		}
-		$("#roomList-"+floor_id).toggle("slow");
-	}
-
-	function ShowDeviceList(room_id){
-		if ($("#deviceList-"+room_id).hasClass("open")) {
-			$("#deviceList-"+room_id).removeClass("open");
-			$("li div.active").removeClass("active");
-		}
-		else {
-			$("#deviceList-"+room_id).addClass("open");
-		}
-		$("#deviceList-"+room_id).toggle("slow");
-	}
 
 	function getDeviceOptions(room_id_device, id_smartcmd) {
 		if (room_id_device > 0) {
 			$.ajax({
 				type: "GET",
-				url: "/templates/default/form/form_user_scenarios_opt_list.php",
+				url: "/templates/default/form/form_user_smartcmd_opt_list.php",
 				data: "room_id_device="+room_id_device
 				       +"&id_smartcmd="+id_smartcmd,
 				success: function(result) {
@@ -259,6 +220,7 @@ echo
 				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
 					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 				}
+				openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 			}
 		});
 	}
@@ -291,8 +253,10 @@ echo
 						
 	function setLinkedRoom(floor_id, room_id) {
 		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
-		listRoomsLR('.$id_smartcmd.');
-		$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
+		listRoomsOfFloor('.$id_smartcmd.', 1);
+		setTimeout(function(){
+						$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
+					}, 500);
 	}
 	
 </script>';

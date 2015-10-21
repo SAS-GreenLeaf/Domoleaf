@@ -53,7 +53,7 @@ echo
 					'}'.
 					'else if (result) {'.
 						'popup_close();'.
-						'redirect("/profile_user_scenarios/"+result);'.
+						'redirect("/profile_user_smartcmd/"+result);'.
 					'}'.
 				'}'.
 			'});'.

@@ -1182,6 +1182,7 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
+		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			if (empty($do->room_name)) {
 				$do->room_name = 0;
@@ -1342,63 +1343,47 @@ class User {
 		}
 		
 		if ($new_exec_id > $old_exec_id) {
-			$sql = 'UPDATE smartcommand_elems
+			$sql1 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id <= :idexec';
 
-			$req = $link->prepare($sql);
-			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
-			
-			$sql = 'UPDATE smartcommand_elems
+			$sql2 = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id-1';
-			$req = $link->prepare($sql);
-			$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
-			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE smartcommand_elems
+			$sql3 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id < :idexec';
-			
-			$req = $link->prepare($sql);
-			$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
-			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
-			$sql = 'UPDATE smartcommand_elems
+			$sql1 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
-			
-			$req = $link->prepare($sql);
-			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
-			
-			$sql = 'UPDATE smartcommand_elems
+
+			$sql2 = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id+1';
-			$req = $link->prepare($sql);
-			$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
-			$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
-			
-			$sql = 'UPDATE smartcommand_elems
+
+			$sql3 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id > :idexec';
-			
-			$req = $link->prepare($sql);
-			$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
-			$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		
+		$req = $link->prepare($sql1);
+		$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
+		$req = $link->prepare($sql2);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
+		$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$req = $link->prepare($sql3);
+		$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
+		$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
 	function removeSmartcmd($smartcmd_id) {
@@ -1458,6 +1443,489 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/*** Trigger Events ***/
+	
+	function searchTriggerByName($trigger_name){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_trigger, user_id
+				FROM trigger_events_list
+				WHERE trigger_name=:trigger_name';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do->id_trigger;
+	}
+	
+	function searchTriggerById($trigger_id){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT trigger_name,
+				       user_id,
+				       id_smartcmd
+				FROM trigger_events_list
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do;
+	}
+	
+	function countTriggerConditions($trigger_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT COUNT(id_condition) AS nb
+				FROM trigger_events_conditions
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		return $do->nb;
+	}
+	
+	function listTriggers(){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name, activated
+				FROM trigger_events_list
+				JOIN smartcommand_list ON trigger_events_list.id_smartcmd = smartcommand_list.smartcommand_id
+				WHERE smartcommand_list.user_id=:user_id
+				ORDER BY trigger_name';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$list = array();
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->id_trigger] = array(
+					'trigger_id'     => $do->id_trigger,
+					'name'           => $do->trigger_name,
+					'smartcmd_name'  => $do->smartcmd_name,
+					'activated'      => $do->activated
+			);
+		}
+	
+		return $list;
+	}
+	
+	function getTriggerElems($id_trigger) {
+		$link = Link::get_link('mastercommand');
+		$red = 0;
+		$green = 0;
+		$blue = 0;
+		$id_condition = 0;
+	
+		$sql = 'SELECT id_condition,
+				       trigger_events_conditions.room_device_id AS room_device_id,
+				       optiondef.option_id,
+				       value,
+				       room_device.name AS device_name,
+				       room_device.device_id AS device_id,
+				       if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') AS option_name,
+				       operator
+				FROM trigger_events_conditions
+				JOIN room_device ON room_device.room_device_id = trigger_events_conditions.room_device_id
+				JOIN optiondef ON optiondef.option_id = trigger_events_conditions.id_option
+				WHERE id_trigger=:trigger_id
+				ORDER BY id_condition';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $id_trigger, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$list ='';
+	
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+				
+			$list[$do->id_condition] = array(
+					'trigger_id'        => $id_trigger,
+					'condition_id'      => $do->id_condition,
+					'room_device_id'    => $do->room_device_id,
+					'option_id'         => $do->option_id,
+					'option_value'      => $do->value,
+					'device_name'       => $do->device_name,
+					'device_id'         => $do->device_id,
+					'option_name'       => $do->option_name,
+					'operator'          => $do->operator
+			);
+				
+			if ($do->option_id == 392 && empty($red)) {
+				$red = $do->option_value;
+				$id_condition = $do->id_condition;
+			}
+			if ($do->option_id == 393 && empty($green)) {
+				$green = $do->option_value;
+				$id_condition = $do->id_condition;
+			}
+			if ($do->option_id == 394 && empty($blue)) {
+				$blue = $do->option_value;
+				$id_condition = $do->id_condition;
+			}
+			if (!empty($red) && !empty($green) && !empty($blue) && !empty($id_condition)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue);
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$id_condition]['value'] = $hexa_color;
+			}
+				
+		}
+		return $list;
+	}
+	
+	function createNewTrigger($trigger_name, $smartcmd_id){
+	
+		if ($this->searchTriggerByName($trigger_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'INSERT INTO trigger_events_list
+		        (trigger_name, id_smartcmd, user_id)
+				VALUES 
+				(:trigger_name, :smartcmd_id, :user_id)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+		return $link->lastInsertId();
+	}
+	
+	function updateTriggerName($trigger_id, $trigger_name){
+		if ($this->searchTriggerByName($trigger_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE trigger_events_list
+				SET trigger_name=:trigger_name
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+
+		return $trigger_id;
+	}
+	
+	function saveNewElemTrigger($idtrigger, $idcondition, $iddevice, $idoption, $valoption, $operator, $no_update = 0){
+		$link = Link::get_link('mastercommand');
+	
+		if ($no_update == 0) {
+			$sql = 'UPDATE trigger_events_conditions
+					SET id_condition=id_condition+1
+					WHERE id_trigger=:id_trigger AND id_condition >= :idexec';
+	
+			$req = $link->prepare($sql);
+			$req->bindValue(':idexec', $idcondition, PDO::PARAM_INT);
+			$req->bindValue(':id_trigger', $idtrigger, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+	
+		$sql = 'INSERT INTO trigger_events_conditions
+				(id_trigger, id_condition, room_device_id, id_option, operator, value)
+				VALUES
+				(:id_trigger, :id_condition, :room_device_id, :id_option, :operator, :option_value)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':id_trigger', $idtrigger, PDO::PARAM_INT);
+		$req->bindValue(':id_condition', $idcondition, PDO::PARAM_INT);
+		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
+		$req->bindValue(':id_option', $idoption, PDO::PARAM_INT);
+		$req->bindValue(':operator', $operator, PDO::PARAM_INT);
+		$req->bindValue(':option_value', $valoption, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE trigger_events_conditions
+				SET value=:option_val, operator=:operator
+				WHERE id_trigger=:trigger_id AND id_condition=:condition_id AND id_option=:option_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':option_val', $optionval, PDO::PARAM_STR);
+		$req->bindValue(':trigger_id', $idtrigger, PDO::PARAM_INT);
+		$req->bindValue(':condition_id', $idcondition, PDO::PARAM_INT);
+		$req->bindValue(':option_id', $id_option, PDO::PARAM_INT);
+		$req->bindValue(':operator', $operator, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function triggerChangeElemsOrder($id_trigger, $old_condition_id, $new_condition_id) {
+		$link = Link::get_link('mastercommand');
+	
+		if ($old_condition_id == $new_condition_id) {
+			return;
+		}
+		if ($new_condition_id > $old_condition_id) {
+			$sql1 = 'UPDATE trigger_events_conditions
+					SET id_condition=id_condition-1
+					WHERE id_trigger=:id_trigger AND id_condition <= :idexec';
+	
+			$sql2 = 'UPDATE trigger_events_conditions
+					SET id_condition=:new_condition_id
+					WHERE id_trigger=:trigger_id AND id_condition=:old_condition_id-1';
+				
+			$sql3 = 'UPDATE trigger_events_conditions
+					SET id_condition=id_condition+1
+					WHERE id_trigger=:id_trigger AND id_condition < :idexec';
+		}
+		else {
+			$sql1 = 'UPDATE trigger_events_conditions
+					SET id_condition=id_condition+1
+					WHERE id_trigger=:id_trigger AND id_condition >= :idexec';
+	
+			$sql2 = 'UPDATE trigger_events_conditions
+					SET id_condition=:new_condition_id
+					WHERE id_trigger=:trigger_id AND id_condition=:old_condition_id+1';
+	
+			$sql3 = 'UPDATE trigger_events_conditions
+					SET id_condition=id_condition-1
+					WHERE id_trigger=:id_trigger AND id_condition > :idexec';
+		}
+	
+		$req = $link->prepare($sql1);
+		$req->bindValue(':id_trigger', $id_trigger, PDO::PARAM_INT);
+		$req->bindValue(':idexec', $new_condition_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$req = $link->prepare($sql2);
+		$req->bindValue(':trigger_id', $id_trigger, PDO::PARAM_INT);
+		$req->bindValue(':old_condition_id', $old_condition_id, PDO::PARAM_INT);
+		$req->bindValue(':new_condition_id', $new_condition_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$req = $link->prepare($sql3);
+		$req->bindValue(':idexec', $old_condition_id, PDO::PARAM_INT);
+		$req->bindValue(':id_trigger', $id_trigger, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function changeTriggerState($trigger_id, $state) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE trigger_events_list
+				SET activated=:state
+				WHERE id_trigger=:id_trigger';
+		$req = $link->prepare($sql);
+		$req->bindValue(':state', $state, PDO::PARAM_INT);
+		$req->bindValue(':id_trigger', $trigger_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function removeTrigger($trigger_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM trigger_events_list
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function removeTriggerElem($trigger_id, $condition_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM trigger_events_conditions
+				WHERE id_trigger=:trigger_id AND id_condition=:condition_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->bindValue(':condition_id', $condition_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$sql = 'UPDATE trigger_events_conditions
+				SET id_condition=id_condition-1
+				WHERE id_trigger=:trigger_id AND id_condition > :condition_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->bindValue(':condition_id', $condition_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateTriggersList();
+	}
+	
+	function triggerSaveLinkedSmartcmd($trigger_id, $smartcmd_id) {
+		$link = Link::get_link('mastercommand');
+	
+		if ($smartcmd_id == 0) {
+			return;
+		}
+		$sql = 'UPDATE trigger_events_list
+				SET id_smartcmd=:smartcmd_id
+				WHERE id_trigger=:trigger_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function udpateTriggersList(){
+		$socket = new Socket();
+		$socket->send('triggers_list_update');
+	}
+
+	/*** Schedules ***/ 
+	
+	function searchScheduleByName($schedule_name){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_schedule, user_id
+				FROM trigger_schedules_list
+				WHERE schedule_name=:schedule_name';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do->id_schedule;
+	}
+	
+	function searchScheduleById($schedule_id){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT schedule_name,
+				       user_id
+				FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do;
+	}
+	
+	function listSchedules(){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_schedule, schedule_name
+				FROM trigger_schedules_list
+				WHERE trigger_schedules_list.user_id=:user_id
+				ORDER BY schedule_name';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$list = array();
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->id_schedule] = array(
+					'schedule_id'     => $do->id_schedule,
+					'name'           => $do->schedule_name,
+			);
+		}
+	
+		return $list;
+	}
+	
+	function updateSchedule($idschedule, $months, $weekdays, $days, $hours, $mins){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE trigger_schedules_list
+				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
+				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+
+		$req = $link->prepare($sql);
+		$req->bindValue(':months', $months, PDO::PARAM_INT);
+		$req->bindValue(':weekdays', $weekdays, PDO::PARAM_INT);
+		$req->bindValue(':days', $days, PDO::PARAM_INT);
+		$req->bindValue(':hours', $hours, PDO::PARAM_INT);
+		$req->bindValue(':mins', $mins, PDO::PARAM_STR);
+		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function getSchedule($idschedule){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT months, weekdays, days, hours, mins
+				FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do;
+	}
+	
+	function createNewSchedule($schedule_name){
+	
+		if ($this->searchScheduleByName($schedule_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'INSERT INTO trigger_schedules_list
+		        (schedule_name, user_id, months, weekdays, days, hours, mins)
+				VALUES
+				(:schedule_name, :user_id, :months, :weekdays, :days, :hours, :mins)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->bindValue(':months', intval(str_repeat("1", 12), 2), PDO::PARAM_INT);
+		$req->bindValue(':weekdays', intval(str_repeat("1", 7), 2), PDO::PARAM_INT);
+		$req->bindValue(':days', intval(str_repeat("1", 31), 2), PDO::PARAM_INT);
+		$req->bindValue(':hours', intval(str_repeat("1", 24), 2), PDO::PARAM_INT);
+		$req->bindValue(':mins', str_repeat("1", 60), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		return $link->lastInsertId();
+	}
+	
+	function removeSchedule($schedule_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){
@@ -1512,7 +1980,40 @@ class User {
 	/*** Optiondef ***/
 	
 	function confOptionList(){
-		return null;
+		$link = Link::get_link('mastercommand');
+		$list = array();
+		
+		$sql = 'SELECT option_id, 
+		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name 
+		        FROM optiondef
+		        ORDER BY name'.$this->getLanguage();
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->option_id] = clone $do;
+		}
+		
+		return $list;
+	}
+	
+	/*** Room_device_option ***/
+	
+	function listUnits(){
+		$link = Link::get_link('mastercommand');
+		$list = array();
+	
+		$sql = 'SELECT room_device_id,
+				       option_id,
+		               addr_plus
+		        FROM room_device_option
+		        WHERE addr_plus NOT LIKE \'\' AND addr_plus NOT LIKE ("%/%")';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->room_device_id][$do->option_id] = $do->addr_plus;
+		}
+	
+		return $list;
 	}
 	
 	function confOptionDptList(){

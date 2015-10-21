@@ -33,6 +33,7 @@ from MasterSql import *;
 from KNXManager import *;
 from UpnpAudio import *;
 from Smartcommand import *;
+from Trigger import *;
 import utils;
 from GLManager import *;
 
@@ -99,6 +100,7 @@ DATA_BACKUP_DB_RESTORE_USB    = 'backup_db_restore_usb';
 DATA_CHECK_UPDATES            = 'check_updates';
 DATA_UPDATE                   = 'update';
 DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
+DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 
@@ -129,6 +131,7 @@ class MasterDaemon:
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.knx_manager = KNXManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
+        self.trigger = Trigger(self);
         self.protocol_function = {
             PROTOCOL_KNX        : KNXManager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
@@ -170,6 +173,7 @@ class MasterDaemon:
             DATA_BACKUP_DB_LIST_USB           : self.backup_db_list_usb,
             DATA_BACKUP_DB_RESTORE_USB        : self.backup_db_restore_usb,
             DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
+            DATA_TRIGGERS_LIST_UPDATE          : self.triggers_list_update,
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
@@ -519,6 +523,9 @@ class MasterDaemon:
         daemon_id = self.sql.update_knx_log(json_obj);
 
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
+
+        self.trigger.check_all_conditions(self.get_global_state(), connection);
+
         connection.close();
 
     def knx_write_short(self, json_obj, connection):
@@ -907,9 +914,26 @@ class MasterDaemon:
     def smartcmd_launch(self, json_obj, connection):
         Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
 
+    def triggers_list_update(self, json_obj, connection):
+        self.trigger.update_triggers_list();
+
+    def get_global_state(self):
+        self.logger.info('Setting GLOBAL STATE');
+        query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
+        res = self.sql.mysql_handler_personnal_query(query);
+        filtered = [];
+        for elem in res:
+            if (elem[2] != ''):
+                filtered.append(elem);
+        global_state = [];
+        if (filtered != ''):
+            global_state = filtered;
+        else:
+            global_state = '';
+        return global_state;
+
     def send_request(self, json_obj, connection):
         if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
             admin_addr = self._parser.getValueFromSection('greenleaf', 'admin_addr')
             hostname = socket.gethostname()
             GLManager.SendRequest(str(json_obj), admin_addr, self.get_secret_key(hostname))
-    
