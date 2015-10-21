@@ -42,7 +42,7 @@ class User {
 	 * Update user's activity
 	 */
 	function activity() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 			
 		$sql = 'UPDATE user
 		        SET activity= :activity
@@ -60,7 +60,7 @@ class User {
 	 * @param string : user's token
 	 */
 	function disconnect($token) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'DELETE user_token
 		        WHERE token= :token';
@@ -72,7 +72,7 @@ class User {
 	/********************** Domotic configuration **********************/
 
 	function conf_load(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT configuration_id, configuration_value
@@ -199,7 +199,7 @@ class User {
 	 * @return array : application list
 	 */
 	function confApplicationAll() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name,
@@ -220,7 +220,7 @@ class User {
 	 * @return array : protocol list
 	 */
 	function confProtocolAll() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT protocol_id, wired,
@@ -241,7 +241,7 @@ class User {
 	 * @return array : device list
 	 */
 	function confDeviceAll() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT device_id, protocol_id, application_id,
@@ -288,7 +288,7 @@ class User {
 	 * @return object : user information
 	 */
 	function profileInfo($id=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
 		               gender, phone, language, design
@@ -320,7 +320,7 @@ class User {
 	 * @param int : user id, not used
 	 */
 	function profileRename($lastname, $firstname, $gender, $phone, $language, $id=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if($gender != 1) {
 			$gender = 0;
@@ -363,7 +363,7 @@ class User {
 	 * @param number $id
 	 */
 	function profilePassword($last, $new, $id=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT user_id, user_password
 		        FROM user
@@ -415,7 +415,7 @@ class User {
 	 * @param unknown $action
 	 */
 	function SetFloorOrder($userid, $floorid, $action) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT floor_order, floor_id
 		        FROM user_floor
@@ -467,7 +467,7 @@ class User {
 	 * @param unknown $action
 	 */
 	function SetRoomOrder($userid, $roomid, $action){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT room_order, room_id
 		        FROM user_room
@@ -518,7 +518,7 @@ class User {
 	 * @param unknown $action
 	 */
 	function SetDeviceOrder($userid, $deviceid, $action){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT  device_order, room_device_id
 		        FROM user_device
@@ -564,7 +564,7 @@ class User {
 	
 	
 	function mcValueDef($iddevice, $idoption, $action){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT  valeur
 				FROM    room_device_option
@@ -603,7 +603,7 @@ class User {
 	 * @return multitype:multitype:NULL  multitype:multitype:NULL   Ambigous <multitype:multitype:multitype: NULL  , multitype:NULL >
 	 */
 	function mcAllowed(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$listFloor = array();
 		$listRoom = array();
@@ -735,7 +735,7 @@ class User {
 	 * @return multitype:multitype:unknown  multitype:multitype:NULL
 	 */
 	function mcVisible(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$listFloor = array();
 		$listRoom = array();
@@ -791,7 +791,7 @@ class User {
 	 * @return Ambigous <multitype:multitype:multitype: NULL  , multitype:NULL >
 	 */
 	function confUserInstallation($userid){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -864,7 +864,7 @@ class User {
 	 * @param unknown $status
 	 */
 	function confUserVisibleDevice($userid, $deviceid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -937,7 +937,7 @@ class User {
 	 * @param unknown $status
 	 */
 	function confUserVisibleRoom($userid, $roomid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)) {
 			$userid = $this->getId();
@@ -1011,7 +1011,7 @@ class User {
 	 * @param unknown $status
 	 */
 	function confUserVisibleFloor($userid, $floorid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -1093,7 +1093,7 @@ class User {
 	function confUserDeviceBgimg($iddevice, $bgimg, $userid=0){
 		$userid = $this->getId();
 
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'UPDATE user_device
 		        SET device_bgimg=:bgimg
@@ -1109,7 +1109,7 @@ class User {
 	/*** Smartcommand ***/
 	
 	function searchSmartcmdByName($smartcmd_name){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT smartcommand_id, user_id
 				FROM smartcommand_list
@@ -1130,7 +1130,7 @@ class User {
 	}
 	
 	function searchSmartcmdById($smartcmd_id){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT smartcommand_list.name, user_id,
 				       smartcommand_list.room_id AS room_id,
@@ -1154,7 +1154,7 @@ class User {
 	}
 	
 	function countElemSmartcmd($idsmartcmd) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT COUNT(smartcommand_id) AS nb
 				FROM smartcommand_elems
@@ -1169,7 +1169,7 @@ class User {
 	}
 	
 	function listSmartcmd(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 	
 		$sql = 'SELECT smartcommand_id, name, room.room_name
@@ -1198,7 +1198,7 @@ class User {
 	}
 	
 	function getSmartcmdElems($id_smartcmd) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$red = 0;
 		$green = 0;
 		$blue = 0;
@@ -1262,7 +1262,7 @@ class User {
 		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'INSERT INTO smartcommand_list
 		        (name, user_id)
@@ -1280,7 +1280,7 @@ class User {
 		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE smartcommand_list
 				SET name=:smartcmd_name
@@ -1294,7 +1294,7 @@ class User {
 	}
 	
 	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse, $no_update = 0){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 
 		if ($no_update == 0) {
 			$sql = 'UPDATE smartcommand_elems
@@ -1322,7 +1322,7 @@ class User {
 	}
 	
 	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval, $id_option) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 
 		$sql = 'UPDATE smartcommand_elems
 				SET option_value=:option_val
@@ -1336,7 +1336,7 @@ class User {
 	}
 	
 	function smartcmdChangeElemsOrder($smartcmd_id, $old_exec_id, $new_exec_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if ($old_exec_id == $new_exec_id) {
 			return;
@@ -1387,7 +1387,7 @@ class User {
 	}
 	
 	function removeSmartcmd($smartcmd_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM smartcommand_list
 				WHERE smartcommand_id=:smartcmd_id';
@@ -1397,7 +1397,7 @@ class User {
 	}
 	
 	function removeSmartcmdElem($smartcmd_id, $exec_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM smartcommand_elems
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
@@ -1416,7 +1416,7 @@ class User {
 	}
 	
 	function smartcmdUpdateDelay($smartcmd_id, $exec_id, $delay) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'UPDATE smartcommand_elems
 				SET time_lapse=:delay
@@ -1429,7 +1429,7 @@ class User {
 	}
 	
 	function smartcmdSaveLinkedRoom($smartcmd_id, $room_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if ($room_id == 0) {
 			$room_id = NULL;
@@ -1446,7 +1446,7 @@ class User {
 	/*** Trigger Events ***/
 	
 	function searchTriggerByName($trigger_name){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT id_trigger, user_id
 				FROM trigger_events_list
@@ -1467,7 +1467,7 @@ class User {
 	}
 	
 	function searchTriggerById($trigger_id){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT trigger_name,
 				       user_id,
@@ -1489,7 +1489,7 @@ class User {
 	}
 	
 	function countTriggerConditions($trigger_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT COUNT(id_condition) AS nb
 				FROM trigger_events_conditions
@@ -1503,7 +1503,7 @@ class User {
 	}
 	
 	function listTriggers(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name, activated
 				FROM trigger_events_list
@@ -1529,7 +1529,7 @@ class User {
 	}
 	
 	function getTriggerElems($id_trigger) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$red = 0;
 		$green = 0;
 		$blue = 0;
@@ -1597,7 +1597,7 @@ class User {
 		if ($this->searchTriggerByName($trigger_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO trigger_events_list
 		        (trigger_name, id_smartcmd, user_id)
@@ -1616,7 +1616,7 @@ class User {
 		if ($this->searchTriggerByName($trigger_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE trigger_events_list
 				SET trigger_name=:trigger_name
@@ -1630,7 +1630,7 @@ class User {
 	}
 	
 	function saveNewElemTrigger($idtrigger, $idcondition, $iddevice, $idoption, $valoption, $operator, $no_update = 0){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if ($no_update == 0) {
 			$sql = 'UPDATE trigger_events_conditions
@@ -1659,7 +1659,7 @@ class User {
 	}
 	
 	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE trigger_events_conditions
 				SET value=:option_val, operator=:operator
@@ -1675,7 +1675,7 @@ class User {
 	}
 	
 	function triggerChangeElemsOrder($id_trigger, $old_condition_id, $new_condition_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if ($old_condition_id == $new_condition_id) {
 			return;
@@ -1726,7 +1726,7 @@ class User {
 	}
 	
 	function changeTriggerState($trigger_id, $state) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE trigger_events_list
 				SET activated=:state
@@ -1739,7 +1739,7 @@ class User {
 	}
 	
 	function removeTrigger($trigger_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
@@ -1750,7 +1750,7 @@ class User {
 	}
 	
 	function removeTriggerElem($trigger_id, $condition_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM trigger_events_conditions
 				WHERE id_trigger=:trigger_id AND id_condition=:condition_id';
@@ -1770,7 +1770,7 @@ class User {
 	}
 	
 	function triggerSaveLinkedSmartcmd($trigger_id, $smartcmd_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if ($smartcmd_id == 0) {
 			return;
@@ -1792,7 +1792,7 @@ class User {
 	/*** Schedules ***/ 
 	
 	function searchScheduleByName($schedule_name){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT id_schedule, user_id
 				FROM trigger_schedules_list
@@ -1813,7 +1813,7 @@ class User {
 	}
 	
 	function searchScheduleById($schedule_id){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT schedule_name,
 				       user_id
@@ -1834,7 +1834,7 @@ class User {
 	}
 	
 	function listSchedules(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT id_schedule, schedule_name
 				FROM trigger_schedules_list
@@ -1857,7 +1857,7 @@ class User {
 	}
 	
 	function updateSchedule($idschedule, $months, $weekdays, $days, $hours, $mins){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE trigger_schedules_list
 				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
@@ -1875,7 +1875,7 @@ class User {
 	}
 	
 	function getSchedule($idschedule){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT months, weekdays, days, hours, mins
 				FROM trigger_schedules_list
@@ -1897,7 +1897,7 @@ class User {
 		if ($this->searchScheduleByName($schedule_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO trigger_schedules_list
 		        (schedule_name, user_id, months, weekdays, days, hours, mins)
@@ -1917,7 +1917,7 @@ class User {
 	}
 	
 	function removeSchedule($schedule_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM trigger_schedules_list
 				WHERE id_schedule=:schedule_id';
@@ -1980,7 +1980,7 @@ class User {
 	/*** Optiondef ***/
 	
 	function confOptionList(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT option_id, 
@@ -1999,7 +1999,7 @@ class User {
 	/*** Room_device_option ***/
 	
 	function listUnits(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 	
 		$sql = 'SELECT room_device_id,
@@ -2040,7 +2040,7 @@ class User {
 	 * @return Ambigous <multitype:multitype:multitype: NULL  , multitype:NULL >
 	 */
 	function mcDeviceAll(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id, 
@@ -2098,7 +2098,7 @@ class User {
 	 * @return NULL|Ambigous <multitype:NULL , multitype:multitype: NULL >
 	 */
 	function mcDeviceInfo($roomdeviceid){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($roomdeviceid)){
 			return null;
@@ -2164,7 +2164,7 @@ class User {
 	 * @return boolean
 	 */
 	function checkDevice($iddevice){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT device_allowed
 		        FROM user_device
@@ -2189,7 +2189,7 @@ class User {
 	 * @param unknown $optionid
 	 */
 	function mcAction($iddevice, $value, $optionid){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT device_allowed, room_device_option.addr_plus
 		        FROM user_device
@@ -2250,7 +2250,7 @@ class User {
 	 * @return Ambigous <multitype:, multitype:NULL >
 	 */
 	function mcReturn(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = Array();
 		
 		$sql = 'SELECT room_device_option.room_device_id, option_id, valeur, addr_plus, room_device.device_id

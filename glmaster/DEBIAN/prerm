@@ -1,7 +1,14 @@
 #!/bin/bash
 
-echo -e "[ \033[33m..\033[0m ] Removing Greenleaf master daemon..."
+echo -e "[ \033[33m..\033[0m ] Removing Domoleaf master daemon..."
 
 #Backup images
-rm -rf /etc/greenleaf/custom
-cp -r /etc/greenleaf/www/templates/default/custom /etc/greenleaf/
+rm -rf /etc/domoleaf/custom
+cp -r /etc/domoleaf/www/templates/default/custom /etc/domoleaf/
+
+rm -f /etc/cron.d/glmaster.cron
+rm -f /etc/domoleaf/www
+rm -f /etc/domoleaf/sql
+rm -f /init.d/glmaster
+rm -f /etc/nginx/sites-available/master.conf
+rm -rf /usr/bin/glmaster 

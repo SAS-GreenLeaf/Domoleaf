@@ -9,7 +9,7 @@ import codecs;
 import socket;
 import select;
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from Scanner import *;
 from DaemonConfigParser import *;
 from Host import *;
@@ -18,8 +18,8 @@ import AESManager;
 from Crypto.Cipher import AES;
 from GLManager import *;
 
-SLAVE_CONF_FILE                 = '/etc/greenleaf/slave.conf';
-HOST_CONF_FILE                  = '/etc/greenleaf/hosts.conf';
+SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
+HOST_CONF_FILE                  = '/etc/domoleaf/hosts.conf';
 MASTER_NAME_PREFIX              = 'MD3';
 SLAVE_NAME_PREFIX               = 'SD3';
 MAX_MASTERS                     = 100;
@@ -80,7 +80,7 @@ class SlaveDaemon:
     """
     def __init__(self, log_flag):
         self.logger = Logger(log_flag, LOG_FILE);
-        self.logger.info('Started Greenleaf Slave daemon');
+        self.logger.info('Started Domoleaf Slave daemon');
         print('######## SLAVE DAEMON #######')
         self.connected_masters = {};
         self.connected_knx = [];
@@ -112,10 +112,10 @@ class SlaveDaemon:
     def update(self, json_obj, connection):
         call(['apt-get', 'update']);
         call(['DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', 'glslave', '-y']);
-        version_file = open('/etc/greenleaf/.glslave.version', 'r');
+        version_file = open('/etc/domoleaf/.glslave.version', 'r');
         if not version_file:
-            self.logger.error('/etc/greenleaf/.glslave.version: no such file or directory');
-            print('/etc/greenleaf/.glslave.version: no such file or directory');
+            self.logger.error('/etc/domoleaf/.glslave.version: no such file or directory');
+            print('/etc/domoleaf/.glslave.version: no such file or directory');
             return;
         version = version_file.read();
         if '\n' in version:
@@ -315,7 +315,7 @@ class SlaveDaemon:
         print("===== CHECK SLAVE =====");
         print(json_obj);
         print("=======================");
-        file = open('/etc/greenleaf/.glslave.version', 'r');
+        file = open('/etc/domoleaf/.glslave.version', 'r');
         version = file.read().split('\n')[0];
         json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' +num_version + '"}';
         master_hostname = str(json_obj['sender_name']);

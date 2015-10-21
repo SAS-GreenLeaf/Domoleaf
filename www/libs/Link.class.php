@@ -6,8 +6,8 @@ class Link {
 	
 	function __construct($link) {
 		switch ($link) {
-			case 'mastercommand':
-				$dns = 'mysql:host=localhost;dbname=mastercommand';
+			case 'domoleaf':
+				$dns = 'mysql:host=localhost;dbname=domoleaf';
 				$option = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
 				$this->db = new PDO($dns, DB_USER, DB_PASSWORD, $option);
 			break;

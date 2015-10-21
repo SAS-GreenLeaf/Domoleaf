@@ -9,7 +9,7 @@ class Guest {
 	 public static function connect($token) {
 	 	$token = trim($token);
 		
-	 	$link = Link::get_link('mastercommand');
+	 	$link = Link::get_link('domoleaf');
 	 	$sql = 'SELECT user.user_id, user_level, language, design
 		        FROM user_token
 	 			JOIN user ON user_token.user_id=user.user_id
@@ -40,7 +40,7 @@ class Guest {
 	 
 	 	$username = addslashes(trim($name));
 	 	$password = trim($pass);
-	 	$link = Link::get_link('mastercommand');
+	 	$link = Link::get_link('domoleaf');
 	 
 	 	$sql = 'SELECT user_id, user_password, user_level, language, design
 		        FROM user
@@ -113,7 +113,7 @@ class Guest {
 	 * Check reset key
 	 */
 	public static function confCheckResetKey($resetKey){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT configuration_value
 		        FROM configuration

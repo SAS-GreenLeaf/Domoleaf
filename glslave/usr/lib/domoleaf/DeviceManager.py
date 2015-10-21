@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from MysqlHandler import *;
 from DaemonConfigParser import *;
 
@@ -30,7 +30,7 @@ KEY_PLUS_2 = 'plus2';
 KEY_PLUS_3 = 'plus3';
 KEY_ROOM_DEVICE_ID = 'room_device_id';
 
-CONF_FILENAME = "/etc/greenleaf/master.conf";
+CONF_FILENAME = "/etc/domoleaf/master.conf";
 
 MYSQL_CONF_SECTION = 'mysql';
 MYSQL_CONF_USER_ENTRY = 'user';

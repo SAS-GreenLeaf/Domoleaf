@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# define CONF_FILENAME   "/etc/greenleaf/monitor_enocean.cfg"
+# define CONF_FILENAME   "/etc/domoleaf/monitor_enocean.cfg"
 # define CONF_PORT_ENTRY "port"
 # define CONF_ADDR_ENTRY "address"
 

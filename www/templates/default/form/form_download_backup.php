@@ -13,8 +13,8 @@ if (empty($_GET['file']) or !($_GET['file'] > 0)){
 	redirect();
 }
 
-$path = '/etc/greenleaf/sql/backup/';
-$file = 'mastercommand_backup_'.$_GET['file'].'.sql.tar.gz';
+$path = '/etc/domoleaf/sql/backup/';
+$file = 'domoleaf_backup_'.$_GET['file'].'.sql.tar.gz';
 
 if (!file_exists($path.$file)){
 	redirect();

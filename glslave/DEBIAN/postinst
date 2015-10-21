@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "[ \033[32mOK\033[0m ] Done installing Greenleaf slave daemon"
+echo -e "[ \033[32mOK\033[0m ] Done installing Domoleaf slave daemon"
 sed -i 's/files dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
 sed -i 's/files mdns4_minimal \[NOTFOUND=return\] dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
 
@@ -21,18 +21,18 @@ fi
 pip3 install scapy-python3
 
 #Upgrade
-if [ -f /etc/greenleaf/slave.conf.save ]; then 
-	aes=$(grep "^aes=" /etc/greenleaf/slave.conf.save | cut -d = -f 2)
-	rm /etc/greenleaf/slave.conf.save
+if [ -f /etc/domoleaf/slave.conf.save ]; then 
+	aes=$(grep "^aes=" /etc/domoleaf/slave.conf.save | cut -d = -f 2)
+	rm /etc/domoleaf/slave.conf.save
 else
 	aes=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
 fi
 
-sed -i "s/aes=greenleaf/aes=$aes/g" /etc/greenleaf/slave.conf
+sed -i "s/aes=domoleaf/aes=$aes/g" /etc/domoleaf/slave.conf
 
 #KNXD
 systemctl enable knxd
-cp /etc/greenleaf/knxd.conf /etc/
+cp /etc/domoleaf/knxd.conf /etc/
 systemctl start knxd
 
 chmod +x /usr/bin/slave.py

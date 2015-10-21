@@ -66,15 +66,15 @@ compile-native:
 packages-native:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
-	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/greenleaf
-	@rm -rf glmaster/etc/greenleaf/www
-	@mkdir -p glmaster/etc/greenleaf
+	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/domoleaf
+	@rm -rf glmaster/etc/domoleaf/www
+	@mkdir -p glmaster/etc/domoleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php
-	@cp -r www glmaster/etc/greenleaf/
-	@echo $(VERSION_MASTER) > glmaster/etc/greenleaf/.glmaster.version
+	@cp -r www glmaster/etc/domoleaf/
+	@echo $(VERSION_MASTER) > glmaster/etc/domoleaf/.glmaster.version
 	@sed -i "s/define('VERSION', '$(VERSION_MASTER)');/define('VERSION', '0.0.0');/g" www/config.php
 	@dpkg-deb --build glmaster > /dev/null
-	@echo $(VERSION_SLAVE) > glslave/etc/greenleaf/.glslave.version
+	@echo $(VERSION_SLAVE) > glslave/etc/domoleaf/.glslave.version
 	@sed -i 's/Architecture: all/Architecture: $(ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
 	@dpkg-deb --build glslave > /dev/null
 	@sed -i 's/Architecture: $(ARCH_NAME)/Architecture: all/g' glslave/DEBIAN/control # Reset arch
@@ -85,15 +85,15 @@ packages-native:
 packages:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
-	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/greenleaf
-	@rm -rf glmaster/etc/greenleaf/www
-	@mkdir -p glmaster/etc/greenleaf
+	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/domoleaf
+	@rm -rf glmaster/etc/domoleaf/www
+	@mkdir -p glmaster/etc/domoleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php
-	@cp -r www glmaster/etc/greenleaf/
-	@echo $(VERSION_MASTER) > glmaster/etc/greenleaf/.glmaster.version
+	@cp -r www glmaster/etc/domoleaf/
+	@echo $(VERSION_MASTER) > glmaster/etc/domoleaf/.glmaster.version
 	@sed -i "s/define('VERSION', '$(VERSION_MASTER)');/define('VERSION', '0.0.0');/g" www/config.php
 	@dpkg-deb --build glmaster > /dev/null
-	@echo $(VERSION_SLAVE) > glslave/etc/greenleaf/.glslave.version
+	@echo $(VERSION_SLAVE) > glslave/etc/domoleaf/.glslave.version
 	@sed -i 's/Architecture: all/Architecture: $(ARM_ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
 	@dpkg-deb --build glslave > /dev/null
 	@sed -i 's/Architecture: $(ARM_ARCH_NAME)/Architecture: all/g' glslave/DEBIAN/control # Reset arch

@@ -26,7 +26,7 @@ if (empty($iduser) || empty($userList->$iduser)) {
 	$iduser = $request -> getId();
 }
 
-$target_dir_abs = "/etc/greenleaf/www/templates/default/custom/device/";
+$target_dir_abs = "/etc/domoleaf/www/templates/default/custom/device/";
 $target_dir = "/templates/default/custom/device/";
 $uploadOk = 1;
 $target_file = $target_dir_abs . basename($_FILES["file"]["name"]);

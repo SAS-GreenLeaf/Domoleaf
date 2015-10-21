@@ -1,5 +1,16 @@
 #!/bin/bash
 
-echo -e "[ \033[33m..\033[0m ] Removing Greenleaf slave daemon..."
+echo -e "[ \033[33m..\033[0m ] Removing Domoleaf slave daemon..."
 
-mv /etc/greenleaf/slave.conf /etc/greenleaf/slave.conf.save
+mv /etc/domoleaf/slave.conf /etc/domoleaf/slave.conf.save
+
+#Conf
+rm -f /etc/apt/sources.list.d/domoleaf.list
+rm -f /etc/cron.d/glslave.cron
+rm -f /etc/domoleaf/knxd.conf
+
+rm -f /usr/bin/CronRefreshNetwork.py /usr/bin/slave.py
+rm -rf /usr/bin/glslave /usr/lib/domoleaf
+
+rm -f /usr/bin/monitor_enocean
+rm -f /usr/bin/monitor_knx

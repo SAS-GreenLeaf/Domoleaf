@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from GLManager import *;
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import socket;
 import json;
 import MasterDaemon;
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from inspect import currentframe, getframeinfo;
 import utils;
 from MasterSql import *;
@@ -63,7 +63,7 @@ class KNXManager:
         };
         self.logger = Logger(True, LOG_FILE);
         self.sql = MasterSql();
-        self._parser = DaemonConfigParser('/etc/greenleaf/master.conf');
+        self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
         self.aes_slave_keys = slave_keys;
 
     def update_room_device_option(self, daemon_id, json_obj):

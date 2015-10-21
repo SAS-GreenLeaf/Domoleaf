@@ -3,8 +3,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-define('DB_USER', 'greenleaf');
-define('DB_PASSWORD', 'greenleaf');
+define('DB_USER', 'domoleaf');
+define('DB_PASSWORD', 'domoleaf');
 define('VERSION', '0.0.0');
 
 if(isset($_SERVER['HTTP_USER_AGENT']) &&

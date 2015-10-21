@@ -18,7 +18,7 @@ import sys;
 import fcntl;
 import struct;
 from subprocess import *
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from DeviceManager import *;
 from DaemonConfigParser import *;
 from MysqlHandler import *;
@@ -38,10 +38,10 @@ import utils;
 from GLManager import *;
 
 LOG_FILE                = '/var/log/glmaster.log'
-MASTER_CONF_FILE        = '/etc/greenleaf/master.conf';         # Configuration file name
+MASTER_CONF_FILE        = '/etc/domoleaf/master.conf';         # Configuration file name
 SELECT_TIMEOUT          = 0.05;                                 # Timeout for the select
 MAX_SLAVES              = 100;                                  # Max slave that can be connected at the same time
-MAX_CMDS                = 100;                                  # Max mastercommand interface that can be connected at the same time
+MAX_CMDS                = 100;                                  # Max domoleaf interface that can be connected at the same time
 SLAVE_NAME_PREFIX       = 'SD3';                                # Slave box hostname prefix
 MAX_DATA_LENGTH         = 4096;                                 # Max size of the socket buffer
 
@@ -104,8 +104,8 @@ DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 
-HOSTS_CONF                    = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
-CAMERA_CONF_FILE              = '/etc/greenleaf/camera.conf';         # Path for the cameras configuration file
+HOSTS_CONF                    = '/etc/domoleaf/hosts.conf';          # Path for the network configuration file
+CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
 
 DEBUG_MODE = True;      # Debug flag
 
@@ -116,7 +116,7 @@ class MasterDaemon:
     """
     def __init__(self, log_flag):
         self.logger = Logger(log_flag, LOG_FILE);
-        self.logger.info('Started Greenleaf Master Daemon');
+        self.logger.info('Started Domoleaf Master Daemon');
         self.d3config = {};
         self.aes_slave_keys = {};
         self.aes_master_key = None;
@@ -261,7 +261,7 @@ class MasterDaemon:
 
     def accept_new_cmd_connection(self, connection):
         """
-        Gets new mastercommand connections and threads the treatment.
+        Gets new domoleaf connections and threads the treatment.
         """
         new_connection, addr = connection.accept();
         r = CommandReceiver(new_connection, self);
@@ -280,7 +280,7 @@ class MasterDaemon:
 
     def parse_data(self, data, connection):
         """
-        Once data are received whether from mastercommand or slave, the function of the packet_type in data is called.
+        Once data are received whether from domoleaf or slave, the function of the packet_type in data is called.
         """
         json_obj = json.JSONDecoder().decode(data);
         if json_obj['packet_type'] in self.data_function.keys():
@@ -314,10 +314,10 @@ class MasterDaemon:
         hostname = socket.gethostname();
         if '.' in hostname:
             hostname = hostname.split('.')[0];
-        version_file = open('/etc/greenleaf/.glmaster.version', 'r');
+        version_file = open('/etc/domoleaf/.glmaster.version', 'r');
         if not version_file:
-            self.logger.error("File not found: /etc/greenleaf/.glmaster.version");
-            print("File not found: /etc/greenleaf/.glmaster.version");
+            self.logger.error("File not found: /etc/domoleaf/.glmaster.version");
+            print("File not found: /etc/domoleaf/.glmaster.version");
             return;
         version = version_file.read();
         if '\n' in version:
@@ -342,19 +342,19 @@ class MasterDaemon:
                 self.sql.mysql_handler_personnal_query(query);
 
     def backup_db_create_local(self, json_obj, connection):
-        path = '/etc/greenleaf/sql/backup/';
-        filename = 'mastercommand_backup_';
+        path = '/etc/domoleaf/sql/backup/';
+        filename = 'domoleaf_backup_';
         t = str(time.time());
         if '.' in t:
             t = t.split('.')[0];
         filename += t;
         filename += '.sql';
-        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf mastercommand > " + path + filename);
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > " + path + filename);
         os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
         os.system('rm ' + path + filename);
 
     def backup_db_remove_local(self, json_obj, connection):
-        filename = '/etc/greenleaf/sql/backup/mastercommand_backup_';
+        filename = '/etc/domoleaf/sql/backup/domoleaf_backup_';
         filename += str(json_obj['data']);
         filename += '.sql.tar.gz';
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
@@ -374,9 +374,9 @@ class MasterDaemon:
 
     def backup_db_list_local(self, json_obj, connection):
         json_obj = [];
-        backup_list = os.listdir('/etc/greenleaf/sql/backup/')
+        backup_list = os.listdir('/etc/domoleaf/sql/backup/')
         for f in backup_list:
-            s = os.stat('/etc/greenleaf/sql/backup/' + f);
+            s = os.stat('/etc/domoleaf/sql/backup/' + f);
             if '.sql' in f:
                 f = f.split('.sql')[0];
                 json_obj.append({"name": f, "size": s.st_size});
@@ -385,8 +385,8 @@ class MasterDaemon:
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_restore_local(self, json_obj, connection):
-        path = '/etc/greenleaf/sql/backup/';
-        filename = 'mastercommand_backup_';
+        path = '/etc/domoleaf/sql/backup/';
+        filename = 'domoleaf_backup_';
         filename += str(json_obj['data']);
         filename += '.sql.tar.gz';
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
@@ -395,7 +395,7 @@ class MasterDaemon:
         try:
             os.stat(path + filename);
             os.system('cd ' + path + ' && tar -xzf ' + filename);
-            os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename.split('.tar.gz')[0]);
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < ' + path + filename.split('.tar.gz')[0]);
             os.system('rm ' + path + filename.split('.tar.gz')[0]);
             return;
         except Exception as e:
@@ -406,7 +406,7 @@ class MasterDaemon:
                 self.logger.error("The database file to restore does not exists.");
                 self.logger.error(e);
                 return;
-        os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < ' + path + filename);
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < ' + path + filename);
 
     def check_usb(self, json_obj, connection):
         try:
@@ -425,21 +425,21 @@ class MasterDaemon:
         sdx1 = glob.glob('/dev/sd?1')[0];
         if (os.path.exists(sdx1) == 0):
             return;
-        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
-        os.system('mkdir -p /etc/greenleaf/mnt/backup');
-        backup_list = os.listdir('/etc/greenleaf/mnt/backup/')
+        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        os.system('mkdir -p /etc/domoleaf/mnt/backup');
+        backup_list = os.listdir('/etc/domoleaf/mnt/backup/')
         for f in backup_list:
-            s = os.stat('/etc/greenleaf/mnt/backup/' + f);
+            s = os.stat('/etc/domoleaf/mnt/backup/' + f);
             if '.sql' in f:
                 f = f.split('.sql')[0];
                 json_obj.append({"name": f, "size": s.st_size});
-        os.system('umount /etc/greenleaf/mnt');
+        os.system('umount /etc/domoleaf/mnt');
         json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name'], reverse=True);
         json_str = json.JSONEncoder().encode(json_sorted);
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_remove_usb(self, json_obj, connection):
-        filename = '/etc/greenleaf/mnt/backup/mastercommand_backup_';
+        filename = '/etc/domoleaf/mnt/backup/domoleaf_backup_';
         filename += str(json_obj['data']);
         filename += '.sql.tar.gz';
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
@@ -448,8 +448,8 @@ class MasterDaemon:
         sdx1 = glob.glob('/dev/sd?1')[0];
         if (os.path.exists(sdx1) == 0):
             return;
-        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
-        path = '/etc/greenleaf/mnt/backup/';
+        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        path = '/etc/domoleaf/mnt/backup/';
         try:
             os.stat(filename);
         except Exception as e:
@@ -459,14 +459,14 @@ class MasterDaemon:
             except Exception as e:
                 self.logger.error("The database file to remove does not exists.")
                 self.logger.error(e)
-                os.system('umount /etc/greenleaf/mnt');
+                os.system('umount /etc/domoleaf/mnt');
                 return;
         os.remove(filename);
-        os.system('umount /etc/greenleaf/mnt');
+        os.system('umount /etc/domoleaf/mnt');
 
     def backup_db_restore_usb(self, json_obj, connection):
-        path = '/etc/greenleaf/mnt/backup/';
-        filename = 'mastercommand_backup_';
+        path = '/etc/domoleaf/mnt/backup/';
+        filename = 'domoleaf_backup_';
         filename += str(json_obj['data']);
         filename += '.sql';
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
@@ -475,25 +475,25 @@ class MasterDaemon:
         sdx1 = glob.glob('/dev/sd?1')[0];
         if (os.path.exists(sdx1) == 0):
             return;
-        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
+        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
         try:
             os.stat(path + filename);
-            os.system('cp ' + path + filename + ' /tmp/ && umount /etc/greenleaf/mnt && cd /tmp/');
-            os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /tmp/' + filename);
+            os.system('cp ' + path + filename + ' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/');
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/' + filename);
             os.remove('/tmp/' + filename);
             return;
         except Exception as e:
             try:
                 filename = filename + '.tar.gz';
                 os.stat(path + filename);
-                os.system('cp ' + path + filename + ' /tmp/ && umount /etc/greenleaf/mnt && cd /tmp/ && tar -xzf ' + filename);
+                os.system('cp ' + path + filename + ' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/ && tar -xzf ' + filename);
             except Exception as e:
                 self.logger.error("The database file to restore does not exists.");
                 self.logger.error(e);
-                os.system('umount /etc/greenleaf/mnt');
+                os.system('umount /etc/domoleaf/mnt');
                 return;
-        os.system('umount /etc/greenleaf/mnt');
-        os.system('mysql --defaults-file=/etc/mysql/debian.cnf mastercommand < /tmp/' + filename.split('.tar.gz')[0]);
+        os.system('umount /etc/domoleaf/mnt');
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/' + filename.split('.tar.gz')[0]);
         os.remove('/tmp/' + filename);
         os.remove('/tmp/' + filename.split('.tar.gz')[0]);
 
@@ -501,19 +501,19 @@ class MasterDaemon:
         sdx1 = glob.glob('/dev/sd?1')[0];
         if (os.path.exists(sdx1) == 0):
             return;
-        os.system('mount ' + sdx1 + ' /etc/greenleaf/mnt');
-        path = '/etc/greenleaf/mnt/backup/';
-        filename = 'mastercommand_backup_';
+        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        path = '/etc/domoleaf/mnt/backup/';
+        filename = 'domoleaf_backup_';
         os.system('mkdir -p ' + path);
         t = str(time.time());
         if '.' in t:
             t = t.split('.')[0];
         filename += t;
         filename += '.sql';
-        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf mastercommand > " + path + filename);
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > " + path + filename);
         os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
         os.system('rm ' + path + filename);
-        os.system('umount /etc/greenleaf/mnt');
+        os.system('umount /etc/domoleaf/mnt');
 
     def monitor_knx(self, json_obj, connection):
         """
@@ -747,7 +747,7 @@ class MasterDaemon:
 
     def reload_camera(self, json_obj, connection):
         """
-        Generation of the file camera.conf located in /etc/greenleaf by default.
+        Generation of the file camera.conf located in /etc/domoleaf by default.
         """
         camera_file = open(CAMERA_CONF_FILE, 'w');
         query = "SELECT room_device_id, addr, plus1 FROM room_device WHERE protocol_id = 6";
@@ -787,7 +787,7 @@ class MasterDaemon:
             return ;
         hostname = res[0][0];
         if hostname == socket.gethostname():
-            file = open('/etc/greenleaf/.glslave.version', 'r');
+            file = open('/etc/domoleaf/.glslave.version', 'r');
             version = file.read().split('\n')[0];
             connection.send(bytes(version, 'utf-8'));
             query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';

@@ -8,7 +8,7 @@
 # Should-Stop: $network $syslog
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
-# Short-Description: Greenleaf master daemon for D3 boxes
+# Short-Description: Domoleaf master daemon for D3 boxes
 # description:
 ### END INIT INFO
 

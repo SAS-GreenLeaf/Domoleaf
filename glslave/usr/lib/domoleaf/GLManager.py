@@ -2,7 +2,7 @@
 
 import socket
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from DaemonConfigParser import *;
 from Crypto.Cipher import AES;
 from InfoSys import *;
@@ -11,7 +11,7 @@ import AESManager
 import requests
 import base64
 
-SLAVE_CONF_FILE                 = '/etc/greenleaf/slave.conf';
+SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
 
 class GLManager:
     

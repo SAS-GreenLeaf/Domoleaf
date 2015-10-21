@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 
 import sys
-sys.path.append('/usr/lib/greenleaf')
+sys.path.append('/usr/lib/domoleaf')
 import socket
 import json
 from DaemonConfigParser import *;
 
 if __name__ == "__main__":
     try:
-        parser = DaemonConfigParser('/etc/greenleaf/slave.conf')
+        parser = DaemonConfigParser('/etc/domoleaf/slave.conf')
         ip = parser.getValueFromSection('cron', 'address')
         port = parser.getValueFromSection('cron', 'port')
         s = socket.create_connection((ip, port))

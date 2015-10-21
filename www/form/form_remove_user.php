@@ -2,7 +2,7 @@
 
 include('header.php');
 
-$dir = "/etc/greenleaf/www/templates/default/custom/device/";
+$dir = "/etc/domoleaf/www/templates/default/custom/device/";
 
 if (!empty($_GET['iduser'])){
 	

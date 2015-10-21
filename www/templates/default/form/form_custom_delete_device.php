@@ -26,7 +26,7 @@ if (empty($iduser) || empty($userList->$iduser)) {
 	$iduser = $request -> getId();
 }
 
-$target_dir = "/etc/greenleaf/www/templates/default/custom/device/";
+$target_dir = "/etc/domoleaf/www/templates/default/custom/device/";
 $deleteOk = 1;
 
 if (!empty($_POST["device"]) && !empty($devices->$_POST["device"]) && !empty($iduser)){

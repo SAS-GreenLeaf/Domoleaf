@@ -4,7 +4,7 @@ class Admin extends User {
 
 	/*** Profile ***/
 	function profileList() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
@@ -20,7 +20,7 @@ class Admin extends User {
 	}
 	
 	function profileInfo($id=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($id)) {
 			$id = $this->getId();
@@ -39,7 +39,7 @@ class Admin extends User {
 	}
 	
 	function profileNew($username, $password) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id
 		        FROM user
@@ -100,7 +100,7 @@ class Admin extends User {
 	}
 	
 	function profileRemove($user_id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM user
 		        WHERE user_id=:user_id';
@@ -111,7 +111,7 @@ class Admin extends User {
 	}
 	
 	function profileRename($lastname, $firstname, $gender, $phone, $language, $user_id=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if(empty($user_id)) {
 			$user_id = $this->getId();
@@ -132,7 +132,7 @@ class Admin extends User {
 	}
 	
 	function profileLevel($id, $level) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		//only 3 lvl for the moment
 		if($level != 2 && $level != 3) {
@@ -149,7 +149,7 @@ class Admin extends User {
 	}
 	
 	function profileUsername($id, $username) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id
 		        FROM user
@@ -177,7 +177,7 @@ class Admin extends User {
 			parent::passwordRename($last, $new);
 		}
 		else {
-			$link = Link::get_link('mastercommand');
+			$link = Link::get_link('domoleaf');
 			
 			$sql = 'SELECT user_id, user_password
 			        FROM user
@@ -200,7 +200,7 @@ class Admin extends User {
 	}
 	
 	function confRemote($http, $https, $securemode){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$conf = $this->conf_load();
 		
@@ -271,7 +271,7 @@ class Admin extends User {
 	}
 
 	function confMail($fromMail, $fromName, $smtpHost, $smtpSecure, $smtpPort, $smtpUsername, $smtpPassword){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 
 		if (empty($fromMail) or filter_var($fromMail, FILTER_VALIDATE_EMAIL) == false){
 			$fromMail = '';
@@ -427,7 +427,7 @@ class Admin extends User {
 
 	/*** Floors ***/
 	function confFloorList() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 	
 		$sql = 'SELECT floor_id, floor_name
@@ -443,7 +443,7 @@ class Admin extends User {
 	}
 	
 	function confFloorNew($name) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'INSERT INTO floor
 		        (floor_name)
@@ -468,7 +468,7 @@ class Admin extends User {
 	}
 	
 	function confFloorRename($id, $name) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(!empty($name)) {
 			$sql = 'UPDATE floor
@@ -483,7 +483,7 @@ class Admin extends User {
 	
 	function confFloorRemove($idfloor) {
 		
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'UPDATE user_floor
 		        JOIN floor ON user_floor.floor_id = floor.floor_id
@@ -504,7 +504,7 @@ class Admin extends User {
 	/*** Rooms ***/
 	function confRoomAll(){
 		$list = array();
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT room_id, room_name, floor as id_floor
 				FROM room
@@ -520,7 +520,7 @@ class Admin extends User {
 	
 	function confRoomList($floor=0) {
 		$list = array();
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(!empty($floor)){
 			$sql = 'SELECT room.room_id, room_name, floor, floor_name
@@ -547,7 +547,7 @@ class Admin extends User {
 	}
 	
 	function confRoomNew($name, $floor) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
 	
 		if(empty($name) or empty($floorList[$floor])) {
@@ -576,7 +576,7 @@ class Admin extends User {
 	}
 	
 	function confRoomRename($id, $name) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT room_id, room_name
 		        FROM room
@@ -598,7 +598,7 @@ class Admin extends User {
 	}
 	
 	function confRoomFloor($id, $floor) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
 		
 		$sql = 'SELECT room_id, room_name
@@ -621,7 +621,7 @@ class Admin extends User {
 	}
 	
 	function confRoomRemove($idroom, $idfloor) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE user_room
 		        JOIN room ON user_room.room_id = room.room_id
@@ -645,7 +645,7 @@ class Admin extends User {
 	
 	function confRoomDeviceAll($iddevice){
 		$list = array();
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT room_device_id, name
 		        FROM room_device
@@ -666,7 +666,7 @@ class Admin extends User {
 	function confRoomDeviceRemove($iddevice, $idroom){
 		$listSmartcmd = array();
 		
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'UPDATE user_device
 		        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
@@ -735,7 +735,7 @@ class Admin extends User {
 	 * @return NULL
 	 */
 	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr=''){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($idroom) or empty($name) or empty($devaddr) or empty($iddevice)) {
 			return null;
@@ -837,7 +837,7 @@ class Admin extends User {
 		
 		$options['dpt_id'] = $tmp;
 		
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($room_device_id) or empty($options)){
 			return null;
@@ -897,7 +897,7 @@ class Admin extends User {
 	 */
 	
 	function confDeviceRoomOpt($deviceroomid) { 
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
@@ -915,7 +915,7 @@ class Admin extends User {
 	}
 	
 	function confRoomDeviceList($room){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		if(!empty($room)){
@@ -949,7 +949,7 @@ class Admin extends User {
 	}
 	
 	function confDeviceProtocol($device=0) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT protocol_id
@@ -966,7 +966,7 @@ class Admin extends User {
 	}
 	
 	function confDeviceNewIp($name, $proto, $room, $device, $addr, $port='80', $login='', $pass='', $macaddr=''){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($name) or empty($proto) or 
 		   empty($room) or empty($device) or empty($addr)) {
@@ -1012,7 +1012,7 @@ class Admin extends User {
 	}
 	
 	function confDeviceNewKnx($name, $proto, $room, $device, $addr, $daemon){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($name) or empty($proto) or empty($room) or 
 		   empty($device) or empty($addr) or empty($daemon)) {
@@ -1047,7 +1047,7 @@ class Admin extends User {
 	}
 	
 	function confDeviceNewEnocean($name, $proto, $room, $device, $addr){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($name) or empty($proto) or 
 		   empty($room) or empty($device) or empty($addr)) {
@@ -1082,7 +1082,7 @@ class Admin extends User {
 	
 	/*** Daemon management ***/
 	function confDaemonList() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT daemon_id, name, serial, validation, version
@@ -1114,7 +1114,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonNew($name, $serial, $skey) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($name) or empty($serial) or empty($skey)) {
 			return 0;
@@ -1134,7 +1134,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonRemove($id) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'DELETE FROM daemon
 		        WHERE daemon_id=:daemon_id';
@@ -1144,7 +1144,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonRename($id, $name, $serial, $skey='') {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(!empty($name) && !empty($serial)) {
 			$sql = 'SELECT serial
@@ -1189,7 +1189,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonProtocolList() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT protocol_id, wired,
@@ -1207,7 +1207,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonProtocol($daemon, $newProtocolList=array()) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$daemonList = $this->confDaemonList();
 		$protocolList = $this->confDaemonProtocolList();
@@ -1251,7 +1251,7 @@ class Admin extends User {
 	
 	/*** User permission ***/
 	function mcAllowed(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$listFloor = array();
 		$listRoom  = array();
@@ -1385,7 +1385,7 @@ class Admin extends User {
 	}
 	
 	function mcVisible(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$listFloor = array();
 		$listRoom = array();
@@ -1435,7 +1435,7 @@ class Admin extends User {
 	}
 	
 	function confUserInstallation($userid) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)) {
 			$userid = $this->getId();
@@ -1510,7 +1510,7 @@ class Admin extends User {
 		if (empty($userid)) {
 			$userid = $this -> getId();
 		}
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 
 		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order,
@@ -1535,7 +1535,7 @@ class Admin extends User {
 	}
 
 	function confUserPermissionDevice($userid, $deviceid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT user_device.room_device_id, device_order, room_id
 		        FROM user_device
@@ -1572,7 +1572,7 @@ class Admin extends User {
 	//room
 	
 	function confUserRoomEnable($userid){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT user_id, room_id, room_allowed, room_order
@@ -1595,7 +1595,7 @@ class Admin extends User {
 	}
 	
 	function confUserPermissionRoom($userid, $roomid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT user_room.room_id, room_order, floor
 		        FROM user_room
@@ -1631,7 +1631,7 @@ class Admin extends User {
 //Floor
 
 	function confUserFloorEnable($userid){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT user_id, floor_id, floor_allowed, floor_order
@@ -1653,7 +1653,7 @@ class Admin extends User {
 	}
 	
 	function confUserPermissionFloor($userid, $floorid, $status){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT floor_id
 		        FROM user_floor
@@ -1780,7 +1780,7 @@ class Admin extends User {
 
 	/*** Option ***/
 	function confOptionList(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT option_id, 
@@ -1797,7 +1797,7 @@ class Admin extends User {
 	}
 	
 	function confOptionDptList(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT dpt_optiondef.dpt_id, option_id, unit
@@ -1813,7 +1813,7 @@ class Admin extends User {
 	}
 
 	function checkDevice($iddevice){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id
 		        FROM user_device
@@ -1832,7 +1832,7 @@ class Admin extends User {
 	}
 
 	function monitorEnocean() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT type, addr_src, addr_dest, eo_value, t_date, daemon_id
@@ -1849,7 +1849,7 @@ class Admin extends User {
 	}
 	
 	function monitorKnx() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT type, addr_src, addr_dest, knx_value, t_date, daemon_id
@@ -1866,7 +1866,7 @@ class Admin extends User {
 	}
 	
 	function monitorIp() {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT mac_addr, ip_addr, hostname, last_update
@@ -1896,7 +1896,7 @@ class Admin extends User {
 	 * @param int : -1 ou 1
 	 */
 	function SetFloorOrder($userid, $floorid, $action) {
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -1952,7 +1952,7 @@ class Admin extends User {
 	 * @param int : -1 ou 1
 	 */
 	function SetRoomOrder($userid, $roomid, $action){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -2007,7 +2007,7 @@ class Admin extends User {
 	 * @param int : -1 ou 1
 	 */
 	function SetDeviceOrder($userid, $deviceid, $action){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		if(empty($userid)){
 			$userid = $this->getId();
@@ -2062,7 +2062,7 @@ class Admin extends User {
 			$userid = $this->getId();
 		}
 
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 	
 		$sql = 'UPDATE user_device
 		        SET device_bgimg=:bgimg
@@ -2110,7 +2110,7 @@ class Admin extends User {
 	
 	/*** KNX log ***/
 	function confKnxAddrList(){
-		$link = Link::get_link('mastercommand');
+		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT DISTINCT(addr_src) as addr_src

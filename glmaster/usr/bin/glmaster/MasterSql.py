@@ -1,7 +1,7 @@
 import time;
 import mysql.connector;
 import sys;
-sys.path.append('/usr/lib/greenleaf');
+sys.path.append('/usr/lib/domoleaf');
 from MysqlHandler import *;
 from DaemonConfigParser import *;
 from Logger import *;
@@ -13,7 +13,7 @@ MASTER_CONF_MYSQL_SECTION               = 'mysql';
 MASTER_CONF_MYSQL_USER_ENTRY            = 'user';
 MASTER_CONF_MYSQL_PASSWORD_ENTRY        = 'password';
 MASTER_CONF_MYSQL_DB_NAME_ENTRY         = 'database_name';
-MASTER_CONF_FILE                        = '/etc/greenleaf/master.conf';
+MASTER_CONF_FILE                        = '/etc/domoleaf/master.conf';
 
 class MasterSql:
     """

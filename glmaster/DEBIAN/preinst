@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo -e "[ \033[33m..\033[0m ] Installing Greenleaf master daemon..."
+echo -e "[ \033[33m..\033[0m ] Installing Domoleaf master daemon..."
 
-mkdir -p /etc/greenleaf/sql/{create,update,backup}
-mkdir -p /usr/lib/greenleaf
-mkdir -p /etc/greenleaf
+mkdir -p /etc/domoleaf/sql/{create,update,backup}
+mkdir -p /usr/lib/domoleaf
+mkdir -p /etc/domoleaf
 mkdir -p /usr/bin/glmaster
-mkdir -p /etc/greenleaf/www
+mkdir -p /etc/domoleaf/www

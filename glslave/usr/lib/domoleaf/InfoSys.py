@@ -41,11 +41,11 @@ class InfoSys:
         return ""
     
     def softMaster():
-        file = open('/etc/greenleaf/.glmaster.version', 'r');
+        file = open('/etc/domoleaf/.glmaster.version', 'r');
         return file.read().split('\n')[0];
     
     def softSlave():
-        file = open('/etc/greenleaf/.glslave.version', 'r');
+        file = open('/etc/domoleaf/.glslave.version', 'r');
         return file.read().split('\n')[0];
     
     def softKNX():

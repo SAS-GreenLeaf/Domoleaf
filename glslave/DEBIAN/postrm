@@ -1,16 +1,5 @@
 #!/bin/bash
 
-#Conf
-rm -f /etc/apt/sources.list.d/domoleaf.list
-rm -f /etc/cron.d/glslave.cron
-rm -f /etc/greenleaf/knxd.conf
-
-rm -f /usr/bin/CronRefreshNetwork.py /usr/bin/slave.py
-rm -rf /usr/bin/glslave /usr/lib/greenleaf
-
-rm -f /usr/bin/monitor_enocean
-rm -f /usr/bin/monitor_knx
-
 #Logs
 rm -f /var/log/glslave.log
 rm -f /var/log/monitor_enocean.log
@@ -21,4 +10,4 @@ rm -f /var/run/glslave.pid
 rm -f /var/run/monitor_enocean.pid
 rm -f /var/run/monitor_knx.pid
 
-echo -e "[ \033[32mok\033[0m ] Done removing Greenleaf slave daemon"
+echo -e "[ \033[32mok\033[0m ] Done removing Domoleaf slave daemon"

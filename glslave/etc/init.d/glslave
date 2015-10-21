@@ -9,8 +9,8 @@
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
 # X-Interactive: true
-# Short-Description: Greenleaf slave daemon for D3 boxes
-# description: Greenleaf slave daemon running on D3 boxes to communicate with KNX, EnOcean, Upnp. Receives and sends datas to master daemon.
+# Short-Description: Domoleaf slave daemon for D3 boxes
+# description: Domoleaf slave daemon running on D3 boxes to communicate with KNX, EnOcean, Upnp. Receives and sends datas to master daemon.
 ### END INIT INFO
 
 PATH="$PATH"

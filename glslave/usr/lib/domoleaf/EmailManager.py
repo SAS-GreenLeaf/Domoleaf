@@ -11,7 +11,7 @@ class EmailManager:
     """
     def __init__(self,
                  _from = 'localhost',
-                 _to = 'eb@greenleaf.fr'):
+                 _to = ''):
         self._from = _from;
         self._to = _to;
         self._smtp_server = smtplib.SMTP(SMTP_ADDR);

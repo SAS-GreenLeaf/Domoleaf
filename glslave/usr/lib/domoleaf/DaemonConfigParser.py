@@ -1,6 +1,6 @@
 import configparser;
 import sys;
-sys.path.append("/usr/lib/greenleaf");
+sys.path.append("/usr/lib/domoleaf");
 
 class DaemonConfigParser:
     """
