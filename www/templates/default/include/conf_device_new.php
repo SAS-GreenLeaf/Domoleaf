@@ -111,6 +111,12 @@ echo '
 					<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 				</label>
 				<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+			</div>
+			<div class="input-group">
+				<label for="macaddress" class="input-group-addon">
+					<span class="fa flaticon-chip" aria-hidden="true"></span>
+				</label>
+				<input type="text" class="form-control" id="macaddr" placeholder="'._('Mac address').'">
 			</div><br/>
 			<div class="center"><button class="btn btn-greenleaf" onclick="AddNewDevice()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '._('Add').'</button></div>
 			<br/>
@@ -196,9 +202,10 @@ function AddNewDevice(){
 					var port = $("#port").val();
 					var login = $("#login").val();
 					var pass = $("#pass").val();
+					var macaddr = $("#macaddr").val();
 					
 					if (ipaddr != \'\'){
-						SendByAjax(data+"&ipaddr="+ipaddr+"&port="+port+"&login="+login+"&pass="+pass);
+						SendByAjax(data+"&ipaddr="+ipaddr+"&port="+port+"&login="+login+"&pass="+pass+"&macaddr="+macaddr);
 					}
 					else {
 						CatchError(\''._('Empty ip address').'\');
@@ -303,8 +310,9 @@ function SelectedRowKnx(addr){
 	$("#knxaddr").val(addr);
 }
 
-function SelectedRowIp(host, ip){
+function SelectedRowIp(host, ip, mac){
 	$("#ipaddr").val(ip);
+	$("#macaddr").val(mac);
 
 	var hostval = $("#devicename").val();
 	if (!hostval){

@@ -97,6 +97,12 @@ echo '
 						</label>
 						<input type="text" class="form-control" value="'.$device->plus1.'" id="port" placeholder="'._('Port').' ('._('Default: 80').')">
 					</div>
+				<div class="input-group">
+						<label for="macaddress" class="input-group-addon">
+							<span class="fa flaticon-chip" aria-hidden="true"></span>
+						</label>
+						<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Adress').'">
+				</div>
 				</div>
 				<div class="col-md-6 col-xs-12">
 					<div class="input-group">
@@ -363,6 +369,7 @@ function SaveInfo(){
 	var login = $("#login").val();
 	var pass = $("#pass").val();
 	var port = $("#port").val();
+	var macaddr = $("#macaddr").val();
 	
 	if (!daemon){
 		daemon = 0;
@@ -378,12 +385,15 @@ function SaveInfo(){
 	}
 	else if (!port){
 		port = "";
-	}				
+	}
+	if (!macaddr){
+		macaddr = "";
+	}
 	if (devname != \'\' && addr != \'\'){
 		$.ajax({
 			type:"GET",
 			url: "/form/form_device_info_opt.php",
-			data: "idroomdevice="+idroomdevice+"&devname="+encodeURIComponent(devname)+"&daemon="+daemon+"&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+"&login="+login+"&pass="+pass,
+			data: "idroomdevice="+idroomdevice+"&devname="+encodeURIComponent(devname)+"&daemon="+daemon+"&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+"&login="+login+"&pass="+pass+"&macaddr="+macaddr,
 			complete: function(result, status) {
 				LoadingButton("saveinfo", 0);
 			}
