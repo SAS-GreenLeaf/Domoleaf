@@ -20,7 +20,7 @@ echo '
 		$pos1 = strpos($elem->hostname, 'SD3');
 		if ($pos === false 	&& $pos1 === false) {
 		echo '
-			<tr class="cursor" onclick="SelectedRowIp(\''.$elem->hostname.'\', \''.$elem->ip_addr.'\')">
+			<tr class="cursor" onclick="SelectedRowIp(\''.$elem->hostname.'\', \''.$elem->ip_addr.'\', \''.$elem->mac_addr.'\')">
 				<td>'.$elem->hostname.'</td>
 				<td>'.$elem->ip_addr.'</td>
 			</tr>';

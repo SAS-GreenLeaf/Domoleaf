@@ -1703,7 +1703,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(!empty($do->device_allowed)){
+		if(!empty($do->device_allowed) || $this->getlevel() > 1){
 			if(!empty($do->addr_plus)){
 				$sql ='UPDATE room_device_option
 				       SET valeur=:valeur

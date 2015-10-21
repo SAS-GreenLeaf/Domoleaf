@@ -222,7 +222,39 @@ function display_fan($info){
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
+		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1, 0)" id="speed-fan">';
+	}
+
+	if (!empty($info->device_opt->{400})){
+		$display.= '<option value="400">'._('Speed 0').'</option>';
+	}
+	if (!empty($info->device_opt->{401})){
+		$display.= '<option value="401">'._('Speed 1').'</option>';
+	}
+	if (!empty($info->device_opt->{402})){
+		$display.= '<option value="402">'._('Speed 2').'</option>';
+	}
+	if (!empty($info->device_opt->{403})){
+		$display.= '<option value="403">'._('Speed 3').'</option>';
+	}
+	if (!empty($info->device_opt->{404})){
+		$display.= '<option value="404">'._('Speed 4').'</option>';
+	}
+	if (!empty($info->device_opt->{405})){
+		$display.= '<option value="405">'._('Speed 5').'</option>';
+	}
+	if (!empty($info->device_opt->{406})){
+		$display.= '<option value="406">'._('Speed 6').'</option>';
+	}
 	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
+		$display.= '</select>';
+	}
+
 	return $display;
 }
 
@@ -232,6 +264,12 @@ function display_warming($info){
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
+	}
+	if (!empty($info->device_opt->{13})){
+		$display.=display_varie($info);
+	}
+	if (!empty($info->device_opt->{72})){
+		$display.= display_temperature($info);
 	}
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
@@ -264,11 +302,40 @@ function display_spa($info){
 
 // Widget Clim
 function display_clim($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '';
+	$display.= '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
+				<h3 class="title">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
+	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
+		$display.= '<div class="center">';
+	}
+	
+	if (!empty($info->device_opt->{400})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 400)" class="btn btn-info">'._('0').'</button> ';
+	}
+	if (!empty($info->device_opt->{401})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 401)" class="btn btn-info">'._('1').'</button> ';
+	}
+	if (!empty($info->device_opt->{402})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 402)" class="btn btn-info">'._('2').'</button> ';
+	}
+	if (!empty($info->device_opt->{403})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 403)" class="btn btn-info">'._('3').'</button> ';
+	}
+	if (!empty($info->device_opt->{404})){
+		$display.= '<button onclick="changeSpeedFan('.$info->room_device_id.', 1, 404)" class="btn btn-info">'._('4').'</button> ';
+	}
+	
+	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
+		$display.= '</div><br/>';
+	}
+	
 	if (!empty($info->device_opt->{388})){
 		$display.=display_minusplus($info);
 	}
@@ -348,7 +415,7 @@ function display_audio($info){
 function display_portal($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
-	if (!empty($info->device_opt->{96})){
+	if (!empty($info->device_opt->{12}) or !empty($info->device_opt->{96})){
 		$display.=display_OpenClose($info);
 	}
 	
@@ -375,8 +442,11 @@ function display_shutter($info){
 function display_commande($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	if (!empty($info->device_opt->{79})){
+		$display.=display_luminosity($info);
+	}
 	if (!empty($info->device_opt->{72})){
-		$display.=display_temperature($info);
+		$display.= display_temperature($info);
 	}
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
@@ -390,13 +460,14 @@ function display_lampe($info){
 	if (!empty($info->device_id) && $info->device_id == 78){
 		$display = '<div class="info-widget">
 						<button title="'._('More').'" onclick="HandlePopup(3, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
-							<span class="fa fa-info-circle md"></span>
+							<span class="fa fa-plus md"></span>
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
 	}
-	else
-	{
+	
+	else{
+		/*
 		$display = '<div class="info-widget">
 						<button title="'._('More').'"
 								onclick="HandlePopup(2, '.$info->room_device_id.')"
@@ -406,6 +477,8 @@ function display_lampe($info){
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
+		*/
+		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
 
 	if (!empty($info->device_opt->{12})){
@@ -439,9 +512,14 @@ function display_furnace($info){
 	return $display; 
 }
 
-//widget consommation électrique
+//widget electric consumption
 function display_consumption($info){
 	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
+	
+	//consumption option
+	if (!empty($info->device_opt->{399})){
+		$display.= display_consumption_option($info);
+	}
 	
 	return $display;
 }
@@ -452,8 +530,8 @@ function display_consumption($info){
 function display_OpenClose($info){
 	$display ='
 			<div class="margin-bottom btn-group btn-group-greenleaf">
-				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{96}->option_id.'\')">'._('Open').'</button>
-				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{96}->option_id.'\')">'._('Close').'</button>
+				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, 96)">'._('Open').'</button>
+				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, 96)">'._('Close').'</button>
 			</div>';
 	
 	return $display;
@@ -493,7 +571,7 @@ function display_UpDown($info){
 }
 
 // On/Off
-function display_OnOff($info){
+function display_OnOff($info, $popup = 0){
 	$display = '';
 	switch($info->protocol_id){
 		// KNX
@@ -505,18 +583,32 @@ function display_OnOff($info){
 						 				      data-label-width="0"
 										      data-on-text="'._('On').'"
 										      data-off-text="'._('Off').'"
-						 				      checked
-						 				      id="onoff-'.$info->room_device_id.'"
+						 				      checked ';
+						 						if ($popup == 0){
+						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
+						 						}
+						 				      	else{ 
+						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
+						 				      	}	      			
+						 		   $display.='class="onoff-switch"
 						 				      type="checkbox"
-						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\', '.$popup.')"
 						 				/>';
 						}
 						else {
 							$display.='<input data-on-color="greenleaf"
 										      data-label-width="0"
-										      id="onoff-'.$info->room_device_id.'"
+										      data-on-text="'._('On').'"
+										      data-off-text="'._('Off').'" ';
+						 						if ($popup == 0){
+						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
+						 						}
+						 				      	else{ 
+						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
+						 				      	}	      			
+						 		   $display.='class="onoff-switch"
 										      type="checkbox"
-										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\')"
+										      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\', '.$popup.')"
 										/>';
 						}
 				$display.='</div>';
@@ -541,7 +633,7 @@ function display_OnOff($info){
 	}
 
 	$display.='<script type="text/javascript">
-					$("#onoff-'.$info->room_device_id.'").bootstrapSwitch();
+					$(".onoff-switch").bootstrapSwitch();
 				</script>';
 	return $display;
 }
@@ -619,15 +711,20 @@ function display_varie($info, $var_icon = 1){
 
 // Minus plus
 
-function display_minusplus($info){
+function display_minusplus($info, $popup = 0){
 	$temp = $info->device_opt->{388}->valeur;
 	if (empty($temp)){
 		$temp = '0.0';
 	}
 	$display = '<div class="input-group">
-					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, -1)" class="btn btn-warning input-group-addon"><i class="fa fa-minus md"></i></span>
-					<output class="margin-top-4" id="output-mp-'.$info->room_device_id.'">'.$temp.'</output>
-					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, 1)" class="btn btn-warning input-group-addon"><i class="fa fa-plus md"></i></span>
+					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, -1)" class="btn btn-warning input-group-addon"><i class="fa fa-minus md"></i></span> ';
+					if ($popup == 0){
+						$display.='<output class="margin-top-4" id="output-mp-'.$info->room_device_id.'">'.$temp.'</output> ';
+					}
+					else{
+						$display.='<output class="margin-top-4" id="output-mp-popup-'.$info->room_device_id.'">'.$temp.'</output> ';
+					}
+					$display.='<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, 1)" class="btn btn-warning input-group-addon"><i class="fa fa-plus md"></i></span>
 			    </div>';
 	
 	return  $display;
@@ -642,7 +739,22 @@ function display_temperature($info){
 	$display = '<div>
 					<i class="fi flaticon-thermometer2"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
-					<span>'.$info->device_opt->{72}->addr_plus.'</span>
+					<span>'.$info->device_opt->{72}->unit.'</span>
+				</div>';
+
+	return $display;
+}
+
+//Consumption 
+function display_consumption_option($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{399}->valeur)){
+		$tmp = $info->device_opt->{399}->valeur;
+	}
+	$display = '<div>
+					<i class="fa fa-bolt"></i>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
+					<span>'.$info->device_opt->{399}->unit.'</span>
 				</div>';
 
 	return $display;
@@ -672,7 +784,7 @@ function display_luminosity($info){
 	$display = '<div>
 					<i class="fa fa-sun-o"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$current_id.'">'.$lum.'</span>
-					<span>'.$info->device_opt->{$current_id}->addr_plus.'</span>
+					<span>'.$info->device_opt->{$current_id}->unit.'</span>
 				</div>';
 
 	return $display;
