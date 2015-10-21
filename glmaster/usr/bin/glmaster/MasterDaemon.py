@@ -35,6 +35,7 @@ from UpnpAudio import *;
 from Smartcommand import *;
 from Trigger import *;
 import utils;
+from GLManager import *;
 
 LOG_FILE                = '/var/log/glmaster.log'
 MASTER_CONF_FILE        = '/etc/greenleaf/master.conf';         # Configuration file name
@@ -99,7 +100,9 @@ DATA_BACKUP_DB_RESTORE_USB    = 'backup_db_restore_usb';
 DATA_CHECK_UPDATES            = 'check_updates';
 DATA_UPDATE                   = 'update';
 DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
-DATA_TRIGGERS_LIST_UPDATE      = 'triggers_list_update';
+DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
+DATA_SEND_ALIVE               = 'send_alive';
+DATA_SEND_TECH                = 'send_tech';
 
 HOSTS_CONF                    = '/etc/greenleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/greenleaf/camera.conf';         # Path for the cameras configuration file
@@ -172,7 +175,9 @@ class MasterDaemon:
             DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
             DATA_TRIGGERS_LIST_UPDATE          : self.triggers_list_update,
             DATA_CHECK_UPDATES                : self.check_updates,
-            DATA_UPDATE                       : self.update
+            DATA_UPDATE                       : self.update,
+            DATA_SEND_ALIVE                   : self.send_request,
+            DATA_SEND_TECH                    : self.send_request
         };
 
     def get_aes_slave_keys(self):
@@ -926,3 +931,9 @@ class MasterDaemon:
         else:
             global_state = '';
         return global_state;
+
+    def send_request(self, json_obj, connection):
+        if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
+            admin_addr = self._parser.getValueFromSection('greenleaf', 'admin_addr')
+            hostname = socket.gethostname()
+            GLManager.SendRequest(str(json_obj), admin_addr, self.get_secret_key(hostname))

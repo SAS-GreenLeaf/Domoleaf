@@ -8,7 +8,8 @@ if (!empty($_GET['ipaddr'])){
 	$request -> add_request('confDeviceNewIp', array($_GET['name'], $_GET['proto'], 
 	                                                 $_GET['room'], $_GET['device'], 
 	                                                 $_GET['ipaddr'], $_GET['port'], 
-	                                                 $_GET['login'], $_GET['pass']));
+	                                                 $_GET['login'], $_GET['pass'],
+													 $_GET['macaddr']));
 	$result  =  $request -> send_request();
 	$listroom = $result->confRoomList;
 	$room_device_id = $result->confDeviceNewIp; 

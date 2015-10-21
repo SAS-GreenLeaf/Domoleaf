@@ -190,17 +190,20 @@ function DeleteDaemon(id){
 			}
 		});
 }
-						
+
 function NewDaemon(){
 	var name = $("#newdaemon").val();
 	var serial = $("#newserial").val();
 	var skey = $("#newsercretkey").val();
-						
+
 	if (name != \'\' && serial != \'\' && skey != \'\'){
 		$.ajax({
 			type:"GET",
 			url: "/form/form_daemon_new.php",
 			data: "name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey),
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			complete: function(result, status) {
 				location.href=\'/conf_daemon\'
 			}
@@ -209,8 +212,8 @@ function NewDaemon(){
 	else {
 		$("#signerr").show("slow");
 	}
-}						
-						
+}
+
 function	RenameDaemon(id){
 						
 	$("#btn-"+id).attr("class", "btn btn-danger");

@@ -101,11 +101,16 @@ function Variation(iddevice, optionid, step){
 function outputUpdate(iddevice, val) {
 	val = Math.round((parseInt(val)*100)/255);
 	$("#range-"+iddevice).html(val+"%");
-}	
+}
 		
-function onOffToggle(iddevice, optionid){
-	var value = $("#onoff-"+iddevice).prop("checked") ? 1 : 0;
-	
+function onOffToggle(iddevice, optionid, popup = 0){
+	var value;
+	if (popup == 0){
+		value = $("#onoff-"+iddevice).prop("checked") ? 1 : 0;
+	}
+	else{
+		value = $("#onoff-popup-"+iddevice).prop("checked") ? 1 : 0;
+	}
 	onOff(iddevice, value, optionid);
 }
 		
@@ -118,7 +123,7 @@ function onOff(iddevice, value, optionid){
 		complete: function(result, status) {
 		}
 	});
-}	
+}
 
 function getVariation(iddevice, optionid){
 	var value = $("#slider-value-"+iddevice).val();
@@ -135,14 +140,20 @@ function getVariation(iddevice, optionid){
 	});
 }
 
-function UpdateTemp(iddevice, idoption, action){
+function UpdateTemp(iddevice, idoption, action, popup = 0){
 	
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/form/form_conf_temperature.php",
 		data: "iddevice="+iddevice+"&idoption="+idoption+"&action="+action,
 		success: function(result) {
-			$("#output-mp-"+iddevice).html(result);
+			if (popup == 0){
+				$("#output-mp-"+iddevice).html(result);
+				$("#output-mp-popup-"+iddevice).html(result);
+			}
+			else{
+				$("#output-mp-popup-"+iddevice).html(result);
+			}
 		},
 		error: function(result, status){
 			
@@ -157,6 +168,20 @@ function updateRGBColor(iddevice, value){
 		data: "iddevice="+iddevice+"&value="+encodeURIComponent(value),
 		success: function(result) {
 		},
+	});
+}
+
+function changeSpeedFan(iddevice, value, optionid){
+	if (optionid == 0){
+		optionid = $("#speed-fan").val();
+	}
+
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_change_speed_fan.php",
+		data: "iddevice="+iddevice+"&value="+value+"&optionid="+optionid,
+		complete: function(result, status) {
+		}
 	});
 }
 

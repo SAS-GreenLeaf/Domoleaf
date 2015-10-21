@@ -90,7 +90,7 @@ VALUES
 	(69, NULL, 0, 1, 6.0, 2, '', '', '6 touches', '', 0),
 	(70, NULL, 1, 2, 2.0, 1, '', '', '2 Ampères', '', 0),
 	(71, NULL, 1, 2, 0.5, 1, '', '', '0,5 Ampères', '', 0),
-	(72, NULL, 1, 9, 0.0, 3, '', '', 'Température', '', 0),
+	(72, NULL, 1, 9, 0.0, 3, '', '', 'Température', '', 4),
 	(73, NULL, 0, 0, 0.0, 3, '', '', 'CO2', '', 0),
 	(74, NULL, 0, 0, 0.0, 3, '', '', 'Minuterie', '', 0),
 	(75, NULL, 0, 0, 0.0, 1, '', '', 'Amplificateur', '', 0),
@@ -402,6 +402,18 @@ VALUES
 	(391, NULL, 1, 2, 0.7, 1, '', '', '700mA', '', 0),
 	(392, NULL, 0, 0, 0.0, 0, '', '', 'Varié Rouge', '', 4),
 	(393, NULL, 0, 0, 0.0, 0, '', '', 'Varié Vert', '', 4),
-	(394, NULL, 0, 0, 0.0, 0, '', '', 'Varié Bleu', '', 4);
+	(394, NULL, 0, 0, 0.0, 0, '', '', 'Varié Bleu', '', 4),
+	(395, NULL, 0, 0, 0.0, 4, '', '', 'Aluminium', '', 0),
+	(396, NULL, 0, 0, 0.0, 4, '', '', 'Graphite', '', 0),
+	(397, NULL, 0, 0, 0.0, 4, '', '', 'Platine', '', 0),
+	(398, NULL, 0, 0, 0.0, 0, '', '', 'Pile', '', 0),
+	(399, 'Consumption', 0, 0, 0.0, 0, '', '', 'Consommation', '', 4),
+	(400, 'Ventilation 0', 0, 0, 0.0, 0, '', '', 'Ventilation 0', '', 4),
+	(401, 'Ventilation 1', 0, 0, 0.0, 0, '', '', 'Ventilation 1', '', 4),
+	(402, 'Ventilation 2', 0, 0, 0.0, 0, '', '', 'Ventilation 2', '', 4),
+	(403, 'Ventilation 3', 0, 0, 0.0, 0, '', '', 'Ventilation 3', '', 4),
+	(404, 'Ventilation 4', 0, 0, 0.0, 0, '', '', 'Ventilation 4', '', 4),
+	(405, 'Ventilation 5', 0, 0, 0.0, 0, '', '', 'Ventilation 5', '', 4),
+	(406, 'Ventilation 6', 0, 0, 0.0, 0, '', '', 'Ventilation 6', '', 4);
 
 SET FOREIGN_KEY_CHECKS=1;

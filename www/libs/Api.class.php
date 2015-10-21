@@ -433,7 +433,7 @@ class Api {
 						/*** Devices ***/
 						case 'confDeviceSaveInfo':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7]);
+								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8]);
 							}
 						break;
 						
@@ -477,7 +477,7 @@ class Api {
 						
 						case 'confDeviceNewIp':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceNewIp($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7]);
+								$res = $user->confDeviceNewIp($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8]);
 							}
 						break;
 
@@ -1044,6 +1044,10 @@ class Api {
 						
 						case 'listUnits':
 							$res = $user->listUnits();
+						break;
+						
+						case 'confOptionDptList':
+							$res = $user->confOptionDptList();
 						break;
 						
 						/*** Master command ***/

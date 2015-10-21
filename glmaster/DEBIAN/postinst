@@ -1,6 +1,9 @@
 #!/bin/bash
 
 echo -e "[ \033[32mok\033[0m ] Done installing Greenleaf master daemon"
+hostname=`hostname`
+glmaster=`cat /etc/greenleaf/.glmaster.version`
+glslave=`cat /etc/greenleaf/.glslave.version`
 
 #Backups
 mkdir -p /etc/greenleaf/mnt
@@ -38,7 +41,7 @@ if grep -q "^password=greenleaf$" /etc/greenleaf/master.conf; then
     echo -e "[ \033[32mOK\033[0m ] Done."
     sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
 else
-    newpasswd=grep -q "^password=" /etc/greenleaf/master.conf | cut -d = -f 2
+    newpasswd=$(grep "^password=" /etc/greenleaf/master.conf | cut -d = -f 2)
     sed -i "s/define('DB_PASSWORD', 'greenleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/greenleaf/www/config.php
 fi
 
@@ -48,6 +51,17 @@ if [ "$user" = "" ]; then
     mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
 fi
 
+daemon=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
+if [ "$daemon" = "" ]; then
+    key=$(grep "^aes=" /etc/greenleaf/slave.conf | cut -d = -f 2)
+    secretkey=`echo -n $key | md5sum | sed 's/  -//g'`
+    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('$hostname','$hostname','$secretkey',1,'$glslave')"
+    daemon=`mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -B -N -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
+    mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "INSERT INTO daemon_protocol (daemon_id, protocol_id) VALUES ('$daemon',1)"
+fi
+
+mysql --defaults-file=/etc/mysql/debian.cnf mastercommand -e "UPDATE configuration SET configuration_value='$glmaster' WHERE configuration_id=4"
+
 rm -f /etc/nginx/sites-enabled/master.conf
 ln -s /etc/nginx/sites-available/master.conf /etc/nginx/sites-enabled/master.conf
 
@@ -56,16 +70,16 @@ systemctl restart nginx
 #Translation, .mo generation
 for inode in $(find /etc/greenleaf/www/locales -type d)
 do
-	if [ -f /etc/greenleaf/www/${inode}/messages.po ]
-	then
-		msgfmt /etc/greenleaf/www/${inode}/messages.po -o /etc/greenleaf/www/${inode}/messages.mo
-	fi
+    if [ -f /etc/greenleaf/www/${inode}/messages.po ]
+    then
+        msgfmt /etc/greenleaf/www/${inode}/messages.po -o /etc/greenleaf/www/${inode}/messages.mo
+    fi
 done
 
 #Copy saved images
 if [ -d /etc/greenleaf/custom ]; then
-	cp -r /etc/greenleaf/custom/* /etc/greenleaf/www/templates/default/custom/
-	rm -rf /etc/greenleaf/custom
+    cp -r /etc/greenleaf/custom/* /etc/greenleaf/www/templates/default/custom/
+    rm -rf /etc/greenleaf/custom
 fi
 
 chown www-data:www-data /etc/greenleaf/www/templates/default/custom/device
