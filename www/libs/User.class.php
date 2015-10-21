@@ -1181,6 +1181,7 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
+		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			if (empty($do->room_name)) {
 				$do->room_name = 0;
@@ -1513,7 +1514,8 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+		
+		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->id_trigger] = array(
 					'trigger_id'     => $do->id_trigger,
@@ -1787,6 +1789,143 @@ class User {
 		$socket->send('triggers_list_update');
 	}
 
+	/*** Schedules ***/ 
+	
+	function searchScheduleByName($schedule_name){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_schedule, user_id
+				FROM trigger_schedules_list
+				WHERE schedule_name=:schedule_name';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do->id_schedule;
+	}
+	
+	function searchScheduleById($schedule_id){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT schedule_name,
+				       user_id
+				FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do;
+	}
+	
+	function listSchedules(){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT id_schedule, schedule_name
+				FROM trigger_schedules_list
+				WHERE trigger_schedules_list.user_id=:user_id
+				ORDER BY schedule_name';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$list = array();
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->id_schedule] = array(
+					'schedule_id'     => $do->id_schedule,
+					'name'           => $do->schedule_name,
+			);
+		}
+	
+		return $list;
+	}
+	
+	function updateSchedule($idschedule, $months, $weekdays, $days, $hours, $mins){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'UPDATE trigger_schedules_list
+				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
+				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+
+		$req = $link->prepare($sql);
+		$req->bindValue(':months', $months, PDO::PARAM_INT);
+		$req->bindValue(':weekdays', $weekdays, PDO::PARAM_INT);
+		$req->bindValue(':days', $days, PDO::PARAM_INT);
+		$req->bindValue(':hours', $hours, PDO::PARAM_INT);
+		$req->bindValue(':mins', $mins, PDO::PARAM_STR);
+		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function getSchedule($idschedule){
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'SELECT months, weekdays, days, hours, mins
+				FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do;
+	}
+	
+	function createNewSchedule($schedule_name){
+	
+		if ($this->searchScheduleByName($schedule_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'INSERT INTO trigger_schedules_list
+		        (schedule_name, user_id, months, weekdays, days, hours, mins)
+				VALUES
+				(:schedule_name, :user_id, :months, :weekdays, :days, :hours, :mins)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->bindValue(':months', intval(str_repeat("1", 12), 2), PDO::PARAM_INT);
+		$req->bindValue(':weekdays', intval(str_repeat("1", 7), 2), PDO::PARAM_INT);
+		$req->bindValue(':days', intval(str_repeat("1", 31), 2), PDO::PARAM_INT);
+		$req->bindValue(':hours', intval(str_repeat("1", 24), 2), PDO::PARAM_INT);
+		$req->bindValue(':mins', str_repeat("1", 60), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		return $link->lastInsertId();
+	}
+	
+	function removeSchedule($schedule_id) {
+		$link = Link::get_link('mastercommand');
+	
+		$sql = 'DELETE FROM trigger_schedules_list
+				WHERE id_schedule=:schedule_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){

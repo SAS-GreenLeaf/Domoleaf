@@ -917,6 +917,40 @@ class Api {
 							}
 						break;
 						
+						case 'searchScheduleById' :
+							if (!empty($var[0])){
+								$res = $user->searchScheduleById($var[0]);
+							}
+						break;
+						
+						case 'listSchedules' :
+							$res = $user->listSchedules();
+						break;
+						
+						case 'getSchedule' :
+							$res = $user->getSchedule($var[0]);
+						break;
+						
+						case 'createNewSchedule' :
+							if (!empty($var[0])){
+								$res = $user->createNewSchedule($var[0]);
+							}
+						break;
+						
+						case 'updateSchedule' :
+							if (!empty($var[0])){
+								$res = $user->updateSchedule($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
+							}
+						break;
+						
+						case 'removeSchedule' :
+							if (!empty($var[0])){
+								if (!empty($user->searchScheduleById($var[0]))) {
+									$res = $user->removeSchedule($var[0]);
+								}
+							}
+						break;
+							
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
 						break;

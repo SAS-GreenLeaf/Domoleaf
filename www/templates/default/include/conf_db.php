@@ -6,8 +6,20 @@ echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">
 	<div class="center"><h2>'._('Database configuration').'</h2></div><br/><br/>
 		<div class="col-xs-12 center">
-			<button type="button" id="popupUsb" class="btn btn-greenleaf btn-disabled" onclick="PopupUsb()"><fa class="fa flaticon-connection81"></fa> '._('USB Backup').'</button>
-			<button type="button" id="createBackupLocal" class="btn btn-greenleaf" onclick="CreateBackupLocal()"><i class="fa fa-floppy-o"></i> '._('Create Backup').'</button>
+			<button type="button"
+			        id="popupUsb"
+			        class="btn btn-greenleaf btn-disabled"
+			        onclick="PopupUsb()">
+				<fa class="fa flaticon-connection81"></fa>
+				'._('USB Backup').'
+			</button>
+			<button type="button"
+			        id="createBackupLocal"
+			        class="btn btn-greenleaf"
+			        onclick="CreateBackupLocal()">
+				<i class="fa fa-floppy-o"></i>
+				'._('Create Backup').'
+			</button>
 		</div>
 		<br/>
 		<br/>

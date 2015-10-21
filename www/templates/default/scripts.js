@@ -351,7 +351,7 @@ function selectDelay(smartcmd_id, exec_id) {
 	
 	hours = parseInt($("#selectHours-"+exec_id).val());
 	minutes = parseInt($("#selectMinutes-"+exec_id).val());
-	seconds =parseInt($("#selectSeconds-"+exec_id).val());
+	seconds = parseInt($("#selectSeconds-"+exec_id).val());
 	
 	delay = hours * 3600;
 	delay = delay + minutes * 60;
@@ -402,7 +402,7 @@ function listRoomsOfFloor(elem_id, smartcmd = 0) {
 		}
 	});
 	if (smartcmd == 1) {
-		changeSaveLRBtn();
+		changeSaveBtnState("#saveLR_btn");
 	}
 }
 
@@ -435,24 +435,14 @@ function saveLinkedRoom(smartcmd_id) {
 		data: "smartcmd_id="+smartcmd_id+"&room_id="+room_id,
 		success: function(result) {
 			if (result == 0) {
-				$("#saveLR_btn").removeClass("btn-primary");
-				$("#saveLR_btn").addClass("btn-success");
-				$("#saveLR_btn").text("Saved !");
+				changeSaveBtnState("#saveLR_btn", 1);
 			}
 			else {
-				$("#saveLR_btn").removeClass("btn-success");
-				$("#saveLR_btn").addClass("btn-danger");
-				$("#saveLR_btn").text("ERROR !");
+				changeSaveBtnState("#saveLR_btn", 2);
 			}
 			
 		}
 	});
-}
-
-function changeSaveLRBtn() {
-	$("#saveLR_btn").removeClass("btn-success");
-	$("#saveLR_btn").addClass("btn-primary");
-	$("#saveLR_btn").text("Save");
 }
 
 function launchSmartcmd(smartcmd_id){
@@ -582,20 +572,20 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 	val = $("#triggerPopupValue-"+room_id_device).val();
 	op = $("#triggerPopupOperator-"+room_id_device).val();
 	$.ajax({
-			type: "GET",
-			url: "/templates/default/form/form_save_trigger_elem.php",
-			data: "id_trigger="+id_trigger
-					+"&room_id_device="+room_id_device
-					+"&id_option="+id_option
-					+"&option_value="+val
-					+"&id_condition="+id_condition
-					+"&operator="+op
-					+"&modif="+modif,
-			success: function(result) {
-				popup_close();
-				displayTrigger(id_trigger);
-			}
-		});
+		type: "GET",
+		url: "/templates/default/form/form_save_trigger_elem.php",
+		data: "id_trigger="+id_trigger
+				+"&room_id_device="+room_id_device
+				+"&id_option="+id_option
+				+"&option_value="+val
+				+"&id_condition="+id_condition
+				+"&operator="+op
+				+"&modif="+modif,
+		success: function(result) {
+			popup_close();
+			displayTrigger(id_trigger);
+		}
+	});
 }
 
 function saveLinkedSmartcmd(trigger_id) {
@@ -608,24 +598,155 @@ function saveLinkedSmartcmd(trigger_id) {
 		data: "trigger_id="+trigger_id+"&smartcmd_id="+smartcmd_id,
 		success: function(result) {
 			if (result == 0) {
-				$("#saveLS_btn").removeClass("btn-primary");
-				$("#saveLS_btn").addClass("btn-success");
-				$("#saveLS_btn").text("Saved !");
+				changeSaveBtnState("#saveLS_btn", 1);
 			}
 			else {
-				$("#saveLS_btn").removeClass("btn-success");
-				$("#saveLS_btn").addClass("btn-danger");
-				$("#saveLS_btn").text("ERROR !");
+				changeSaveBtnState("#saveLS_btn", 2);
 			}
 			
 		}
 	});
 }
 
-function changeSaveLSBtn() {
-	$("#saveLS_btn").removeClass("btn-success");
-	$("#saveLS_btn").addClass("btn-primary");
-	$("#saveLS_btn").text("Save");
+function showTimeSelect(id_schedule) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_display_trigger_time.php",
+		data: "id_schedule="+id_schedule,
+		success: function(result) {
+			$("#selectSchedule").html(result);
+		}
+	});
+}
+
+function SaveSchedule(schedule_id) {
+	var months = [];
+	var weekdays = [];
+	var days = [];
+	var hours = [];
+	var mins = [];
+	
+	if ($("#MonthsBtn #toggleMonthList").bootstrapSwitch('state') == true) {
+		months = Array(13).join(1).split('');
+	}
+	else {
+		$("#monthsList .monthElemWidth").each(function(index) {
+			if ($(this).bootstrapSwitch('state')) {
+				months.push(1);
+			}
+			else {
+				months.push(0);
+			}
+		});
+	}
+	
+	if ($("#WeekdaysBtn #toggleWeekdayList").bootstrapSwitch('state') == true) {
+		weekdays = Array(8).join(1).split('');
+	}
+	else {
+		$("#weekdaysList .weekdayElemWidth").each(function(index) {
+			if (index == 6) {
+				if ($(this).bootstrapSwitch('state')) {
+					weekdays.unshift(1);
+				}
+				else {
+					weekdays.unshift(0);
+				}
+			}
+			else {
+				if ($(this).bootstrapSwitch('state')) {
+					weekdays.push(1);
+				}
+				else {
+					weekdays.push(0);
+				}
+			}
+		});
+	}
+	
+	if ($("#DaysBtn #toggleDayList").bootstrapSwitch('state') == true) {
+		days = Array(32).join(1).split('');
+	}
+	else {
+		$("#daysList .dayElemWidth").each(function(index) {
+			if ($(this).bootstrapSwitch('state')) {
+				days.push(1);
+			}
+			else {
+				days.push(0);
+			}
+		});
+	}
+	
+	if ($("#HoursBtn #toggleHourList").bootstrapSwitch('state') == true) {
+		hours = Array(25).join(1).split('');
+	}
+	else {
+		$("#hoursList .hourElemWidth").each(function(index) {
+			if ($(this).bootstrapSwitch('state')) {
+				hours.push(1);
+			}
+			else {
+				hours.push(0);
+			}
+		});
+	}
+	
+	if ($("#MinsBtn #toggleMinList").bootstrapSwitch('state') == true) {
+		mins = Array(61).join(1).split('');
+	}
+	else {
+		$("#minsList .minElemWidth").each(function(index) {
+			if ($(this).bootstrapSwitch('state')) {
+				mins.push(1);
+			}
+			else {
+				mins.push(0);
+			}
+		});
+	}
+	months = parseInt(months.join(''), 2);
+	weekdays= parseInt(weekdays.join(''), 2);
+	days = parseInt(days.join(''), 2);
+	hours = parseInt(hours.join(''), 2);
+	mins = mins.join('');
+
+	if (!$("#saveTS_btn").hasClass("m-progress")){
+		$("#saveTS_btn").addClass("m-progress");
+		$.ajax({
+			type: "GET",
+			url: "/templates/default/form/form_save_trigger_schedule.php",
+			data: "id_schedule="+schedule_id
+			      +"&months="+months
+			      +"&weekdays="+weekdays
+			      +"&days="+days
+			      +"&hours="+hours
+			      +"&mins="+mins,
+			success: function(result) {
+				$("#saveTS_btn").removeClass("m-progress");
+				changeSaveBtnState("#saveTS_btn", 1);
+			}
+		});
+	}
+}
+
+function changeSaveBtnState(id_btn, state = 0) {
+	
+	if (state == 0) {
+		$(id_btn).removeClass("btn-success");
+		$(id_btn).addClass("btn-primary");
+		$(id_btn).text("Save");
+	}
+	if (state == 1) {
+		$(id_btn).removeClass("btn-primary");
+		$(id_btn).addClass("btn-success");
+		$(id_btn).text("Saved !");
+	}
+	if (state == 2) {
+		$(id_btn).removeClass("btn-success");
+		$(id_btn).addClass("btn-danger");
+		$(id_btn).text("ERROR !");
+	}
 }
 
 /*** Color ***/

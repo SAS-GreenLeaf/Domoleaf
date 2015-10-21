@@ -21,7 +21,6 @@ echo
 		'</div>'.
 	'</div>'.
 	'<div class="input-group margin-top">'.
-		/*'<label class="input-group-addon left" for="selectLinkedSmartcmd">'._('Linked Smartcommand').'</label>'.*/
 		'<select class="selectpicker form-control margin-bottom" id="selectLinkedSmartcmd" data-size="10">'.
 			'<option value="0">'._('No Smartcommand selected').'</option>';
 			foreach ($smartcmdList as $elem) {

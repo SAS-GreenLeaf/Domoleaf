@@ -1484,6 +1484,12 @@ a.carousel-control-camera:hover {
 	color:#fff;
 }
 
+.bootstrap-switch-error {
+	background-color:#C9302C;
+	border-color:#6b981e;
+	color:#fff;
+}
+
 .bootstrap-switch-disabled-with-opacity {
 	opacity: 1 !important;
 }
@@ -1603,7 +1609,9 @@ a.carousel-control-camera:hover {
 	right: 10px;
 }
 
-.save-navbar > .btn-primary {
+.save-navbar > .btn-primary,
+.save-navbar > .btn-success,
+.save-navbar > .btn-danger {
 	margin-top: 10px;
 }
 
@@ -1651,4 +1659,21 @@ a.carousel-control-camera:hover {
 .value-trigger {
 	margin-top:10px;
 	margin-bottom: 10px;
+}
+
+.triggerScheduleElems {
+	margin-top: 5px;
+}
+
+.triggerScheduleBtns {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.selectSchedule {
+	margin-top: 5%;
+}
+
+.selectSchedule hr {
+	border: 1px solid;
 }

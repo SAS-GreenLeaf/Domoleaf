@@ -54,6 +54,16 @@ if($request->is_co()) {
 				$page = $_GET['page'];
 			break;
 			
+			//Profile trigger schedules
+			case 'profile_user_trigger_schedules':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile edit trigger schedules
+			case 'profile_user_trigger_schedules_edit':
+				$page = $_GET['page'];
+			break;
+			
 			//Conf_general
 			case 'conf_general':
 				$page = $_GET['page'];
@@ -225,7 +235,7 @@ echo '
 		include('templates/'.TEMPLATE.'/include/'.$page.'.php');
 		include('templates/'.TEMPLATE.'/bottom_guest.php');
 	}
-echo'
+	echo'
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<script src="/js/ie10-viewport-bug-workaround.js"></script>
 	

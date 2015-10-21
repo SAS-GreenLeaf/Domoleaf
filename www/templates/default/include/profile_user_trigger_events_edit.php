@@ -42,6 +42,9 @@ echo '
 		}
 		echo
 		'</div>
+		<div class="col-xs-2 col-xs-offset-2 navbar navbar-inverse navbar-fixed-bottom">
+			<button onclick="showTimeSelect('.$id_trigger.')">TEST</button>
+		</div>
 	</div>';
 
 echo '
@@ -57,7 +60,7 @@ echo '
 		</button>
 		<div id="linked-smartcmd" class="navbar-brand">
 			'._('Linked Smartcommand').'
-			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10" onchange="changeSaveLSBtn()">';
+			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10" onchange="changeSaveBtnState("#saveLS_btn")">';
 				foreach ($smartcmdList as $smartcmd) {
 					echo '<option value="'.$smartcmd->smartcommand_id.'">'.$smartcmd->name.'</option>';
 				}
