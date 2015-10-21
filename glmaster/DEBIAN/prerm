@@ -10,5 +10,5 @@ rm -f /etc/cron.d/glmaster.cron
 rm -f /etc/domoleaf/www
 rm -f /etc/domoleaf/sql
 rm -f /init.d/glmaster
-rm -f /etc/nginx/sites-available/master.conf
+rm -f /etc/nginx/sites-available/domoleaf.conf
 rm -rf /usr/bin/glmaster 
