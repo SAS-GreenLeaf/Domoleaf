@@ -313,7 +313,6 @@ function display_clim($info){
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
 		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
 		$display.= '<div class="center">';
-		//$display.= ''._('Fans').'<br/><br/>';
 	}
 	
 	if (!empty($info->device_opt->{400})){
