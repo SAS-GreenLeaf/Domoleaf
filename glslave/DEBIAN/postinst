@@ -35,7 +35,7 @@ systemctl enable knxd
 cp /etc/domoleaf/knxd.conf /etc/
 systemctl start knxd
 
-chmod +x /usr/bin/slave.py
+chmod +x /usr/bin/glslave.py
 chmod +x /etc/init.d/glslave
 systemctl enable glslave
 systemctl start glslave

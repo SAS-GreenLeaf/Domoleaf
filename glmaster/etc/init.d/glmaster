@@ -13,11 +13,10 @@
 ### END INIT INFO
 
 PATH="$PATH"
-DAEMON="/usr/bin/master.py"
+DAEMON="/usr/bin/glmaster.py"
 LOG_FILE=/var/log/glmaster.log
 PID_FILE=/var/run/glmaster.pid
 PROG="glmaster"
-FILENAME="master.py"
 
 start()
 {

@@ -85,7 +85,7 @@ fi
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/room
 
-chmod +x /usr/bin/master.py
+chmod +x /usr/bin/glmaster.py
 chmod +x /etc/init.d/glmaster
 systemctl enable glmaster
 systemctl start glmaster

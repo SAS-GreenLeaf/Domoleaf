@@ -9,7 +9,7 @@ rm -f /etc/apt/sources.list.d/domoleaf.list
 rm -f /etc/cron.d/glslave.cron
 rm -f /etc/domoleaf/knxd.conf
 
-rm -f /usr/bin/CronRefreshNetwork.py /usr/bin/slave.py
+rm -f /usr/bin/CronRefreshNetwork.py /usr/bin/glslave.py
 rm -rf /usr/bin/glslave /usr/lib/domoleaf
 
 rm -f /usr/bin/monitor_enocean

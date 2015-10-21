@@ -14,7 +14,7 @@
 ### END INIT INFO
 
 PATH="$PATH"
-DAEMON="/usr/bin/slave.py"
+DAEMON="/usr/bin/glslave.py"
 MONITOR_KNX="/usr/bin/monitor_knx"
 MONITOR_ENOCEAN="/usr/bin/monitor_enocean"
 
@@ -25,8 +25,6 @@ PID_FILE_MONITOR_ENOCEAN="/var/run/monitor_enocean.pid"
 LOG_FILE_SLAVE="/var/log/glslave.log"
 LOG_FILE_MONITOR_KNX="/var/log/monitor_knx.log"
 LOG_FILE_MONITOR_ENOCEAN="/var/log/monitor_enocean.log"
-
-FILENAME_SLAVE="slave.py"
 
 PROG_SLAVE="glslave"
 PROG_MONITOR_KNX="monitor_knx"
