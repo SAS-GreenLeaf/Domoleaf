@@ -736,6 +736,16 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     height: 14px;
 }
 
+.glyphicon.led-on {
+    font-size: 5em;
+    color: green;
+}
+
+.glyphicon.led-off {
+    font-size: 5em;
+    color: red;
+}
+
 /* java apps */
 
 img {
