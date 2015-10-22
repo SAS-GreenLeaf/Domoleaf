@@ -15,7 +15,6 @@ echo
 				<tr>
 					<th class="center">'._('Trigger Name').'</th>
 					<th class="center">'._('Linked Smartcommand').'</th>
-					<th class="center">'._('Status').'</th>
 					<th class="center">'._('Actions').'</th>
 				</tr>
 			</thead>
@@ -25,22 +24,6 @@ echo
 				<tr id="trigger-'.$elem->trigger_id.'">
 					<td>'.$elem->name.'</td>
 					<td>'.$elem->smartcmd_name.'</td>
-					<td class="center">
-						<input data-on-color="greenleaf"
-						       data-label-width="0"
-						       data-on-text="'._('On').'"
-						       data-off-text="'._('Off').'"
-						       id="trigger-state-'.$elem->trigger_id.'"
-						       type="checkbox"
-						       onchange="changeTriggerState('.$elem->trigger_id.')" ';
-						if ($elem->activated == 1) {
-							echo 'checked';
-						}
-					echo '>
-						<script type="text/javascript">
-							$("#trigger-state-'.$elem->trigger_id.'").bootstrapSwitch();
-						</script>
-					</td>
 					<td class="center">
 						<a href="/profile_user_trigger_events/'.$elem->trigger_id.'">
 							<button type="button"
@@ -106,7 +89,8 @@ echo '
 		});
 	}
 
-	function changeTriggerState(trigger_id) {
+	/*	FOR SCENARIOS
+		function changeTriggerState(trigger_id) {
 		state = $("#trigger-state-"+trigger_id).bootstrapSwitch(\'state\');
 		if (state) {
 			state = "1";
@@ -122,7 +106,7 @@ echo '
 			success: function(result) {
 			}
 		});
-	}
+	}*/
 </script>';
 
 ?>

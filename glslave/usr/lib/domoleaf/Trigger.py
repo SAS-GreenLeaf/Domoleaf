@@ -26,7 +26,6 @@ class Trigger:
                  'FROM trigger_events_list '
                  'JOIN trigger_events_conditions '
                  'ON trigger_events_list.id_trigger = trigger_events_conditions.id_trigger '
-                 'WHERE activated = 1 '
                  'ORDER BY trigger_events_list.id_trigger, trigger_events_list.id_smartcmd');
         res = self.sql.mysql_handler_personnal_query(query);
         self.triggers_list = res;

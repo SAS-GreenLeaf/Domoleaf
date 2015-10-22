@@ -1505,7 +1505,7 @@ class User {
 	function listTriggers(){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name, activated
+		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name
 				FROM trigger_events_list
 				JOIN smartcommand_list ON trigger_events_list.id_smartcmd = smartcommand_list.smartcommand_id
 				WHERE smartcommand_list.user_id=:user_id
@@ -1521,7 +1521,6 @@ class User {
 					'trigger_id'     => $do->id_trigger,
 					'name'           => $do->trigger_name,
 					'smartcmd_name'  => $do->smartcmd_name,
-					'activated'      => $do->activated
 			);
 		}
 	
@@ -1725,19 +1724,6 @@ class User {
 		$this->udpateTriggersList();
 	}
 	
-	function changeTriggerState($trigger_id, $state) {
-		$link = Link::get_link('domoleaf');
-	
-		$sql = 'UPDATE trigger_events_list
-				SET activated=:state
-				WHERE id_trigger=:id_trigger';
-		$req = $link->prepare($sql);
-		$req->bindValue(':state', $state, PDO::PARAM_INT);
-		$req->bindValue(':id_trigger', $trigger_id, PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		$this->udpateTriggersList();
-	}
-	
 	function removeTrigger($trigger_id) {
 		$link = Link::get_link('domoleaf');
 	
@@ -1923,6 +1909,20 @@ class User {
 				WHERE id_schedule=:schedule_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	/*** Scenarios ***/
+	
+	function changeScenarioState($scenario_id, $state) {
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE scenarios_list
+				SET activated=:state
+				WHERE id_scenario=:id_scenario';
+		$req = $link->prepare($sql);
+		$req->bindValue(':state', $state, PDO::PARAM_INT);
+		$req->bindValue(':id_scenario', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
