@@ -20,9 +20,12 @@ class Schedule:
 
     def update_schedules_list(self):
         self.logger.info('Updating Schedules');
-        query = ('SELECT id_schedule, months, weekdays, days, hours, mins '
-                 'FROM trigger_schedules_list '
-                 'ORDER BY id_schedule');
+        query = ('SELECT id_scenario, id_smartcmd, '
+                 'months, weekdays, days, hours, mins '
+                 'FROM scenarios_list '
+                 'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
+                 'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
+                 'ORDER BY id_scenario ');
         res = self.sql.mysql_handler_personnal_query(query);
         self.schedules_list = res;
 
@@ -31,11 +34,12 @@ class Schedule:
         try:
             schedules_list = self.schedules_list;
             for schedule in schedules_list:
-                if self.test_schedule(schedule[1], schedule[2], schedule[3],
-                                      schedule[4], schedule[5]) == 1:
-                    self.logger.info('Schedule '+str(schedule[0])+' : OK\n\n\n');
+                if self.test_schedule(schedule[2], schedule[3], schedule[4],
+                                      schedule[5], schedule[6]) == 1:
+                    self.logger.info('Scenario '+str(schedule[0])+' : OK\n\n\n');
+                    self.launch_scenario(schedule[1], connection);
                 else:
-                    self.logger.info('Schedule '+str(schedule[0])+' : KO\n\n\n');
+                    self.logger.info('Scenario '+str(schedule[0])+' : KO\n\n\n');
         except Exception as e:
             self.logger.error(e);
 
@@ -58,3 +62,11 @@ class Schedule:
             and int(mins[curr_min]) == 1):
             return 1;
         return 0;
+
+    def launch_scenario(self, id_smartcmd, connection):
+        jsonString = json.JSONEncoder().encode({
+            "data": id_smartcmd
+        });
+        data = json.JSONDecoder().decode(jsonString);
+        self.logger.info('Launching SMARTCMD '+str(id_smartcmd)+'\n\n');
+        self.daemon.smartcmd_launch(data, connection);

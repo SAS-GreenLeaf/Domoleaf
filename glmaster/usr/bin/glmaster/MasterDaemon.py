@@ -918,7 +918,10 @@ class MasterDaemon:
         self.logger.info('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection):
-        Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
+        try:
+            Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
+        except Exception as e:
+            self.logger.error(e);
 
     def triggers_list_update(self, json_obj, connection):
         self.trigger.update_triggers_list();
@@ -927,7 +930,6 @@ class MasterDaemon:
         self.schedule.update_schedules_list();
 
     def check_schedules(self, json_obj, connection):
-        self.logger.info('DAEMON CHECK SCHEDULES');
         self.schedule.check_all_schedules(connection);
 
     def get_global_state(self):
