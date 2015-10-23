@@ -42,9 +42,6 @@ echo '
 		}
 		echo
 		'</div>
-		<div class="col-xs-2 col-xs-offset-2 navbar navbar-inverse navbar-fixed-bottom">
-			<button onclick="showTimeSelect('.$id_trigger.')">TEST</button>
-		</div>
 	</div>';
 
 echo '

@@ -20,7 +20,7 @@ echo
 			'value="" placeholder="Trigger name" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
-	'<div class="controls center">'.
+	'<div class="controls center margin-top">'.
 		'<button onclick="saveNewTrigger()" class="btn btn-success">'.
 			''._('Save').''.
 			'<span class="glyphicon glyphicon-ok"></span>'.

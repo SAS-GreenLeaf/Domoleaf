@@ -1469,7 +1469,7 @@ class User {
 	function searchTriggerById($trigger_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT trigger_name, user_id,
+		$sql = 'SELECT trigger_name, user_id
 				FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
