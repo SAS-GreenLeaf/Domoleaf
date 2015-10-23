@@ -56,26 +56,43 @@ echo	'
 		}
 
 echo '<div id="div-interface">'.
-		'<select id="select-interface" class="selectpicker form-control" onchange="CheckKNXTPIP()">'.
-			'<option selected value="Serial 0">'._('Serial 0').'</option>'.
-			'<option value="Serial 1">'._('Serial 1').'</option>'.
-			'<option value="IP">'._('IP').'</option>'.
-		'</select>'.
+		'<select id="select-interface" class="selectpicker form-control" onchange="CheckKNXTPIP()">';
+			if ($daemon->protocol->{1}->interface == "ttyS1"){
+				echo '<option value="ttyS0">'._('Serial 0').'</option>'.
+					 '<option selected value="ttyS1">'._('Serial 1').'</option>'.
+					 '<option value="IP">'._('IP').'</option>';
+			}
+			else if (filter_var($daemon->protocol->{1}->interface, FILTER_VALIDATE_IP)){
+				echo '<option value="ttyS0">'._('Serial 0').'</option>'.
+					 '<option value="ttyS1">'._('Serial 1').'</option>'.
+					 '<option selected value="IP">'._('IP').'</option>';				
+			}
+			else{
+				echo '<option selected value="ttyS0">'._('Serial 0').'</option>'.
+					 '<option value="ttyS1">'._('Serial 1').'</option>'.
+					 '<option value="IP">'._('IP').'</option>';				
+			}
+ 
+		echo '</select>'.
 	'</div>'.
 	'<div id="div-interface-IP" class="input-group">'.
 		'<label class="input-group-addon" for="label-interface-IP">'.
 			'<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.
-		'</label>'.
-		'<input type="text" id="input-interface-IP" placeholder="'._('Enter IP').'" value="" class="form-control">'.
-	'</div>'.
+		'</label>';
+		if (filter_var($daemon->protocol->{1}->interface, FILTER_VALIDATE_IP)){
+			echo '<input type="text" id="input-interface-IP" placeholder="'._('Enter IP').'" value="'.$daemon->protocol->{1}->interface.'" class="form-control">';
+		}
+		else{
+			echo '<input type="text" id="input-interface-IP" placeholder="'._('Enter IP').'" value="" class="form-control">';
+		}
+	echo '</div>'.
 	'<script type="text/javascript">'.
-		'$("#div-interface-IP").hide();'.
+		'CheckKNXTPIP();'.
 		'$(".selectpicker").selectpicker();'.
 		'CheckKNXTP();'.
 	'</script>';
 
-echo '
-		
+echo '		
 	<div class="center"><button id="eventSave" onclick="RenameDaemon('.$daemon->daemon_id.')" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button></div>'.
 '</div>';
 
