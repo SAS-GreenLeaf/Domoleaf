@@ -1102,12 +1102,12 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT daemon_id, protocol_id
+		$sql = 'SELECT daemon_id, protocol_id, interface
 		        FROM daemon_protocol';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->daemon_id]['protocol'][] = $do->protocol_id;
+			$list[$do->daemon_id]['protocol'][$do->protocol_id] = clone $do;
 		}
 		
 		return $list;
@@ -1206,7 +1206,11 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='') {
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='ttyS0') {
+		if ($interface != "ttyS1" && !(filter_var($interface, FILTER_VALIDATE_IP))){
+			$interface = "ttyS0";
+		}
+
 		$link = Link::get_link('domoleaf');
 		
 		$daemonList = $this->confDaemonList();

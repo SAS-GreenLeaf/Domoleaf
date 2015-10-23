@@ -35,7 +35,7 @@ echo	'
 			'<input type="password" id="resercretkey" placeholder="'._('Enter the secret key').'" class="form-control">
 		</div>';
 		foreach ($listproto as $elem){
-			if (in_array($elem->protocol_id, $daemon->protocol)){
+			if (!empty($daemon->protocol->{$elem->protocol_id})){
 				echo '<div class="col-lg-4 col-lg-offset-2 col-sm-6 col-xs-12">'.
 							'<label class="checkbox">'.
 								'<input id="checkbox-protocol-'.$elem->protocol_id.'" type="checkbox"'.
@@ -56,13 +56,20 @@ echo	'
 		}
 
 echo '<div id="div-interface">'.
-		'<select class="selectpicker form-control" id="select-interface">'.
+		'<select id="select-interface" class="selectpicker form-control" onchange="CheckKNXTPIP()">'.
 			'<option selected value="Serial 0">'._('Serial 0').'</option>'.
 			'<option value="Serial 1">'._('Serial 1').'</option>'.
 			'<option value="IP">'._('IP').'</option>'.
 		'</select>'.
 	'</div>'.
+	'<div id="div-interface-IP" class="input-group">'.
+		'<label class="input-group-addon" for="label-interface-IP">'.
+			'<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.
+		'</label>'.
+		'<input type="text" id="input-interface-IP" placeholder="'._('Enter IP').'" value="" class="form-control">'.
+	'</div>'.
 	'<script type="text/javascript">'.
+		'$("#div-interface-IP").hide();'.
 		'$(".selectpicker").selectpicker();'.
 		'CheckKNXTP();'.
 	'</script>';

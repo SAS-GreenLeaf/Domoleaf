@@ -41,7 +41,7 @@ echo '
 								if ($i != 0){
 									echo ', ';
 								}
-								echo $allproto->$proto->name;
+								echo $allproto->{$proto->protocol_id}->name;
 								$i++;
 							}
 						echo'
@@ -230,6 +230,9 @@ function	RenameDaemon(id){
 	
 	});
 	var interface = $("#select-interface").val();
+	if (interface == "IP"){
+		interface = $("#input-interface-IP").val();
+	}
 
 	$.ajax({
 		type:"GET",
@@ -247,6 +250,15 @@ function CheckKNXTP(){
 	}
 	else{
 		$("#div-interface").hide();
+	}
+}
+
+function CheckKNXTPIP(){
+	if ($("#select-interface").val() == "IP"){
+		$("#div-interface-IP").show();
+	}
+	else{
+		$("#div-interface-IP").hide();
 	}
 }
 
