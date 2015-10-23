@@ -1206,7 +1206,7 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array()) {
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='') {
 		$link = Link::get_link('domoleaf');
 		
 		$daemonList = $this->confDaemonList();
@@ -1221,18 +1221,31 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':daemon_id', $daemon, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
+
 		if(!empty($newProtocolList) && sizeof($newProtocolList) > 0) {
 			foreach ($newProtocolList as $protocol) {
 				if(!empty($protocolList[$protocol])) {
-					$sql = 'INSERT INTO daemon_protocol
-					        (daemon_id, protocol_id)
-					        VALUES
-					        (:daemon_id, :protocol_id)';
-					$req = $link->prepare($sql);
-					$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
-					$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
-					$req->execute() or die (error_log(serialize($req->errorInfo())));
+					if ($protocol == 1){
+						$sql = 'INSERT INTO daemon_protocol
+					        	(daemon_id, protocol_id, interface)
+					        	VALUES
+					        	(:daemon_id, :protocol_id, :interface)';
+						$req = $link->prepare($sql);
+						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
+						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
+						$req->bindValue(':interface', $interface, PDO::PARAM_STR);
+						$req->execute() or die (error_log(serialize($req->errorInfo())));						
+					}
+					else{
+						$sql = 'INSERT INTO daemon_protocol
+					        	(daemon_id, protocol_id)
+					        	VALUES
+					        	(:daemon_id, :protocol_id)';
+						$req = $link->prepare($sql);
+						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
+						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
+						$req->execute() or die (error_log(serialize($req->errorInfo())));
+					}
 				}
 			}
 		}
@@ -1243,8 +1256,7 @@ class Admin extends User {
 		$data = array(
 			'daemon_id' => $iddaemon
 		);
-		$socket->send('check_slave', $data, 1);
-		
+		$socket->send('check_slave', $data, 1);;
 		return $socket->receive();
 	}
 	

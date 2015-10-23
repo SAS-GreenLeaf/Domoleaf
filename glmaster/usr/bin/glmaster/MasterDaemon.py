@@ -786,14 +786,6 @@ class MasterDaemon:
             connection.close();
             return ;
         hostname = res[0][0];
-        if hostname == socket.gethostname():
-            file = open('/etc/domoleaf/.glslave.version', 'r');
-            version = file.read().split('\n')[0];
-            connection.send(bytes(version, 'utf-8'));
-            query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';
-            self.sql.mysql_handler_personnal_query(query);
-            connection.close();
-            return ;
         ip = '';
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
@@ -815,6 +807,8 @@ class MasterDaemon:
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
         val = '0';
         version = '';
+        interface_knx = '';
+        interface_enocean = '';
         for s in rlist:
             data = sock.recv(4096);
             if not data:
@@ -833,9 +827,15 @@ class MasterDaemon:
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
                 version = resp['version'];
+                interface_knx = resp['interface_knx'];
+                interface_enocean = resp['interface_enocean'];
             connection.send(bytes(version, 'utf-8'));
         connection.close();
         query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
+        self.sql.mysql_handler_personnal_query(query);
+        query = 'UPDATE daemon_protocol SET interface="' + interface_knx + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="1"';
+        self.sql.mysql_handler_personnal_query(query);
+        query = 'UPDATE daemon_protocol SET interface="' + interface_enocean + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="2"';
         self.sql.mysql_handler_personnal_query(query);
 
     def get_secret_key(self, hostname):

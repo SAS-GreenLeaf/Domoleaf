@@ -34,15 +34,39 @@ echo	'
 			</label>'.
 			'<input type="password" id="resercretkey" placeholder="'._('Enter the secret key').'" class="form-control">
 		</div>';
-			foreach ($listproto as $elem){
-				if (in_array($elem->protocol_id, $daemon->protocol)){
-					echo '<div class="col-lg-4 col-lg-offset-2 col-sm-6 col-xs-12"><label class="checkbox"><input type="checkbox" checked="checked" class="checkbox-daemon" value="'.$elem->protocol_id.'">'.$elem->name.'</label></div>';
-				}
-				else{
-					echo '<div class="col-lg-4 col-lg-offset-2 col-sm-6 col-xs-12"><label class="checkbox"><input type="checkbox" class="checkbox-daemon" value="'.$elem->protocol_id.'">'.$elem->name.'</label></div>';
-						
-				}
-		}		
+		foreach ($listproto as $elem){
+			if (in_array($elem->protocol_id, $daemon->protocol)){
+				echo '<div class="col-lg-4 col-lg-offset-2 col-sm-6 col-xs-12">'.
+							'<label class="checkbox">'.
+								'<input id="checkbox-protocol-'.$elem->protocol_id.'" type="checkbox"'.
+									'onclick="CheckKNXTP()" checked="checked" class="checkbox-daemon" value="'.$elem->protocol_id.'">'.
+								''.$elem->name.''.
+							'</label>'.
+						'</div>';
+			}
+			else{
+				echo '<div class="col-lg-4 col-lg-offset-2 col-sm-6 col-xs-12">'.
+						'<label class="checkbox">'.
+							'<input id="checkbox-protocol-'.$elem->protocol_id.'" type="checkbox"'.
+								'onclick="CheckKNXTP()" class="checkbox-daemon" value="'.$elem->protocol_id.'">'.
+							''.$elem->name.''.
+						'</label>'.
+					'</div>';
+			}
+		}
+
+echo '<div id="div-interface">'.
+		'<select class="selectpicker form-control" id="select-interface">'.
+			'<option selected value="Serial 0">'._('Serial 0').'</option>'.
+			'<option value="Serial 1">'._('Serial 1').'</option>'.
+			'<option value="IP">'._('IP').'</option>'.
+		'</select>'.
+	'</div>'.
+	'<script type="text/javascript">'.
+		'$(".selectpicker").selectpicker();'.
+		'CheckKNXTP();'.
+	'</script>';
+
 echo '
 		
 	<div class="center"><button id="eventSave" onclick="RenameDaemon('.$daemon->daemon_id.')" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button></div>'.

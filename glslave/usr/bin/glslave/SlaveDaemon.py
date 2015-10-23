@@ -315,9 +315,11 @@ class SlaveDaemon:
         print("===== CHECK SLAVE =====");
         print(json_obj);
         print("=======================");
+        interface_knx = self._parser.getValueFromSection('knx', 'interface');
+        interface_enocean = self._parser.getValueFromSection('enocean', 'interface');
         file = open('/etc/domoleaf/.glslave.version', 'r');
         version = file.read().split('\n')[0];
-        json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' +num_version + '"}';
+        json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' + version + '", "interface_knx": "' + interface_knx + '", "interface_enocean": "' + interface_enocean + '"}';
         master_hostname = str(json_obj['sender_name']);
         encrypt_IV = AESManager.get_IV();
         json_str = json_str + (' ' * (320 - len(json_str)))

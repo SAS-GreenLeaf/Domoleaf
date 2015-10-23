@@ -229,15 +229,25 @@ function	RenameDaemon(id){
 		}
 	
 	});
+	var interface = $("#select-interface").val();
 
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
-		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\'),
+		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface="+interface,
 		complete: function(result, status) {
 			location.href=\'/conf_daemon\'
 		}
 	});
+}
+
+function CheckKNXTP(){
+	if ($("#checkbox-protocol-1").prop(\'checked\')){
+		$("#div-interface").show();
+	}
+	else{
+		$("#div-interface").hide();
+	}
 }
 
 $("#rcv").val(\'\');
