@@ -34,6 +34,7 @@ from KNXManager import *;
 from UpnpAudio import *;
 from Smartcommand import *;
 from Trigger import *;
+from Schedule import *;
 import utils;
 from GLManager import *;
 
@@ -101,6 +102,8 @@ DATA_CHECK_UPDATES            = 'check_updates';
 DATA_UPDATE                   = 'update';
 DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
 DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
+DATA_SCHEDULES_LIST_UPDATE    = 'schedules_list_update';
+DATA_CHECK_ALL_SCHEDULES      = 'check_all_schedules';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 
@@ -132,6 +135,7 @@ class MasterDaemon:
         self.knx_manager = KNXManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
         self.trigger = Trigger(self);
+        self.schedule = Schedule(self);
         self.protocol_function = {
             PROTOCOL_KNX        : KNXManager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
@@ -173,7 +177,9 @@ class MasterDaemon:
             DATA_BACKUP_DB_LIST_USB           : self.backup_db_list_usb,
             DATA_BACKUP_DB_RESTORE_USB        : self.backup_db_restore_usb,
             DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
-            DATA_TRIGGERS_LIST_UPDATE          : self.triggers_list_update,
+            DATA_TRIGGERS_LIST_UPDATE         : self.triggers_list_update,
+            DATA_SCHEDULES_LIST_UPDATE        : self.schedules_list_update,
+            DATA_CHECK_ALL_SCHEDULES          : self.check_schedules,
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
@@ -917,8 +923,15 @@ class MasterDaemon:
     def triggers_list_update(self, json_obj, connection):
         self.trigger.update_triggers_list();
 
+    def schedules_list_update(self, json_obj, connection):
+        self.schedule.update_schedules_list();
+
+    def check_schedules(self, json_obj, connection):
+        self.logger.info('DAEMON CHECK SCHEDULES');
+        self.schedule.check_all_schedules(connection);
+
     def get_global_state(self):
-        self.logger.info('Setting GLOBAL STATE');
+        #self.logger.info('Setting GLOBAL STATE');
         query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
         res = self.sql.mysql_handler_personnal_query(query);
         filtered = [];

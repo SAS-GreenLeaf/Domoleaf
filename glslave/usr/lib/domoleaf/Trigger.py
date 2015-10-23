@@ -12,7 +12,7 @@ LOG_FILE                = '/var/log/glmaster.log'
 class Trigger:
 
     def __init__(self, daemon):
-        self.logger = Logger(True, LOG_FILE);
+        self.logger = Logger(False, LOG_FILE);
         self.sql = MasterSql();
         self.daemon = daemon;
         self.triggers_list = '';
