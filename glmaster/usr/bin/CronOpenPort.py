@@ -8,9 +8,9 @@ from DaemonConfigParser import *;
 
 if __name__ == "__main__":
     try:
-        parser = DaemonConfigParser('/etc/domoleaf/slave.conf')
-        ip = parser.getValueFromSection('cron', 'address')
-        port = parser.getValueFromSection('cron', 'port')
+        parser = DaemonConfigParser('/etc/domoleaf/master.conf')
+        ip = '127.0.0.1'
+        port = parser.getValueFromSection('listen', 'port_cmd')
         s = socket.create_connection((ip, port))
         obj = {
             "packet_type": "cron_upnp",
