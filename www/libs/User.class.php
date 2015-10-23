@@ -1469,9 +1469,7 @@ class User {
 	function searchTriggerById($trigger_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT trigger_name,
-				       user_id,
-				       id_smartcmd
+		$sql = 'SELECT trigger_name, user_id,
 				FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
@@ -1505,10 +1503,8 @@ class User {
 	function listTriggers(){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT id_trigger, trigger_name, smartcommand_list.name AS smartcmd_name
+		$sql = 'SELECT id_trigger, trigger_name
 				FROM trigger_events_list
-				JOIN smartcommand_list ON trigger_events_list.id_smartcmd = smartcommand_list.smartcommand_id
-				WHERE smartcommand_list.user_id=:user_id
 				ORDER BY trigger_name';
 	
 		$req = $link->prepare($sql);
@@ -1519,8 +1515,7 @@ class User {
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->id_trigger] = array(
 					'trigger_id'     => $do->id_trigger,
-					'name'           => $do->trigger_name,
-					'smartcmd_name'  => $do->smartcmd_name,
+					'name'           => $do->trigger_name
 			);
 		}
 	
@@ -1591,7 +1586,7 @@ class User {
 		return $list;
 	}
 	
-	function createNewTrigger($trigger_name, $smartcmd_id){
+	function createNewTrigger($trigger_name){
 	
 		if ($this->searchTriggerByName($trigger_name) != 0) {
 			return -1;
@@ -1599,12 +1594,11 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO trigger_events_list
-		        (trigger_name, id_smartcmd, user_id)
+		        (trigger_name, user_id)
 				VALUES 
-				(:trigger_name, :smartcmd_id, :user_id)';
+				(:trigger_name, :user_id)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
-		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
@@ -1755,21 +1749,6 @@ class User {
 		$this->udpateTriggersList();
 	}
 	
-	function triggerSaveLinkedSmartcmd($trigger_id, $smartcmd_id) {
-		$link = Link::get_link('domoleaf');
-	
-		if ($smartcmd_id == 0) {
-			return;
-		}
-		$sql = 'UPDATE trigger_events_list
-				SET id_smartcmd=:smartcmd_id
-				WHERE id_trigger=:trigger_id';
-		$req = $link->prepare($sql);
-		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
-		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	}
-	
 	function udpateTriggersList(){
 		$socket = new Socket();
 		$socket->send('triggers_list_update');
@@ -1858,6 +1837,7 @@ class User {
 		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateSchedulesList();
 	}
 	
 	function getSchedule($idschedule){
@@ -1898,7 +1878,8 @@ class User {
 		$req->bindValue(':hours', intval(str_repeat("1", 24), 2), PDO::PARAM_INT);
 		$req->bindValue(':mins', str_repeat("1", 60), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+		$this->udpateSchedulesList();
+		
 		return $link->lastInsertId();
 	}
 	
@@ -1910,9 +1891,67 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateSchedulesList();
+	}
+	
+	function udpateSchedulesList(){
+		$socket = new Socket();
+		$socket->send('schedules_list_update');
 	}
 	
 	/*** Scenarios ***/
+	
+	function searchScenarioById($scenario_id){
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'SELECT name_scenario, smartcommand_list.user_id AS user_id
+				FROM scenarios_list
+				JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if($do->user_id != $this->getId()) {
+			return 0;
+		}
+		return $do;
+	}
+	
+	function listScenarios(){
+		$link = Link::get_link('domoleaf');
+		$list = array();
+	
+		$sql = 'SELECT id_scenario, name_scenario, id_trigger, id_schedule, scenarios_list.id_smartcmd,
+				       smartcommand_list.name AS name_smartcmd, activated
+				FROM scenarios_list
+				JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
+				WHERE smartcommand_list.user_id=:user_id
+				ORDER BY name_scenario';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		$list = array();
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->id_scenario] = array(
+					'scenario_id'     => $do->id_scenario,
+					'name'            => $do->name_scenario,
+					'id_trigger'      => $do->id_trigger,
+					'id_schedule'     => $do->id_schedule,
+					'id_smartcmd'     => $do->id_smartcmd,
+					'name_smartcmd'   => $do->name_smartcmd,
+					'activated'       => $do->activated
+			);
+		}
+	
+		return $list;
+	}
 	
 	function changeScenarioState($scenario_id, $state) {
 		$link = Link::get_link('domoleaf');
@@ -1924,8 +1963,9 @@ class User {
 		$req->bindValue(':state', $state, PDO::PARAM_INT);
 		$req->bindValue(':id_scenario', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateSchedulesList();
 	}
-	
+
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){

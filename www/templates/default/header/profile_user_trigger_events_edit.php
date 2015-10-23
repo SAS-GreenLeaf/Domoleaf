@@ -11,7 +11,6 @@ $id_trigger = $_GET['id_trigger'];
 $request = new Api();
 $request -> add_request('confUserInstallation');
 $request -> add_request('mcVisible');
-$request -> add_request('listSmartcmd');
 $request -> add_request('searchTriggerById', array($id_trigger));
 $result  =  $request -> send_request();
 
@@ -24,7 +23,6 @@ $deviceallowed = $listAllVisible->ListDevice;
 $installation_info = $result->confUserInstallation;
 $trigger_info  = $result->searchTriggerById;
 $name_trigger = $trigger_info->trigger_name;
-$smartcmdList = $result->listSmartcmd;
 
 if(!empty($installation_info) || !empty($floorallowed) || !empty($roomallowed) || !empty($deviceallowed)) {
 

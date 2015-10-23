@@ -808,8 +808,8 @@ class Api {
 						break;
 						
 						case 'createNewTrigger' :
-							if (!empty($var[0]) && !empty($var[1])){
-								$res = $user->createNewTrigger($var[0], $var[1]);
+							if (!empty($var[0])){
+								$res = $user->createNewTrigger($var[0]);
 							}
 						break;
 						
@@ -854,7 +854,6 @@ class Api {
 						break;
 						
 						case 'updateTriggerElemOptionValue' :
-							error_log("API");
 							if (empty($var[4])) {
 								$var[4] = 0;
 							}
@@ -882,17 +881,6 @@ class Api {
 							}
 						break;
 						
-						case 'changeTriggerState' :
-							if (empty($var[1])) {
-								$var[1] = 0;
-							}
-							if (!empty($var[0])){
-								if (!empty($user->searchTriggerById($var[0]))) {
-									$res = $user->changeTriggerState($var[0], $var[1]);
-								}
-							}
-						break;
-						
 						case 'removeTrigger' :
 							if (!empty($var[0])){
 								if (!empty($user->searchTriggerById($var[0]))) {
@@ -905,14 +893,6 @@ class Api {
 							if (!empty($var[0]) && !empty($var[1])){
 								if (!empty($user->searchTriggerById($var[0]))) {
 									$res = $user->removeTriggerElem($var[0], $var[1]);
-								}
-							}
-						break;
-						
-						case 'triggerSaveLinkedSmartcmd' :
-							if (!empty($var[0]) && !empty($var[1])) {
-								if (!empty($user->searchTriggerById($var[0]))) {
-									$res = $user->triggerSaveLinkedSmartcmd($var[0], $var[1]);
 								}
 							}
 						break;
@@ -950,7 +930,28 @@ class Api {
 								}
 							}
 						break;
-							
+						
+						case 'searchScenarioById' :
+							if (!empty($var[0])){
+								$res = $user->searchScenarioById($var[0]);
+							}
+						break;
+						
+						case 'listScenarios' :
+							$res = $user->listScenarios();
+						break;
+						
+						case 'changeScenarioState' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->changeScenarioState($var[0], $var[1]);
+								}
+							}
+						break;
+						
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
 						break;

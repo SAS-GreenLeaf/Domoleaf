@@ -14,7 +14,6 @@ echo
 			<thead>
 				<tr>
 					<th class="center">'._('Trigger Name').'</th>
-					<th class="center">'._('Linked Smartcommand').'</th>
 					<th class="center">'._('Actions').'</th>
 				</tr>
 			</thead>
@@ -23,7 +22,6 @@ echo
 				echo '
 				<tr id="trigger-'.$elem->trigger_id.'">
 					<td>'.$elem->name.'</td>
-					<td>'.$elem->smartcmd_name.'</td>
 					<td class="center">
 						<a href="/profile_user_trigger_events/'.$elem->trigger_id.'">
 							<button type="button"
@@ -89,24 +87,6 @@ echo '
 		});
 	}
 
-	/*	FOR SCENARIOS
-		function changeTriggerState(trigger_id) {
-		state = $("#trigger-state-"+trigger_id).bootstrapSwitch(\'state\');
-		if (state) {
-			state = "1";
-		}
-		else {
-			state = "0";
-		}
-		$.ajax({
-			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_change_trigger_state.php",
-			data: "id_trigger="+trigger_id
-					+"&trigger_state="+state,
-			success: function(result) {
-			}
-		});
-	}*/
 </script>';
 
 ?>

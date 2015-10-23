@@ -613,26 +613,6 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 	});
 }
 
-function saveLinkedSmartcmd(trigger_id) {
-	var smartcmd_id;
-	
-	smartcmd_id = parseInt($("#selectSmartcmd-"+trigger_id).val());
-	$.ajax({
-		type: "GET",
-		url: "/templates/default/form/form_save_linked_smartcmd.php",
-		data: "trigger_id="+trigger_id+"&smartcmd_id="+smartcmd_id,
-		success: function(result) {
-			if (result == 0) {
-				changeSaveBtnState("#saveLS_btn", 1);
-			}
-			else {
-				changeSaveBtnState("#saveLS_btn", 2);
-			}
-			
-		}
-	});
-}
-
 function showTimeSelect(id_schedule) {
 	$.ajax({
 		type: "GET",

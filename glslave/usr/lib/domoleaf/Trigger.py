@@ -42,8 +42,8 @@ class Trigger:
                 id_smartcmd = list[i][1];
                 res = res and self.test_condition(list[i], global_state);
                 i = i + 1;
-            if res == True:
-                self.launch_trigger(id_smartcmd, connection);
+            #if res == True:
+            #    self.launch_trigger(id_smartcmd, connection);
 
     def get_device_state(self, room_device_id, option_id, global_state):
         device_state = [];

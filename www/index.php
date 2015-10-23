@@ -44,6 +44,16 @@ if($request->is_co()) {
 				$page = $_GET['page'];
 			break;
 			
+			//Profile scenarios
+			case 'profile_user_scenarios':
+				$page = $_GET['page'];
+			break;
+			
+			//Profile edit scenarios
+			case 'profile_user_scenarios_edit':
+				$page = $_GET['page'];
+			break;
+			
 			//Profile trigger events
 			case 'profile_user_trigger_events':
 				$page = $_GET['page'];

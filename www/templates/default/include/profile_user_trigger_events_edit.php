@@ -58,20 +58,6 @@ echo '
 		        onclick="popupUpdateTriggerName('.$id_trigger.')">
 			<i class="glyphicon glyphicon-edit"></i>
 		</button>
-		<div id="linked-smartcmd" class="navbar-brand">
-			'._('Linked Smartcommand').'
-			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10" onchange="changeSaveBtnState("#saveLS_btn")">';
-				foreach ($smartcmdList as $smartcmd) {
-					echo '<option value="'.$smartcmd->smartcommand_id.'">'.$smartcmd->name.'</option>';
-				}
-				echo '
-			</select>
-			<button id="saveLS_btn"
-			        onclick="saveLinkedSmartcmd('.$id_trigger.')"
-			        class="btn btn-primary">
-				'._('Save').'
-			</button> 
-		</div>
 	</div>
 	<div id="drop-conditions" class="col-xs-8 col-xs-offset-4">
 	</div>
@@ -215,7 +201,6 @@ echo
 				$("#drop-conditions").html(result);
 				setDroppable();
 				openDivs(0, 0);
-				setLinkedSmartcmd('.$trigger_info->id_smartcmd.');
 			}
 		});
 	}
@@ -244,10 +229,6 @@ echo
 				popup_close();
 			}
 		});
-	}
-						
-	function setLinkedSmartcmd(smartcmd_id) {
-		$("#selectSmartcmd-'.$id_trigger.'").selectpicker(\'val\', smartcmd_id);
 	}
 	
 </script>';
