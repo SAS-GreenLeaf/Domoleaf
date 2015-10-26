@@ -214,7 +214,7 @@ function NewDaemon(){
 	}
 }
 
-function	RenameDaemon(id){
+function RenameDaemon(id){
 						
 	$("#btn-"+id).attr("class", "btn btn-danger");
 	$("#icon-"+id).attr("class", "glyphicon glyphicon-remove");

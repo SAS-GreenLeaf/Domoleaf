@@ -56,24 +56,13 @@ echo	'
 		}
 
 echo '<div id="div-interface">'.
-		'<select id="select-interface" class="selectpicker form-control" onchange="CheckKNXTPIP()">';
-			if ($daemon->protocol->{1}->interface == "ttyS1"){
-				echo '<option value="ttyS0">'._('Serial 0').'</option>'.
-					 '<option selected value="ttyS1">'._('Serial 1').'</option>'.
-					 '<option value="IP">'._('IP').'</option>';
-			}
-			else if (filter_var($daemon->protocol->{1}->interface, FILTER_VALIDATE_IP)){
-				echo '<option value="ttyS0">'._('Serial 0').'</option>'.
-					 '<option value="ttyS1">'._('Serial 1').'</option>'.
-					 '<option selected value="IP">'._('IP').'</option>';				
-			}
-			else{
-				echo '<option selected value="ttyS0">'._('Serial 0').'</option>'.
-					 '<option value="ttyS1">'._('Serial 1').'</option>'.
-					 '<option value="IP">'._('IP').'</option>';				
-			}
- 
-		echo '</select>'.
+		'<select id="select-interface" class="selectpicker form-control" onchange="CheckKNXTPIP()">'.
+			'<option value="ttyAMA0">'._('Serial').'</option>'.
+			'<option value="ttyS0">'._('Serial 0').'</option>'.
+			'<option value="ttyS1">'._('Serial 1').'</option>'.
+			'<option value="ttyS2">'._('Serial 2').'</option>'.
+			'<option value="IP">'._('IP').'</option>'.
+		'</select>'.
 	'</div>'.
 	'<div id="div-interface-IP" class="input-group">'.
 		'<label class="input-group-addon" for="label-interface-IP">'.
@@ -87,8 +76,21 @@ echo '<div id="div-interface">'.
 		}
 	echo '</div>'.
 	'<script type="text/javascript">'.
-		'CheckKNXTPIP();'.
-		'$(".selectpicker").selectpicker();'.
+	'$(".selectpicker").selectpicker();';
+	
+	if (!empty($daemon->protocol->{1}->interface)){
+		if (!(filter_var($daemon->protocol->{1}->interface, FILTER_VALIDATE_IP))){
+			echo '$(".selectpicker").selectpicker(\'val\', \''.$daemon->protocol->{1}->interface.'\');';
+		}
+		else{
+			echo '$(".selectpicker").selectpicker(\'val\', \'IP\');';
+		}
+	}
+	else{
+		echo '$(".selectpicker").selectpicker(\'val\', \'ttyAMA0\');';
+	}
+	
+	echo 'CheckKNXTPIP();'.
 		'CheckKNXTP();'.
 	'</script>';
 

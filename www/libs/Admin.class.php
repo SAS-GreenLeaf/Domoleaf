@@ -1206,11 +1206,24 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='ttyS0') {
-		if ($interface != "ttyS1" && !(filter_var($interface, FILTER_VALIDATE_IP))){
-			$interface = "ttyS0";
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='ttyAMA0') {
+		if ($interface != "ttyS0" && $interface != "ttyS1" && $interface != "ttyS2" && !(filter_var($interface, FILTER_VALIDATE_IP))){
+			$interface = "ttyAMA0";
 		}
 
+		$socket = new Socket();
+		$data = array(
+				'daemon_id' => $daemon,
+				'interface' => $interface
+		);
+		$socket->send('send_interfaces', $data, 1);
+		
+		$res = $socket->receive();
+		
+		if (empty($res)){
+			return;
+		}
+		
 		$link = Link::get_link('domoleaf');
 		
 		$daemonList = $this->confDaemonList();

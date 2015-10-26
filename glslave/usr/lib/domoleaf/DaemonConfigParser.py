@@ -1,12 +1,16 @@
+from Logger import *;
 import configparser;
 import sys;
 sys.path.append("/usr/lib/domoleaf");
+
+LOG_FILE        = '/var/log/glslave';
 
 class DaemonConfigParser:
     """
     Configuration files parsing class.
     """
     def __init__(self, filename):
+        self.logger = Logger(True, LOG_FILE);
         self._Filename = filename;
         self._Config = configparser.ConfigParser();
         if not self._Config.read(filename):
@@ -35,3 +39,17 @@ class DaemonConfigParser:
         else:
             print("[ ERROR ]: '" + sectionName + "' not defined in " + self._Filename);
             return None;
+
+    def writeValueFromSection(self, sectionName, valueName, value):
+        """
+        Write the content of a section inside the open configuration file.
+        """
+        try:
+            if not self.getValueFromSection(sectionName, valueName):
+                return;
+            self._Config[sectionName][valueName] = value;
+            with open(self._Filename, 'w') as filename:
+                self._Config.write(filename);
+        except Exception as e:
+            self.logger.error(e);
+            
