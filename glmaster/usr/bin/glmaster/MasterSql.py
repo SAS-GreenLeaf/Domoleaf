@@ -19,7 +19,7 @@ class MasterSql:
     """
     Master daemon SQL management class.
     """
-    def __init__(self, log_flag = False):
+    def __init__(self, log_flag = True):
         self.logger = Logger(log_flag, '/var/log/glmaser.log');
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
@@ -187,7 +187,7 @@ class MasterSql:
         query += "room_device_option.room_device_id=room_device.room_device_id WHERE ";
         query += "daemon_id=" + str(daemon_id) + " AND room_device_option.addr=\"";
         query += str(json_obj['dst_addr']) + "\"";
-        self.logger.info("update_room_device_option write_short query : " + query);
+        #self.logger.info("update_room_device_option write_short query : " + query);
         res = self.mysql_handler_personnal_query(query);
         
         if len(res) == 0:
@@ -196,7 +196,7 @@ class MasterSql:
             query += "room_device_option.room_device_id=room_device.room_device_id WHERE ";
             query += "daemon_id=" + str(daemon_id) + " AND room_device_option.addr_plus=\"";
             query += str(json_obj['dst_addr']) + "\"";
-            self.logger.info("update_room_device_option write_short query : " + query);
+            #self.logger.info("update_room_device_option write_short query : " + query);
             res = self.mysql_handler_personnal_query(query);
         
         for r in res:

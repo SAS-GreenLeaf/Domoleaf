@@ -12,15 +12,16 @@ LOG_FILE                = '/var/log/glmaster.log'
 class Schedule:
 
     def __init__(self, daemon):
-        self.logger = Logger(True, LOG_FILE);
+        self.logger = Logger(False, LOG_FILE);
         self.sql = MasterSql();
         self.daemon = daemon;
         self.schedules_list = '';
+        self.full_schedules_list = '';
         self.update_schedules_list();
 
     def update_schedules_list(self):
         self.logger.info('Updating Schedules');
-        query = ('SELECT id_scenario, id_smartcmd, '
+        query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
                  'FROM scenarios_list '
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
@@ -28,22 +29,34 @@ class Schedule:
                  'ORDER BY id_scenario ');
         res = self.sql.mysql_handler_personnal_query(query);
         self.schedules_list = res;
+        
+        query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
+                 'months, weekdays, days, hours, mins '
+                 'FROM scenarios_list '
+                 'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
+                 'WHERE scenarios_list.id_schedule IS NOT NULL && activated = 1 '
+                 'ORDER BY id_scenario ');
+        res = self.sql.mysql_handler_personnal_query(query);
+        self.full_schedules_list = res;
+
+    def get_schedule_infos(self, id_schedule):
+        schedules_list = self.full_schedules_list;
+        for schedule in schedules_list:
+            if (schedule[0] == id_schedule):
+                return (schedule[2], schedule[3], schedule[4],
+                        schedule[5], schedule[6]);
+        return 0;
 
     def check_all_schedules(self, connection):
-        self.logger.info('Checking Schedules');
-        try:
-            schedules_list = self.schedules_list;
-            for schedule in schedules_list:
-                if self.test_schedule(schedule[2], schedule[3], schedule[4],
-                                      schedule[5], schedule[6]) == 1:
-                    self.logger.info('Scenario '+str(schedule[0])+' : OK\n\n\n');
-                    self.launch_scenario(schedule[1], connection);
-                else:
-                    self.logger.info('Scenario '+str(schedule[0])+' : KO\n\n\n');
-        except Exception as e:
-            self.logger.error(e);
+        schedules_list = self.schedules_list;
+        for schedule in schedules_list:
+            if self.test_schedule(schedule[0]) == 1:
+                self.launch_scenario(schedule[1], connection);
 
-    def test_schedule(self, months, weekdays, days, hours, mins):
+    def test_schedule(self, id_schedule):
+        if not self.full_schedules_list:
+            return 0;
+        months, weekdays, days, hours, mins = self.get_schedule_infos(id_schedule);
         now = datetime.datetime.now();
         curr_month = int(now.month);
         curr_weekday = int(now.strftime('%w'));
@@ -68,5 +81,4 @@ class Schedule:
             "data": id_smartcmd
         });
         data = json.JSONDecoder().decode(jsonString);
-        self.logger.info('Launching SMARTCMD '+str(id_smartcmd)+'\n\n');
         self.daemon.smartcmd_launch(data, connection);

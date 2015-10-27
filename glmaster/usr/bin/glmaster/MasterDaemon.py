@@ -35,6 +35,7 @@ from UpnpAudio import *;
 from Smartcommand import *;
 from Trigger import *;
 from Schedule import *;
+from Scenario import *;
 import utils;
 from GLManager import *;
 
@@ -103,6 +104,7 @@ DATA_UPDATE                   = 'update';
 DATA_SMARTCMD_LAUNCH          = 'smartcmd_launch';
 DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
 DATA_SCHEDULES_LIST_UPDATE    = 'schedules_list_update';
+DATA_SCENARIOS_LIST_UPDATE    = 'scenarios_list_update';
 DATA_CHECK_ALL_SCHEDULES      = 'check_all_schedules';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
@@ -136,6 +138,7 @@ class MasterDaemon:
         self.reload_d3config(None, None);
         self.trigger = Trigger(self);
         self.schedule = Schedule(self);
+        self.scenario = Scenario(self);
         self.protocol_function = {
             PROTOCOL_KNX        : KNXManager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
@@ -179,6 +182,7 @@ class MasterDaemon:
             DATA_SMARTCMD_LAUNCH              : self.smartcmd_launch,
             DATA_TRIGGERS_LIST_UPDATE         : self.triggers_list_update,
             DATA_SCHEDULES_LIST_UPDATE        : self.schedules_list_update,
+            DATA_SCENARIOS_LIST_UPDATE        : self.scenarios_list_update,
             DATA_CHECK_ALL_SCHEDULES          : self.check_schedules,
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
@@ -529,8 +533,7 @@ class MasterDaemon:
         daemon_id = self.sql.update_knx_log(json_obj);
 
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
-
-        self.trigger.check_all_conditions(self.get_global_state(), connection);
+        self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection);
 
         connection.close();
 
@@ -918,22 +921,21 @@ class MasterDaemon:
         self.logger.info('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection):
-        try:
-            Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
-        except Exception as e:
-            self.logger.error(e);
+        Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
 
     def triggers_list_update(self, json_obj, connection):
         self.trigger.update_triggers_list();
 
     def schedules_list_update(self, json_obj, connection):
         self.schedule.update_schedules_list();
+        
+    def scenarios_list_update(self, json_obj, connection):
+        self.scenario.update_scenarios_list();
 
     def check_schedules(self, json_obj, connection):
         self.schedule.check_all_schedules(connection);
 
     def get_global_state(self):
-        #self.logger.info('Setting GLOBAL STATE');
         query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
         res = self.sql.mysql_handler_personnal_query(query);
         filtered = [];

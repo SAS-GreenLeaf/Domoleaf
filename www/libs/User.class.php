@@ -1963,9 +1963,16 @@ class User {
 		$req->bindValue(':state', $state, PDO::PARAM_INT);
 		$req->bindValue(':id_scenario', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		$this->udpateSchedulesList();
+		$this->udpateScenariosList();
 	}
 
+	function udpateScenariosList(){
+		$this->udpateTriggersList();
+		$this->udpateSchedulesList();
+		$socket = new Socket();
+		$socket->send('scenarios_list_update');
+	}
+	
 	/*** KNX action ***/
 	
 	function knx_write_l($daemon, $addr, $value=0){
@@ -2245,17 +2252,15 @@ class User {
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		if(!empty($do->device_allowed) || $this->getlevel() > 1){
-			if(!empty($do->addr_plus)){
-				$sql ='UPDATE room_device_option
-				       SET valeur=:valeur
-				       WHERE room_device_id=:room_device_id AND 
-				             option_id=:option_id';
-				$req = $link->prepare($sql);
-				$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
-				$req->bindValue(':valeur', $value, PDO::PARAM_INT);
-				$req->bindValue(':option_id', $optionid, PDO::PARAM_INT);
-				$req->execute() or die (error_log(serialize($req->errorInfo())));
-			}
+			$sql ='UPDATE room_device_option
+			       SET valeur=:valeur
+			       WHERE room_device_id=:room_device_id AND 
+			             option_id=:option_id';
+			$req = $link->prepare($sql);
+			$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
+			$req->bindValue(':valeur', $value, PDO::PARAM_INT);
+			$req->bindValue(':option_id', $optionid, PDO::PARAM_INT);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$socket = new Socket();
 			$data = array(
 				'room_device_id'=> $iddevice,
