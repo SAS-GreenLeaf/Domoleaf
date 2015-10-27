@@ -26,7 +26,6 @@ from Scanner import *;
 from UpnpAudio import *;
 from Logger import *;
 import AESManager;
-from Crypto.Cipher import AES;
 from SlaveReceiver import *;
 from CommandReceiver import *;
 from MasterSql import *;
