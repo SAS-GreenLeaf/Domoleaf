@@ -103,7 +103,8 @@ function outputUpdate(iddevice, val) {
 	$("#range-"+iddevice).html(val+"%");
 }
 		
-function onOffToggle(iddevice, optionid, popup = 0){
+function onOffToggle(iddevice, optionid, popup){
+	popup = typeof popup !== 'undefined' ? popup : 0;
 	var value;
 	if (popup == 0){
 		value = $("#onoff-"+iddevice).prop("checked") ? 1 : 0;
@@ -140,8 +141,8 @@ function getVariation(iddevice, optionid){
 	});
 }
 
-function UpdateTemp(iddevice, idoption, action, popup = 0){
-	
+function UpdateTemp(iddevice, idoption, action, popup){
+	popup = typeof popup !== 'undefined' ? popup : 0;
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/form/form_conf_temperature.php",
@@ -407,7 +408,8 @@ function selectDelay(smartcmd_id, exec_id) {
 	});
 }
 
-function dropZoneAnimate(trigger = 0) {
+function dropZoneAnimate(trigger) {
+	trigger = typeof trigger !== 'undefined' ? trigger : 0;
 	if (trigger == 0) {
 		$(".smartcmdElemDrop").addClass("drop-zone-activate", "100");
 	}
@@ -416,7 +418,8 @@ function dropZoneAnimate(trigger = 0) {
 	}
 }
 
-function dropZoneStop(trigger = 0) {
+function dropZoneStop(trigger) {
+	trigger = typeof trigger !== 'undefined' ? trigger : 0;
 	if (trigger == 0) {
 		$(".smartcmdElemDrop").removeClass("drop-zone-activate");
 	}
@@ -425,7 +428,8 @@ function dropZoneStop(trigger = 0) {
 	}
 }
 
-function listRoomsOfFloor(elem_id, smartcmd = 0) {
+function listRoomsOfFloor(elem_id, smartcmd) {
+	smartcmd = typeof smartcmd !== 'undefined' ? smartcmd : 0;
 	var floor_id;
 	
 	floor_id = parseInt($("#selectFloor-"+elem_id).val());
@@ -526,7 +530,9 @@ function ShowDeviceList(room_id){
 	$("#deviceList-"+room_id).toggle("slow");
 }
 
-function openDivs(floor_id = 0, room_id = 0) {
+function openDivs(floor_id, room_id) {
+	floor_id = typeof floor_id !== 'undefined' ? floor_id : 0;
+	room_id = typeof room_id !== 'undefined' ? room_id : 0;
 	if (floor_id == 0) {
 		floor_id = $(".list-group").find("div").attr("id");
 		floor_id = floor_id.split("floor-")[1];
@@ -779,8 +785,8 @@ function SaveSchedule(schedule_id) {
 	}
 }
 
-function changeSaveBtnState(id_btn, state = 0) {
-	
+function changeSaveBtnState(id_btn, state) {
+	state = typeof state !== 'undefined' ? state : 0;
 	if (state == 0) {
 		$(id_btn).removeClass("btn-success");
 		$(id_btn).addClass("btn-primary");

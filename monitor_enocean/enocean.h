@@ -2,7 +2,6 @@
 # define __ENOCEAN_H__
 # define _DEFAULT_SOURCE
 
-# include <libconfig.h>
 # include <signal.h>
 # include <netdb.h>
 # include <pthread.h>
@@ -18,10 +17,6 @@
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
-
-# define CONF_FILENAME   "/etc/domoleaf/monitor_enocean.cfg"
-# define CONF_PORT_ENTRY "port"
-# define CONF_ADDR_ENTRY "address"
 
 /*
 ** Different log types
@@ -205,6 +200,8 @@ int xtcsetattr(int fd, struct termios *t);
 /* init.c */
 int init(const char *dev_name, struct termios *options, struct termios *backup);
 int init_listen_slave_socket(const char *ip, uint16_t port);
+char *get_interface_enocean();
+char *strcpy_to_n(char *dest, const char *src, int n);
 
 /* enocean_log.c */
 void enocean_log(Log_type type, const char *msg);

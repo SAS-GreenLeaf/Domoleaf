@@ -72,3 +72,67 @@ int init_listen_slave_socket(const char *ip, uint16_t port)
 	}
 	return (sock);
 }
+
+char *strcpy_to_n(char *dest, const char *src, int n)
+{
+	int x;
+
+	x = 0;
+	if (!dest || !src)
+	{
+		return (NULL);
+	}
+	while (dest[x] != '\0')
+	{
+		x++;
+	}
+	while (src[n] != '\0')
+	{
+		dest[x] = src[n];
+		x = x + 1;
+		n = n + 1;
+	}
+	if (dest[x - 1] == '\n')
+	{
+		dest[x - 1] = '\0';
+	}
+	dest[x] = '\0';
+	return (dest);
+}
+
+char *get_interface_enocean()
+{
+	FILE *file;
+	char line[128];
+	char *interface;
+
+	if ((file = fopen("/etc/domoleaf/slave.conf", "r")) == NULL)
+	{
+		fprintf(stderr, "Error for open /etc/domoleaf/slave.conf\n");
+		return (NULL);
+	}
+	while (fgets(line, 128, file) != NULL)
+	{
+		if (strncmp(line, "[enocean]", 9) == 0)
+		{
+			while (fgets(line, 128, file) != NULL)
+			{
+				if (strncmp(line, "interface = ", 12) == 0)
+				{
+					if (strlen(line) > 13)
+					{
+						interface = malloc((sizeof(char) * strlen(line)) - 6);
+						memset(interface, '\0', strlen(line) - 6);
+						strcpy(interface, "/dev/");
+						strcpy_to_n(interface, line, 12);
+						fclose(file);
+						return (interface);
+					}
+				}
+			}
+		}
+	}
+	fclose(file);
+	fprintf(stderr, "Error while reading /etc/domoleaf/slave.conf\n");
+	return (NULL);
+}

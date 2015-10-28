@@ -66,7 +66,6 @@ compile-native:
 packages-native:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
-	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/domoleaf
 	@rm -rf glmaster/etc/domoleaf/www
 	@mkdir -p glmaster/etc/domoleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php
@@ -85,7 +84,6 @@ packages-native:
 packages:
 	@cp monitor_knx/monitor_knx              glslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
-	@cp monitor_enocean/monitor_enocean.cfg  glslave/etc/domoleaf
 	@rm -rf glmaster/etc/domoleaf/www
 	@mkdir -p glmaster/etc/domoleaf
 	@sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$(VERSION_MASTER)');/g" www/config.php

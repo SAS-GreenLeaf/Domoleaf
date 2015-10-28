@@ -28,21 +28,21 @@ class GLManager:
     
     def TechInfo():
         json_str = {
-            'ip_private':  InfoSys.ipPrivate(),
-            'mb_serial':   InfoSys.motherboardSerial(),
-            'ssd_serial':  InfoSys.diskSerial(),
-            'soft_master': InfoSys.softMaster(),
-            'soft_slave':  InfoSys.softSlave(),
-            'soft_knx':    InfoSys.softKNX(),
-            'uptime':      InfoSys.uptime(),
-            'temperature': InfoSys.temperature()
+            "ip_private":  InfoSys.ipPrivate(),
+            "mb_serial":   InfoSys.motherboardSerial(),
+            "ssd_serial":  InfoSys.diskSerial(),
+            "soft_master": InfoSys.softMaster(),
+            "soft_slave":  InfoSys.softSlave(),
+            "soft_knx":    InfoSys.softKNX(),
+            "uptime":      InfoSys.uptime(),
+            "temperature": InfoSys.temperature()
         };
         return json_str
     
     def TechAlive():
         json_str = {
-            'uptime':      InfoSys.uptime(),
-            'temperature': InfoSys.temperature()
+            "uptime":      InfoSys.uptime(),
+            "temperature": InfoSys.temperature()
         };
         return json_str
     

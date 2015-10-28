@@ -26,7 +26,6 @@ from Scanner import *;
 from UpnpAudio import *;
 from Logger import *;
 import AESManager;
-from Crypto.Cipher import AES;
 from SlaveReceiver import *;
 from CommandReceiver import *;
 from MasterSql import *;
@@ -108,6 +107,7 @@ DATA_SCENARIOS_LIST_UPDATE    = 'scenarios_list_update';
 DATA_CHECK_ALL_SCHEDULES      = 'check_all_schedules';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
+DATA_SEND_INTERFACES          = 'send_interfaces';
 
 HOSTS_CONF                    = '/etc/domoleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
@@ -187,7 +187,8 @@ class MasterDaemon:
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
-            DATA_SEND_TECH                    : self.send_request
+            DATA_SEND_TECH                    : self.send_request,
+            DATA_SEND_INTERFACES              : self.send_interfaces
         };
 
     def get_aes_slave_keys(self):
@@ -795,14 +796,6 @@ class MasterDaemon:
             connection.close();
             return ;
         hostname = res[0][0];
-        if hostname == socket.gethostname():
-            file = open('/etc/domoleaf/.glslave.version', 'r');
-            version = file.read().split('\n')[0];
-            connection.send(bytes(version, 'utf-8'));
-            query = 'UPDATE daemon SET validation=1, version="' + version + '" WHERE serial="' + socket.gethostname() + '"';
-            self.sql.mysql_handler_personnal_query(query);
-            connection.close();
-            return ;
         ip = '';
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
@@ -824,6 +817,8 @@ class MasterDaemon:
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
         val = '0';
         version = '';
+        interface_knx = '';
+        interface_enocean = '';
         for s in rlist:
             data = sock.recv(4096);
             if not data:
@@ -842,9 +837,15 @@ class MasterDaemon:
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
                 version = resp['version'];
+                interface_knx = resp['interface_knx'];
+                interface_enocean = resp['interface_enocean'];
             connection.send(bytes(version, 'utf-8'));
         connection.close();
         query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
+        self.sql.mysql_handler_personnal_query(query);
+        query = 'UPDATE daemon_protocol SET interface="' + interface_knx + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="1"';
+        self.sql.mysql_handler_personnal_query(query);
+        query = 'UPDATE daemon_protocol SET interface="' + interface_enocean + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="2"';
         self.sql.mysql_handler_personnal_query(query);
 
     def get_secret_key(self, hostname):
@@ -954,3 +955,57 @@ class MasterDaemon:
             admin_addr = self._parser.getValueFromSection('greenleaf', 'admin_addr')
             hostname = socket.gethostname()
             GLManager.SendRequest(str(json_obj), admin_addr, self.get_secret_key(hostname))
+
+    def send_interfaces(self, json_obj, connection):
+        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        res = self.sql.mysql_handler_personnal_query(query);
+        if res is None or len(res) == 0:
+            self.logger.error('in send_interfaces: No daemon for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        elif len(res) > 1:
+            self.logger.error('in send_interfaces: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        hostname = res[0][0];
+        ip = '';
+        for h in self.hostlist:
+            if hostname in h._Hostname.upper():
+                ip = h._IpAddr;
+        if ip == '':
+            self.logger.error('in send_interfaces: ' + hostname + ' not in hostlist. Try perform network scan again.');
+            connection.close();
+            return ;
+        port = self._parser.getValueFromSection('connect', 'port');
+        sock = socket.create_connection((ip, port));
+        self_hostname = socket.gethostname();
+        if '.' in self_hostname:
+            self_hostname = self_hostname.split('.')[0];
+        aes_IV = AESManager.get_IV();
+        aes_key = self.get_secret_key(hostname);
+        obj_to_send = '{"packet_type": "send_interfaces", "sender_name": "' + self_hostname + '", "interface_knx": "' + json_obj['data']['interface_knx'] + '", "interface_EnOcean": "' + json_obj['data']['interface_EnOcean'] + '"}';
+        encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
+        sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (176 - len(obj_to_send)) * ' '));
+        rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
+        val = '0';
+        re = '';
+        for s in rlist:
+            data = sock.recv(4096);
+            if not data:
+                continue;
+            decrypt_IV = data[:16].decode();
+            host = None;
+            for h in self.hostlist:
+                if h._IpAddr == ip:
+                    host = h;
+            decode_obj = AES.new(res[0][1], AES.MODE_CBC, decrypt_IV);
+            data2 = decode_obj.decrypt(data[16:]).decode();
+            resp = json.JSONDecoder().decode(data2);
+            hostname = host._Hostname;
+            if '.' in host._Hostname:
+                hostname = host._Hostname.split('.')[0];
+            if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
+                val = '1';
+                re = '1';
+            connection.send(bytes(re, 'utf-8'));
+        connection.close();

@@ -17,6 +17,7 @@ from Logger import *;
 import AESManager;
 from Crypto.Cipher import AES;
 from GLManager import *;
+import os;
 
 SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
 HOST_CONF_FILE                  = '/etc/domoleaf/hosts.conf';
@@ -30,8 +31,10 @@ SELECT_TIMEOUT                  = 0.05;
 TELEGRAM_LENGTH                 = 6 + 255;
 SLAVE_CONF_KNX_SECTION          = 'knx';
 SLAVE_CONF_KNX_PORT_ENTRY       = 'port';
+SLAVE_CONF_KNX_INTERFACE        = 'interface';
 SLAVE_CONF_ENOCEAN_SECTION      = 'enocean';
 SLAVE_CONF_ENOCEAN_PORT_ENTRY   = 'port';
+SLAVE_CONF_ENOCEAN_INTERFACE    = 'interface';
 SLAVE_CONF_LISTEN_SECTION       = 'listen';
 SLAVE_CONF_LISTEN_PORT_ENTRY    = 'port';
 SLAVE_CONF_CONNECT_SECTION      = 'connect';
@@ -60,6 +63,7 @@ MONITOR_IP              = 'monitor_ip';
 DATA_UPDATE             = 'update';
 SEND_TECH               = 'send_tech';
 SEND_ALIVE              = 'send_alive';
+SEND_INTERFACES         = 'send_interfaces';
 
 def individual2string(addr):
     """
@@ -106,7 +110,8 @@ class SlaveDaemon:
             MONITOR_IP          : self.monitor_ip,
             DATA_UPDATE         : self.update,
             SEND_TECH           : self.send_tech,
-            SEND_ALIVE          : self.send_alive
+            SEND_ALIVE          : self.send_alive,
+            SEND_INTERFACES     : self.send_interfaces
         };
 
     def update(self, json_obj, connection):
@@ -315,9 +320,11 @@ class SlaveDaemon:
         print("===== CHECK SLAVE =====");
         print(json_obj);
         print("=======================");
+        interface_knx = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_INTERFACE);
+        interface_enocean = self._parser.getValueFromSection(SLAVE_CONF_ENOCEAN_SECTION, SLAVE_CONF_ENOCEAN_INTERFACE);
         file = open('/etc/domoleaf/.glslave.version', 'r');
         version = file.read().split('\n')[0];
-        json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' +num_version + '"}';
+        json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' + version + '", "interface_knx": "' + interface_knx + '", "interface_enocean": "' + interface_enocean + '"}';
         master_hostname = str(json_obj['sender_name']);
         encrypt_IV = AESManager.get_IV();
         json_str = json_str + (' ' * (320 - len(json_str)))
@@ -529,3 +536,35 @@ class SlaveDaemon:
             }
         );
         self.send_data_to_all_masters(json_str);
+
+    def send_interfaces(self, json_obj, connection):
+        try:
+            if os.path.exists('/tmp/eib'):
+                call(['systemctl', '-q', 'stop', 'knxd']);
+            previous_val = self._parser.getValueFromSection('knx', 'interface');
+            new_val = str(json_obj['interface_knx'])
+            self._parser.writeValueFromSection('knx', 'interface', new_val);
+            self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_EnOcean']));
+            if previous_val == '' or previous_val == None:
+                call(['systemctl', 'enable', 'knxd']);
+            if new_val == '' or new_val == None:
+                call(['systemctl', 'disable', 'knxd']);
+            else:
+                knx_edit = 'KNXD_OPTS="-D -T -S -u '
+                if new_val == 'ttyAMA0' or new_val == 'ttyS0' or new_val == 'ttyS1' or new_val == 'ttyS2':
+                    knx_edit = knx_edit + 'tpuarts:/dev/' + new_val + '"';
+                else:
+                    knx_edit = knx_edit + '-b ipt:' + new_val + '"';
+                conf_knx = open('/etc/knxd.conf', 'w');
+                conf_knx.write(knx_edit + '\n');
+                conf_knx.close();
+                call(['systemctl', '-q', 'start', 'knxd']);
+        except Exception as e:
+            self.logger.error(e);
+        json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';
+        master_hostname = str(json_obj['sender_name']);
+        encrypt_IV = AESManager.get_IV();
+        json_str = json_str + (' ' * (320 - len(json_str)))
+        encode_obj = AES.new(self.private_aes, AES.MODE_CBC, encrypt_IV);
+        data = encode_obj.encrypt(json_str);
+        connection.send(bytes(encrypt_IV, 'utf-8') + data);
