@@ -1102,12 +1102,12 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT daemon_id, protocol_id
+		$sql = 'SELECT daemon_id, protocol_id, interface
 		        FROM daemon_protocol';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->daemon_id]['protocol'][] = $do->protocol_id;
+			$list[$do->daemon_id]['protocol'][$do->protocol_id] = clone $do;
 		}
 		
 		return $list;
@@ -1206,7 +1206,29 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array()) {
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_EnOcean='ttyUSB0') {
+		if ($interface_knx != "ttyS0" && $interface_knx != "ttyS1" && $interface_knx != "ttyS2" && !(filter_var($interface_knx, FILTER_VALIDATE_IP))){
+			$interface_knx = "ttyAMA0";
+		}
+		if ($interface_EnOcean != "ttyAMA0" && $interface_EnOcean != "ttyS0" && $interface_EnOcean != "ttyS1" && $interface_EnOcean != "ttyS2" && !(filter_var($interface_EnOcean, FILTER_VALIDATE_IP))){
+			$interface_EnOcean = "ttyUSB0";
+		}
+		
+		$socket = new Socket();
+		$data = array(
+				'daemon_id' => $daemon,
+				'interface_knx' => $interface_knx,
+				'interface_EnOcean' => $interface_EnOcean
+		);
+		$socket->send('send_interfaces', $data, 1);
+		
+		$res = $socket->receive();
+		
+		if (empty($res)){
+			error_log('C\'est con ça hein ?');
+			return;
+		}
+		
 		$link = Link::get_link('domoleaf');
 		
 		$daemonList = $this->confDaemonList();
@@ -1221,18 +1243,36 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':daemon_id', $daemon, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
+
 		if(!empty($newProtocolList) && sizeof($newProtocolList) > 0) {
 			foreach ($newProtocolList as $protocol) {
 				if(!empty($protocolList[$protocol])) {
-					$sql = 'INSERT INTO daemon_protocol
-					        (daemon_id, protocol_id)
-					        VALUES
-					        (:daemon_id, :protocol_id)';
-					$req = $link->prepare($sql);
-					$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
-					$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
-					$req->execute() or die (error_log(serialize($req->errorInfo())));
+					if ($protocol == 1 || $protocol == 2){
+						$sql = 'INSERT INTO daemon_protocol
+					        	(daemon_id, protocol_id, interface)
+					        	VALUES
+					        	(:daemon_id, :protocol_id, :interface)';
+						$req = $link->prepare($sql);
+						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
+						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
+						if ($protocol == 1){
+							$req->bindValue(':interface', $interface_knx, PDO::PARAM_STR);
+						}
+						else{
+							$req->bindValue(':interface', $interface_EnOcean, PDO::PARAM_STR);
+						}
+						$req->execute() or die (error_log(serialize($req->errorInfo())));						
+					}
+					else{
+						$sql = 'INSERT INTO daemon_protocol
+					        	(daemon_id, protocol_id)
+					        	VALUES
+					        	(:daemon_id, :protocol_id)';
+						$req = $link->prepare($sql);
+						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
+						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
+						$req->execute() or die (error_log(serialize($req->errorInfo())));
+					}
 				}
 			}
 		}
@@ -1243,8 +1283,7 @@ class Admin extends User {
 		$data = array(
 			'daemon_id' => $iddaemon
 		);
-		$socket->send('check_slave', $data, 1);
-		
+		$socket->send('check_slave', $data, 1);;
 		return $socket->receive();
 	}
 	

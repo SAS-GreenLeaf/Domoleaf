@@ -211,7 +211,30 @@ function display_alarm($info){
 				</button>
 			</div>
 			<h3 class="title">'.$info->name.'</h3>';
+
+	if (!empty($info->device_opt->{92})){
+		$display.= display_led($info);
+	}
 	
+	return $display;
+}
+
+// Led
+function display_led($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{92}->valeur)){
+		$tmp = $info->device_opt->{92}->valeur;
+	}
+	if ($tmp == '0'){
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-off"></i>
+					</div>';
+	}
+	else{
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-on"></i>
+					</div>';
+	}
 	return $display;
 }
 

@@ -138,11 +138,15 @@ int main(int argc, char *argv[])
 	int slave_listen_sock;
 	struct termios options;
 	struct termios	backup;
-	const char *dev_name = "/dev/ttyUSB0";
+	const char *dev_name = get_interface_enocean();
 	int    pid;
 	FILE   *pid_file;
 	t_args args;
 
+	if (dev_name == NULL)
+	{
+		dev_name = "/dev/ttyUSB0";
+	}
 	memset(&args, 0, sizeof(args));
 	check_args(&args, argc, argv);
 	if (args.daemon)

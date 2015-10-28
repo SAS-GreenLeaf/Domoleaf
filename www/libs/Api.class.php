@@ -548,8 +548,11 @@ class Api {
 							if(empty($var[1])) {
 								$var[1] = '';
 							}
+							if(empty($var[2])) {
+								$var[2] = '';
+							}
 							if(!empty($var[0])) {
-								$res = $user->confDaemonProtocol($var[0], $var[1]);
+								$res = $user->confDaemonProtocol($var[0], $var[1], $var[2], $var[3]);
 							}
 						break;
 						

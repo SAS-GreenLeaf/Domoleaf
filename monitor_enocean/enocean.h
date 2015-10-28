@@ -205,6 +205,7 @@ int xtcsetattr(int fd, struct termios *t);
 /* init.c */
 int init(const char *dev_name, struct termios *options, struct termios *backup);
 int init_listen_slave_socket(const char *ip, uint16_t port);
+char *get_interface_enocean();
 
 /* enocean_log.c */
 void enocean_log(Log_type type, const char *msg);

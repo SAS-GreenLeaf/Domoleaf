@@ -41,7 +41,7 @@ echo '
 								if ($i != 0){
 									echo ', ';
 								}
-								echo $allproto->$proto->name;
+								echo $allproto->{$proto->protocol_id}->name;
 								$i++;
 							}
 						echo'
@@ -214,7 +214,7 @@ function NewDaemon(){
 	}
 }
 
-function	RenameDaemon(id){
+function RenameDaemon(id){
 						
 	$("#btn-"+id).attr("class", "btn btn-danger");
 	$("#icon-"+id).attr("class", "glyphicon glyphicon-remove");
@@ -229,15 +229,60 @@ function	RenameDaemon(id){
 		}
 	
 	});
+	var interface_knx = $("#select-interface-KNXTP").val();
+	if (interface_knx == "IP"){
+		interface_knx = $("#input-interface-KNXTP-IP").val();
+	}
+	var interface_EnOcean = $("#select-interface-EnOcean").val();
+	if (interface_EnOcean == "IP"){
+		interface_EnOcean = $("#input-interface-EnOcean-IP").val();
+	}
 
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
-		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\'),
+		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean,
 		complete: function(result, status) {
 			location.href=\'/conf_daemon\'
 		}
 	});
+}
+
+function CheckEnOcean(){
+	if ($("#checkbox-protocol-2").prop(\'checked\')){
+		$("#div-interface-EnOcean").show();
+	}
+	else{
+		$("#div-interface-EnOcean").hide();
+	}
+}
+
+function CheckEnOceanIP(){
+	if ($("#select-interface-EnOcean").val() == "IP"){
+		$("#div-interface-EnOcean-IP").show();
+	}
+	else{
+		$("#div-interface-EnOcean-IP").hide();
+	}
+}
+
+function CheckKNXTP(){
+	if ($("#checkbox-protocol-1").prop(\'checked\')){
+		$("#div-interface-KNXTP").show();
+	}
+	else{
+		$("#div-interface-KNXTP").hide();
+	}
+	CheckEnOcean();
+}
+
+function CheckKNXTPIP(){
+	if ($("#select-interface-KNXTP").val() == "IP"){
+		$("#div-interface-KNXTP-IP").show();
+	}
+	else{
+		$("#div-interface-KNXTP-IP").hide();
+	}
 }
 
 $("#rcv").val(\'\');
