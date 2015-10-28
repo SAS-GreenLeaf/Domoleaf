@@ -106,7 +106,11 @@ char *get_interface_enocean()
 	char line[128];
 	char *interface;
 
-	file = fopen("/etc/domoleaf/slave.conf", "r");
+	if ((file = fopen("/etc/domoleaf/slave.conf", "r")) == NULL)
+	{
+		fprintf(stderr, "Error for open /etc/domoleaf/slave.conf\n");
+		return (NULL);
+	}
 	while (fgets(line, 128, file) != NULL)
 	{
 		if (strncmp(line, "[enocean]", 9) == 0)
@@ -118,6 +122,7 @@ char *get_interface_enocean()
 					if (strlen(line) > 13)
 					{
 						interface = malloc((sizeof(char) * strlen(line)) - 6);
+						memset(interface, '\0', strlen(line) - 6);
 						strcpy(interface, "/dev/");
 						strcpy_to_n(interface, line, 12);
 						fclose(file);
@@ -128,5 +133,6 @@ char *get_interface_enocean()
 		}
 	}
 	fclose(file);
+	fprintf(stderr, "Error while reading /etc/domoleaf/slave.conf\n");
 	return (NULL);
 }
