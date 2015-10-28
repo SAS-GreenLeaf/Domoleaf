@@ -21,30 +21,41 @@ Packet_function g_packet_function[] =
 */
 int get_enocean_conf(int *port, char **addr)
 {
-	config_t config;
-	config_setting_t *setting;
+	FILE *file;
+	char line[128];
+	char *tmp;
 
-	config_init(&config);
-	if(config_read_file(&config, CONF_FILENAME) == CONFIG_FALSE)
+	if ((file = fopen("/etc/domoleaf/slave.conf", "r")) == NULL)
 	{
-		fprintf(stderr, "Error while reading %s\n", CONF_FILENAME);
+		fprintf(stderr, "Error for open /etc/domoleaf/slave.conf\n");
 		return (-1);
 	}
-
-	setting = config_lookup(&config, "enocean");
-
-	if(config_setting_lookup_int(setting, "port", port) == CONFIG_FALSE)
+	while (fgets(line, 128, file) != NULL)
 	{
-		fprintf(stderr, "Error while looking up for \"port\" in %s\n", CONF_FILENAME);
-		return (-1);
+		if (strncmp(line, "[enocean]", 9) == 0)
+		{
+			while (fgets(line, 128, file) != NULL)
+			{
+				if (strncmp(line, "port = ", 7) == 0)
+				{
+					if (strlen(line) > 8)
+					{
+						tmp = malloc((sizeof(char) * strlen(line)) - 6);
+						memset(tmp, '\0', strlen(line) - 6);
+						strcpy_to_n(tmp, line, 7);
+						*port = atoi(tmp);
+						free(tmp);
+						*addr = "127.0.0.1";
+						fclose(file);
+						return (0);
+					}
+				}
+			}
+		}
 	}
-
-	if(config_setting_lookup_string(setting, "address", (const char **) addr) == CONFIG_FALSE)
-	{
-		fprintf(stderr, "Error while looking up for \"address\" in %s\n", CONF_FILENAME);
-		return (-1);
-	}
-	return (0);
+	fclose(file);
+	fprintf(stderr, "Error while reading /etc/domoleaf/slave.conf\n");
+	return (-1);
 }
 
 /*
