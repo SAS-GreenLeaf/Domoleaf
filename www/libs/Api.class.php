@@ -552,7 +552,7 @@ class Api {
 								$var[2] = '';
 							}
 							if(!empty($var[0])) {
-								$res = $user->confDaemonProtocol($var[0], $var[1], $var[2]);
+								$res = $user->confDaemonProtocol($var[0], $var[1], $var[2], $var[3]);
 							}
 						break;
 						

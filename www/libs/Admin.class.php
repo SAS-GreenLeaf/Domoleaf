@@ -1206,21 +1206,26 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface='ttyAMA0') {
-		if ($interface != "ttyS0" && $interface != "ttyS1" && $interface != "ttyS2" && !(filter_var($interface, FILTER_VALIDATE_IP))){
-			$interface = "ttyAMA0";
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_EnOcean='ttyUSB0') {
+		if ($interface_knx != "ttyS0" && $interface_knx != "ttyS1" && $interface_knx != "ttyS2" && !(filter_var($interface_knx, FILTER_VALIDATE_IP))){
+			$interface_knx = "ttyAMA0";
 		}
-
+		if ($interface_EnOcean != "ttyAMA0" && $interface_EnOcean != "ttyS0" && $interface_EnOcean != "ttyS1" && $interface_EnOcean != "ttyS2" && !(filter_var($interface_EnOcean, FILTER_VALIDATE_IP))){
+			$interface_EnOcean = "ttyUSB0";
+		}
+		
 		$socket = new Socket();
 		$data = array(
 				'daemon_id' => $daemon,
-				'interface' => $interface
+				'interface_knx' => $interface_knx,
+				'interface_EnOcean' => $interface_EnOcean
 		);
 		$socket->send('send_interfaces', $data, 1);
 		
 		$res = $socket->receive();
 		
 		if (empty($res)){
+			error_log('C\'est con ça hein ?');
 			return;
 		}
 		
@@ -1242,7 +1247,7 @@ class Admin extends User {
 		if(!empty($newProtocolList) && sizeof($newProtocolList) > 0) {
 			foreach ($newProtocolList as $protocol) {
 				if(!empty($protocolList[$protocol])) {
-					if ($protocol == 1){
+					if ($protocol == 1 || $protocol == 2){
 						$sql = 'INSERT INTO daemon_protocol
 					        	(daemon_id, protocol_id, interface)
 					        	VALUES
@@ -1250,7 +1255,12 @@ class Admin extends User {
 						$req = $link->prepare($sql);
 						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
 						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
-						$req->bindValue(':interface', $interface, PDO::PARAM_STR);
+						if ($protocol == 1){
+							$req->bindValue(':interface', $interface_knx, PDO::PARAM_STR);
+						}
+						else{
+							$req->bindValue(':interface', $interface_EnOcean, PDO::PARAM_STR);
+						}
 						$req->execute() or die (error_log(serialize($req->errorInfo())));						
 					}
 					else{

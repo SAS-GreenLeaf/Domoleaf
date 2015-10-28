@@ -229,36 +229,59 @@ function RenameDaemon(id){
 		}
 	
 	});
-	var interface = $("#select-interface").val();
-	if (interface == "IP"){
-		interface = $("#input-interface-IP").val();
+	var interface_knx = $("#select-interface-KNXTP").val();
+	if (interface_knx == "IP"){
+		interface_knx = $("#input-interface-KNXTP-IP").val();
+	}
+	var interface_EnOcean = $("#select-interface-EnOcean").val();
+	if (interface_EnOcean == "IP"){
+		interface_EnOcean = $("#input-interface-EnOcean-IP").val();
 	}
 
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
-		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface="+interface,
+		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean,
 		complete: function(result, status) {
 			location.href=\'/conf_daemon\'
 		}
 	});
 }
 
-function CheckKNXTP(){
-	if ($("#checkbox-protocol-1").prop(\'checked\')){
-		$("#div-interface").show();
+function CheckEnOcean(){
+	if ($("#checkbox-protocol-2").prop(\'checked\')){
+		$("#div-interface-EnOcean").show();
 	}
 	else{
-		$("#div-interface").hide();
+		$("#div-interface-EnOcean").hide();
 	}
 }
 
-function CheckKNXTPIP(){
-	if ($("#select-interface").val() == "IP"){
-		$("#div-interface-IP").show();
+function CheckEnOceanIP(){
+	if ($("#select-interface-EnOcean").val() == "IP"){
+		$("#div-interface-EnOcean-IP").show();
 	}
 	else{
-		$("#div-interface-IP").hide();
+		$("#div-interface-EnOcean-IP").hide();
+	}
+}
+
+function CheckKNXTP(){
+	if ($("#checkbox-protocol-1").prop(\'checked\')){
+		$("#div-interface-KNXTP").show();
+	}
+	else{
+		$("#div-interface-KNXTP").hide();
+	}
+	CheckEnOcean();
+}
+
+function CheckKNXTPIP(){
+	if ($("#select-interface-KNXTP").val() == "IP"){
+		$("#div-interface-KNXTP-IP").show();
+	}
+	else{
+		$("#div-interface-KNXTP-IP").hide();
 	}
 }
 

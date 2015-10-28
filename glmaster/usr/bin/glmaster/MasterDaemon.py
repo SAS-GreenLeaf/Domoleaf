@@ -967,7 +967,7 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "send_interfaces", "sender_name": "' + self_hostname + '", "interface": "' + json_obj['data']['interface'] + '"}';
+        obj_to_send = '{"packet_type": "send_interfaces", "sender_name": "' + self_hostname + '", "interface_knx": "' + json_obj['data']['interface_knx'] + '", "interface_EnOcean": "' + json_obj['data']['interface_EnOcean'] + '"}';
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (176 - len(obj_to_send)) * ' '));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
