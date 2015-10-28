@@ -54,7 +54,17 @@ echo '
 		        class="btn btn-primary"
 		        onclick="popupUpdateSmartcmdName('.$id_smartcmd.')">
 			<i class="glyphicon glyphicon-edit"></i>
-		</button>
+		</button>';
+		if ($id_scenario != 0) {
+			echo
+				'<button type="button"
+				        title="'._('Back to Scenario').'"
+				        class="btn btn-primary block-right"
+				        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/1\')">
+					'._('Back to Scenario').'
+				</button>';
+		}
+		echo '
 		<div id="linked-room" class="navbar-brand">
 			'._('Linked Room').'
 			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"

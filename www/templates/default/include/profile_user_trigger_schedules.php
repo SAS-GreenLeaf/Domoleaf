@@ -5,7 +5,7 @@ include('profile-menu.php');
 echo
 '<div id="scheduleList">
 	<div class="col-xs-offset-2 margin-top center">
-		<button class="btn btn-greenleaf" onclick="createSchedule()">
+		<button class="btn btn-greenleaf" onclick="createSchedule(0)">
 			'._('Create New Schedule').'
 		</button>
 	</div>
@@ -48,19 +48,6 @@ echo
 echo '
 <script type="text/javascript">
 	
-	function createSchedule() {
-		$.ajax({
-			type: "GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_user_create_schedule.php",
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: \'<div id="popupTitle" class="center"></div>\',
-					message: msg
-				});
-			}
-		});
-	}
-				
 	function PopupRemoveSchedule(schedule_id) {
 		$.ajax({
 			type:"GET",

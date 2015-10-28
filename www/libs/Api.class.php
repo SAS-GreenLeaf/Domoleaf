@@ -941,6 +941,16 @@ class Api {
 							$res = $user->listScenarios();
 						break;
 						
+						case 'createNewScenario' :
+							if (!empty($var[0])){
+								$res = $user->createNewScenario($var[0]);
+							}
+						break;
+						
+						case 'getScenario' :
+							$res = $user->getScenario($var[0]);
+						break;
+						
 						case 'changeScenarioState' :
 							if (empty($var[1])) {
 								$var[1] = 0;
@@ -948,6 +958,52 @@ class Api {
 							if (!empty($var[0])){
 								if (!empty($user->searchScenarioById($var[0]))) {
 									$res = $user->changeScenarioState($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioSmartcmd' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioSmartcmd($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioTrigger' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioTrigger($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioSchedule' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioSchedule($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'completeScenario' :
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->completeScenario($var[0]);
+								}
+							}
+						break;
+						
+						case 'removeScenario' :
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->removeScenario($var[0]);
 								}
 							}
 						break;

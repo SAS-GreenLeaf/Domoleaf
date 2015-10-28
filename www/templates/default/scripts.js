@@ -269,6 +269,20 @@ function CustomPopup(type, iddevice, userid){
 
 /*** Smartcommand ***/
 
+function createSmartcmd(id_scenario) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_user_create_smartcmd.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
+}
+
 function smartcmdOnOff(room_id_device) {
 	var val;
 	
@@ -536,6 +550,20 @@ function selectDevice(id_trigger, room_id_device) {
 
 /*** Triggers ***/
 
+function createTrigger(id_scenario) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_user_create_trigger.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
+}
+
 function triggerOnOff(room_id_device) {
 	var val;
 	
@@ -609,6 +637,22 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 		success: function(result) {
 			popup_close();
 			displayTrigger(id_trigger);
+		}
+	});
+}
+
+/*** Schedules ***/
+
+function createSchedule(id_scenario) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_user_create_schedule.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
 		}
 	});
 }

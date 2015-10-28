@@ -50,7 +50,7 @@ if($request->is_co()) {
 			break;
 			
 			//Profile edit scenarios
-			case 'profile_user_scenarios_edit':
+			case 'profile_user_scenario_edit':
 				$page = $_GET['page'];
 			break;
 			

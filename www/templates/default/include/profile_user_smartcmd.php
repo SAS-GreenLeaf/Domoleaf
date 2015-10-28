@@ -6,7 +6,7 @@ include('templates/'.TEMPLATE.'/function/display_widget.php');
 echo '
 	<div id="editSmartcmd">
 		<div class="col-xs-offset-2 margin-top center">
-			<button class="btn btn-greenleaf" onclick="createSmartcmd()">
+			<button class="btn btn-greenleaf" onclick="createSmartcmd(0)">
 				'._('Create New SmartCommand').'
 			</button>
 		</div>
@@ -54,19 +54,6 @@ echo '
 
 echo '
 <script type="text/javascript">
-		
-	function createSmartcmd() {
-		$.ajax({
-			type: "GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_user_create_smartcmd.php",
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: \'<div id="popupTitle" class="center"></div>\',
-					message: msg
-				});
-			}
-		});
-	}
 
 	function PopupRemoveSmartcmd(smartcmd_id) {
 		$.ajax({

@@ -2,28 +2,20 @@
 
 include('header.php');
 
-if (empty($_GET['id_scenario'])) {
-	$id_scenario = 0;
-}
-else {
-	$id_scenario = $_GET['id_scenario'];
-}
-
 echo
 	'<div>'.
 		'<div id="popupError" class="alert alert-danger alert-dismissible center" role="alert" hidden>'.
 			'<p id="errorMsg"><p>'.
 		'</div>'.
-		'<div class ="center">'._('Please enter the Smartcommand name :').'</div>'.
+		'<div class ="center">'._('Please enter the Scenario name :').'</div>'.
 		'<div class="input-group margin-top">'.
-			'<label class="input-group-addon left" for="smartcmdName">'._('Name').'</label>'.
-			'<input id="smartcmdName" name="smartcmdName" title="'._('Smartcommand Name').'" '.
-			'value="" placeholder="Smartcommand name" type="text" class="form-control">'.
+			'<label class="input-group-addon left" for="scenarioName">'._('Name').'</label>'.
+			'<input id="scenarioName" name="scenarioName" title="'._('Scenario Name').'" '.
+			'value="" placeholder="Scenario name" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
-	'<br/>'.
-	'<div class="controls center">'.
-		'<button onclick="saveNewSmartcommand()" class="btn btn-success">'.
+	'<div class="controls center margin-top">'.
+		'<button onclick="saveNewScenario()" class="btn btn-success">'.
 			''._('Save').''.
 			'<span class="glyphicon glyphicon-ok"></span>'.
 		'</button> '.
@@ -36,18 +28,18 @@ echo
 echo
 	'<script type="text/javascript">'.
 	
-		'$("#popupTitle").html("'._("New SmartCommand").'");'.
+		'$("#popupTitle").html("'._("New Scenario").'");'.
 		
-		'function saveNewSmartcommand() {'.
+		'function saveNewScenario() {'.
 			'var name = "";'.
 			
-			'name = $("#smartcmdName").val();'.
+			'name = $("#scenarioName").val();'.
 			'name = name.trim();'.
 			
 			'$.ajax({'.
 				'type: "GET",'.
-				'url: "/templates/default/form/form_create_new_smartcmd.php",'.
-				'data: "smartcmd_name="+name,'.
+				'url: "/templates/default/form/form_create_new_scenario.php",'.
+				'data: "scenario_name="+name,'.
 				'success: function(result) {'.
 					'if (result && result == -1) {'.
 						'$("#popupError").show();'.
@@ -59,7 +51,7 @@ echo
 					'}'.
 					'else if (result) {'.
 						'popup_close();'.
-						'redirect("/profile_user_smartcmd/"+result+"/"+'.$id_scenario.');'.
+						'redirect("/profile_user_scenarios/"+result+"/"+1);'.
 					'}'.
 				'}'.
 			'});'.

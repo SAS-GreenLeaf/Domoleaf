@@ -6,6 +6,13 @@ if (empty($_GET['id_trigger'])) {
 	redirect();
 }
 
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
+
 $id_trigger = $_GET['id_trigger'];
 
 $request = new Api();

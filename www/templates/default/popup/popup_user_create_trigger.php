@@ -2,11 +2,12 @@
 
 include('header.php');
 
-$request = new Api();
-$request -> add_request('listSmartcmd');
-$result  =  $request -> send_request();
-
-$smartcmdList = $result->listSmartcmd;
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
 
 echo
 	'<div>'.
@@ -36,8 +37,6 @@ echo
 	
 		'$("#popupTitle").html("'._("New Trigger").'");'.
 		
-		'$(".selectpicker").selectpicker();'.
-		
 		'function saveNewTrigger() {'.
 			'var name = "";'.
 			
@@ -59,7 +58,7 @@ echo
 					'}'.
 					'else if (result) {'.
 						'popup_close();'.
-						'redirect("/profile_user_trigger_events/"+result);'.
+						'redirect("/profile_user_trigger_events/"+result+"/"+'.$id_scenario.');'.
 					'}'.
 				'}'.
 			'});'.

@@ -6,7 +6,7 @@ include('templates/'.TEMPLATE.'/function/display_widget.php');
 echo '
 	<div id="editScenario">
 		<div class="col-xs-offset-2 margin-top center">
-			<button class="btn btn-greenleaf" onclick="createscenario()">
+			<button class="btn btn-greenleaf" onclick="createScenario()">
 				'._('Create New Scenario').'
 			</button>
 		</div>
@@ -25,7 +25,15 @@ echo '
 					echo '
 						<tr id="scenario-'.$elem->scenario_id.'">
 							<td>'.$elem->name.'</td>
-							<td>'.$elem->name_smartcmd.'</td>
+							<td>';
+							if ($elem->id_smartcmd != 0) {
+								echo $elem->name_smartcmd;
+							}
+							else {
+								echo 'None';
+							}
+							echo '
+							</td>
 							<td class="center">
 								<input data-on-color="greenleaf"
 								       data-label-width="0"
@@ -37,13 +45,16 @@ echo '
 								       if ($elem->activated == 1) {
 								       		echo 'checked';
 								       }
+								       if ($elem->complete == 0) {
+								       	echo 'disabled';
+								       }
 								       echo '>
 								<script type="text/javascript">
 									$("#scenario-state-'.$elem->scenario_id.'").bootstrapSwitch();
 								</script>
 							</td>
 							<td class="center">
-								<a href="/profile_user_scenario/'.$elem->scenario_id.'">
+								<a href="/profile_user_scenarios/'.$elem->scenario_id.'/1">
 									<button type="button"
 									        title="'._('Edit scenario').'"
 									        class="btn btn-primary">
@@ -53,7 +64,7 @@ echo '
 								<button type="button"
 								        title="'._('Delete scenario').'"
 								        class="btn btn-danger"
-								        onclick="PopupRemovescenario('.$elem->scenario_id.')">
+								        onclick="PopupRemoveScenario('.$elem->scenario_id.')">
 									<i class="fa fa-trash-o"></i>
 								</button>
 							</td>
@@ -67,7 +78,7 @@ echo '
 
 echo '
 <script type="text/javascript">
-		
+	
 	function createScenario() {
 		$.ajax({
 			type: "GET",
@@ -88,7 +99,7 @@ echo '
 			data: "id_scenario="+scenario_id,
 			success: function(result) {
 				BootstrapDialog.show({
-					title: "'._('Delete scenario Elem').'",
+					title: "'._('Delete Scenario').'",
 					message: result
 				});
 			}

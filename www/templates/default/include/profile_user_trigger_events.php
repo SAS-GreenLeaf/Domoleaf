@@ -5,7 +5,7 @@ include('profile-menu.php');
 echo
 '<div id="triggerList">
 	<div class="col-xs-offset-2 margin-top center">
-		<button class="btn btn-greenleaf" onclick="createTrigger()">
+		<button class="btn btn-greenleaf" onclick="createTrigger(0)">
 			'._('Create New Trigger').'
 		</button>
 	</div>
@@ -48,19 +48,6 @@ echo
 echo '
 <script type="text/javascript">
 	
-	function createTrigger() {
-		$.ajax({
-			type: "GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_user_create_trigger.php",
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: \'<div id="popupTitle" class="center"></div>\',
-					message: msg
-				});
-			}
-		});
-	}
-				
 	function PopupRemoveTrigger(trigger_id) {
 		$.ajax({
 			type:"GET",

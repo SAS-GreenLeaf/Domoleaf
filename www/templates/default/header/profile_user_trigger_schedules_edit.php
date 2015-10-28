@@ -7,6 +7,13 @@ if (empty($_GET['id_schedule'])) {
 	redirect();
 }
 
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
+
 $id_schedule = $_GET['id_schedule'];
 
 $request = new Api();

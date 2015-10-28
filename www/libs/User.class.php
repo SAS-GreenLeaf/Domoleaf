@@ -1901,12 +1901,30 @@ class User {
 	
 	/*** Scenarios ***/
 	
+	function searchScenarioByName($scenario_name){
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'SELECT id_scenario
+				FROM scenarios_list
+				WHERE name_scenario=:name_scenario';
+		$req = $link->prepare($sql);
+		$req->bindValue(':name_scenario', $scenario_name, PDO::PARAM_STR);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		if ($req->rowCount() == 0) {
+			return 0;
+		}
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		return $do->id_scenario;
+	}
+	
 	function searchScenarioById($scenario_id){
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT name_scenario, smartcommand_list.user_id AS user_id
 				FROM scenarios_list
-				JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
+				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
 				WHERE id_scenario=:scenario_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
@@ -1916,7 +1934,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(!empty($do->user_id) && $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1927,10 +1945,10 @@ class User {
 		$list = array();
 	
 		$sql = 'SELECT id_scenario, name_scenario, id_trigger, id_schedule, scenarios_list.id_smartcmd,
-				       smartcommand_list.name AS name_smartcmd, activated
+				       smartcommand_list.name AS name_smartcmd, activated, complete
 				FROM scenarios_list
-				JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
-				WHERE smartcommand_list.user_id=:user_id
+				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
+				WHERE smartcommand_list.user_id IS NULL OR smartcommand_list.user_id=:user_id
 				ORDER BY name_scenario';
 	
 		$req = $link->prepare($sql);
@@ -1946,11 +1964,55 @@ class User {
 					'id_schedule'     => $do->id_schedule,
 					'id_smartcmd'     => $do->id_smartcmd,
 					'name_smartcmd'   => $do->name_smartcmd,
-					'activated'       => $do->activated
+					'activated'       => $do->activated,
+					'complete'        => $do->complete
 			);
 		}
 	
 		return $list;
+	}
+	
+	function getScenario($idscenario){
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete
+				FROM scenarios_list
+				WHERE id_scenario=:scenario_id';
+	
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_id', $idscenario, PDO::PARAM_INT);
+	
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if (empty($do->id_trigger)) {
+			$do->id_trigger = 0;
+		}
+		if (empty($do->id_schedule)) {
+			$do->id_schedule = 0;
+		}
+		if (empty($do->id_smartcmd)) {
+			$do->id_smartcmd = 0;
+		}
+	
+		return $do;
+	}
+	 
+	function createNewScenario($scenario_name){
+	
+		if ($this->searchScenarioByName($scenario_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'INSERT INTO scenarios_list
+		        (name_scenario)
+				VALUES
+				(:scenario_name)';
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_name', $scenario_name, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		return $link->lastInsertId();
 	}
 	
 	function changeScenarioState($scenario_id, $state) {
@@ -1966,6 +2028,70 @@ class User {
 		$this->udpateScenariosList();
 	}
 
+	function updateScenarioSmartcmd($scenario_id, $smartcmd_id){
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE scenarios_list
+				SET id_smartcmd=:smartcmd_id
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function updateScenarioTrigger($scenario_id, $trigger_id){
+		$link = Link::get_link('domoleaf');
+		
+		if ($trigger_id == 0) {
+			$trigger_id = null;
+		}
+		$sql = 'UPDATE scenarios_list
+				SET id_trigger=:trigger_id
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_STR);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function updateScenarioSchedule($scenario_id, $schedule_id){
+		$link = Link::get_link('domoleaf');
+	
+		if ($schedule_id == 0) {
+			$schedule_id = null;
+		}
+		$sql = 'UPDATE scenarios_list
+				SET id_schedule=:schedule_id
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_STR);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function completeScenario($scenario_id){
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE scenarios_list
+				SET complete=1
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function removeScenario($scenario_id) {
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'DELETE FROM scenarios_list
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
+	}
+	
 	function udpateScenariosList(){
 		$this->udpateTriggersList();
 		$this->udpateSchedulesList();
