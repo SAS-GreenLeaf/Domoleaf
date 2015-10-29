@@ -1007,7 +1007,10 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-		
+
+		$socket = new Socket();
+		$socket->send('reload_camera');
+
 		return $newdeviceid;
 	}
 	
