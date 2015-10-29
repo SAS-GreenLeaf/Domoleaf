@@ -492,7 +492,25 @@ class Api {
 								$res = $user->confDeviceNewEnocean($var[0], $var[1], $var[2], $var[3], $var[4]);
 							}
 						break;
-							
+
+						case 'confManufacturerList':
+							if (!empty($var[0])){
+								$res = $user->confManufacturerList($var[0]);
+							}
+						break;
+						
+						case 'confProductList':
+							if (!empty($var[0]) && !empty($var[1])){
+								$res = $user->confProductList($var[0], $var[1]);
+							}
+						break;
+
+						case 'confProductOptionList':
+							if (!empty($var[0])){
+								$res = $user->confProductOptionList($var[0]);
+							}
+						break;
+
 						/*** Monitor ***/
 						case 'monitorKnx':
 							$res = $user->monitorKnx();

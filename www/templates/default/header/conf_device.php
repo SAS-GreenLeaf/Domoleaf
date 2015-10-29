@@ -11,6 +11,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$request -> add_request('confDeviceAll');
 	$request -> add_request('confOptionList');
 	$request -> add_request('confOptionDptList');
+	$request -> add_request('confManufacturerList', array($_GET['device']));
 	$result  =  $request -> send_request();
 	
 	$floorlistroom = $result->confFloorList;
@@ -21,6 +22,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$listopt = $result->confOptionList;
 	$listdpt = $result->confOptionDptList;
 	$listoptdevice = $result->confDeviceRoomOpt;
+	$manufacturerList = $result->confManufacturerList;
 	
 	$device = $roomdevice->$_GET['device'];
 	$deviceconf = $deviceall->{$device->device_id};
@@ -57,7 +59,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	}
 }
 
-/*** Modify options name***/
+/*** Modify options name ***/
 $option_overload = array(
 	400 => array(
 		2  => _('1 bit'),

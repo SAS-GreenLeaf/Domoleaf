@@ -29,7 +29,7 @@ echo '
 				<label class="control-label" for="listdaemon">'._('Daemon').'</label>
 				<select class="selectpicker form-control" id="listdaemon">';
 					foreach ($daemonlist as $elem){
-						if (in_array(1, $elem->protocol)){
+						if (!empty($elem->protocol->{1})) {
 							if ($device->daemon_id == $elem->daemon_id){
 								echo '<option selected value="'.$elem->daemon_id.'">'.$elem->name.'</option>';
 							}
@@ -151,7 +151,14 @@ echo '
 
 <div class="col-xs-12" name="optionpart">
 <br/>
-<h3>'._('Options').'</h3>
+<h3>
+	'._('Options').'';
+	if (sizeof($manufacturerList) > 0){ 
+		echo'<button class="btn btn-warning margin-left" onclick="PopupPreConfigurationDevice('.$_GET['device'].')" title="Pre-configuration device" type="button"><span class="fa fa-cog"></span></button>';
+	}
+	echo'	
+</h3>
+
 <br/>
 <div class="center">
 	<button type="button" title="'._('Save all').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
@@ -436,6 +443,55 @@ function CheckAddr(addr, addr_plus, optid){
 		}
 	}			
 	return true;
+}
+
+function PopupPreConfigurationDevice(device_id){
+	$.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_pre_configuration_device.php",
+		data: "device_id="+device_id,
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Pre-configuration device').'",
+				message: result
+			});
+		}
+	});
+}
+
+function ProductList(device_id, protocol_id){
+	var manufacturer_id = $("#manufacturerList").val();
+
+	$.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/form/form_pre_configuration_device.php",
+		data: "device_id="+device_id+"&manufacturer_id="+manufacturer_id,
+		success: function(result) {
+			$("#div-productList").html(result);
+			$(".selectpicker").selectpicker();
+			$(".selectpicker").selectpicker(\'refresh\');
+		}
+	});
+}
+
+function PreConfigurationDevice(){
+	var product_id = $("#productList").val();
+	if (product_id > 0){
+		$.ajax({
+			type: "GET",
+			url: "/form/form_pre_configuration_device_option.php",
+			data: "product_id="+product_id,
+			dataType: "json",
+			success: function(result) {
+				for (var i = 0 ; i < result.length ; i++){
+					$("#waddr-"+result[i].option_id).val(result[i].addr);
+					$("#unity-"+result[i].option_id).val(result[i].dpt_id);
+					$("#toggle-"+result[i].option_id).prop(\'checked\', true).change();
+				}
+				popup_close();
+			}
+		});
+	}
 }
 
 function SaveAllOpt(){

@@ -1079,7 +1079,93 @@ class Admin extends User {
 		
 		return $newdeviceid;
 	}
+
+	function confManufacturerList($room_device_id){
+		$link = Link::get_link('domoleaf');
+		$list = array();
+
+		$sql = 'SELECT device_id, protocol_id
+				FROM room_device
+				WHERE room_device_id=:room_device_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+
+		$device_id = $do->device_id;
+		$protocol_id = $do->protocol_id;
+
+		$sql = 'SELECT DISTINCT manufacturer.manufacturer_id, manufacturer.name
+				FROM manufacturer
+				JOIN product ON manufacturer.manufacturer_id=product.manufacturer_id
+				WHERE product.device_id=:device_id AND product.protocol_id=:protocol_id 
+				ORDER BY manufacturer.name ASC';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device_id', $device_id, PDO::PARAM_INT);
+		$req->bindValue(':protocol_id', $protocol_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->manufacturer_id] = array(
+				'manufacturer_id' => $do->manufacturer_id,
+				'name'            => $do->name
+			);
+		}
+		return $list;
+	}
+
+	function confProductList($room_device_id, $manufacturer_id){
+		$link = Link::get_link('domoleaf');
+		$list = array();
+
+		$sql = 'SELECT device_id, protocol_id
+				FROM room_device
+				WHERE room_device_id=:room_device_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		$device_id = $do->device_id;
+		$protocol_id = $do->protocol_id;
+
+		$sql = 'SELECT product_id, name
+				FROM product
+				WHERE device_id=:device_id AND protocol_id=:protocol_id AND manufacturer_id=:manufacturer_id
+				ORDER BY name ASC';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device_id', $device_id, PDO::PARAM_INT);
+		$req->bindValue(':protocol_id', $protocol_id, PDO::PARAM_INT);
+		$req->bindValue(':manufacturer_id', $manufacturer_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->product_id] = array(
+					'product_id' => $do->product_id,
+					'name'       => $do->name
+			);
+		}
+		return $list;
+	}
+
+	function confProductOptionList($product_id){
+		$link = Link::get_link('domoleaf');
+		$list = array();
 	
+		$sql = 'SELECT option_id, addr, dpt_id 
+				FROM product_option 
+				WHERE product_id=:product_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[] = array(
+					'option_id' => $do->option_id,
+					'addr'      => $do->addr,
+					'dpt_id'    => $do->dpt_id
+			);
+		}
+		return $list;
+	}
+
 	/*** Daemon management ***/
 	function confDaemonList() {
 		$link = Link::get_link('domoleaf');
