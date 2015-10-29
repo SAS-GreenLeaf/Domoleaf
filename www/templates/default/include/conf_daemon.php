@@ -37,6 +37,7 @@ echo '
 						</td>
 						<td>';
 							$i = 0;
+							print_r($elem->protocol);
 							foreach($elem->protocol as $proto){
 								if ($i != 0){
 									echo ', ';
@@ -86,6 +87,10 @@ echo '
 </div>
 		
 <script type="text/javascript">
+
+$(document).ready(function(){
+	activateMenuElem(\'box\');
+});
 
 function Validation(iddaemon){
 

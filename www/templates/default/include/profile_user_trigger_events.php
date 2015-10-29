@@ -48,6 +48,11 @@ echo
 echo '
 <script type="text/javascript">
 	
+	$(document).ready(function(){
+		ShowScenarios();
+		activateMenuElem(\'menu-triggers\');
+	});
+	
 	function PopupRemoveTrigger(trigger_id) {
 		$.ajax({
 			type:"GET",

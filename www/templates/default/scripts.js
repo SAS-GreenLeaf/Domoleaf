@@ -813,3 +813,9 @@ function getElemHexaColor(selector) {
 	
 	return (hex);
 }
+
+/*** Menu ***/
+
+function activateMenuElem(id_elem) {
+	$("#menu-"+id_elem).addClass("active");
+}

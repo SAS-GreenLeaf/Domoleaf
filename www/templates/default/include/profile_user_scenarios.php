@@ -78,6 +78,11 @@ echo '
 echo '
 <script type="text/javascript">
 	
+	$(document).ready(function(){
+		ShowScenarios();
+		activateMenuElem(\'scenarios\');
+	});
+	
 	function createScenario() {
 		$.ajax({
 			type: "GET",

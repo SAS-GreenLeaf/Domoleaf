@@ -79,7 +79,11 @@ echo '
 echo
 '<script type="text/javascript">
 	
-	displayTrigger('.$id_trigger.');
+	$(document).ready(function(){
+		displayTrigger('.$id_trigger.');
+		ShowScenarios();
+		activateMenuElem(\'menu-triggers\');
+	});
 	
 	function popupUpdateTriggerName(trigger_id) {
 		$.ajax({

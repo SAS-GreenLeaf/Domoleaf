@@ -135,6 +135,10 @@ echo '
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	activateMenuElem(\'users\');
+});
+
 $("#alert1").hide();
 $("#alert2").hide();
 $("#alert3").hide();

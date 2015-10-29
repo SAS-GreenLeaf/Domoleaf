@@ -20,8 +20,11 @@ echo '	<div class="col-xs-12" id="listdevice">
 
 echo '
 <script type="text/javascript">
-	
-GetDeviceList();
+
+$(document).ready(function(){
+	GetDeviceList();
+	activateMenuElem(\'install\');
+});
 
 function RemoveDevice(iddevice){
 	$.ajax({

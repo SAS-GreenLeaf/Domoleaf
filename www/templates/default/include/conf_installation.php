@@ -80,6 +80,10 @@ echo '
 		
 <script type="text/javascript">
 
+$(document).ready(function(){
+	activateMenuElem(\'install\');
+});
+
 function PopupRenameFloor(idfloor){
 		
 	$.ajax({

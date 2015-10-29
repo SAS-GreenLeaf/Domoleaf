@@ -66,6 +66,10 @@ echo '</div>
 		
 <script type="text/javascript">
 
+$(document).ready(function(){
+	activateMenuElem(\'users\');
+});
+
 function PopupNewUser(){
 		
 	$.ajax({

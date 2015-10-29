@@ -55,6 +55,11 @@ echo '
 echo '
 <script type="text/javascript">
 
+	$(document).ready(function(){
+		ShowScenarios();
+		activateMenuElem(\'menu-smartcmds\');
+	});
+	
 	function PopupRemoveSmartcmd(smartcmd_id) {
 		$.ajax({
 			type:"GET",

@@ -38,7 +38,11 @@ echo '
 echo
 '<script type="text/javascript">
 	
-	displaySchedule('.$id_schedule.');
+	$(document).ready(function(){
+		displaySchedule('.$id_schedule.');
+		ShowScenarios();
+		activateMenuElem(\'menu-schedules\');
+	});
 
 	function popupUpdateScheduleName(schedule_id) {
 		$.ajax({

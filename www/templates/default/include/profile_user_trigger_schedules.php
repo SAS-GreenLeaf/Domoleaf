@@ -48,6 +48,11 @@ echo
 echo '
 <script type="text/javascript">
 	
+	$(document).ready(function(){
+		ShowScenarios();
+		activateMenuElem(\'menu-schedules\');
+	});
+	
 	function PopupRemoveSchedule(schedule_id) {
 		$.ajax({
 			type:"GET",

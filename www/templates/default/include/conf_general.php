@@ -107,6 +107,10 @@ echo '
 
 <script type="text/javascript">
 
+	$(document).ready(function(){
+		activateMenuElem(\'general\');
+	});
+
 	$("#checkboxaccess").click(function () {
 		if($(this).is(":checked")){
 			$("#remoteaccess").show("slow");
