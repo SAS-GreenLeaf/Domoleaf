@@ -68,7 +68,7 @@ echo '
 		<div id="linked-room" class="navbar-brand">
 			'._('Linked Room').'
 			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
-			        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
+			        onchange="listRoomsOfFloor('.$id_smartcmd.')">
 				<option value="0">'._('No floor selected').'</option>';
 				foreach ($installation_info as $floor) {
 					echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
@@ -76,14 +76,9 @@ echo '
 				echo '
 			</select>
 			<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
-			        onchange="changeSaveBtn()">
+			        onchange="saveLinkedRoom('.$id_smartcmd.')">
 				<option value="0">'._('No floor selected').'</option>
 			</select>
-			<button id="saveLR_btn"
-			        onclick="saveLinkedRoom('.$id_smartcmd.')"
-			        class="btn btn-primary">
-				'._('Save').'
-			</button> 
 		</div>
 	</div>
 	<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
@@ -99,7 +94,9 @@ echo '
 echo
 '<script type="text/javascript">
 	
-	displaySmartcmd('.$id_smartcmd.');
+	$(document).ready(function(){
+		displaySmartcmd('.$id_smartcmd.');
+	});
 	
 	function popupUpdateSmartcmdName(smartcmd_id) {
 		$.ajax({
@@ -263,7 +260,7 @@ echo
 						
 	function setLinkedRoom(floor_id, room_id) {
 		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
-		listRoomsOfFloor('.$id_smartcmd.', 1);
+		listRoomsOfFloor('.$id_smartcmd.');
 		setTimeout(function(){
 						$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
 					}, 500);

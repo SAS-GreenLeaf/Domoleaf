@@ -428,8 +428,7 @@ function dropZoneStop(trigger) {
 	}
 }
 
-function listRoomsOfFloor(elem_id, smartcmd) {
-	smartcmd = typeof smartcmd !== 'undefined' ? smartcmd : 0;
+function listRoomsOfFloor(elem_id) {
 	var floor_id;
 	
 	floor_id = parseInt($("#selectFloor-"+elem_id).val());
@@ -444,28 +443,9 @@ function listRoomsOfFloor(elem_id, smartcmd) {
 			}
 		}
 	});
-	if (smartcmd == 1) {
-		changeSaveBtnState("#saveLR_btn");
+	if (floor_id == 0) {
+		saveLinkedRoom(elem_id);
 	}
-}
-
-function listDevicesOfRoom(elem_id) {
-	var floor_id;
-	var room_id;
-	
-	floor_id = parseInt($("#selectFloor-"+elem_id).val());
-	room_id = parseInt($("#selectRoom-"+elem_id).val());
-	$.ajax({
-		type: "GET",
-		url: "/templates/default/form/form_list_devices_of_room.php",
-		data: "floor_id="+floor_id+"&room_id="+room_id,
-		success: function(result) {
-			if (result) {
-				$("#selectDevice-"+elem_id).html(result);
-				$('.selectpicker').selectpicker('refresh');
-			}
-		}
-	});
 }
 
 function saveLinkedRoom(smartcmd_id) {
