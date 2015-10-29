@@ -167,6 +167,46 @@ if($request->is_co()) {
 				$page = $_GET['page'];
 			break;
 			
+			//Profile smartcmd
+			case 'profile_user_smartcmd':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile edit smartcmd
+			case 'profile_user_smartcmd_edit':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile scenarios
+			case 'profile_user_scenarios':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile edit scenarios
+			case 'profile_user_scenario_edit':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile trigger events
+			case 'profile_user_trigger_events':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile edit trigger events
+			case 'profile_user_trigger_events_edit':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile trigger schedules
+			case 'profile_user_trigger_schedules':
+				$page = $_GET['page'];
+			break;
+					
+			//Profile edit trigger schedules
+			case 'profile_user_trigger_schedules_edit':
+				$page = $_GET['page'];
+			break;
+			
 			default:
 				$page = 'home';
 			break;

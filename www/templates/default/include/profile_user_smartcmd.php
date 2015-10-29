@@ -10,7 +10,16 @@ echo '
 				'._('Create New SmartCommand').'
 			</button>
 		</div>
-		<div class="col-xs-offset-2 margin-top col-xs-10">
+		<div class="col-xs-offset-4 margin-top col-xs-6">';
+		if (empty($smartcmdList)) {
+			echo
+			'<div class="alert alert-warning center " role="alert">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				'._('No Smartcommand').'
+			</div>';
+		}
+		else {
+			echo '
 			<table id="listSmartcmd" class="table table-bordered table-striped table-condensed">
 				<thead>
 					<tr>
@@ -20,35 +29,37 @@ echo '
 					</tr>
 				</thead>
 				<tbody>';
-					foreach ($smartcmdList as $elem) {
-						echo '
-							<tr id="smartcmd-'.$elem->smartcommand_id.'">
-								<td>'.$elem->name.'</td>';
-								if (empty($elem->room_name)) {
-									$elem->room_name = _('None');
-								}
-								echo '
-								<td>'.$elem->room_name.'</td>
-								<td class="center">
-									<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'">
-										<button type="button"
-										        title="'._('Edit Smartcommand').'"
-										        class="btn btn-primary">
-											<i class="glyphicon glyphicon-edit"></i>
-										</button>
-									</a>
-									<button type="button"
-									        title="'._('Delete Smartcommand').'"
-									        class="btn btn-danger"
-									        onclick="PopupRemoveSmartcmd('.$elem->smartcommand_id.')">
-										<i class="fa fa-trash-o"></i>
-									</button>
-								</td>
-							</tr>';
-					}
+				foreach ($smartcmdList as $elem) {
 					echo '
+					<tr id="smartcmd-'.$elem->smartcommand_id.'">
+						<td>'.$elem->name.'</td>';
+						if (empty($elem->room_name)) {
+							$elem->room_name = _('None');
+						}
+						echo '
+						<td>'.$elem->room_name.'</td>
+						<td class="center">
+							<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'">
+								<button type="button"
+								        title="'._('Edit Smartcommand').'"
+								        class="btn btn-primary">
+									<i class="glyphicon glyphicon-edit"></i>
+								</button>
+							</a>
+							<button type="button"
+							        title="'._('Delete Smartcommand').'"
+							        class="btn btn-danger"
+							        onclick="PopupRemoveSmartcmd('.$elem->smartcommand_id.')">
+								<i class="fa fa-trash-o"></i>
+							</button>
+						</td>
+					</tr>';
+				}
+				echo '
 				</tbody>
-			</table>
+			</table>';
+		}
+		echo'
 		</div>
 	</div>';
 

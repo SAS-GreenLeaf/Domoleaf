@@ -9,7 +9,16 @@ echo '
 				'._('Create New Scenario').'
 			</button>
 		</div>
-		<div class="col-xs-offset-2 margin-top col-xs-10">
+		<div class="col-xs-offset-2 margin-top col-xs-10">';
+		if (empty($scenarioList)) {
+			echo
+			'<div class="alert alert-warning center " role="alert">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				'._('No Scenario').'
+			</div>';
+		}
+		else {
+			echo '
 			<table id="listscenario" class="table table-bordered table-striped table-condensed">
 				<thead>
 					<tr>
@@ -71,7 +80,9 @@ echo '
 					}
 					echo '
 				</tbody>
-			</table>
+			</table>';
+			}
+			echo '
 		</div>
 	</div>';
 

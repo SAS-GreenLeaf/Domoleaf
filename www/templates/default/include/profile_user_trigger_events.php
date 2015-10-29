@@ -9,39 +9,50 @@ echo
 			'._('Create New Trigger').'
 		</button>
 	</div>
-	<div class="col-xs-offset-2 margin-top col-xs-10">
-		<table id="listTriggers" class="table table-bordered table-striped table-condensed">
-			<thead>
-				<tr>
-					<th class="center">'._('Trigger Name').'</th>
-					<th class="center">'._('Actions').'</th>
-				</tr>
-			</thead>
-			<tbody>';
-			foreach ($triggersList as $elem) {
-				echo '
-				<tr id="trigger-'.$elem->trigger_id.'">
-					<td>'.$elem->name.'</td>
-					<td class="center">
-						<a href="/profile_user_trigger_events/'.$elem->trigger_id.'">
+	<div class="col-xs-offset-2 margin-top col-xs-10">';
+		if (empty($triggersList)) {
+			echo
+			'<div class="alert alert-warning center " role="alert">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				'._('No Trigger').'
+			</div>';
+		}
+		else {
+			echo '
+			<table id="listTriggers" class="table table-bordered table-striped table-condensed">
+				<thead>
+					<tr>
+						<th class="center">'._('Trigger Name').'</th>
+						<th class="center">'._('Actions').'</th>
+					</tr>
+				</thead>
+				<tbody>';
+				foreach ($triggersList as $elem) {
+					echo '
+					<tr id="trigger-'.$elem->trigger_id.'">
+						<td>'.$elem->name.'</td>
+						<td class="center">
+							<a href="/profile_user_trigger_events/'.$elem->trigger_id.'">
+								<button type="button"
+								        title="'._('Edit Trigger').'"
+								        class="btn btn-primary">
+									<i class="glyphicon glyphicon-edit"></i>
+								</button>
+							</a>
 							<button type="button"
-							        title="'._('Edit Trigger').'"
-							        class="btn btn-primary">
-								<i class="glyphicon glyphicon-edit"></i>
+							        title="'._('Delete Trigger').'"
+							        class="btn btn-danger"
+							        onclick="PopupRemoveTrigger('.$elem->trigger_id.')">
+								<i class="fa fa-trash-o"></i>
 							</button>
-						</a>
-						<button type="button"
-						        title="'._('Delete Trigger').'"
-						        class="btn btn-danger"
-						        onclick="PopupRemoveTrigger('.$elem->trigger_id.')">
-							<i class="fa fa-trash-o"></i>
-						</button>
-					</td>
-				</tr>';
-				}
-				echo '
-			</tbody>
-		</table>
+						</td>
+					</tr>';
+					}
+					echo '
+				</tbody>
+			</table>';
+		}
+		echo '
 	</div>
 </div>';
 

@@ -5,8 +5,8 @@ include('configuration-menu.php');
 echo '<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 echo '<div class="center"><h2>'._('Users configuration').'</h2></div>';
 echo '
-	 <div class="btn-group btn-group-greenleaf decalage-droite block-right">
-			  <button type="button" class="btn btn-greenleaf" onclick="PopupNewUser()"><span class="fa fa-user-plus" aria-hidden="true"></span> '._('New user').'</button>
+	 <div class="btn-group btn-group-greenleaf block-right">
+		<button type="button" class="btn btn-greenleaf" onclick="PopupNewUser()"><span class="fa fa-user-plus" aria-hidden="true"></span> '._('New user').'</button>
 	</div><br/><br/>';
 
 echo '<table class="table table-bordered table-striped table-condensed">
@@ -78,12 +78,12 @@ function PopupNewUser(){
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('New user').'",
-           		message: msg
-        	});
+				message: msg
+			});
 		}
 	});
 }
-								
+
 function PopupDeleteUser(iduser){
 		
 	$.ajax({
@@ -93,8 +93,8 @@ function PopupDeleteUser(iduser){
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('Delete user').'",
-           		message: msg
-        	});
+				message: msg
+			});
 		}
 	});
 }

@@ -1505,6 +1505,7 @@ class User {
 	
 		$sql = 'SELECT id_trigger, trigger_name
 				FROM trigger_events_list
+				WHERE user_id=:user_id
 				ORDER BY trigger_name';
 	
 		$req = $link->prepare($sql);
