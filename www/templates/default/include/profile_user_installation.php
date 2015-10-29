@@ -240,7 +240,7 @@ echo '<script type="text/javascript">
 
 	$(document).ready(function(){
 		WidgetSize();
-		activateMenuElem(\'menu-installation\');
+		activateMenuElem(\'installation\');
 	});
 
 function swap(elem, action){

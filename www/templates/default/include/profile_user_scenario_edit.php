@@ -149,7 +149,7 @@ echo '
 				selectScenarioBasicElem('.$scenario_info->id_schedule.', \'schedule\');
 				saveScenarioElem(\'smartcmd\', 0);
 				ShowScenarios();
-				activateMenuElem(\'menu-scenarios\');
+				activateMenuElem(\'scenarios\');
 			});
 			
 			function selectScenarioBasicElem(id_elem, type_elem) {

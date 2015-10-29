@@ -136,7 +136,7 @@ echo ' <title>'._('Profile').'</title>
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		activateMenuElem(\'menu-settings\');
+		activateMenuElem(\'settings\');
 	});
 	
 $("#alert1").hide();

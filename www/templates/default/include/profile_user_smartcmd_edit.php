@@ -97,7 +97,7 @@ echo
 	$(document).ready(function(){
 		displaySmartcmd('.$id_smartcmd.');
 		ShowScenarios();
-		activateMenuElem(\'menu-smartcmds\');
+		activateMenuElem(\'smartcmds\');
 	});
 	
 	function popupUpdateSmartcmdName(smartcmd_id) {

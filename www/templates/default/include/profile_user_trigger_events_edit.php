@@ -82,7 +82,7 @@ echo
 	$(document).ready(function(){
 		displayTrigger('.$id_trigger.');
 		ShowScenarios();
-		activateMenuElem(\'menu-triggers\');
+		activateMenuElem(\'triggers\');
 	});
 	
 	function popupUpdateTriggerName(trigger_id) {

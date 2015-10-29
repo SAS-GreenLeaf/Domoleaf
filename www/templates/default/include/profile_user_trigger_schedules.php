@@ -50,7 +50,7 @@ echo '
 	
 	$(document).ready(function(){
 		ShowScenarios();
-		activateMenuElem(\'menu-schedules\');
+		activateMenuElem(\'schedules\');
 	});
 	
 	function PopupRemoveSchedule(schedule_id) {

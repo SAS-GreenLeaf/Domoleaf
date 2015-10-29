@@ -50,7 +50,7 @@ echo '
 	
 	$(document).ready(function(){
 		ShowScenarios();
-		activateMenuElem(\'menu-triggers\');
+		activateMenuElem(\'triggers\');
 	});
 	
 	function PopupRemoveTrigger(trigger_id) {

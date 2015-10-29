@@ -38,6 +38,7 @@ echo
 echo '<script type="text/javascript">
 
 $(".change").click(function() {
+	$(".list-group a").removeClass("active");
 	$(this).addClass("active");
 });
 		

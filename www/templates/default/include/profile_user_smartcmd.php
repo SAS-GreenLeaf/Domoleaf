@@ -57,7 +57,7 @@ echo '
 
 	$(document).ready(function(){
 		ShowScenarios();
-		activateMenuElem(\'menu-smartcmds\');
+		activateMenuElem(\'smartcmds\');
 	});
 	
 	function PopupRemoveSmartcmd(smartcmd_id) {

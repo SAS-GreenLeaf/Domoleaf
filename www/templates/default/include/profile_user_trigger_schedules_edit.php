@@ -41,7 +41,7 @@ echo
 	$(document).ready(function(){
 		displaySchedule('.$id_schedule.');
 		ShowScenarios();
-		activateMenuElem(\'menu-schedules\');
+		activateMenuElem(\'schedules\');
 	});
 
 	function popupUpdateScheduleName(schedule_id) {
