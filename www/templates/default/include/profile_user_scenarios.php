@@ -1,7 +1,6 @@
 <?php
 
 include('profile-menu.php');
-include('templates/'.TEMPLATE.'/function/display_widget.php');
 
 echo '
 	<div id="editScenario">

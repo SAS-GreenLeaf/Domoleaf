@@ -151,13 +151,15 @@ echo '
 			});
 			
 			function selectScenarioBasicElem(id_elem, type_elem) {
+				$("#scenario-"+type_elem+"-list a").removeClass("active");
 				if (id_elem == 0) {
-					$("#selectElemsScenarios a:first-child").addClass(\'active\');
+					$("#scenario-"+type_elem+"-list a:first-child").addClass(\'active\');
 				}
 				else {
 					$("#scenario-"+type_elem+"-"+id_elem).addClass(\'active\');
 				}
 			}
+			
 			function selectScenarioElem(id_elem, type_elem) {
 				$("#scenario-"+type_elem+"-list a").removeClass("active");
 				$("#scenario-"+type_elem+"-"+id_elem).addClass(\'active\');
@@ -166,6 +168,7 @@ echo '
 			function saveScenarioElem(type_elem, nb_elem) {
 				var id_elem;
 				var nb_elem2;
+			
 				if (nb_elem == 0) {
 					nb_elem2 = 1;
 				}
