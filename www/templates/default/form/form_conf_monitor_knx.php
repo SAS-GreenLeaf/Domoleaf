@@ -15,13 +15,12 @@ if (!isset($_GET['id'])){
 }
 
 if (!empty($listknx)){
-	$listtype = array(_('Read'), _('Answer'), _('Write (short)'), _('Write (long)'));
+	$listtype = array(_('R'), _('A'), _('Ws'), _('Wl'));
 echo '
 	<table class="table table-bordered table-striped table-condensed">
 		<thead>
 			<tr>
-				<th>'._('Daemon').'</th>
-				<th class="center">'._('Type').'</th>
+				<th class="center">'._('Daemon').'</th>
 				<th class="center">'._('Source').'</th>
 				<th class="center">'._('Destination').'</th>
 				<th class="center">'._('Value').'</th>
@@ -41,10 +40,15 @@ echo '
 						echo _('Unknow');
 					}
 			echo '
-					</td>
-					<td>'.$listtype[$elem->type].'</td>
-					<td>'.$elem->addr_src.'</td>
-					<td>'.$elem->addr_dest.'</td>
+					('.$listtype[$elem->type].')</td>
+					<td>'.$elem->addr_src.'</td>';
+			if (!empty($elem->device_name)){
+				echo '<td>'.$elem->device_name.' - '.$elem->addr_dest.'</td>';
+			}
+			else{
+				echo '<td>'.$elem->addr_dest.'</td>';
+			}
+			echo '
 					<td>'.$elem->knx_value.'</td>
 					<td>'.$request->date($elem->t_date, 3).'</td>
 				</tr>';
