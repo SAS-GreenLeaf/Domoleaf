@@ -1,2 +1,2 @@
 15 * * * * root /usr/bin/CronRefreshNetwork.py
-*/15 * * * * root /usr/bin/CronSendAlive.py 
+*/15 * * * * root /usr/bin/CronSendAlive.py

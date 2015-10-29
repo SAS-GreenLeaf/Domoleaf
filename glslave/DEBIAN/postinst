@@ -22,13 +22,18 @@ pip3 install scapy-python3
 
 #Upgrade
 if [ -f /etc/domoleaf/slave.conf.save ]; then 
-	aes=$(grep "^aes=" /etc/domoleaf/slave.conf.save | cut -d = -f 2)
-	rm /etc/domoleaf/slave.conf.save
+	python3 /usr/bin/glslave/glslaveUpdate.py
+	rm -f /etc/domoleaf/slave.conf.save
 else
 	aes=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
+	sed -i "s/aes = domoleaf/aes = $aes/g" /etc/domoleaf/slave.conf
 fi
 
-sed -i "s/aes=domoleaf/aes=$aes/g" /etc/domoleaf/slave.conf
+#CRON
+chmod +x /usr/bin/CronOpenPort.py
+chmod +x /usr/bin/CronRefreshNetwork.py
+chmod +x /usr/bin/CronSendAlive.py
+chmod +x /usr/bin/CronSendTech.py
 
 #KNXD
 systemctl enable knxd
