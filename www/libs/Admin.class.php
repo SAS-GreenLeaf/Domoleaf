@@ -1889,7 +1889,22 @@ class Admin extends User {
 	
 	function monitorKnx() {
 		$link = Link::get_link('domoleaf');
-		$list = array();
+		$listDevices = array();
+		
+		$sql = 'SELECT room_device_option.room_device_id, room_device.name,
+		               room_device.device_id, daemon_id, room_device_option.addr, addr_plus
+		        FROM room_device_option
+		        JOIN room_device ON room_device.room_device_id = room_device_option.room_device_id';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			if(!empty($do->daemon_id)) {
+				$listDevices[$do->daemon_id][$do->addr] = $do->name;
+				if(!empty($do->addr_plus)) {
+					$listDevices[$do->daemon_id][$do->addr_plus] = $do->name;
+				}
+			}
+		}
 		
 		$sql = 'SELECT type, addr_src, addr_dest, knx_value, t_date, daemon_id
 		        FROM knx_log
@@ -1898,7 +1913,21 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[] = clone $do;
+			if(!empty($do->daemon_id) && (!empty($listDevices[$do->daemon_id])) && (!empty($listDevices[$do->daemon_id][$do->addr_dest]))) {
+				$name = $listDevices[$do->daemon_id][$do->addr_dest];
+			}
+			else{
+				$name = '';
+			}
+			$list[] = array(
+				'type'        => $do->type,
+ 				'addr_src'    => $do->addr_src,
+				'addr_dest'   => $do->addr_dest,
+				'knx_value'   => $do->knx_value,
+				't_date'      => $do->t_date,
+				'daemon_id'   => $do->daemon_id,
+				'device_name' => $name 
+			);
 		}
 		
 		return $list;

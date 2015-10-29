@@ -17,7 +17,7 @@ echo '<div class="center"><h2>'._('Monitor KNX').'</h2></div>
 								<li><a onclick="SwitchActionDae(0, \'Unknow\')">'._('Unknow').'</a></li>
 								<li role="presentation" class="divider"></li>';
 								foreach ($listdae as $elem){
-									if (in_array(1, $elem->protocol)){
+									if (!empty($elem->protocol->{1})){
 											echo '<li><a onclick="SwitchActionDae('.$elem->daemon_id.', \''.$elem->name.'\')">'.$elem->name.'</a></li>';
 									}
 								}	

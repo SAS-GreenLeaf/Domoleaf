@@ -26,15 +26,15 @@ class InfoSys:
         
         disk = os.popen("cat /etc/fstab | grep ' / ' | awk '{print $1}'").read().split('\n')[0];
         
-        if disk[0:10] == "/dev/mmcblk":
-            return disk[0:-1]
+        if disk[0:11] == "/dev/mmcblk":
+            return disk[0:-2]
         
         return 'unknown'
     
     def diskSerial():
         disk = InfoSys.diskDetect()
-        if disk[0:10] == "/dev/mmcblk":
-            return os.popen("udevadm info -a -n "+disk+" | grep -i cid").read().split('\n')[0];
+        if disk[0:11] == "/dev/mmcblk":
+            return os.popen("udevadm info -a -n "+disk+" | grep -i cid | awk -F \\\" '{print $2}'").read().split('\n')[0];
         elif disk[0:6] == "/dev/sd":
             serial = os.popen("hdparm -i /dev/sda | grep -oE 'SerialNo=.*'").read().split('\n')[0];
             return serial[8:]
