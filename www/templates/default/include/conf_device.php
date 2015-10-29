@@ -101,7 +101,7 @@ echo '
 						<label for="macaddress" class="input-group-addon">
 							<span class="fa flaticon-chip" aria-hidden="true"></span>
 						</label>
-						<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Adress').'">
+						<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Address').'">
 				</div>
 				</div>
 				<div class="col-md-6 col-xs-12">
