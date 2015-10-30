@@ -13,6 +13,8 @@ mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/device_option.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/configuration.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/dpt_optiondef.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/product.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/product_option.sql
 
 #INSTALLATION
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/daemon.sql
