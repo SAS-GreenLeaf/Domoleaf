@@ -53,11 +53,20 @@ fi
 
 daemon=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
 if [ "$daemon" = "" ]; then
-    key=$(grep "^aes=" /etc/domoleaf/slave.conf | cut -d = -f 2)
+    key=$(grep "^aes =" /etc/domoleaf/slave.conf | cut -d = -f 2)
     secretkey=`echo -n $key | md5sum | sed 's/  -//g'`
     mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('$hostname','$hostname','$secretkey',1,'$glslave')"
     daemon=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -B -N -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
-    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO daemon_protocol (daemon_id, protocol_id) VALUES ('$daemon',1)"
+    
+    #KNX Interface
+    if [ -f /dev/ttyAMA0 ]; then
+        interface="ttyAMA0"
+    elif [ -f /dev/ttyS0 ]; then
+        interface="ttyS0"
+    else
+        interface="127.0.0.1"
+    fi
+    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO daemon_protocol (daemon_id, protocol_id, interface) VALUES ($daemon,1,'$interface')"
 fi
 
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "UPDATE configuration SET configuration_value='$glmaster' WHERE configuration_id=4"
