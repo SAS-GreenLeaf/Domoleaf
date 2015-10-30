@@ -914,6 +914,14 @@ class Api {
 							$res = $user->getSchedule($var[0]);
 						break;
 						
+						case 'updateScheduleName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScheduleById($var[0]))) {
+									$res = $user->updateScheduleName($var[0], $var[1]);
+								}
+							}
+						break;
+						
 						case 'createNewSchedule' :
 							if (!empty($var[0])){
 								$res = $user->createNewSchedule($var[0]);

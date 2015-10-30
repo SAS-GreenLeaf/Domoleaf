@@ -169,7 +169,21 @@ class User {
 	}
 	
 	function confDeviceRoomOpt($deviceroomid) {
-		return null;
+		$link = Link::get_link('domoleaf');
+		$list = array();
+		
+		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
+		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
+		        FROM room_device_option
+		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
+		        WHERE room_device_id=:room_device_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->option_id] = clone $do;
+		}
+		return $list;
 	}
 	
 	function confRoomDeviceList($room){
@@ -699,7 +713,7 @@ class User {
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
 		               optiondef.hidden_arg, room_device.device_id, 
-		               optiondef.option_id, optiondef.name, 
+		               optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus, 
 		               room_device_option.valeur
@@ -796,6 +810,7 @@ class User {
 		if(empty($userid)){
 			$userid = $this->getId();
 		}
+		
 		$list = array();
 		$sql = 'SELECT floor.floor_id, floor_name, floor_allowed, floor_order
 		        FROM floor
@@ -833,9 +848,9 @@ class User {
 			);
 		}
 		
-		$sql = 'SELECT room_device.room_device_id, room_device.name, 
-		               room_device.room_id, room.floor, device_order, 
-		               device_allowed, device_bgimg
+		$sql = 'SELECT room_device.room_device_id, room_device.name,
+		               room_device.room_id, room.floor, device_order,
+		               device_allowed, device_bgimg, device_id
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
 		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
@@ -850,6 +865,7 @@ class User {
 				'name'          => $do->name,
 				'device_order'  => $do->device_order,
 				'device_bgimg'  => $do->device_bgimg,
+				'device_id'     => $do->device_id,
 				'device_allowed'=> $do->device_allowed
 			);
 		}
@@ -1857,6 +1873,23 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		
 		return $do;
+	}
+	
+	function updateScheduleName($schedule_id, $schedule_name){
+		if ($this->searchScheduleByName($schedule_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE trigger_schedules_list
+				SET schedule_name=:schedule_name
+				WHERE id_schedule=:schedule_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
+		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		return $schedule_id;
 	}
 	
 	function createNewSchedule($schedule_name){
