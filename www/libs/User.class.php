@@ -2104,6 +2104,23 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	function updateScenarioName($scenario_id, $scenario_name){
+		if ($this->searchScenarioByName($scenario_name) != 0) {
+			return -1;
+		}
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE scenarios_list
+				SET name_scenario=:scenario_name
+				WHERE id_scenario=:scenario_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':scenario_name', $scenario_name, PDO::PARAM_STR);
+		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	
+		return $scenario_id;
+	}
+	
 	function completeScenario($scenario_id){
 		$link = Link::get_link('domoleaf');
 	

@@ -213,6 +213,20 @@ echo '
 					}
 				});
 			}
+			
+			function popupUpdateScenarioName(scenario_id) {
+				$.ajax({
+					type: "GET",
+					url: "/templates/'.TEMPLATE.'/popup/popup_user_update_scenario_name.php",
+					data: "scenario_id="+scenario_id,
+					success: function(msg) {
+						BootstrapDialog.show({
+							title: \'<div id="popupTitle" class="center"></div>\',
+							message: msg
+						});
+					}
+				});
+			}
 		</script>';
 
 ?>

@@ -1003,6 +1003,14 @@ class Api {
 							}
 						break;
 						
+						case 'updateScenarioName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioName($var[0], $var[1]);
+								}
+							}
+						break;
+						
 						case 'completeScenario' :
 							if (!empty($var[0])){
 								if (!empty($user->searchScenarioById($var[0]))) {

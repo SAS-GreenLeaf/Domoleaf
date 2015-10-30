@@ -42,24 +42,35 @@ echo '
 						}
 						echo '
 						</td>
-						<td class="center">
-							<input data-on-color="greenleaf"
-							       data-label-width="0"
-							       data-on-text="'._('On').'"
-							       data-off-text="'._('Off').'"
-							       id="scenario-state-'.$elem->scenario_id.'"
-							       type="checkbox"
-							       onchange="changeScenarioState('.$elem->scenario_id.')" ';
-							       if ($elem->activated == 1) {
-							       		echo 'checked';
-							       }
-							       if ($elem->complete == 0) {
-							       	echo 'disabled';
-							       }
-							       echo '>
-							<script type="text/javascript">
-								$("#scenario-state-'.$elem->scenario_id.'").bootstrapSwitch();
-							</script>
+						<td class="center">';
+							if ($elem->complete == 0) {
+								echo '
+								<a href="/profile_user_scenarios/'.$elem->scenario_id.'/1">
+									<button type="button"
+									        title="'._('Edit scenario').'"
+									        class="btn btn-warning">
+										<i class="glyphicon glyphicon-warning-sign"></i>
+									</button>
+								</a>';
+							}
+							else {
+								echo '
+								<input data-on-color="greenleaf"
+								       data-label-width="0"
+								       data-on-text="'._('On').'"
+								       data-off-text="'._('Off').'"
+								       id="scenario-state-'.$elem->scenario_id.'"
+								       type="checkbox"
+								       onchange="changeScenarioState('.$elem->scenario_id.')" ';
+								       if ($elem->activated == 1) {
+								       		echo 'checked';
+								       }
+								       echo '>
+								<script type="text/javascript">
+									$("#scenario-state-'.$elem->scenario_id.'").bootstrapSwitch();
+								</script>';
+							}
+							echo '
 						</td>
 						<td class="center">
 							<a href="/profile_user_scenarios/'.$elem->scenario_id.'/1">

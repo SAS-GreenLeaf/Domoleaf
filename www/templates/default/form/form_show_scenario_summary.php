@@ -12,13 +12,13 @@ if (!empty($_GET['id_scenario'])) {
 	$scenario_infos = $result->getScenario;
 	
 	echo showScenarioSummary($scenario_infos->name_scenario, $scenario_infos->id_smartcmd,
-							$scenario_infos->id_trigger, $scenario_infos->id_schedule);
+							$scenario_infos->id_trigger, $scenario_infos->id_schedule, $id_scenario);
 }
 else {
 	echo '';
 }
 
-function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule) {
+function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule, $id_scenario) {
 	
 	$request = new Api();
 	if ($id_trigger != 0) {
@@ -31,9 +31,18 @@ function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule) {
 	$result  =  $request->send_request(); 
 	
 	$display =
-				'<h4>
-					'._('Scenario Name : ').$name.'</br>
-				</h4></br>';
+				'<div class="inline">
+					<h4 id="summaryScenarioName" class="block-left">
+						'.$name.'
+					</h4>
+					<button type="button"
+					        title="'._('Edit Scenario Name').'"
+					        class="btn btn-primary margin-left"
+					        onclick="popupUpdateScenarioName('.$id_scenario.')">
+						<i class="glyphicon glyphicon-edit"></i>
+					</button>
+				</div>
+				</br>';
 	$display.=
 				'<div class="alert alert-success" role="alert">
 					'._('Smartcommand : ').$result->searchSmartcmdById->name.'
