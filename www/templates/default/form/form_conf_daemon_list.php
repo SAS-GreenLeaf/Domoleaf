@@ -9,7 +9,7 @@ $result  =  $request -> send_request();
 $listdaemon = $result->confDaemonList;
 
 foreach ($listdaemon as $elem){
-	if (!empty($elem->protocol)->{1}){
+	if (!empty($elem->protocol->{1})){
 		echo '<option value="'.$elem->daemon_id.'">'.$elem->name.'</option>';
 	}
 }
