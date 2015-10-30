@@ -31,7 +31,7 @@ echo '<div class="col-xs-2 bhoechie-tab-menu sidebar">
 echo '<script type="text/javascript">
 
 $(".change").click(function() {
-	$(".list-group a").removeClass("active");
+	$(".bhoechie-tab-menu .list-group a").removeClass("active");
 	$(this).addClass("active");
 });
 

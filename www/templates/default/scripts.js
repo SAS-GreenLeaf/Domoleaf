@@ -817,6 +817,6 @@ function getElemHexaColor(selector) {
 /*** Menu ***/
 
 function activateMenuElem(id_elem) {
-	$(".list-group a").removeClass("active");
+	$(".bhoechie-tab-menu .list-group a").removeClass("active");
 	$("#menu-"+id_elem).addClass("active");
 }

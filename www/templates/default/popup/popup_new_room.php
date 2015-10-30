@@ -16,13 +16,13 @@ echo '<div class="controls center">
 			echo '<option value="'.$elem->floor_id.'">'.$elem->floor_name.'</option>';
 		}
 echo	'</select><br/><br/>'.
-		'<div class="input-group">'.
+		'<div class="input-group margin-bottom">'.
 			'<span class="input-group-addon">'._('New room').'</span>'.
 			'<input type="text" id="newroom" placeholder="'._('Enter the room name').'" class="form-control">'.
 		'</div>'.
 		'<button id="eventSave"'.
 		        'onclick="RoomNew()"'.
-		        'class="btn btn-greenleaf">'.
+		        'class="btn btn-greenleaf margin-right">'.
 			''._('Yes').''.
 			'<span class="glyphicon glyphicon-ok"></span>'.
 		'</button>'.

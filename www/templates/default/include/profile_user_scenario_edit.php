@@ -141,6 +141,8 @@ echo '
 		<script type="text/javascript">
 			
 			$(document).ready(function(){
+				ShowScenarios();
+				activateMenuElem(\'scenarios\');
 				if ('.$step.' >= 1 && '.$step.' <= 4) {
 					$("#step'.$step.'btn").tab(\'show\');
 				}
@@ -148,12 +150,9 @@ echo '
 				selectScenarioBasicElem('.$scenario_info->id_trigger.', \'trigger\');
 				selectScenarioBasicElem('.$scenario_info->id_schedule.', \'schedule\');
 				saveScenarioElem(\'smartcmd\', 0);
-				ShowScenarios();
-				activateMenuElem(\'scenarios\');
 			});
 			
 			function selectScenarioBasicElem(id_elem, type_elem) {
-				$("#scenario-"+type_elem+"-list a").removeClass("active");
 				if (id_elem == 0) {
 					$("#scenario-"+type_elem+"-list a:first-child").addClass(\'active\');
 				}
@@ -163,7 +162,7 @@ echo '
 			}
 			
 			function selectScenarioElem(id_elem, type_elem) {
-				$("#scenario-"+type_elem+"-list a").removeClass("active");
+				$("#scenario-"+type_elem+"-list a").removeClass(\'active\');
 				$("#scenario-"+type_elem+"-"+id_elem).addClass(\'active\');
 			}
 			

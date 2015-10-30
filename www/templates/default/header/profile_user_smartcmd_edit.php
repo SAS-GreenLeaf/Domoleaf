@@ -38,8 +38,8 @@ if (empty($smartcmd_infos->floor_id) || empty($smartcmd_infos->room_id)) {
 	$smartcmd_infos->room_id = 0;
 }
 
-if(!empty($installation_info) || !empty($name_smartcmd) ||
-	!empty($floorallowed) || !empty($roomallowed) || !empty($deviceallowed)) {
+if(!empty($installation_info) && !empty($name_smartcmd) ||
+	!empty($floorallowed) && !empty($roomallowed) && !empty($deviceallowed)) {
 	
 	$available_opt = array ("12", "13", "54", "96", "363", "364", "365", "366",
 							"367", "368", "383", "388", "392", "393", "394");

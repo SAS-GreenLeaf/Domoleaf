@@ -3,93 +3,93 @@
 include('profile-menu.php');
 
 echo '
-	<div class="col-xs-offset-2 col-xs-2 bhoechie-tab-menu sidebar">
-		<div class="list-group">';
-		foreach ($installation_info as $floor) {
-			echo '
-			<div id="floor-'.$floor->floor_id.'">
-				<div href="#" onclick="ShowRoomList('.$floor->floor_id.')" class="floor-scenar cursor">
-					&nbsp;
-					<i id ="arrow-icon" class="margin-right fa fa-caret-down"></i>
-					'.$floor->floor_name.'
-				</div>
-				<ul id="roomList-'.$floor->floor_id.'" hidden="hidden" class="nav">';
-					foreach ($floor->room as $room){
-						echo '
-							<div id="room-'.$room->room_id.'" class="">
-								<div href="#" onclick="ShowDeviceList('.$room->room_id.')" class="box-scenar-rooms cursor">
-									'.$room->room_name.'
-								</div>
-								<ul id="deviceList-'.$room->room_id.'" hidden class="nav">';
-									foreach ($room->devices as $device){
-										echo '
-										<li class="list-item">
-											<div href="#" id="device-'.$device->room_device_id.'"
-												 class="box-scenar-devices cursor"
-												 onclick="selectDevice('.$id_smartcmd.','.$device->room_device_id.')">
-												<i class="margin-right '.getIcon($device->device_id).'"></i>
-												'.$device->name.'
-											</div>
-										</li>';
-									}
-									echo '
-								</ul>
-							</div>';
-					}
-					echo '
-				</ul>
-			</div>';
-		}
-		echo
-		'</div>
-	</div>';
-
-echo '
-	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-top save-navbar">
-		<div id="navbarSmartcmdName" class="navbar-brand">
-			'.$name_smartcmd.'
-		</div>
-		<button type="button"
-		        title="'._('Edit Smartcommand Name').'"
-		        class="btn btn-primary"
-		        onclick="popupUpdateSmartcmdName('.$id_smartcmd.')">
-			<i class="glyphicon glyphicon-edit"></i>
-		</button>';
-		if ($id_scenario != 0) {
-			echo
-				'<button type="button"
-				        title="'._('Back to Scenario').'"
-				        class="btn btn-primary block-right"
-				        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/1\')">
-					'._('Back to Scenario').'
-				</button>';
-		}
+<div class="col-xs-offset-2 col-xs-2 bhoechie-tab-menu sidebar">
+	<div class="list-group">';
+	foreach ($installation_info as $floor) {
 		echo '
-		<div id="linked-room" class="navbar-brand">
-			'._('Linked Room').'
-			<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
-			        onchange="listRoomsOfFloor('.$id_smartcmd.')">
-				<option value="0">'._('No floor selected').'</option>';
-				foreach ($installation_info as $floor) {
-					echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
+		<div id="floor-'.$floor->floor_id.'">
+			<div href="#" onclick="ShowRoomList('.$floor->floor_id.')" class="floor-scenar cursor">
+				&nbsp;
+				<i id ="arrow-icon" class="margin-right fa fa-caret-down"></i>
+				'.$floor->floor_name.'
+			</div>
+			<ul id="roomList-'.$floor->floor_id.'" hidden="hidden" class="nav">';
+				foreach ($floor->room as $room){
+					echo '
+						<div id="room-'.$room->room_id.'" class="">
+							<div href="#" onclick="ShowDeviceList('.$room->room_id.')" class="box-scenar-rooms cursor">
+								'.$room->room_name.'
+							</div>
+							<ul id="deviceList-'.$room->room_id.'" hidden class="nav">';
+								foreach ($room->devices as $device){
+									echo '
+									<li class="list-item">
+										<div href="#" id="device-'.$device->room_device_id.'"
+											 class="box-scenar-devices cursor"
+											 onclick="selectDevice('.$id_smartcmd.','.$device->room_device_id.')">
+											<i class="margin-right '.getIcon($device->device_id).'"></i>
+											'.$device->name.'
+										</div>
+									</li>';
+								}
+								echo '
+							</ul>
+						</div>';
 				}
 				echo '
-			</select>
-			<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
-			        onchange="saveLinkedRoom('.$id_smartcmd.')">
-				<option value="0">'._('No floor selected').'</option>
-			</select>
-		</div>
+			</ul>
+		</div>';
+	}
+	echo
+	'</div>
+</div>';
+
+echo '
+<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-top save-navbar">
+	<div id="navbarSmartcmdName" class="navbar-brand">
+		'.$name_smartcmd.'
 	</div>
-	<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
+	<button type="button"
+	        title="'._('Edit Smartcommand Name').'"
+	        class="btn btn-primary"
+	        onclick="popupUpdateSmartcmdName('.$id_smartcmd.')">
+		<i class="glyphicon glyphicon-edit"></i>
+	</button>';
+	if ($id_scenario != 0) {
+		echo
+			'<button type="button"
+			        title="'._('Back to Scenario').'"
+			        class="btn btn-primary block-right"
+			        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/1\')">
+				'._('Back to Scenario').'
+			</button>';
+	}
+	echo '
+	<div id="linked-room" class="navbar-brand">
+		'._('Linked Room').'
+		<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
+		        onchange="listRoomsOfFloor('.$id_smartcmd.')">
+			<option value="0">'._('No floor selected').'</option>';
+			foreach ($installation_info as $floor) {
+				echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
+			}
+			echo '
+		</select>
+		<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
+		        onchange="saveLinkedRoom('.$id_smartcmd.')">
+			<option value="0">'._('No floor selected').'</option>
+		</select>
 	</div>
-	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-bottom">
-		<div class="navbar-brand">
-			Options
-		</div>
-		<div id="optionList" class="navbar-collapse" hidden>
-		</div>
-	</div>';
+</div>
+<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
+</div>
+<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-bottom">
+	<div class="navbar-brand">
+		Options
+	</div>
+	<div id="optionList" class="navbar-collapse" hidden>
+	</div>
+</div>';
 
 echo
 '<script type="text/javascript">
@@ -98,6 +98,7 @@ echo
 		displaySmartcmd('.$id_smartcmd.');
 		ShowScenarios();
 		activateMenuElem(\'smartcmds\');
+		openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 	});
 	
 	function popupUpdateSmartcmdName(smartcmd_id) {
@@ -229,7 +230,6 @@ echo
 				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
 					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 				}
-				openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
 			}
 		});
 	}

@@ -12,7 +12,7 @@ echo
 	<div class="col-xs-offset-2 margin-top col-xs-10">';
 	if (empty($schedulesList)) {
 		echo
-		'<div class="alert alert-warning center " role="alert">
+		'<div class="alert alert-warning center col-xs-offset-2 margin-top col-xs-8" role="alert">
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 			'._('No Schedule').'
 		</div>';
@@ -32,7 +32,7 @@ echo
 				<tr id="schedule-'.$elem->schedule_id.'">
 					<td>'.$elem->name.'</td>
 					<td class="center">
-						<a href="/profile_user_trigger_schedules/'.$elem->schedule_id.'">
+						<a href="/profile_user_trigger_schedules/'.$elem->schedule_id.'/0">
 							<button type="button"
 							        title="'._('Edit schedule').'"
 							        class="btn btn-primary">
