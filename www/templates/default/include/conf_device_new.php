@@ -146,6 +146,10 @@ echo '
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	activateMenuElem(\'install\');
+});
+
 function HideAll(){
 	$("#ip").hide("slow");
 	$("#knx").hide("slow");

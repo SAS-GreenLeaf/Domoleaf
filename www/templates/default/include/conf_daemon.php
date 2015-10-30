@@ -7,7 +7,7 @@ echo '
 	echo '
 	<div class="col-xs-12"><h2 class="center">'._('Box configuration').'</h2></div>';
 	echo '
-	<div class="btn-group btn-group-greenleaf decalage-droite block-right">
+	<div class="btn-group btn-group-greenleaf block-right">
 		<button type="button" class="btn btn-greenleaf" onclick="PopupNewDaemon()">
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '._('New Box').'
 		</button>
@@ -86,6 +86,10 @@ echo '
 </div>
 		
 <script type="text/javascript">
+
+$(document).ready(function(){
+	activateMenuElem(\'box\');
+});
 
 function Validation(iddaemon){
 

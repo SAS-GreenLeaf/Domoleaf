@@ -270,6 +270,20 @@ function CustomPopup(type, iddevice, userid){
 
 /*** Smartcommand ***/
 
+function createSmartcmd(id_scenario) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_user_create_smartcmd.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
+}
+
 function smartcmdOnOff(room_id_device) {
 	var val;
 	
@@ -414,8 +428,7 @@ function dropZoneStop(trigger) {
 	}
 }
 
-function listRoomsOfFloor(elem_id, smartcmd) {
-	smartcmd = typeof smartcmd !== 'undefined' ? smartcmd : 0;
+function listRoomsOfFloor(elem_id) {
 	var floor_id;
 	
 	floor_id = parseInt($("#selectFloor-"+elem_id).val());
@@ -430,28 +443,9 @@ function listRoomsOfFloor(elem_id, smartcmd) {
 			}
 		}
 	});
-	if (smartcmd == 1) {
-		changeSaveBtnState("#saveLR_btn");
+	if (floor_id == 0) {
+		saveLinkedRoom(elem_id);
 	}
-}
-
-function listDevicesOfRoom(elem_id) {
-	var floor_id;
-	var room_id;
-	
-	floor_id = parseInt($("#selectFloor-"+elem_id).val());
-	room_id = parseInt($("#selectRoom-"+elem_id).val());
-	$.ajax({
-		type: "GET",
-		url: "/templates/default/form/form_list_devices_of_room.php",
-		data: "floor_id="+floor_id+"&room_id="+room_id,
-		success: function(result) {
-			if (result) {
-				$("#selectDevice-"+elem_id).html(result);
-				$('.selectpicker').selectpicker('refresh');
-			}
-		}
-	});
 }
 
 function saveLinkedRoom(smartcmd_id) {
@@ -542,6 +536,20 @@ function selectDevice(id_trigger, room_id_device) {
 
 /*** Triggers ***/
 
+function createTrigger(id_scenario) {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_user_create_trigger.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
+}
+
 function triggerOnOff(room_id_device) {
 	var val;
 	
@@ -619,22 +627,18 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 	});
 }
 
-function saveLinkedSmartcmd(trigger_id) {
-	var smartcmd_id;
-	
-	smartcmd_id = parseInt($("#selectSmartcmd-"+trigger_id).val());
+/*** Schedules ***/
+
+function createSchedule(id_scenario) {
 	$.ajax({
 		type: "GET",
-		url: "/templates/default/form/form_save_linked_smartcmd.php",
-		data: "trigger_id="+trigger_id+"&smartcmd_id="+smartcmd_id,
-		success: function(result) {
-			if (result == 0) {
-				changeSaveBtnState("#saveLS_btn", 1);
-			}
-			else {
-				changeSaveBtnState("#saveLS_btn", 2);
-			}
-			
+		url: "/templates/default/popup/popup_user_create_schedule.php",
+		data: "id_scenario="+id_scenario,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
 		}
 	});
 }
@@ -808,4 +812,11 @@ function getElemHexaColor(selector) {
 	var hex = '#'+ r + g + b;
 	
 	return (hex);
+}
+
+/*** Menu ***/
+
+function activateMenuElem(id_elem) {
+	$(".bhoechie-tab-menu .list-group a").removeClass("active");
+	$("#menu-"+id_elem).addClass("active");
 }

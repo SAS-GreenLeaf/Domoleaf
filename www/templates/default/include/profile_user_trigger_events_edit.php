@@ -42,9 +42,6 @@ echo '
 		}
 		echo
 		'</div>
-		<div class="col-xs-2 col-xs-offset-2 navbar navbar-inverse navbar-fixed-bottom">
-			<button onclick="showTimeSelect('.$id_trigger.')">TEST</button>
-		</div>
 	</div>';
 
 echo '
@@ -57,21 +54,17 @@ echo '
 		        class="btn btn-primary"
 		        onclick="popupUpdateTriggerName('.$id_trigger.')">
 			<i class="glyphicon glyphicon-edit"></i>
-		</button>
-		<div id="linked-smartcmd" class="navbar-brand">
-			'._('Linked Smartcommand').'
-			<select class="selectpicker span2" id="selectSmartcmd-'.$id_trigger.'" data-size="10" onchange="changeSaveBtnState("#saveLS_btn")">';
-				foreach ($smartcmdList as $smartcmd) {
-					echo '<option value="'.$smartcmd->smartcommand_id.'">'.$smartcmd->name.'</option>';
-				}
-				echo '
-			</select>
-			<button id="saveLS_btn"
-			        onclick="saveLinkedSmartcmd('.$id_trigger.')"
-			        class="btn btn-primary">
-				'._('Save').'
-			</button> 
-		</div>
+		</button>';
+		if ($id_scenario != 0) {
+			echo
+				'<button type="button"
+				        title="'._('Back to Scenario').'"
+				        class="btn btn-primary block-right"
+				        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/2\')">
+					'._('Back to Scenario').'
+				</button>';
+		}
+		echo '
 	</div>
 	<div id="drop-conditions" class="col-xs-8 col-xs-offset-4">
 	</div>
@@ -86,7 +79,11 @@ echo '
 echo
 '<script type="text/javascript">
 	
-	displayTrigger('.$id_trigger.');
+	$(document).ready(function(){
+		displayTrigger('.$id_trigger.');
+		ShowScenarios();
+		activateMenuElem(\'triggers\');
+	});
 	
 	function popupUpdateTriggerName(trigger_id) {
 		$.ajax({
@@ -215,7 +212,6 @@ echo
 				$("#drop-conditions").html(result);
 				setDroppable();
 				openDivs(0, 0);
-				setLinkedSmartcmd('.$trigger_info->id_smartcmd.');
 			}
 		});
 	}
@@ -244,10 +240,6 @@ echo
 				popup_close();
 			}
 		});
-	}
-						
-	function setLinkedSmartcmd(smartcmd_id) {
-		$("#selectSmartcmd-'.$id_trigger.'").selectpicker(\'val\', smartcmd_id);
 	}
 	
 </script>';

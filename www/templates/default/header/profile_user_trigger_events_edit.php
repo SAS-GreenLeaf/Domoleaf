@@ -6,12 +6,18 @@ if (empty($_GET['id_trigger'])) {
 	redirect();
 }
 
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
+
 $id_trigger = $_GET['id_trigger'];
 
 $request = new Api();
 $request -> add_request('confUserInstallation');
 $request -> add_request('mcVisible');
-$request -> add_request('listSmartcmd');
 $request -> add_request('searchTriggerById', array($id_trigger));
 $result  =  $request -> send_request();
 
@@ -24,12 +30,10 @@ $deviceallowed = $listAllVisible->ListDevice;
 $installation_info = $result->confUserInstallation;
 $trigger_info  = $result->searchTriggerById;
 $name_trigger = $trigger_info->trigger_name;
-$smartcmdList = $result->listSmartcmd;
 
 if(!empty($installation_info) || !empty($floorallowed) || !empty($roomallowed) || !empty($deviceallowed)) {
 
-			$available_opt = array ("12", "13", "54", "96", "363", "364", "365", "366",
-					"367", "368", "383", "388", "392", "393", "394");
+			$available_opt = array ("12","388");
 
 			foreach ($deviceallowed as $dev) {
 				foreach ($dev->device_opt as $dev_opt) {

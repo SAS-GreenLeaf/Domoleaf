@@ -356,6 +356,10 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 echo '<br/></div>
 <script type="text/javascript">
 
+$(document).ready(function(){
+	activateMenuElem(\'install\');
+});
+
 function LoadingButton(id, status){
 	if (status == 1){
 		$("#"+id).addClass("m-progress");

@@ -829,8 +829,8 @@ class Api {
 						break;
 						
 						case 'createNewTrigger' :
-							if (!empty($var[0]) && !empty($var[1])){
-								$res = $user->createNewTrigger($var[0], $var[1]);
+							if (!empty($var[0])){
+								$res = $user->createNewTrigger($var[0]);
 							}
 						break;
 						
@@ -875,7 +875,6 @@ class Api {
 						break;
 						
 						case 'updateTriggerElemOptionValue' :
-							error_log("API");
 							if (empty($var[4])) {
 								$var[4] = 0;
 							}
@@ -903,17 +902,6 @@ class Api {
 							}
 						break;
 						
-						case 'changeTriggerState' :
-							if (empty($var[1])) {
-								$var[1] = 0;
-							}
-							if (!empty($var[0])){
-								if (!empty($user->searchTriggerById($var[0]))) {
-									$res = $user->changeTriggerState($var[0], $var[1]);
-								}
-							}
-						break;
-						
 						case 'removeTrigger' :
 							if (!empty($var[0])){
 								if (!empty($user->searchTriggerById($var[0]))) {
@@ -930,14 +918,6 @@ class Api {
 							}
 						break;
 						
-						case 'triggerSaveLinkedSmartcmd' :
-							if (!empty($var[0]) && !empty($var[1])) {
-								if (!empty($user->searchTriggerById($var[0]))) {
-									$res = $user->triggerSaveLinkedSmartcmd($var[0], $var[1]);
-								}
-							}
-						break;
-						
 						case 'searchScheduleById' :
 							if (!empty($var[0])){
 								$res = $user->searchScheduleById($var[0]);
@@ -950,6 +930,14 @@ class Api {
 						
 						case 'getSchedule' :
 							$res = $user->getSchedule($var[0]);
+						break;
+						
+						case 'updateScheduleName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScheduleById($var[0]))) {
+									$res = $user->updateScheduleName($var[0], $var[1]);
+								}
+							}
 						break;
 						
 						case 'createNewSchedule' :
@@ -971,7 +959,92 @@ class Api {
 								}
 							}
 						break;
-							
+						
+						case 'searchScenarioById' :
+							if (!empty($var[0])){
+								$res = $user->searchScenarioById($var[0]);
+							}
+						break;
+						
+						case 'listScenarios' :
+							$res = $user->listScenarios();
+						break;
+						
+						case 'createNewScenario' :
+							if (!empty($var[0])){
+								$res = $user->createNewScenario($var[0]);
+							}
+						break;
+						
+						case 'getScenario' :
+							$res = $user->getScenario($var[0]);
+						break;
+						
+						case 'changeScenarioState' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->changeScenarioState($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioSmartcmd' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioSmartcmd($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioTrigger' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioTrigger($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioSchedule' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioSchedule($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'updateScenarioName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->updateScenarioName($var[0], $var[1]);
+								}
+							}
+						break;
+						
+						case 'completeScenario' :
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->completeScenario($var[0]);
+								}
+							}
+						break;
+						
+						case 'removeScenario' :
+							if (!empty($var[0])){
+								if (!empty($user->searchScenarioById($var[0]))) {
+									$res = $user->removeScenario($var[0]);
+								}
+							}
+						break;
+						
 						case 'confDbListLocal':
 							$res = $user->confDbListLocal();
 						break;

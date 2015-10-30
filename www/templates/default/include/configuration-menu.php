@@ -3,19 +3,19 @@
 echo
 '<div class="col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu sidebar">
 	<div class="list-group">
-		<a title="'._('General').'" href="/conf_general" class="list-group-item text-center change">
+		<a title="'._('General').'" href="/conf_general" id="menu-general" class="list-group-item text-center change">
 			<h4 class="fa fa-cog lg"></h4><br/><span class="hidden-xs">'._('General').'</span>
 		</a>
-		<a title="'._('Database').'" href="/conf_db" class="list-group-item text-center change">
+		<a title="'._('Database').'" href="/conf_db" id="menu-database" class="list-group-item text-center change">
 			<h4 class="fa fa-database lg"></h4><br/><span class="hidden-xs">'._('Database').'</span>
 		</a>
-		<a title="'._('Installation').'" href="/conf_installation" class="list-group-item text-center change">
+		<a title="'._('Installation').'" href="/conf_installation" id="menu-install" class="list-group-item text-center change">
 			<h4 class="fa fa-flask lg"></h4><br/><span class="hidden-xs">'._('Installation').'</span>
 		</a>
-		<a title="'._('Box').'" href="/conf_daemon" class="list-group-item text-center change">
+		<a title="'._('Box').'" href="/conf_daemon" id="menu-box" class="list-group-item text-center change">
 			<h4 class="fa fa-cubes lg"></h4><br/><span class="hidden-xs">'._('Box').'</span>
 		</a>
-		<a title="'._('Users').'" href="/conf_users" class="list-group-item text-center change">
+		<a title="'._('Users').'" href="/conf_users" id="menu-users" class="list-group-item text-center change">
 			<h4 class="fa fa-users lg"></h4><br/><span class="hidden-xs">'._('Users').'</span>
 		</a>
 		<a title="'._('Busmonitor').'" href="#" onclick="ShowBusmonitor()" class="list-group-item text-center change">
@@ -23,13 +23,13 @@ echo
 		</a>
 		<ul id="dropdown" class="nav nav-sidebar" hidden role="menu">
 			<li>
-				<a class="list-group-item text-center" href="/monitor_enocean">'._('Enocean').'</a>
+				<a id="menu-enocean" class="list-group-item text-center" href="/monitor_enocean">'._('Enocean').'</a>
 			</li>
 			<li>
-				<a class="list-group-item text-center" href="/monitor_ip">'._('Ip').'</a>
+				<a id="menu-ip" class="list-group-item text-center" href="/monitor_ip">'._('Ip').'</a>
 			</li>
 			<li>
-				<a class="list-group-item text-center" href="/monitor_knx">'._('KNX').'</a>
+				<a id="menu-knx" class="list-group-item text-center" href="/monitor_knx">'._('KNX').'</a>
 			</li>
 		</ul>
 	</div>
@@ -38,6 +38,7 @@ echo
 echo '<script type="text/javascript">
 
 $(".change").click(function() {
+	$(".list-group a").removeClass("active");
 	$(this).addClass("active");
 });
 		

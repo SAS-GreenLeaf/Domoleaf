@@ -12,7 +12,12 @@ echo '<div class="center"><h2>'._('Monitor enocean').'</h2></div>';
 			
 <script type="text/javascript">
 
-ListEnocean();
+$(document).ready(function(){
+	ShowBusmonitor();
+	activateMenuElem(\'enocean\');
+	ListEnocean();
+});
+
 setInterval(function() { ListEnocean() }, 10000);
 			
 function ListEnocean(){

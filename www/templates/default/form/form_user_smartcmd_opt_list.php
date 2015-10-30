@@ -14,7 +14,9 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 							"367", "368", "383", "388", "392", "393", "394");
 	
 	$idexec = $result->countElemSmartcmd + 1;
-	
+	if (empty($listoptdevice)) {
+		return;
+	}
 	foreach ($listoptdevice as $option) {
 		if (in_array($option->option_id, $available_opt)) {
 			if (($option->option_id == 392 || $option->option_id == 393 || $option->option_id == 394) && $option_rgb == 0) {

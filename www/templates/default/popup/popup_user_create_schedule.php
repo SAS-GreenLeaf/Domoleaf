@@ -2,6 +2,13 @@
 
 include('header.php');
 
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
+
 echo
 	'<div>'.
 		'<div id="popupError" class="alert alert-danger alert-dismissible center" role="alert" hidden>'.
@@ -51,7 +58,7 @@ echo
 				'}'.
 				'else if (result) {'.
 					'popup_close();'.
-					'redirect("/profile_user_trigger_schedules/"+result);'.
+					'redirect("/profile_user_trigger_schedules/"+result+"/"+'.$id_scenario.');'.
 				'}'.
 			'}'.
 		'});'.

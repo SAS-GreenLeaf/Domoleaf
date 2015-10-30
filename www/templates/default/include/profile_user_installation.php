@@ -238,7 +238,10 @@ echo '
 
 echo '<script type="text/javascript">
 
-WidgetSize();
+	$(document).ready(function(){
+		WidgetSize();
+		activateMenuElem(\'installation\');
+	});
 
 function swap(elem, action){
 	if (action == 1){

@@ -17,7 +17,12 @@ echo '<div class="center"><h2>'.
 			
 <script type="text/javascript">
 
-ListIp();
+$(document).ready(function(){
+	ShowBusmonitor();
+	activateMenuElem(\'ip\');
+	ListIp();
+});
+
 setInterval(function() { ListIp() }, 10000);
 			
 function ListIp(){

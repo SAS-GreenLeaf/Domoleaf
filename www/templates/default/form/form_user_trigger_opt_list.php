@@ -10,8 +10,7 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_trigger'])) {
 	$result  =  $request -> send_request();
 	$listoptdevice = $result->confDeviceRoomOpt;
 	$option_rgb = 0;
-	$available_opt = array ("12", "13", "54", "96", "363", "364", "365", "366",
-							"367", "368", "383", "388", "392", "393", "394");
+	$available_opt = array ("12", "388");
 	
 	$idexec = $result->countTriggerConditions + 1;
 

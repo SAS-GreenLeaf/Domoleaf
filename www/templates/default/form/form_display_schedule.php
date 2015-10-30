@@ -17,6 +17,9 @@ if (!empty($_GET['schedule_id'])) {
 	
 	$weekdays = $schedule_infos->weekdays;
 	$weekdays = str_split(sprintf("%'.07s\n", decbin($weekdays)));
+	$sunday = array_shift($weekdays);
+	array_pop($weekdays);
+	array_push($weekdays, $sunday);
 	
 	$days = $schedule_infos->days;
 	$days = str_split(sprintf("%'.031s\n", decbin($days)));

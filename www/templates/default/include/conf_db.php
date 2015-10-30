@@ -34,6 +34,10 @@ setInterval(function(){ ListDbLocal(); }, 10000);
 CheckUsb();
 setInterval(function(){ CheckUsb(); }, 10000);
 
+$(document).ready(function(){
+	activateMenuElem(\'database\');
+});
+
 function CheckUsb(){
 	$.ajax({
 		type:"GET",

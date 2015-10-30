@@ -2,11 +2,12 @@
 
 include('header.php');
 
-$request = new Api();
-$request -> add_request('listSmartcmd');
-$result  =  $request -> send_request();
-
-$smartcmdList = $result->listSmartcmd;
+if (empty($_GET['id_scenario'])) {
+	$id_scenario = 0;
+}
+else {
+	$id_scenario = $_GET['id_scenario'];
+}
 
 echo
 	'<div>'.
@@ -20,16 +21,7 @@ echo
 			'value="" placeholder="Trigger name" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
-	'<div class="input-group margin-top">'.
-		'<select class="selectpicker form-control margin-bottom" id="selectLinkedSmartcmd" data-size="10">'.
-			'<option value="0">'._('No Smartcommand selected').'</option>';
-			foreach ($smartcmdList as $elem) {
-				echo '<option value="'.$elem->smartcommand_id.'">'.$elem->name.'</option>';
-			}
-			echo
-		'</select>'.
-	'</div>'.
-	'<div class="controls center">'.
+	'<div class="controls center margin-top">'.
 		'<button onclick="saveNewTrigger()" class="btn btn-success">'.
 			''._('Save').''.
 			'<span class="glyphicon glyphicon-ok"></span>'.
@@ -45,40 +37,31 @@ echo
 	
 		'$("#popupTitle").html("'._("New Trigger").'");'.
 		
-		'$(".selectpicker").selectpicker();'.
-		
 		'function saveNewTrigger() {'.
 			'var name = "";'.
 			
 			'name = $("#triggerName").val();'.
 			'name = name.trim();'.
 			
-			'var smartcmd_id = parseInt($("#selectLinkedSmartcmd").val());'.
-			'if (smartcmd_id == 0) {'.
-				'$("#popupError").show();'.
-				'$("#errorMsg").html("'._('No Smartcommand selected').'");'.
-			'}'.
-			'else {'.
-				'$.ajax({'.
-					'type: "GET",'.
-					'url: "/templates/default/form/form_create_new_trigger.php",'.
-					'data: "trigger_name="+name+"&smartcmd_id="+smartcmd_id,'.
-					'success: function(result) {'.
-						'if (result && result == -1) {'.
-							'$("#popupError").show();'.
-							'$("#errorMsg").html("'._('Name already existing').'");'.
-						'}'.
-						'else if (result && result == -2) {'.
-							'$("#popupError").show();'.
-							'$("#errorMsg").html("'._('Invalid Name').'");'.
-						'}'.
-						'else if (result) {'.
-							'popup_close();'.
-							'redirect("/profile_user_trigger_events/"+result);'.
-						'}'.
+			'$.ajax({'.
+				'type: "GET",'.
+				'url: "/templates/default/form/form_create_new_trigger.php",'.
+				'data: "trigger_name="+name,'.
+				'success: function(result) {'.
+					'if (result && result == -1) {'.
+						'$("#popupError").show();'.
+						'$("#errorMsg").html("'._('Name already existing').'");'.
 					'}'.
-				'});'.
-			'}'.
+					'else if (result && result == -2) {'.
+						'$("#popupError").show();'.
+						'$("#errorMsg").html("'._('Invalid Name').'");'.
+					'}'.
+					'else if (result) {'.
+						'popup_close();'.
+						'redirect("/profile_user_trigger_events/"+result+"/"+'.$id_scenario.');'.
+					'}'.
+				'}'.
+			'});'.
 		'}'.
 		
 	'</script>';

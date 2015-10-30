@@ -5,11 +5,20 @@ include('profile-menu.php');
 echo
 '<div id="scheduleList">
 	<div class="col-xs-offset-2 margin-top center">
-		<button class="btn btn-greenleaf" onclick="createSchedule()">
+		<button class="btn btn-greenleaf" onclick="createSchedule(0)">
 			'._('Create New Schedule').'
 		</button>
 	</div>
-	<div class="col-xs-offset-2 margin-top col-xs-10">
+	<div class="col-xs-offset-2 margin-top col-xs-10">';
+	if (empty($schedulesList)) {
+		echo
+		'<div class="alert alert-warning center col-xs-offset-2 margin-top col-xs-8" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			'._('No Schedule').'
+		</div>';
+	}
+	else {
+		echo '
 		<table id="listSchedules" class="table table-bordered table-striped table-condensed">
 			<thead>
 				<tr>
@@ -23,7 +32,7 @@ echo
 				<tr id="schedule-'.$elem->schedule_id.'">
 					<td>'.$elem->name.'</td>
 					<td class="center">
-						<a href="/profile_user_trigger_schedules/'.$elem->schedule_id.'">
+						<a href="/profile_user_trigger_schedules/'.$elem->schedule_id.'/0">
 							<button type="button"
 							        title="'._('Edit schedule').'"
 							        class="btn btn-primary">
@@ -38,29 +47,23 @@ echo
 						</button>
 					</td>
 				</tr>';
-				}
-				echo '
+			}
+			echo '
 			</tbody>
-		</table>
+		</table>';
+	}
+	echo '
 	</div>
 </div>';
 
 echo '
 <script type="text/javascript">
 	
-	function createSchedule() {
-		$.ajax({
-			type: "GET",
-			url: "/templates/'.TEMPLATE.'/popup/popup_user_create_schedule.php",
-			success: function(msg) {
-				BootstrapDialog.show({
-					title: \'<div id="popupTitle" class="center"></div>\',
-					message: msg
-				});
-			}
-		});
-	}
-				
+	$(document).ready(function(){
+		ShowScenarios();
+		activateMenuElem(\'schedules\');
+	});
+	
 	function PopupRemoveSchedule(schedule_id) {
 		$.ajax({
 			type:"GET",

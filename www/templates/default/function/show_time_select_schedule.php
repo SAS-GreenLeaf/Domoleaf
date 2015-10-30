@@ -180,7 +180,7 @@ function display_days($days) {
 		</div>
 		<div hidden class="DaysListAndBtn">
 			<ul id="daysList">';
-	for($i = 0 ; $i <= 31; $i++) {
+	for($i = 1 ; $i <= 31; $i++) {
 		if ($i < 10) {
 			$j = '0'.$i;
 		}
@@ -197,7 +197,7 @@ function display_days($days) {
 					       id="day-'.$i.'"
 					       type="checkbox"
 					       class="dayElemWidth resetSaveBtn" ';
-					       if ($all_activate == 1) {
+					       if ($days[$i-1] == 1) {
 					       		$display.='checked';
 					       }
 					       $display.='>
@@ -268,7 +268,7 @@ function display_hours($hours) {
 					       id="hour-'.$i.'"
 					       type="checkbox"
 					       class="hourElemWidth resetSaveBtn" ';
-					       if ($all_activate == 1) {
+					       if ($hours[$i] == 1) {
 					       		$display.='checked';
 					       }
 					       $display.='>

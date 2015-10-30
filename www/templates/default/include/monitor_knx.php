@@ -64,7 +64,12 @@ echo '<div class="center"><h2>'._('Monitor KNX').'</h2></div>
 			
 <script type="text/javascript">
 
-ListKnx();
+$(document).ready(function(){
+	ShowBusmonitor();
+	activateMenuElem(\'knx\');
+	ListKnx();
+});
+
 setInterval(function() { ListKnx() }, 2000);
 			
 function ListKnx(){

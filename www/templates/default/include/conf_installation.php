@@ -7,7 +7,7 @@ echo '
 	echo '
 	<div class="center"><h2>'._('Configuration installation').'</h2></div>
 		
-		<div class="btn-group btn-group-greenleaf decalage-droite block-right">';
+		<div class="btn-group btn-group-greenleaf block-right">';
 			if (sizeof($roomlist) == 0){
 				echo '
 				<button type="button" class="btn btn-greenleaf" onclick="PopupNewFloor()">
@@ -79,6 +79,10 @@ echo '
 </div>
 		
 <script type="text/javascript">
+
+$(document).ready(function(){
+	activateMenuElem(\'install\');
+});
 
 function PopupRenameFloor(idfloor){
 		

@@ -132,9 +132,13 @@ echo ' <title>'._('Profile').'</title>
 
 <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
 </div>
-													
+
 <script type="text/javascript">
-							
+
+	$(document).ready(function(){
+		activateMenuElem(\'settings\');
+	});
+	
 $("#alert1").hide();
 $("#alert2").hide();
 $("#alert3").hide();
@@ -142,7 +146,7 @@ $("#alert3").hide();
 function loadingForm() {
 	BootstrapDialog.show({
 		title: \''._('Loading').'\',
-   		message: \''._('Load in progress').'\'
+		message: \''._('Load in progress').'\'
 	});
 }
 
@@ -188,8 +192,8 @@ function saveProfile() {
 	var lastname = $("#lastname").val();
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
-   				
-   	alert("ok");
+
+	alert("ok");
 	if ($("#sexe-1").is(\':checked\'))
 	{
 		var gender = 1;

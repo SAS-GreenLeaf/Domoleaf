@@ -13,19 +13,8 @@ if __name__ == "__main__":
         port = parser.getValueFromSection('listen', 'port_cmd')
         s = socket.create_connection((ip, port))
         obj = {
-            "packet_type": "cron_upnp",
-            "data": [
-                {
-                    "action": "open",
-                    "configuration_id": 1,
-                    "protocol": "TCP"
-                },
-                {
-                    "action": "close",
-                    "configuration_id": 2,
-                    "protocol": "TCP"
-                }
-            ]
+            "packet_type": "check_all_schedules",
+            "data" : ""
         }
         obj_str = json.JSONEncoder().encode(obj)
         s.send(obj_str.encode())
