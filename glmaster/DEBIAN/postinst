@@ -55,6 +55,9 @@ fi
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/room
 
+#CRON
+chmod +x /usr/bin/CronOpenPort.py
+
 chmod +x /usr/bin/glmaster.py
 chmod +x /etc/init.d/glmaster
 systemctl enable glmaster
