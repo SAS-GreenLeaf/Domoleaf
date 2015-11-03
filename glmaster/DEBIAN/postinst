@@ -22,7 +22,7 @@ sed -i 's/opcache.enable=0/opcache.enable=1/g' /etc/php5/fpm/php.ini
 
 # Create domoleaf db if does not exist
 bash /etc/domoleaf/sql/database.sh
-python3 /usr/bin/glmaster/glmaster_postinst
+python3 /usr/bin/glmaster/glmaster_postinst.py
 
 user=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT user_id FROM user WHERE user_id = 1;"`
 if [ "$user" = "" ]; then
