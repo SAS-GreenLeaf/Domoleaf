@@ -2,6 +2,9 @@
 
 echo -e "[ \033[33m..\033[0m ] Removing Domoleaf master daemon..."
 
+#Conf file
+cp /etc/domoleaf/master.conf /etc/domoleaf/master.conf.save
+
 #Backup images
 rm -rf /etc/domoleaf/custom
 cp -r /etc/domoleaf/www/templates/default/custom /etc/domoleaf/

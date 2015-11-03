@@ -3,7 +3,6 @@
 echo -e "[ \033[32mok\033[0m ] Done installing Domoleaf master daemon"
 hostname=`hostname`
 glmaster=`cat /etc/domoleaf/.glmaster.version`
-glslave=`cat /etc/domoleaf/.glslave.version`
 
 #Backups
 mkdir -p /etc/domoleaf/mnt
@@ -23,50 +22,12 @@ sed -i 's/opcache.enable=0/opcache.enable=1/g' /etc/php5/fpm/php.ini
 
 # Create domoleaf db if does not exist
 bash /etc/domoleaf/sql/database.sh
-
-# check password mysql in /etc/domoleaf/master.conf
-if grep -q "^password=domoleaf$" /etc/domoleaf/master.conf; then
-    echo -e "[ \033[33mINFO\033[0m ] Changing mysql default password..."
-    newpasswd=`echo $RANDOM $RANDOM $RANDOM $RANDOM | (sha1sum && echo $RANDOM) | sha1sum | sed 's/  -//g'`
-    sed -i "s/password=domoleaf/password=$newpasswd/g" /etc/domoleaf/master.conf
-    echo -e "[ \033[32mOK\033[0m ] Done."
-    echo -e "[ \033[33mINFO\033[0m ] Initializing SQL user..."
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "DELETE FROM user WHERE User='domoleaf';"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "DELETE FROM db WHERE User='domoleaf';"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "CREATE DATABASE IF NOT EXISTS domoleaf;"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "ALTER DATABASE domoleaf CHARACTER SET utf8 COLLATE utf8_general_ci;"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "INSERT INTO user (Host, User, Password) VALUES ('localhost', 'domoleaf', PASSWORD('$newpasswd'));"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "INSERT INTO db (\`Host\`, \`Db\`, \`User\`, \`Select_priv\`, \`Insert_priv\`, \`Update_priv\`, \`Delete_priv\`, \`Create_priv\`, \`Drop_priv\`, \`Grant_priv\`, \`References_priv\`, \`Index_priv\`, \`Alter_priv\`, \`Create_tmp_table_priv\`, \`Lock_tables_priv\`, \`Create_view_priv\`, \`Show_view_priv\`, \`Create_routine_priv\`, \`Alter_routine_priv\`, \`Execute_priv\`, \`Event_priv\`, \`Trigger_priv\`) VALUES ('localhost','domoleaf','domoleaf','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y');"
-    mysql --defaults-file=/etc/mysql/debian.cnf mysql -e "FLUSH PRIVILEGES;"
-    echo -e "[ \033[32mOK\033[0m ] Done."
-    sed -i "s/define('DB_PASSWORD', 'domoleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/domoleaf/www/config.php
-else
-    newpasswd=$(grep "^password=" /etc/domoleaf/master.conf | cut -d = -f 2)
-    sed -i "s/define('DB_PASSWORD', 'domoleaf')/define('DB_PASSWORD', '$newpasswd')/g" /etc/domoleaf/www/config.php
-fi
+python3 /usr/bin/glmaster/glmaster_postinst
 
 user=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT user_id FROM user WHERE user_id = 1;"`
 if [ "$user" = "" ]; then
     adminpasswd=`echo -n '1_admin' | sha256sum | sed 's/  -//g'`
     mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
-fi
-
-daemon=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
-if [ "$daemon" = "" ]; then
-    key=$(grep "^aes =" /etc/domoleaf/slave.conf | cut -d = -f 2)
-    secretkey=`echo -n $key | md5sum | sed 's/  -//g'`
-    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('$hostname','$hostname','$secretkey',1,'$glslave')"
-    daemon=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -B -N -e "SELECT daemon_id FROM daemon WHERE serial = '$hostname';"`
-    
-    #KNX Interface
-    if [ -f /dev/ttyAMA0 ]; then
-        interface="ttyAMA0"
-    elif [ -f /dev/ttyS0 ]; then
-        interface="ttyS0"
-    else
-        interface="127.0.0.1"
-    fi
-    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO daemon_protocol (daemon_id, protocol_id, interface) VALUES ($daemon,1,'$interface')"
 fi
 
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "UPDATE configuration SET configuration_value='$glmaster' WHERE configuration_id=4"

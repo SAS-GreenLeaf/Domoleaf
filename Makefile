@@ -74,9 +74,9 @@ packages-native:
 	@sed -i "s/define('VERSION', '$(VERSION_MASTER)');/define('VERSION', '0.0.0');/g" www/config.php
 	@dpkg-deb --build glmaster > /dev/null
 	@echo $(VERSION_SLAVE) > glslave/etc/domoleaf/.glslave.version
-	@sed -i 's/Architecture: all/Architecture: $(ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
+	@sed -i 's/Architecture: any/Architecture: $(ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
 	@dpkg-deb --build glslave > /dev/null
-	@sed -i 's/Architecture: $(ARCH_NAME)/Architecture: all/g' glslave/DEBIAN/control # Reset arch
+	@sed -i 's/Architecture: $(ARCH_NAME)/Architecture: any/g' glslave/DEBIAN/control # Reset arch
 	@mv glmaster.deb         $(MASTER_NAME)
 	@mv glslave.deb          $(SLAVE_NAME)
 
@@ -92,9 +92,9 @@ packages:
 	@sed -i "s/define('VERSION', '$(VERSION_MASTER)');/define('VERSION', '0.0.0');/g" www/config.php
 	@dpkg-deb --build glmaster > /dev/null
 	@echo $(VERSION_SLAVE) > glslave/etc/domoleaf/.glslave.version
-	@sed -i 's/Architecture: all/Architecture: $(ARM_ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
+	@sed -i 's/Architecture: any/Architecture: $(ARM_ARCH_NAME)/g' glslave/DEBIAN/control # Modify arch
 	@dpkg-deb --build glslave > /dev/null
-	@sed -i 's/Architecture: $(ARM_ARCH_NAME)/Architecture: all/g' glslave/DEBIAN/control # Reset arch
+	@sed -i 's/Architecture: $(ARM_ARCH_NAME)/Architecture: any/g' glslave/DEBIAN/control # Reset arch
 	@mv glmaster.deb         $(MASTER_NAME)
 	@mv glslave.deb          $(SLAVE_NAME_NATIVE)
 
