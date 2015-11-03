@@ -1978,6 +1978,7 @@ class Admin extends User {
 	function monitorKnx() {
 		$link = Link::get_link('domoleaf');
 		$listDevices = array();
+		$list = array();
 		
 		$sql = 'SELECT room_device_option.room_device_id, room_device.name,
 		               room_device.device_id, daemon_id, room_device_option.addr, addr_plus
