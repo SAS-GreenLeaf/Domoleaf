@@ -153,12 +153,15 @@ function is_valid_password(password, passwordConfirm)
 	return 1;
 }
 
-function cmd_camera(idcam, action){
-
+function cmd_camera(iddevice, action, optionid){
+	if (iddevice != ""){
 		$.ajax({
 			type:"GET",
-			data:"action="+action,
-			url: "/test.php"
+			url: "form/form_mc_camera.php",
+			data: "iddevice="+iddevice+"&action="+action+"&optionid="+optionid,
+			complete: function(result, status) {
+			}
 		});
+	}
 }
 

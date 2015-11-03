@@ -2269,7 +2269,19 @@ class User {
 		}
 		return $list;
 	}
-	
+
+	function mcCamera($iddevice, $val, $optionid){
+		if($this->checkDevice($iddevice)){
+			$socket = new Socket();
+			$data = array(
+					'room_device_id' => $iddevice,
+					'option_id'      => $optionid,
+					'action'         => $val,
+			);
+			$socket->send('send_to_device', $data);
+		}
+	}
+
 	/**
 	 * 
 	 * @param unknown $iddevice
