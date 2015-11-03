@@ -522,7 +522,8 @@ function SaveOption(optid){
 		$.ajax({
 				type:"GET",
 				url: "/form/form_device_info_opt.php",
-				data: "idroomdevice="+idroomdevice+"&opt="+optid+"&addr="+addr+"&addr_plus="+addr_plus+"&dpt_id="+dpt_id+"&status="+status,
+				data: "idroomdevice="+encodeURIComponent(idroomdevice)+"&opt="+encodeURIComponent(optid)+"&addr="+encodeURIComponent(addr)+
+					  "&addr_plus="+encodeURIComponent(addr_plus)+"&dpt_id="+encodeURIComponent(dpt_id)+"&status="+encodeURIComponent(status),
 				complete: function(result, status) {
 					LoadingButton("saveoption-"+optid, 0);
 				}
