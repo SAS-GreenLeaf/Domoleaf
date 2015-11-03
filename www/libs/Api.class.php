@@ -1226,6 +1226,13 @@ class Api {
 						case 'mcReturn':
 							$res = $user->mcReturn();
 						break;
+						
+						case 'mcCamera':
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
+								$res = $user->mcCamera($var[0], $var[1], $var[2]);
+							}
+						break;
+							
 					}
 					$answer['request'][$action] = $res;
 				}

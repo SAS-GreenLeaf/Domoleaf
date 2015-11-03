@@ -37,6 +37,7 @@ from Schedule import *;
 from Scenario import *;
 import utils;
 from GLManager import *;
+from HttpReq import *;
 
 LOG_FILE                = '/var/log/glmaster.log'
 MASTER_CONF_FILE        = '/etc/domoleaf/master.conf';         # Configuration file name
@@ -72,6 +73,14 @@ UPNP_MUTE           = 'mute';               # Mute command id
 UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
 UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
+
+# IDs for HttpReq protocol
+CAMERA_TOP          = 'top';                # Top command id
+CAMERA_BOTTOM       = 'bottom';             # Bottom command id
+CAMERA_LEFT         = 'left';               # Left command id
+CAMERA_RIGHT        = 'right';              # Right command id
+CAMERA_HOME         = 'home';               # Home command id
+
 
 #################################################
 # Packet types that can be received and treated #
@@ -154,6 +163,13 @@ class MasterDaemon:
             UPNP_VOLUME_UP      : self.upnp_set_volume_up,
             UPNP_VOLUME_DOWN    : self.upnp_set_volume_down,
             UPNP_SET_VOLUME     : self.upnp_set_volume
+        };
+        self.http_req_function = {
+            CAMERA_TOP          : self.camera_move,
+            CAMERA_BOTTOM       : self.camera_move,
+            CAMERA_LEFT         : self.camera_move,
+            CAMERA_RIGHT        : self.camera_move,
+            CAMERA_HOME         : self.camera_move
         };
         self.enocean_function = {};
         self.data_function = {
@@ -619,8 +635,14 @@ class MasterDaemon:
         """
         Retrieves the good device in the database and builds the request to send.
         """
+        hostname = '';
         dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
         dev = dm.load_from_db();
+        if dev['protocol_id'] == PROTOCOL_IP:
+            json_obj['addr'] = dev['addr'];
+            json_obj['port'] = dev['plus1'];
+            self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
+            return ;
         if dev is None:
             connection.close();
             return ;
@@ -632,10 +654,6 @@ class MasterDaemon:
         if hostname != '':
             if dev['protocol_id'] == PROTOCOL_KNX:
                 self.knx_manager.protocol_knx(json_obj, dev, hostname);
-            elif dev['protocol_id'] == PROTOCOL_IP:
-                json_obj['addr'] = dev['addr'];
-                json_obj['port'] = dev['plus1'];
-                self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
         connection.close();
 
     def protocol_enocean(self, json_obj, dev, hostname):
@@ -703,14 +721,19 @@ class MasterDaemon:
         """
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume(desired_volume = int(json_obj['data']['value']));
 
+    def camera_move(self, json_obj, dev, hostname):
+        HttpReq.camera_move(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
+
     def protocol_ip(self, json_obj, dev, hostname):
         """
         Callback called each time a protocol_ip packet is received.
         Calls the desired Upnp function.
         """
-        print('PROTOCOL IP PACKET')
+        json_obj['data']['value'] = dev['addr_dst'];
         if json_obj['data']['action'] in self.upnp_function.keys():
             self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
+        elif json_obj['data']['action'] in self.http_req_function.keys():
+            self.http_req_function[json_obj['data']['action']](json_obj, dev, hostname);
 
     def get_ip_ifname(self, ifname):
         """
