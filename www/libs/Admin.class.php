@@ -1314,7 +1314,6 @@ class Admin extends User {
 		$res = $socket->receive();
 		
 		if (empty($res)){
-			error_log('C\'est con ça hein ?');
 			return;
 		}
 		
