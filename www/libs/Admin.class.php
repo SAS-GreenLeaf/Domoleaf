@@ -1314,6 +1314,7 @@ class Admin extends User {
 		$res = $socket->receive();
 		
 		if (empty($res)){
+			error_log('No answer from slave for confDaemonProtocol');
 			return;
 		}
 		
@@ -1569,6 +1570,7 @@ class Admin extends User {
 		}
 		
 		$list = array();
+	
 		$sql = 'SELECT floor.floor_id, floor_name, floor_order
 		        FROM floor
 		        JOIN user_floor ON user_floor.floor_id=floor.floor_id
@@ -1605,7 +1607,7 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT room_device.room_device_id, room_device.name,
+		$sql = 'SELECT room_device.room_device_id, room_device.name, 
 		               room_device.room_id, room.floor, device_order,
 		               device_bgimg, device_id
 		        FROM room_device
