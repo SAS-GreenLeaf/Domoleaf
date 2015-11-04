@@ -4,8 +4,7 @@ from requests.auth import HTTPDigestAuth;
 sys.path.append("/usr/lib/domoleaf");
 from Logger import *;
 
-LOG_FILE        = '/var/log/glslave';
-
+LOG_FILE        = '/var/log/glslave.log';
 LOG_FLAG        = True;
 
 class HttpReq:

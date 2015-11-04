@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS application;
+DROP TABLE IF EXISTS manufacturer;
 
 CREATE TABLE `manufacturer` (
   `manufacturer_id` int(10) unsigned NOT NULL AUTO_INCREMENT,

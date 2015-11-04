@@ -53,13 +53,14 @@ echo '	<div class="col-xs-6">
 			
 			}
 		echo	'</tbody>'.
-			'</table>'.			
+			'</table>'.
 		'</div>'.
 		'<div class="col-xs-12"><div class="alert alert-danger alert-hidden alert-dismissible" role="alert" id ="signerr" >'.
 			'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'.
 			'<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'.
 			'<span class="sr-only">'._('Error:').'</span>'._(' Empty field').'</div>'.
 		'</div>'.
+	'<div class="clearfix"></div>'.
 	'<div class="controls center">		
 		<button  id="eventSave" onclick="NewDaemon()" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button>
 	</div>'.
