@@ -3,14 +3,15 @@ import configparser;
 import sys;
 sys.path.append("/usr/lib/domoleaf");
 
-LOG_FILE        = '/var/log/glslave';
+LOG_FILE        = '/var/log/glslave.log';
+LOG_FLAG        = True;
 
 class DaemonConfigParser:
     """
     Configuration files parsing class.
     """
     def __init__(self, filename):
-        self.logger = Logger(True, LOG_FILE);
+        self.logger = Logger(LOG_FLAG, LOG_FILE);
         self._Filename = filename;
         self._Config = configparser.ConfigParser();
         if not self._Config.read(filename):

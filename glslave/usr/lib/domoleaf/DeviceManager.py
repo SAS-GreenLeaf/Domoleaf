@@ -40,8 +40,7 @@ MYSQL_CONF_USER_ENTRY = 'user';
 MYSQL_CONF_PASSWORD_ENTRY = 'password';
 MYSQL_CONF_DATABASE_ENTRY = 'database_name';
 
-LOG_FILE        = '/var/log/glslave';
-
+LOG_FILE        = '/var/log/glslave.log';
 LOG_FLAG        = True;
 
 class DeviceManager:
