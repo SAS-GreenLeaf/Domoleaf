@@ -29,7 +29,6 @@ function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule, $id
 	}
 	$request -> add_request('searchSmartcmdById', array($id_smartcmd));
 	$result  =  $request->send_request(); 
-	
 	$display =
 				'<div class="inline">
 					<h4 id="summaryScenarioName" class="block-left">

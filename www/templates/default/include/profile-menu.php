@@ -13,16 +13,28 @@ echo '<div class="col-xs-2 bhoechie-tab-menu sidebar">
 				</a>
 				<ul id="dropdownScenarios" class="nav nav-sidebar" hidden role="menu">
 					<li>
-						<a id="menu-smartcmds" class="list-group-item text-center" href="/profile_user_smartcmd">'._('Smartcommands').'</a>
+						<a id="menu-scenarios" class="list-group-item text-center" href="/profile_user_scenarios">
+							<i class="glyphicon glyphicon-ok margin-right"></i>
+							'._('Scenarios').'
+						</a>
 					</li>
 					<li>
-						<a id="menu-scenarios" class="list-group-item text-center" href="/profile_user_scenarios">'._('Scenarios').'</a>
+						<a id="menu-smartcmds" class="list-group-item text-center" href="/profile_user_smartcmd">
+							<i class="fi flaticon-playbutton17 margin-right"></i>
+							'._('Smartcommands').'
+						</a>
 					</li>
 					<li>
-						<a id="menu-triggers" class="list-group-item text-center" href="/profile_user_trigger_events">'._('Triggers').'</a>
+						<a id="menu-triggers" class="list-group-item text-center" href="/profile_user_trigger_events">
+							<i class="fa fa-exclamation margin-right"></i>
+							'._('Triggers').'
+						</a>
 					</li>
 					<li>
-						<a id="menu-schedules" class="list-group-item text-center" href="/profile_user_trigger_schedules">'._('Schedules').'</a>
+						<a id="menu-schedules" class="list-group-item text-center" href="/profile_user_trigger_schedules">
+							<i class="fa fa-clock-o margin-right"></i>
+							'._('Schedules').'
+						</a>
 					</li>
 				</ul>
 			</div>
