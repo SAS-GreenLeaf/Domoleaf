@@ -103,7 +103,8 @@ class KNXManager:
         AES.key_size = 32;
         aes_IV = AESManager.get_IV();
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
-        data2 = encode_obj.encrypt(json_str + (176 - len(json_str)) * ' ');
+        spaces = 16 - len(json_str) % 16;
+        data2 = encode_obj.encrypt(json_str + (spaces * ' '));
         sock.send(bytes(aes_IV, 'utf-8') + data2);
         if close_flag == True:
             sock.close();

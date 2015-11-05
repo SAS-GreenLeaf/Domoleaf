@@ -50,7 +50,8 @@ class GLManager:
         hostname = socket.gethostname()
         aes_IV = AESManager.get_IV();
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
-        obj_to_send = encode_obj.encrypt(obj_to_send + (320 - len(obj_to_send)) * ' ');
+        spaces = 16 - len(obj_to_send) % 16;
+        obj_to_send = encode_obj.encrypt(obj_to_send + (spaces * ' '));
         
         data = {
             "sender_name": hostname,
