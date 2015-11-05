@@ -836,7 +836,8 @@ class MasterDaemon:
         aes_key = self.get_secret_key(hostname);
         obj_to_send = '{"packet_type": "check_slave", "sender_name": "' + self_hostname + '"}';
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
-        sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (176 - len(obj_to_send)) * ' '));
+        spaces = 16 - len(obj_to_send) % 16;
+        sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 10);
         val = '0';
         version = '';
