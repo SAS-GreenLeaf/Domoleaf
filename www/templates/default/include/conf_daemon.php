@@ -246,6 +246,9 @@ function RenameDaemon(id){
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
 		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean,
+		beforeSend:function(result, status){
+			PopupLoading();
+		},
 		complete: function(result, status) {
 			location.href=\'/conf_daemon\'
 		}
