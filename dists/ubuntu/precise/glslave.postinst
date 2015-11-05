@@ -18,7 +18,24 @@ then
 	sed -i 's/console=ttyAMA0,115200 //g' /boot/cmdline.txt
 	sed -i 's/kgdboc=ttyAMA0,115200 //g' /boot/cmdline.txt
 fi
-pip3 install scapy-python3
+
+PYTHON=$(find /usr/bin/ | grep python3.[3-5]$ | sort -r | head -n1 | cut -d/ -f4)
+PIP3=$(command -v pip3)
+
+rm -f /usr/bin/python3
+ln -s /usr/bin/$PYTHON /usr/bin/python3
+
+if [ ! -e /usr/local/lib/$PYTHON/dist-packages/Crypto ] ; then 
+	ln -s /usr/local/lib/$PYTHON/dist-packages/crypto /usr/local/lib/$PYTHON/dist-packages/Crypto
+fi
+
+if [ "$PIP3" != "/usr/local/bin/pip3" ] ; then
+	wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+	python3 get-pip.py
+	rm -f get-pip.py
+fi
+
+pip3 install crypto pycrypto pycurl rsa scapy-python3
 
 #Init/Upgrade
 python3 /usr/bin/glslave/glslave_postinst.py
@@ -29,10 +46,10 @@ chmod +x /usr/bin/CronSendAlive.py
 chmod +x /usr/bin/CronSendTech.py
 
 #KNXD
-systemctl enable knxd
-systemctl restart knxd
+update-rc.d knxd defaults
+service knxd restart
 
 chmod +x /usr/bin/glslave.py
 chmod +x /etc/init.d/glslave
-systemctl enable glslave
-systemctl start glslave
+update-rc.d glslave defaults
+service glslave restart

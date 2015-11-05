@@ -16,7 +16,6 @@ check_package()
 
 check_package make
 check_package gcc
-check_package gcc-arm-none-eabi
 check_package g++
 check_package libconfig-dev
 check_package autoconf

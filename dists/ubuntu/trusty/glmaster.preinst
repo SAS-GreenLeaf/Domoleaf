@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo -e "[ \033[33m..\033[0m ] Installing Domoleaf master daemon..."
+
+mkdir -p /etc/domoleaf/sql/{create,update,backup}
+mkdir -p /usr/lib/domoleaf
+mkdir -p /etc/domoleaf
+mkdir -p /usr/bin/glmaster
+mkdir -p /etc/domoleaf/www

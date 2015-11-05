@@ -1,0 +1,5 @@
+# Before installation run :
+apt-get install -y python-software-properties
+add-apt-repository ppa:ondrej/php5
+add-apt-repository ppa:fkrull/deadsnakes
+apt-get update

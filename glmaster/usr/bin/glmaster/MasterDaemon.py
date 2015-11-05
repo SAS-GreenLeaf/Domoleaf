@@ -57,8 +57,6 @@ MASTER_CONF_CONNECT_SECTION             = 'connection';
 MASTER_CONF_CONNECT_PORT_ENTRY          = 'port';
 MASTER_CONF_PKEY_SIZE_ENTRY             = 'size';
 
-RELOAD_WEB_SERVER_COMMAND               = ["service", "nginx", "reload"]; # Command and args to reload nginx
-
 PROTOCOL_KNX            = 1;    # KNX protocol id
 PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
 PROTOCOL_IP             = 6;    # IP protocol id
@@ -939,10 +937,10 @@ class MasterDaemon:
 
     def reload_web_server(self):
         """
-        Call "systemctl restart nginx"
+        Call "service reload nginx"
         """
         self.logger.info('Reloading web server...');
-        call(RELOAD_WEB_SERVER_COMMAND);
+        call(["service", "nginx", "reload"]);
         self.logger.info('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection):

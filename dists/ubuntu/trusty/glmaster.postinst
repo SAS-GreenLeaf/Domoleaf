@@ -31,12 +31,12 @@ if [ "$user" = "" ]; then
 fi
 
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "UPDATE configuration SET configuration_value='$glmaster' WHERE configuration_id=4"
-sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$glmaster');/g" www/config.php
+sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$glmaster');/g" /etc/domoleaf/www/config.php
 
 rm -f /etc/nginx/sites-enabled/domoleaf.conf
 ln -s /etc/nginx/sites-available/domoleaf.conf /etc/nginx/sites-enabled/domoleaf.conf
 
-systemctl restart nginx
+service nginx restart
 
 #Translation, .mo generation
 for inode in $(find /etc/domoleaf/www/locales -type d)
@@ -61,5 +61,5 @@ chmod +x /usr/bin/CronOpenPort.py
 
 chmod +x /usr/bin/glmaster.py
 chmod +x /etc/init.d/glmaster
-systemctl enable glmaster
-systemctl start glmaster
+update-rc.d glmaster defaults
+service glmaster start
