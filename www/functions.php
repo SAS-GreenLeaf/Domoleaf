@@ -171,4 +171,23 @@ function convertRGBToHexa($red, $green, $blue) {
 	return $hexa_color;
 }
 
+function compress_image($src, $dest , $quality)
+{
+	$info = getimagesize($src);
+	if ($info['mime'] == 'image/jpeg') {
+		$image = imagecreatefromjpeg($src);
+	}
+	else if ($info['mime'] == 'image/png') {
+		$image = imagecreatefrompng($src);
+	}
+	else {
+		return null;
+	}
+
+	//compress and save file to jpg
+	imagejpeg($image, $dest, $quality);
+
+	//return destination file
+	return $dest;
+}
 ?>

@@ -268,6 +268,67 @@ function CustomPopup(type, iddevice, userid){
 	});
 }
 
+function submitFormUpload(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	if (files != ""){
+		$("#uploadFileForm").submit();
+	}
+	else {
+		$("#uploadFileForm").click();
+	}
+}
+function uploadDeviceImg(event) {
+	if (files != ""){
+		var data = new FormData();
+		data.append("fileToUpload", files[0]);
+		data.append("device", $("#iddevice").val());
+		data.append("userid", $("#userid").val());
+		$.ajax({
+			url: "/templates/default/form/form_custom_upload_device.php",
+			type: "POST",
+			data: data,
+			processData: false,
+			contentType: false,
+			success: function(data, textStatus){
+				if (data == "0"){
+					$("#uploadSuccess").hide();
+					$("#uploadFail").show();
+				} else {
+					$("#uploadFail").hide();
+					$("#uploadSuccess").show();
+					$('#deleteBtn').show();
+					$("#uploadBtn").hide();
+					$('#widget-bg-'+$("#iddevice").val()).css("background-image", "url(\""+data+"\")");
+				}
+			},
+		});
+	}
+	
+}
+
+function deleteDeviceImg(iddevice, userid, event) {
+	event.stopPropagation();
+	event.preventDefault();
+	$.ajax({
+		url: "/templates/default/form/form_custom_delete_device.php",
+		type: "POST",
+		data: "device="+iddevice
+		      +"&userid="+userid,
+		success: function(data){
+				$("#uploadSuccess").hide();
+				$('#deleteBtn').hide();
+				$("#uploadBtn").show();
+				$("#uploadMsg").show();
+				$("#previewImg").removeClass("aspect-square");
+				$("#previewImg").addClass("aspect-square-little");
+				fileImage.css("background-image", "none");
+				$('#widget-bg-'+$("#iddevice").val()).css("background-image", "none");
+				files = "";
+			}
+	});
+}
+
 /*** Smartcommand ***/
 
 function createSmartcmd(id_scenario) {

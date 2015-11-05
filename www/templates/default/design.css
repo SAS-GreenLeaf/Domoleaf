@@ -1313,30 +1313,7 @@ a.carousel-control-camera:hover {
 }
 
 
-/*** click-drag popup custom ***/
-
-@charset "UTF-8";
-@import url(http://fonts.googleapis.com/css?family=Roboto:900,400);
-@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
-
-.cd-body {
-	color: #fff;
-	font-family: "Roboto", sans-serif;
-}
-
-#head {
-	background: #fff;
-	padding: .5em 0;
-}
-
-#content {
-	padding: 4em 0 0;
-	position: relative;
-}
-
-.text-center {
-	text-align: center;
-}
+/*** Popup Custom (Upload File) ***/
 
 .bg-image {
 	background-position: center center;
@@ -1347,6 +1324,12 @@ a.carousel-control-camera:hover {
 	content: "";
 	display: block;
 	padding-top: 50%;
+}
+
+.bg-image.aspect-square-little:before {
+	content: "";
+	display: block;
+	padding-top: 10%;
 }
 
 [data-droppable] * {
@@ -1363,6 +1346,7 @@ a.carousel-control-camera:hover {
 .cd-panel-content {
 	padding: 2em 1em;
 }
+
 .cd-panel-content label{
 	display: inline;
 }
@@ -1414,7 +1398,7 @@ a.carousel-control-camera:hover {
 
 .image-select__icon {
 	bottom: .25em;
-	color: #fff;
+	color: #000;
 	position: absolute;
 	right: .5em;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
@@ -1470,20 +1454,16 @@ a.carousel-control-camera:hover {
   }
 }
 
-#uploadSuccess{
-	color: green;
-	text-align: center;
+#deleteBtn {
 	display: none;
 }
 
-#uploadFail{
-	color: red;
-	text-align: center;
-	display: none;
+#uploadFileIcon {
+	font-size: 100px;
 }
 
-#deleteBtn{
-	display: none;
+#uploadMsg {
+	padding-top: 10%;
 }
 
 /*** Bootstrap Switch ***/

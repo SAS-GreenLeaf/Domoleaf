@@ -239,7 +239,6 @@ echo '
 		<link href="/css/jquery-ui.min.css" rel="stylesheet">
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/css/bootstrap-dialog.min.css" rel="stylesheet">
-		
 		<link href="/css/font-awesome.min.css" rel="stylesheet">
 		<link href="/css/flaticon.css" rel="stylesheet">
 		<link href="/css/bootstrap-switch.css" rel="stylesheet">
@@ -251,6 +250,8 @@ echo '
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/jquery-ui.min.js"></script>
 		<script src="/js/touch.js"></script>
+		<script src="/js/jquery.validate.js"></script>
+		<script src="/js/additional-methods.js"></script>
 		
 		<script src="/templates/'.TEMPLATE.'/scripts.js"></script>
 		<script type="text/javascript" src="/js/farbtastic.js"></script>
