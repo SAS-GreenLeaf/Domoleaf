@@ -29,38 +29,66 @@ if (!empty($_GET['iddevice']) && $_GET['iddevice'] > 0) {
 		echo
 			'<script type="text/javascript" src="/templates/default/popup/popup_custom_device.js"></script>'.
 				'<div class="cd-body">'.
-					'<h3 id="uploadSuccess">Success</h3>'.
-					'<h3 id="uploadFail">Fail</h3>'.
-						'<div class="cd-panel">'.
+					'<div id="uploadSuccess" class="alert alert-success center" role="alert" hidden>'.
+						'<p>'._('Success').'<p>'.
+					'</div>'.
+					'<div id="uploadFail" class="alert alert-danger center" role="alert" hidden>'.
+						'<p>'._('Fail').'<p>'.
+					'</div>'.
+					'<div id="uploadError" class="alert alert-danger center" role="alert" hidden>'.
+						_('File must be JPG or PNG, less than 1MB').
+					'</div>'.
+					'<div class="cd-panel">'.
 						'<div class="cd-panel-content">'.
 							'<label for="image">'.
-								'<form id="formUpload" action="" method="post" enctype="multipart/form-data" class="image-select" data-droppable="">'.
-									'<input id="image" type="file" name="fileToUpload" data-droppable-input=""/>'.
+								'<form id="uploadFileForm" action="" method="post" enctype="multipart/form-data" class="image-select cmxform">'.
+									'<div id="uploadMsg" class="center">'.
+										_('Click or Drag file here').
+										'</br>'.
+										'<i id="uploadFileIcon" class="fa fa-cloud-upload lg"></i>'.
+									'</div>'.
+									'<input id="image" type="file" name="fileToUpload" data-droppable-input="" class="required" accept="image/*"/>'.
 									'<input id="iddevice" type="hidden" value="'.$_GET['iddevice'].'"/>'.
 									'<input id="userid" type="hidden" value="'.$iduser.'"/>'.
 									'<i class="fa fa-camera fa-2x image-select__icon"></i>'.
 									'<div class="image-select__message"></div>'.
-									'<div class="bg-image aspect-square"'.
-										  'data-droppable-image="" ';
-									if (!empty($device->device_bgimg)){
-										echo 'style="background-image: url(\''.$target_dir.$device->device_bgimg.'\')"';
-									}
-									echo '>'.
+									'<div id="previewImg" class="bg-image aspect-square-little"'.
+									     'data-droppable-image="" ';
+										if (!empty($device->device_bgimg)){
+											echo 'style="background-image: url(\''.$target_dir.$device->device_bgimg.'\')"';
+										}
+										echo '>'.
 									'</div>'.
 								'</form>'.
 								'<div class="center padding-top">'.
-									'<button class="btn btn-greenleaf" onclick="$(\'#formUpload\').submit()">Upload Image</button>'.
-									'<button id="deleteBtn" class="btn btn-danger margin-left">Delete Image</button>'.
+									'<button id="uploadBtn" type="submit"'.
+									        'class="btn btn-greenleaf" '.
+									        'onclick="submitFormUpload(event)">'.
+										_('Upload Image').
+									'</button>'.
+									'<button id="deleteBtn" '.
+									        'class="btn btn-danger margin-left" '.
+									        'onclick="deleteDeviceImg('.$_GET['iddevice'].', '.$iduser.', event)">'.
+										_('Delete Image').
+									'</button>'.
 								'</div>'.
 							'</label>'.
 						'</div>'.
 					'</div>'.
 				'</div>';
 		echo
-			'<script type="text/javascript">$("#popupTitle").html("'._("Click or drag file").'");</script>';
-		if (!empty($device->device_bgimg)){
-			echo '<script type="text/javascript">$("#deleteBtn").show();</script>';
-		}
+			'<script type="text/javascript">'.
+				
+				'$(document).ready(function() {'.
+					'$("#popupTitle").html("'._("Upload Device Image").'");';
+					if (!empty($device->device_bgimg)){
+						echo
+						'$("#deleteBtn").show();'.
+						'$("#uploadBtn").hide();';
+					}
+					echo
+				'});'.
+			'</script>';
 	}
 }
 
