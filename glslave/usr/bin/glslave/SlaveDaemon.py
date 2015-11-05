@@ -542,23 +542,23 @@ class SlaveDaemon:
             if os.path.exists('/tmp/eib'):
                 call(['systemctl', '-q', 'stop', 'knxd']);
             previous_val = self._parser.getValueFromSection('knx', 'interface');
-            new_val = str(json_obj['interface_knx'])
+            new_val = str(json_obj['interface_arg_knx'])
             self._parser.writeValueFromSection('knx', 'interface', new_val);
-            self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_EnOcean']));
+            self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_arg_EnOcean']));
             if previous_val == '' or previous_val == None:
-                call(['systemctl', 'enable', 'knxd']);
+                call(['systemctl', '-q', 'enable', 'knxd']);
             if new_val == '' or new_val == None:
-                call(['systemctl', 'disable', 'knxd']);
+                Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-D -T -S -u '
-                if new_val == 'ttyAMA0' or new_val == 'ttyS0' or new_val == 'ttyS1' or new_val == 'ttyS2':
-                    knx_edit = knx_edit + 'tpuarts:/dev/' + new_val + '"';
+                knx_edit = 'KNXD_OPTS="-D -T -S -u ';
+                if json_obj['interface_knx'] == 'tpuarts':
+                    knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
-                    knx_edit = knx_edit + '-b ipt:' + new_val + '"';
+                    knx_edit = knx_edit + '-b ' + json_obj['interface_knx']  + ':' + new_val + '"';
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
-                call(['systemctl', '-q', 'start', 'knxd']);
+                Popen(['systemctl', '-q', 'start', 'knxd']);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';
