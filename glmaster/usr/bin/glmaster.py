@@ -6,7 +6,7 @@ sys.path.append("/usr/bin/glmaster");
 import MasterDaemon;
 import os;
 
-LOG_FILE = '/var/log/glmaster.log'
+LOG_FILE = '/var/log/domoleaf/domomaster.log'
 
 log_flag = False;
 

@@ -14,7 +14,7 @@ import AESManager;
 import os;
 import hashlib;
 
-LOG_FILE                = '/var/log/glmaster.log';
+LOG_FILE                = '/var/log/domoleaf/domomaster.log';
 
 OPTION_ON_OFF           = 12;   # Indice pour une action ON/OFF
 OPTION_VAR              = 13;   # Indice pour une action de variation

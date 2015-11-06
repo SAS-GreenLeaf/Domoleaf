@@ -3,7 +3,7 @@ import configparser;
 import sys;
 sys.path.append("/usr/lib/domoleaf");
 
-LOG_FILE        = '/var/log/glslave.log';
+LOG_FILE        = '/var/log/domoleaf/domoslave.log';
 LOG_FLAG        = True;
 
 class DaemonConfigParser:

@@ -9,7 +9,7 @@ from Schedule import *;
 from Trigger import *;
 import time;
 
-LOG_FILE                = '/var/log/glmaster.log'
+LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
 class Scenario:
 

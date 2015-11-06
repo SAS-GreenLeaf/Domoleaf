@@ -7,7 +7,7 @@ from MysqlHandler import *;
 from MasterSql import *;
 import datetime;
 
-LOG_FILE                = '/var/log/glmaster.log'
+LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
 class Schedule:
 

@@ -6,7 +6,7 @@ sys.path.append("/usr/bin/glslave");
 import SlaveDaemon;
 import os;
 
-LOG_FILE = '/var/log/glslave.log';
+LOG_FILE = '/var/log/domoleaf/domoslave.log';
 
 log_flag = False;
 

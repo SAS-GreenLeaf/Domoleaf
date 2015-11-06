@@ -7,7 +7,7 @@ from MysqlHandler import *;
 from MasterSql import *;
 import time;
 
-LOG_FILE                = '/var/log/glmaster.log'
+LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
 class Trigger:
 

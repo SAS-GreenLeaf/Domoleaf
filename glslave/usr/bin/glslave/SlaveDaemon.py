@@ -52,7 +52,7 @@ RORG_TEMPERATURE                = 0xA5;
 
 PACKET_TYPE_RADIO_ERP1          = 0x01;
 
-LOG_FILE                        = '/var/log/glslave.log';
+LOG_FILE                        = '/var/log/domoleaf/domoslave.log';
 
 KNX_READ_REQUEST        = 'knx_read_request';
 KNX_WRITE_SHORT         = 'knx_write_short';

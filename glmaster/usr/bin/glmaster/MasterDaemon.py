@@ -39,7 +39,7 @@ import utils;
 from GLManager import *;
 from HttpReq import *;
 
-LOG_FILE                = '/var/log/glmaster.log'
+LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 MASTER_CONF_FILE        = '/etc/domoleaf/master.conf';         # Configuration file name
 SELECT_TIMEOUT          = 0.05;                                 # Timeout for the select
 MAX_SLAVES              = 100;                                  # Max slave that can be connected at the same time

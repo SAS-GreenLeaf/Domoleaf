@@ -8,7 +8,7 @@ from MasterSql import *;
 from threading import Thread;
 import time;
 
-LOG_FILE                = '/var/log/glmaster.log'
+LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
 class Smartcommand:
 

@@ -22,7 +22,7 @@ PID_FILE_SLAVE="/var/run/glslave.pid"
 PID_FILE_MONITOR_KNX="/var/run/monitor_knx.pid"
 PID_FILE_MONITOR_ENOCEAN="/var/run/monitor_enocean.pid"
 
-LOG_FILE_SLAVE="/var/log/glslave.log"
+LOG_FILE_SLAVE="/var/log/domoleaf/domoslave.log"
 LOG_FILE_MONITOR_KNX="/var/log/monitor_knx.log"
 LOG_FILE_MONITOR_ENOCEAN="/var/log/monitor_enocean.log"
 
