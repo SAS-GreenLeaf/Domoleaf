@@ -791,7 +791,7 @@ class MasterDaemon:
                 camera_file.write("\tproxy_pass http://" + str(r[1]))
                 camera_file.write(":" + str(r[2]) + "/;\n}\n\n");
         camera_file.close();
-        call(["systemctl", "restart", "nginx"]);
+        call(["service", "nginx", "restart"]);
 
     def reload_d3config(self, json_obj, connection):
         """
