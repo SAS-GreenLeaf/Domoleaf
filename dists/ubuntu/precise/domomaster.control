@@ -1,0 +1,9 @@
+Package: domomaster
+Version: [version]
+Section: base
+Priority: optional
+Architecture: all
+Pre-Depends: domoslave,mariadb-server|mysql-server
+Depends: avahi-daemon,fail2ban,htop,locate,logrotate,miniupnpc,nginx,ntpdate,openvpn,openssh-client,php-apc,php5-curl,php5-fpm (>= 5.5.9),php5-gd,php5-mysql,python3.5|python3.4|python3.3,python3.5-dev|python3.4-dev|python3.3-dev,ssl-cert,sslh,screen,tcpdump
+Maintainer: Greenleaf <contact@greenleaf.fr>
+Description: Domoleaf master daemon running under python 3 for D3 boxes
