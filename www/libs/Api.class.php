@@ -543,6 +543,12 @@ class Api {
 							}
 						break;
 						
+						case 'confD3Reboot':
+							if (!empty($var[0])){
+								$res = $user->confD3Reboot($var[0]);
+							}
+						break;
+						
 						case 'confDaemonRemove':
 							if (!empty($var[0])){
 								$res = $user->confDaemonRemove($var[0]);

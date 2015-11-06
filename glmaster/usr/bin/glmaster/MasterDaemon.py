@@ -115,6 +115,7 @@ DATA_CHECK_ALL_SCHEDULES      = 'check_all_schedules';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 DATA_SEND_INTERFACES          = 'send_interfaces';
+DATA_REBOOT_D3                = 'reboot_d3';
 
 HOSTS_CONF                    = '/etc/domoleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
@@ -202,7 +203,8 @@ class MasterDaemon:
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
             DATA_SEND_TECH                    : self.send_request,
-            DATA_SEND_INTERFACES              : self.send_interfaces
+            DATA_SEND_INTERFACES              : self.send_interfaces,
+            DATA_REBOOT_D3                    : self.reboot_d3
         };
 
     def get_aes_slave_keys(self):
@@ -1029,4 +1031,40 @@ class MasterDaemon:
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
+        connection.close();
+
+    def reboot_d3(self, json_obj, connection):
+        """
+        Asks "reboot_d3" to the slave described in json_obj for reboot daemon.
+        """
+        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        res = self.sql.mysql_handler_personnal_query(query);
+        if res is None or len(res) == 0:
+            self.logger.error('in reboot_d3: No daemon for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        elif len(res) > 1:
+            self.logger.error('in reboot_d3: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        hostname = res[0][0];
+        ip = '';
+        for h in self.hostlist:
+            if hostname in h._Hostname.upper():
+                ip = h._IpAddr;
+        if ip == '':
+            self.logger.error('in reboot_d3: ' + hostname + ' not in hostlist. Try perform network scan again.');
+            connection.close();
+            return ;
+        port = self._parser.getValueFromSection('connect', 'port');
+        sock = socket.create_connection((ip, port));
+        self_hostname = socket.gethostname();
+        if '.' in self_hostname:
+            self_hostname = self_hostname.split('.')[0];
+        aes_IV = AESManager.get_IV();
+        aes_key = self.get_secret_key(hostname);
+        obj_to_send = '{"packet_type": "reboot_d3", "sender_name": "' + self_hostname + '"}';
+        encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
+        spaces = 16 - len(obj_to_send) % 16;
+        sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         connection.close();

@@ -61,6 +61,9 @@ echo '
 						echo '
 						</td>
 						<td class="center">
+							<button type="button" title="'._('Reboot').'" class="btn btn-warning" onclick="PopupRebootD3('.$elem->daemon_id.')">
+								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+							</button>
 							<button type="button" title="'._('Edit').'" class="btn btn-primary" onclick="PopupRenameDaemon('.$elem->daemon_id.')">
 								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							</button>
@@ -156,6 +159,20 @@ function PopupNewDaemon(){
 	});
 }
 
+function PopupRebootD3(id){
+		$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_reboot_d3.php",
+		data: "id="+id,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: "'._('Reboot D3').'",
+			message: msg
+			});
+		}
+	});
+}
+
 function PopupRenameDaemon(id){
 		$.ajax({
 		type:"GET",
@@ -182,6 +199,18 @@ function PopupDeleteDaemon(id){
 			});
 		}
 	});
+}
+
+function RebootD3(id){
+	$.ajax({
+			type:"GET",
+			url: "/form/form_d3_reboot.php",
+			data: "id="+id,
+			complete: function(result, status) {
+				PopupLoading();
+				setTimeout(function(){popup_close();}, 60000);
+			}
+		});
 }
 
 function DeleteDaemon(id){

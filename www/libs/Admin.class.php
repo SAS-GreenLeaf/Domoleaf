@@ -1222,6 +1222,15 @@ class Admin extends User {
 		return $link->lastInsertId();
 	}
 	
+	function confD3Reboot($iddaemon) {
+		$socket = new Socket();
+		$data = array(
+				'daemon_id' => $iddaemon
+		);
+		$socket->send('reboot_d3', $data, 1);
+		return $socket->receive();
+	}
+	
 	function confDaemonRemove($id) {
 		$link = Link::get_link('domoleaf');
 	
@@ -1407,7 +1416,7 @@ class Admin extends User {
 		$data = array(
 			'daemon_id' => $iddaemon
 		);
-		$socket->send('check_slave', $data, 1);;
+		$socket->send('check_slave', $data, 1);
 		return $socket->receive();
 	}
 	

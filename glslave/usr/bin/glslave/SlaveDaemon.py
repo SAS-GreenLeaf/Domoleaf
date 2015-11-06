@@ -64,6 +64,7 @@ DATA_UPDATE             = 'update';
 SEND_TECH               = 'send_tech';
 SEND_ALIVE              = 'send_alive';
 SEND_INTERFACES         = 'send_interfaces';
+REBOOT_D3               = 'reboot_d3';
 
 def individual2string(addr):
     """
@@ -111,7 +112,8 @@ class SlaveDaemon:
             DATA_UPDATE         : self.update,
             SEND_TECH           : self.send_tech,
             SEND_ALIVE          : self.send_alive,
-            SEND_INTERFACES     : self.send_interfaces
+            SEND_INTERFACES     : self.send_interfaces,
+            REBOOT_D3           : self.reboot_d3
         };
 
     def update(self, json_obj, connection):
@@ -575,3 +577,6 @@ class SlaveDaemon:
         connection.send(bytes(encrypt_IV, 'utf-8') + data);
         if previous_val_EnOcean != str(json_obj['interface_arg_EnOcean']):
             call(['systemctl', '-q', 'restart', 'glslave']);
+
+    def reboot_d3(self, json_obj, connection):
+        call(['reboot']);
