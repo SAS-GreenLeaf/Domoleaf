@@ -329,6 +329,20 @@ function deleteDeviceImg(iddevice, userid, event) {
 	});
 }
 
+/*** Scenarios ***/
+
+function ElemToScenario(id_scenario, id_elem, nb_elem) {
+	$.ajax({
+		type:"GET",
+		url: "/templates/default/form/form_update_scenario.php",
+		data: "id_scenario="+id_scenario
+		     +"&id_elem="+id_elem
+		     +"&elem="+nb_elem,
+		success: function(result) {
+			redirect("/profile_user_scenarios/"+id_scenario+"/"+nb_elem);
+		}
+	});
+}
 /*** Smartcommand ***/
 
 function createSmartcmd(id_scenario) {

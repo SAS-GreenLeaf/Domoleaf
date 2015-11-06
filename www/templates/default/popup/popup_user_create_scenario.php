@@ -27,8 +27,10 @@ echo
 
 echo
 	'<script type="text/javascript">'.
-	
-		'$("#popupTitle").html("'._("New Scenario").'");'.
+		
+		'$(document).ready(function(){'.
+			'$("#popupTitle").html("'._("New Scenario").'");'.
+		'});'.
 		
 		'function saveNewScenario() {'.
 			'var name = "";'.

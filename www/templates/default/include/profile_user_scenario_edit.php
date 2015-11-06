@@ -57,6 +57,11 @@ echo '
 					</button>
 				</div>
 				<div class="list-group" id="scenario-smartcmd-list">';
+				echo
+					'<a class="list-group-item" id="scenario-smartcmd-0"
+					    onclick="selectScenarioElem(0, \'smartcmd\')">
+						'._('No Smartcommand').'
+					</a>';
 				foreach ($smartcmdList as $smartcmd) {
 					echo
 						'<a class="list-group-item" id="scenario-smartcmd-'.$smartcmd->smartcommand_id.'"
@@ -66,6 +71,10 @@ echo '
 				}
 				echo '
 				</div>
+				<button type="button" class="btn btn-greenleaf next-step block-right"
+				        onclick="saveScenarioElem(\'smartcmd\', 1)">
+					'._('Save & Next Step').'
+				</button>
 			</div>
 			<div class="tab-pane col-xs-10" role="tabpanel" id="step2">
 				<h3>'._('Trigger').'</h3>
@@ -95,6 +104,10 @@ echo '
 				}
 				echo '
 				</div>
+				<button type="button" class="btn btn-greenleaf next-step block-right"
+				        onclick="saveScenarioElem(\'trigger\', 2)">
+					'._('Save & Next Step').'
+				</button>
 			</div>
 			<div class="tab-pane col-xs-10" role="tabpanel" id="step3">
 				<h3>'._('Schedule').'</h3>
@@ -124,6 +137,10 @@ echo '
 				}
 				echo '
 				</div>
+				<button type="button" class="btn btn-greenleaf next-step block-right"
+				        onclick="saveScenarioElem(\'schedule\', 3)">
+					'._('Save & Next Step').'
+				</button>
 			</div>
 			<div class="tab-pane col-xs-10" role="tabpanel" id="step4">
 				<h3>'._('Summary').'</h3>
@@ -153,7 +170,6 @@ echo '
 		selectScenarioBasicElem('.$scenario_info->id_smartcmd.', \'smartcmd\');
 		selectScenarioBasicElem('.$scenario_info->id_trigger.', \'trigger\');
 		selectScenarioBasicElem('.$scenario_info->id_schedule.', \'schedule\');
-		saveScenarioElem(\'smartcmd\', 0);
 	});
 	
 	function selectScenarioBasicElem(id_elem, type_elem) {
@@ -172,21 +188,14 @@ echo '
 	
 	function saveScenarioElem(type_elem, nb_elem) {
 		var id_elem;
-		var nb_elem2;
 	
-		if (nb_elem == 0) {
-			nb_elem2 = 1;
-		}
-		else {
-			nb_elem2 = nb_elem;
-		}
 		id_elem = $("#scenario-"+type_elem+"-list .active").attr(\'id\').split("scenario-"+type_elem+"-")[1];
 		$.ajax({
 			type:"GET",
 			url: "/templates/'.TEMPLATE.'/form/form_update_scenario.php",
 			data: "id_scenario="+'.$id_scenario.'
 					+"&id_elem="+id_elem
-					+"&elem="+nb_elem2,
+					+"&elem="+nb_elem,
 			success: function(result) {
 				$("#step"+(nb_elem+1)+"btn").tab(\'show\');
 				if(nb_elem + 1 == 4) {

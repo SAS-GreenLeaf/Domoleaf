@@ -60,7 +60,7 @@ echo '
 			'<button type="button"
 			        title="'._('Back to Scenario').'"
 			        class="btn btn-primary block-right"
-			        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/1\')">
+			        onclick="ElemToScenario('.$id_scenario.', '.$id_smartcmd.', 1)">
 				'._('Back to Scenario').'
 			</button>';
 	}
