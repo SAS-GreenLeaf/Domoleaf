@@ -544,11 +544,12 @@ class SlaveDaemon:
         try:
             if os.path.exists('/tmp/eib'):
                 call(['systemctl', '-q', 'stop', 'knxd']);
-            previous_val = self._parser.getValueFromSection('knx', 'interface');
+            previous_val_knx = self._parser.getValueFromSection('knx', 'interface');
+            previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
             new_val = str(json_obj['interface_arg_knx'])
             self._parser.writeValueFromSection('knx', 'interface', new_val);
             self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_arg_EnOcean']));
-            if previous_val == '' or previous_val == None:
+            if previous_val_knx == '' or previous_val_knx == None:
                 call(['systemctl', '-q', 'enable', 'knxd']);
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
@@ -572,3 +573,5 @@ class SlaveDaemon:
         encode_obj = AES.new(self.private_aes, AES.MODE_CBC, encrypt_IV);
         data = encode_obj.encrypt(json_str);
         connection.send(bytes(encrypt_IV, 'utf-8') + data);
+        if previous_val_EnOcean != str(json_obj['interface_arg_EnOcean']):
+            call(['systemctl', '-q', 'restart', 'glslave']);

@@ -1337,9 +1337,9 @@ class Admin extends User {
 		$data = array(
 				'daemon_id' => $daemon,
 				'interface_knx' => $interface_knx,
-				'interface_knx_arg' => $interface_knx_arg,
+				'interface_arg_knx' => $interface_knx_arg,
 				'interface_EnOcean' => $interface_EnOcean,
-				'interface_EnOcean_arg' => $interface_EnOcean_arg
+				'interface_arg_EnOcean' => $interface_EnOcean_arg
 				
 		);
 		$socket->send('send_interfaces', $data, 1);
