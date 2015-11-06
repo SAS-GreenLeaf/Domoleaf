@@ -1129,9 +1129,10 @@ class User {
 		
 		$sql = 'SELECT smartcommand_id, user_id
 				FROM smartcommand_list
-				WHERE name=:smartcmd_name';
+				WHERE name=:smartcmd_name AND user_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
@@ -1139,7 +1140,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do->smartcommand_id;
@@ -1163,7 +1164,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1466,17 +1467,17 @@ class User {
 	
 		$sql = 'SELECT id_trigger, user_id
 				FROM trigger_events_list
-				WHERE trigger_name=:trigger_name';
+				WHERE trigger_name=:trigger_name AND user_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
-	
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do->id_trigger;
@@ -1496,7 +1497,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1603,8 +1604,7 @@ class User {
 		return $list;
 	}
 	
-	function createNewTrigger($trigger_name){
-	
+	function createNewTrigger($trigger_name) {
 		if ($this->searchTriggerByName($trigger_name) != 0) {
 			return -1;
 		}
@@ -1778,17 +1778,17 @@ class User {
 	
 		$sql = 'SELECT id_schedule, user_id
 				FROM trigger_schedules_list
-				WHERE schedule_name=:schedule_name';
+				WHERE schedule_name=:schedule_name AND user_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
-	
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do->id_schedule;
@@ -1809,7 +1809,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if($do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1940,10 +1940,11 @@ class User {
 	
 		$sql = 'SELECT id_scenario
 				FROM scenarios_list
-				WHERE name_scenario=:name_scenario';
+				WHERE name_scenario=:name_scenario AND user_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':name_scenario', $scenario_name, PDO::PARAM_STR);
-	
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		if ($req->rowCount() == 0) {
@@ -1956,9 +1957,8 @@ class User {
 	function searchScenarioById($scenario_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT name_scenario, smartcommand_list.user_id AS user_id
+		$sql = 'SELECT name_scenario, user_id
 				FROM scenarios_list
-				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
 				WHERE id_scenario=:scenario_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
@@ -1968,7 +1968,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(!empty($do->user_id) && $do->user_id != $this->getId()) {
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1982,7 +1982,7 @@ class User {
 				       smartcommand_list.name AS name_smartcmd, activated, complete
 				FROM scenarios_list
 				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
-				WHERE smartcommand_list.user_id IS NULL OR smartcommand_list.user_id=:user_id
+				WHERE scenarios_list.user_id=:user_id
 				ORDER BY name_scenario';
 	
 		$req = $link->prepare($sql);
@@ -2009,7 +2009,7 @@ class User {
 	function getScenario($idscenario){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete
+		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete, user_id
 				FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
 	
@@ -2018,6 +2018,9 @@ class User {
 	
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
+		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+			return 0;
+		}
 		if (empty($do->id_trigger)) {
 			$do->id_trigger = 0;
 		}
@@ -2039,11 +2042,12 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO scenarios_list
-		        (name_scenario)
-				VALUES
-				(:scenario_name)';
+		        (name_scenario, user_id)
+		        VALUES
+		        (:scenario_name, :user_id)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':scenario_name', $scenario_name, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
 		return $link->lastInsertId();

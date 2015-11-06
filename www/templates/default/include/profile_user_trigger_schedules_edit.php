@@ -12,13 +12,13 @@ echo '
 		        class="btn btn-primary"
 		        onclick="popupUpdateScheduleName('.$id_schedule.')">
 			<i class="glyphicon glyphicon-edit"></i>
-		</button>';
+		</button>';		
 		if ($id_scenario != 0) {
 			echo
 				'<button type="button"
 				        title="'._('Back to Scenario').'"
-				        class="btn btn-primary block-right"
-				        onclick="redirect(\'/profile_user_scenarios/'.$id_scenario.'/3\')">
+				        class="btn btn-primary block-right margin-left"
+				        onclick="ElemToScenario('.$id_scenario.', '.$id_schedule.', 3)">
 					'._('Back to Scenario').'
 				</button>';
 		}

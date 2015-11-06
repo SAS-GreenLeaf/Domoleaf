@@ -19,17 +19,24 @@ else {
 }
 
 function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule, $id_scenario) {
+	$request_ok = 0;
 	
 	$request = new Api();
 	if ($id_trigger != 0) {
 		$request -> add_request('searchTriggerById', array($id_trigger));
+		$request_ok = 1;
 	}
 	if ($id_schedule != 0) {
 		$request -> add_request('searchScheduleById', array($id_schedule));
+		$request_ok = 1;
 	}
-	$request -> add_request('searchSmartcmdById', array($id_smartcmd));
-	$result  =  $request->send_request(); 
-	
+	if ($id_smartcmd != 0) {
+		$request -> add_request('searchSmartcmdById', array($id_smartcmd));
+		$request_ok = 1;
+	}
+	if ($request_ok == 1) {
+		$result  =  $request->send_request(); 
+	}
 	$display =
 				'<div class="inline">
 					<h4 id="summaryScenarioName" class="block-left">
@@ -43,11 +50,18 @@ function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule, $id
 					</button>
 				</div>
 				</br>';
-	$display.=
-				'<div class="alert alert-success" role="alert">
-					'._('Smartcommand : ').$result->searchSmartcmdById->name.'
-				</div></br>';
-	
+	if ($id_smartcmd == 0) {
+		$display.=
+					'<div class="alert alert-danger" role="alert">
+						'._('You must select a smartcommand.').'
+					</div></br>';
+	}
+	else {
+		$display.=
+					'<div class="alert alert-success" role="alert">
+						'._('Smartcommand : ').$result->searchSmartcmdById->name.'
+					</div></br>';
+	}
 	if ($id_trigger == 0) {
 		$display.=
 					'<div class="alert alert-warning" role="alert">
