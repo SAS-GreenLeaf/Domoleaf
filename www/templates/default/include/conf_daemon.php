@@ -234,18 +234,29 @@ function RenameDaemon(id){
 	
 	});
 	var interface_knx = $("#select-interface-KNXTP").val();
-	if (interface_knx == "IP"){
-		interface_knx = $("#input-interface-KNXTP-IP").val();
+	var interface_knx_arg = \'\';
+	if (interface_knx == "tpuarts"){
+		interface_knx_arg = $("#select-interface-KNXTP-Serial").val();
+	}
+	else if (interface_knx == "ipt"){
+		interface_knx_arg = $("#input-interface-KNXTP-IP").val();
 	}
 	var interface_EnOcean = $("#select-interface-EnOcean").val();
-	if (interface_EnOcean == "IP"){
-		interface_EnOcean = $("#input-interface-EnOcean-IP").val();
+	var interface_EnOcean_arg = \'\';
+	if (interface_EnOcean == "usb"){
+		interface_EnOcean_arg = $("#select-interface-EnOcean-usb").val();
+	}
+	else if (interface_EnOcean == "tpuarts"){
+		interface_EnOcean_arg = $("#select-interface-EnOcean-Serial").val();
+	}
+	else if (interface_EnOcean == "ipt"){
+		interface_EnOcean_arg = $("#input-interface-EnOcean-IP").val();
 	}
 
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
-		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean,
+		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean+"&interface_knx_arg="+interface_knx_arg+"&interface_EnOcean_arg="+interface_EnOcean_arg,
 		beforeSend:function(result, status){
 			PopupLoading();
 		},
@@ -264,11 +275,25 @@ function CheckEnOcean(){
 	}
 }
 
-function CheckEnOceanIP(){
-	if ($("#select-interface-EnOcean").val() == "IP"){
+function CheckEnOceanType(){
+	if ($("#select-interface-EnOcean").val() == "usb"){
+		$("#div-interface-EnOcean-usb").show();
+		$("#div-interface-EnOcean-Serial").hide();
+		$("#div-interface-EnOcean-IP").hide();
+	}
+	else if ($("#select-interface-EnOcean").val() == "tpuarts"){
+		$("#div-interface-EnOcean-Serial").show();
+		$("#div-interface-EnOcean-usb").hide();
+		$("#div-interface-EnOcean-IP").hide();
+	}
+	else if ($("#select-interface-EnOcean").val() == "ipt"){
 		$("#div-interface-EnOcean-IP").show();
+		$("#div-interface-EnOcean-usb").hide();
+		$("#div-interface-EnOcean-Serial").hide();
 	}
 	else{
+		$("#div-interface-EnOcean-usb").hide();
+		$("#div-interface-EnOcean-Serial").hide();
 		$("#div-interface-EnOcean-IP").hide();
 	}
 }
@@ -283,15 +308,21 @@ function CheckKNXTP(){
 	CheckEnOcean();
 }
 
-function CheckKNXTPIP(){
-	if ($("#select-interface-KNXTP").val() == "IP"){
+function CheckKNXTPType(){
+	if ($("#select-interface-KNXTP").val() == "tpuarts"){
+		$("#div-interface-KNXTP-Serial").show();
+		$("#div-interface-KNXTP-IP").hide();
+	}
+	else if ($("#select-interface-KNXTP").val() == "ipt"){
 		$("#div-interface-KNXTP-IP").show();
+		$("#div-interface-KNXTP-Serial").hide();
 	}
 	else{
+		$("#div-interface-KNXTP-Serial").hide();
 		$("#div-interface-KNXTP-IP").hide();
 	}
 }
-
+				
 $("#rcv").val(\'\');
 				
 </script>';

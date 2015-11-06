@@ -1191,7 +1191,7 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT daemon_id, protocol_id, interface
+		$sql = 'SELECT daemon_id, protocol_id, interface, interface_arg
 		        FROM daemon_protocol';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1295,19 +1295,52 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_EnOcean='ttyUSB0') {
-		if ($interface_knx != "ttyS0" && $interface_knx != "ttyS1" && $interface_knx != "ttyS2" && !(filter_var($interface_knx, FILTER_VALIDATE_IP))){
-			$interface_knx = "ttyAMA0";
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_knx_arg='', $interface_EnOcean='ttyUSB0', $interface_EnOcean_arg='') {
+		if ($interface_knx == "tpuarts"){
+			if ($interface_knx_arg != "ttyS0" && $interface_knx_arg != "ttyS1" && $interface_knx_arg != "ttyS2"){
+				$interface_knx_arg = "ttyAMA0";
+			}	
 		}
-		if ($interface_EnOcean != "ttyAMA0" && $interface_EnOcean != "ttyS0" && $interface_EnOcean != "ttyS1" && $interface_EnOcean != "ttyS2" && !(filter_var($interface_EnOcean, FILTER_VALIDATE_IP))){
-			$interface_EnOcean = "ttyUSB0";
+		else if ($interface_knx == "ipt"){
+			if (!(filter_var($interface_knx_arg, FILTER_VALIDATE_IP))){
+				$interface_knx = "tpuarts";
+				$interface_knx_arg = "ttyAMA0";
+			}
+		}
+		else{
+			$interface_knx = "tpuarts";
+			$interface_knx_arg = "ttyAMA0";
+		}
+		
+		if ($interface_EnOcean == "usb"){
+			if ($interface_EnOcean_arg != "ttyUSB0" && $interface_EnOcean_arg != "ttyUSB1"){
+				$interface_EnOcean_arg = "ttyUSB0";
+			}
+		}
+		else if ($interface_EnOcean == "tpuarts"){
+			if ($interface_EnOcean_arg != "ttyS0" && $interface_EnOcean_arg != "ttyS1" && $interface_EnOcean_arg != "ttyS2"){
+				$interface_EnOcean_arg = "ttyAMA0";
+			}
+		}
+		else if ($interface_EnOcean == "ipt"){
+			if (!(filter_var($interface_EnOcean_arg, FILTER_VALIDATE_IP))){
+				$interface_EnOcean = "usb";
+				$interface_EnOcean_arg = "ttyUSB0";
+			}
+		}
+		else{
+			$interface_EnOcean = "usb";
+			$interface_EnOcean_arg = "ttyUSB0";
 		}
 		
 		$socket = new Socket();
 		$data = array(
 				'daemon_id' => $daemon,
 				'interface_knx' => $interface_knx,
-				'interface_EnOcean' => $interface_EnOcean
+				'interface_arg_knx' => $interface_knx_arg,
+				'interface_EnOcean' => $interface_EnOcean,
+				'interface_arg_EnOcean' => $interface_EnOcean_arg
+				
 		);
 		$socket->send('send_interfaces', $data, 1);
 		
@@ -1338,17 +1371,19 @@ class Admin extends User {
 				if(!empty($protocolList[$protocol])) {
 					if ($protocol == 1 || $protocol == 2){
 						$sql = 'INSERT INTO daemon_protocol
-					        	(daemon_id, protocol_id, interface)
+					        	(daemon_id, protocol_id, interface, interface_arg)
 					        	VALUES
-					        	(:daemon_id, :protocol_id, :interface)';
+					        	(:daemon_id, :protocol_id, :interface, :interface_arg)';
 						$req = $link->prepare($sql);
 						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
 						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
 						if ($protocol == 1){
 							$req->bindValue(':interface', $interface_knx, PDO::PARAM_STR);
+							$req->bindValue(':interface_arg', $interface_knx_arg, PDO::PARAM_STR);
 						}
 						else{
 							$req->bindValue(':interface', $interface_EnOcean, PDO::PARAM_STR);
+							$req->bindValue(':interface_arg', $interface_EnOcean_arg, PDO::PARAM_STR);
 						}
 						$req->execute() or die (error_log(serialize($req->errorInfo())));						
 					}

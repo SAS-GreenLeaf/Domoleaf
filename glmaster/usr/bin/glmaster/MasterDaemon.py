@@ -1010,7 +1010,6 @@ class MasterDaemon:
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 300);
-        val = '0';
         re = '';
         for s in rlist:
             data = sock.recv(4096);
@@ -1028,7 +1027,6 @@ class MasterDaemon:
             if '.' in host._Hostname:
                 hostname = host._Hostname.split('.')[0];
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
-                val = '1';
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
         connection.close();
