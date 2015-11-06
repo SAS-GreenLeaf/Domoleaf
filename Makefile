@@ -1,17 +1,17 @@
 # Get master's version in control file
-VERSION_MASTER := $(shell cat glmaster/etc/domoleaf/.glmaster.version)
+VERSION_MASTER := $(shell cat domomaster/etc/domoleaf/.domomaster.version)
 
 # Get slave version in control file
-VERSION_SLAVE := $(shell cat glslave/etc/domoleaf/.glslave.version)
+VERSION_SLAVE := $(shell cat domoslave/etc/domoleaf/.domoslave.version)
 
 # Get arch
 ARCH := $(shell dpkg --print-architecture)
 
 # Master's package name
-MASTER_NAME = glmaster_$(VERSION_MASTER)_all.deb
+MASTER_NAME = domomaster_$(VERSION_MASTER)_all.deb
 
 # Slave's package name, different by arch
-SLAVE_NAME  = glslave_$(VERSION_SLAVE)_$(ARCH).deb
+SLAVE_NAME  = domoslave_$(VERSION_SLAVE)_$(ARCH).deb
 
 # Main rule to call compilation rules and generate deb packages
 all: prepare-debian compile packages
@@ -22,61 +22,61 @@ ubuntu1404: prepare-ubuntu1404 compile packages
 
 prepare-debian:
 	
-	@rm -rf glmaster/DEBIAN
-	@mkdir glmaster/DEBIAN
-	@cp dists/debian/glmaster.control glmaster/DEBIAN/control
-	@cp dists/debian/glmaster.preinst glmaster/DEBIAN/preinst
-	@cp dists/debian/glmaster.postinst glmaster/DEBIAN/postinst
-	@cp dists/debian/glmaster.prerm glmaster/DEBIAN/prerm
-	@cp dists/debian/glmaster.postrm glmaster/DEBIAN/postrm
+	@rm -rf domomaster/DEBIAN
+	@mkdir domomaster/DEBIAN
+	@cp dists/debian/domomaster.control domomaster/DEBIAN/control
+	@cp dists/debian/domomaster.preinst domomaster/DEBIAN/preinst
+	@cp dists/debian/domomaster.postinst domomaster/DEBIAN/postinst
+	@cp dists/debian/domomaster.prerm domomaster/DEBIAN/prerm
+	@cp dists/debian/domomaster.postrm domomaster/DEBIAN/postrm
 	
-	@rm -rf glslave/DEBIAN
-	@mkdir glslave/DEBIAN
-	@cp dists/debian/glslave.control glslave/DEBIAN/control
-	@cp dists/debian/glslave.preinst glslave/DEBIAN/preinst
-	@cp dists/debian/glslave.postinst glslave/DEBIAN/postinst
-	@cp dists/debian/glslave.prerm glslave/DEBIAN/prerm
-	@cp dists/debian/glslave.postrm glslave/DEBIAN/postrm
+	@rm -rf domoslave/DEBIAN
+	@mkdir domoslave/DEBIAN
+	@cp dists/debian/domoslave.control domoslave/DEBIAN/control
+	@cp dists/debian/domoslave.preinst domoslave/DEBIAN/preinst
+	@cp dists/debian/domoslave.postinst domoslave/DEBIAN/postinst
+	@cp dists/debian/domoslave.prerm domoslave/DEBIAN/prerm
+	@cp dists/debian/domoslave.postrm domoslave/DEBIAN/postrm
 
 prepare-ubuntu1204:
 	
-	@rm -rf glmaster/DEBIAN
-	@mkdir glmaster/DEBIAN
-	@cp dists/ubuntu/precise/glmaster.control glmaster/DEBIAN/control
-	@cp dists/ubuntu/precise/glmaster.preinst glmaster/DEBIAN/preinst
-	@cp dists/ubuntu/precise/glmaster.postinst glmaster/DEBIAN/postinst
-	@cp dists/ubuntu/precise/glmaster.prerm glmaster/DEBIAN/prerm
-	@cp dists/ubuntu/precise/glmaster.postrm glmaster/DEBIAN/postrm
+	@rm -rf domomaster/DEBIAN
+	@mkdir domomaster/DEBIAN
+	@cp dists/ubuntu/precise/domomaster.control domomaster/DEBIAN/control
+	@cp dists/ubuntu/precise/domomaster.preinst domomaster/DEBIAN/preinst
+	@cp dists/ubuntu/precise/domomaster.postinst domomaster/DEBIAN/postinst
+	@cp dists/ubuntu/precise/domomaster.prerm domomaster/DEBIAN/prerm
+	@cp dists/ubuntu/precise/domomaster.postrm domomaster/DEBIAN/postrm
 	
-	@rm -rf glslave/DEBIAN
-	@mkdir glslave/DEBIAN
-	@cp dists/ubuntu/precise/glslave.control glslave/DEBIAN/control
-	@cp dists/ubuntu/precise/glslave.preinst glslave/DEBIAN/preinst
-	@cp dists/ubuntu/precise/glslave.postinst glslave/DEBIAN/postinst
-	@cp dists/ubuntu/precise/glslave.prerm glslave/DEBIAN/prerm
-	@cp dists/ubuntu/precise/glslave.postrm glslave/DEBIAN/postrm
+	@rm -rf domoslave/DEBIAN
+	@mkdir domoslave/DEBIAN
+	@cp dists/ubuntu/precise/domoslave.control domoslave/DEBIAN/control
+	@cp dists/ubuntu/precise/domoslave.preinst domoslave/DEBIAN/preinst
+	@cp dists/ubuntu/precise/domoslave.postinst domoslave/DEBIAN/postinst
+	@cp dists/ubuntu/precise/domoslave.prerm domoslave/DEBIAN/prerm
+	@cp dists/ubuntu/precise/domoslave.postrm domoslave/DEBIAN/postrm
 
 prepare-ubuntu1404:
 	
-	@rm -rf glmaster/DEBIAN
-	@mkdir glmaster/DEBIAN
-	@cp dists/ubuntu/trusty/glmaster.control glmaster/DEBIAN/control
-	@cp dists/ubuntu/trusty/glmaster.preinst glmaster/DEBIAN/preinst
-	@cp dists/ubuntu/trusty/glmaster.postinst glmaster/DEBIAN/postinst
-	@cp dists/ubuntu/trusty/glmaster.prerm glmaster/DEBIAN/prerm
-	@cp dists/ubuntu/trusty/glmaster.postrm glmaster/DEBIAN/postrm
+	@rm -rf domomaster/DEBIAN
+	@mkdir domomaster/DEBIAN
+	@cp dists/ubuntu/trusty/domomaster.control domomaster/DEBIAN/control
+	@cp dists/ubuntu/trusty/domomaster.preinst domomaster/DEBIAN/preinst
+	@cp dists/ubuntu/trusty/domomaster.postinst domomaster/DEBIAN/postinst
+	@cp dists/ubuntu/trusty/domomaster.prerm domomaster/DEBIAN/prerm
+	@cp dists/ubuntu/trusty/domomaster.postrm domomaster/DEBIAN/postrm
 	
-	@rm -rf glslave/DEBIAN
-	@mkdir glslave/DEBIAN
-	@cp dists/ubuntu/trusty/glslave.control glslave/DEBIAN/control
-	@cp dists/ubuntu/trusty/glslave.preinst glslave/DEBIAN/preinst
-	@cp dists/ubuntu/trusty/glslave.postinst glslave/DEBIAN/postinst
-	@cp dists/ubuntu/trusty/glslave.prerm glslave/DEBIAN/prerm
-	@cp dists/ubuntu/trusty/glslave.postrm glslave/DEBIAN/postrm
+	@rm -rf domoslave/DEBIAN
+	@mkdir domoslave/DEBIAN
+	@cp dists/ubuntu/trusty/domoslave.control domoslave/DEBIAN/control
+	@cp dists/ubuntu/trusty/domoslave.preinst domoslave/DEBIAN/preinst
+	@cp dists/ubuntu/trusty/domoslave.postinst domoslave/DEBIAN/postinst
+	@cp dists/ubuntu/trusty/domoslave.prerm domoslave/DEBIAN/prerm
+	@cp dists/ubuntu/trusty/domoslave.postrm domoslave/DEBIAN/postrm
 
 # compilation rules
 compile:
-	@chmod 755 check_compiler glmaster/DEBIAN/* glslave/DEBIAN/*
+	@chmod 755 check_compiler domomaster/DEBIAN/* domoslave/DEBIAN/*
 	@echo "[ \033[33m..\033[0m ] Compiling for $(ARCH)..."
 	@./check_compiler
 	@make -C monitor_knx
@@ -85,18 +85,18 @@ compile:
 
 # Rule to generate debian packages
 packages:
-	@cp monitor_knx/monitor_knx              glslave/usr/bin
-	@cp monitor_enocean/monitor_enocean      glslave/usr/bin
-	@rm -rf glmaster/etc/domoleaf/www
-	@mkdir -p glmaster/etc/domoleaf
-	@cp -r www glmaster/etc/domoleaf/
-	@sed -i 's/\[version\]/$(VERSION_MASTER)/g' glmaster/DEBIAN/control
-	@dpkg-deb --build glmaster > /dev/null
-	@sed -i 's/\[version\]/$(VERSION_SLAVE)/g' glslave/DEBIAN/control
-	@sed -i 's/Architecture: any/Architecture: $(ARCH)/g' glslave/DEBIAN/control # Modify arch
-	@dpkg-deb --build glslave > /dev/null
-	@mv glmaster.deb         ../$(MASTER_NAME)
-	@mv glslave.deb          ../$(SLAVE_NAME)
+	@cp monitor_knx/monitor_knx              domoslave/usr/bin
+	@cp monitor_enocean/monitor_enocean      domoslave/usr/bin
+	@rm -rf domomaster/etc/domoleaf/www
+	@mkdir -p domomaster/etc/domoleaf
+	@cp -r www domomaster/etc/domoleaf/
+	@sed -i 's/\[version\]/$(VERSION_MASTER)/g' domomaster/DEBIAN/control
+	@dpkg-deb --build domomaster > /dev/null
+	@sed -i 's/\[version\]/$(VERSION_SLAVE)/g' domoslave/DEBIAN/control
+	@sed -i 's/Architecture: any/Architecture: $(ARCH)/g' domoslave/DEBIAN/control # Modify arch
+	@dpkg-deb --build domoslave > /dev/null
+	@mv domomaster.deb         ../$(MASTER_NAME)
+	@mv domoslave.deb          ../$(SLAVE_NAME)
 
 # Clean rules
 clean:
@@ -104,8 +104,8 @@ clean:
 	@make -C monitor_enocean clean
 	@rm -f ../$(MASTER_NAME)
 	@rm -f ../$(SLAVE_NAME)
-	@rm -rf glmaster/DEBIAN
-	@rm -rf glslave/DEBIAN
+	@rm -rf domomaster/DEBIAN
+	@rm -rf domoslave/DEBIAN
 	@rm -f override
 	@rm -f Packages
 

@@ -16,8 +16,8 @@ RUN apt-get install nano screen -y
 RUN apt-get install make gcc gcc-arm-none-eabi g++ libconfig-dev autoconf libtool libxml2-dev -y
 
 #Copy directories
-ADD glmaster /root/domoleaf/glmaster
-ADD glslave /root/domoleaf/glslave
+ADD domomaster /root/domoleaf/domomaster
+ADD domoslave /root/domoleaf/domoslave
 ADD monitor_enocean /root/domoleaf/monitor_enocean
 ADD monitor_knx /root/domoleaf/monitor_knx
 ADD www /root/domoleaf/www

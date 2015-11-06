@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo -e "[ \033[32mOK\033[0m ] Done removing Domoleaf master daemon"
-
-rm -f /var/run/glmaster.pid
-rm -f /var/log/glmaster.log

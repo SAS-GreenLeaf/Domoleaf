@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo -e "[ \033[33m..\033[0m ] Installing Domoleaf slave daemon..."
-
-mkdir -p /usr/lib/domoleaf
-mkdir -p /etc/domoleaf
-mkdir -p /usr/bin/glslave
