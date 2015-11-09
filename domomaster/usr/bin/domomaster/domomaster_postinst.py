@@ -11,12 +11,12 @@ import socket;
 sys.path.append("/usr/lib/domoleaf");
 from DaemonConfigParser import *;
 
-MASTER_CONF_FILE_FROM            = '/etc/domoleaf/master.conf.save';
+MASTER_CONF_FILE_BKP             = '/etc/domoleaf/master.conf.save';
 MASTER_CONF_FILE_TO              = '/etc/domoleaf/master.conf';
 SLAVE_CONF_FILE                  = '/etc/domoleaf/slave.conf';
 
 def master_conf_copy():
-    file_from = DaemonConfigParser(MASTER_CONF_FILE_FROM);
+    file_from = DaemonConfigParser(MASTER_CONF_FILE_BKP);
     file_to   = DaemonConfigParser(MASTER_CONF_FILE_TO);
     
     #listen
@@ -91,9 +91,9 @@ def master_conf_init():
 
 if __name__ == "__main__":
     #Upgrade
-    if os.path.exists('/etc/domoleaf/master.conf.save'):
+    if os.path.exists(MASTER_CONF_FILE_BKP):
         master_conf_copy()
-        os.remove('/etc/domoleaf/master.conf.save');
+        os.remove(MASTER_CONF_FILE_BKP);
     else:
         master_conf_init()
     master_conf_initdb()
