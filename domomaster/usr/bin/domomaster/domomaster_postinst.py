@@ -4,6 +4,7 @@ import sys;
 import os;
 import random;
 import string;
+from hashlib import md5
 from hashlib import sha1
 from subprocess import *
 import socket;
