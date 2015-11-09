@@ -80,9 +80,9 @@ def master_conf_init():
     domoslave = fic.readline();
     fic.close()
     
-    personnal_key = md5(personnal_key.hexdigest().encode('utf-8'))
+    personnal_key = md5(personnal_key.encode('utf-8'))
     
-    query1 = "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('"+hostname+"','"+hostname+"','"+personnal_key+"',1,'"+domoslave.split('\n')[0]+"')"
+    query1 = "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('"+hostname+"','"+hostname+"','"+personnal_key.hexdigest()+"',1,'"+domoslave.split('\n')[0]+"')"
     query2 = "INSERT INTO daemon_protocol (daemon_id, protocol_id, interface) VALUES (1,1,'"+knx+"')"
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'domoleaf',
            '-e', query1], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
