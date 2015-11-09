@@ -1,4 +1,4 @@
-CREATE TABLE `scenarios_list` (
+CREATE TABLE IF NOT EXISTS `scenarios_list` (
   `id_scenario` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name_scenario` varchar(100) NOT NULL DEFAULT '',
   `id_trigger` int(11) unsigned DEFAULT NULL,
