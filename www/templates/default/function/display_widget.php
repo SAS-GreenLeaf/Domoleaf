@@ -544,6 +544,11 @@ function display_consumption($info){
 		$display.= display_consumption_option($info);
 	}
 	
+	//power option
+	if (!empty($info->device_opt->{407})){
+		$display.= display_power_option($info);
+	}
+	
 	return $display;
 }
 
@@ -778,6 +783,21 @@ function display_consumption_option($info){
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{399}->unit.'</span>
+				</div>';
+
+	return $display;
+}
+
+//Power
+function display_power_option($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{407}->valeur)){
+		$tmp = $info->device_opt->{407}->valeur;
+	}
+	$display = '<div>
+					<i class="fa fa-bolt"></i>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{407}->option_id.'">'.$tmp.'</span>
+					<span>'.$info->device_opt->{407}->unit.'</span>
 				</div>';
 
 	return $display;
