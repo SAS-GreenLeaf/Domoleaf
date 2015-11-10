@@ -23,8 +23,24 @@ function kExec(){
 	$(".display-widget").draggable();
 }
 
-function ShowTimeline(id){
+function ShowTimeline(id, opt, optional_id){
 	$("#"+id).toggle();
+	if (opt == 2) {
+		RoomBgSize(optional_id);
+	}
+	else if (opt == 1) {
+		$(".timeline-rooms").each(function(index){
+			room_id = $(this).attr("id").split("current-room-")[1];
+			RoomBgSize(room_id);
+		});
+	}
+	
+}
+
+function RoomBgSize(id) {
+	$("#room-bg-"+id).height(0);
+	height = $("#timeline-room-"+id).height();
+	$("#room-bg-"+id).height(height);
 }
 
 function PopupLoading(){
@@ -254,11 +270,11 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 
 /*** Custom Configuration ***/
 
-function CustomPopup(type, iddevice, userid){
+function CustomPopup(type_elem, id_elem){
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/popup/popup_custom_device.php",
-		data: "iddevice="+iddevice+"&userid="+userid,
+		data: "type_elem="+type_elem+"&idelem="+id_elem,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',
@@ -278,55 +294,115 @@ function submitFormUpload(event) {
 		$("#uploadFileForm").click();
 	}
 }
-function uploadDeviceImg(event) {
+function uploadElemImg(event) {
 	if (files != ""){
+		type_elem = $("#type_elem").val();
+		id_elem = $("#id_elem").val();
+
 		var data = new FormData();
+		data.append("id_elem", id_elem);
 		data.append("fileToUpload", files[0]);
-		data.append("device", $("#iddevice").val());
-		data.append("userid", $("#userid").val());
-		$.ajax({
-			url: "/templates/default/form/form_custom_upload_device.php",
-			type: "POST",
-			data: data,
-			processData: false,
-			contentType: false,
-			success: function(data, textStatus){
-				if (data == "0"){
-					$("#uploadSuccess").hide();
-					$("#uploadFail").show();
-				} else {
-					$("#uploadFail").hide();
-					$("#uploadSuccess").show();
-					$('#deleteBtn').show();
-					$("#uploadBtn").hide();
-					$('#widget-bg-'+$("#iddevice").val()).css("background-image", "url(\""+data+"\")");
-				}
-			},
-		});
+		if (type_elem == 1) {
+			$.ajax({
+				url: "/templates/default/form/form_custom_upload_device.php",
+				type: "POST",
+				data: data,
+				processData: false,
+				contentType: false,
+				beforeSend:function(result, status){
+					PopupLoading();
+				},
+				success: function(data, textStatus){
+					popup_close_last();
+					if (data == "0"){
+						customUploadFail();
+					} else {
+						customUploadSuccess(type_elem, id_elem, data);
+					}
+				},
+			});
+		}
+		else {
+			$.ajax({
+				url: "/templates/default/form/form_custom_upload_room.php",
+				type: "POST",
+				data: data,
+				processData: false,
+				contentType: false,
+				beforeSend:function(result, status){
+					PopupLoading();
+				},
+				success: function(data, textStatus){
+					popup_close_last();
+					if (data == "0"){
+						customUploadFail();
+					} else {
+						customUploadSuccess(type_elem, id_elem, data);
+					}
+				},
+			});
+		}
 	}
-	
 }
 
-function deleteDeviceImg(iddevice, userid, event) {
+function customUploadFail() {
+	$("#uploadSuccess").hide();
+	$("#uploadFail").show();
+}
+
+function customUploadSuccess(type_elem, id_elem, data) {
+	$("#uploadFail").hide();
+	$("#uploadSuccess").show();
+	$('#deleteBtn').show();
+	$("#uploadBtn").hide();
+	$("#uploadMsg").hide();
+	$("#previewImg").addClass("aspect-square");
+	$("#previewImg").removeClass("aspect-square-little");
+	if (type_elem == 1) {
+		$('#widget-bg-'+id_elem).css("background-image", "url(\""+data+"\")");
+	}
+	else {
+		$('#room-bg-'+id_elem).css("background-image", "url(\""+data+"\")");
+	}
+}
+
+function deleteDeviceImg(type_elem, id_elem, event) {
 	event.stopPropagation();
 	event.preventDefault();
-	$.ajax({
-		url: "/templates/default/form/form_custom_delete_device.php",
-		type: "POST",
-		data: "device="+iddevice
-		      +"&userid="+userid,
-		success: function(data){
-				$("#uploadSuccess").hide();
-				$('#deleteBtn').hide();
-				$("#uploadBtn").show();
-				$("#uploadMsg").show();
-				$("#previewImg").removeClass("aspect-square");
-				$("#previewImg").addClass("aspect-square-little");
-				fileImage.css("background-image", "none");
-				$('#widget-bg-'+$("#iddevice").val()).css("background-image", "none");
-				files = "";
+	
+	if (type_elem == 1) {
+		$.ajax({
+			url: "/templates/default/form/form_custom_delete_device.php",
+			type: "POST",
+			data: "device="+id_elem,
+			success: function(data){
+				customUploadDelete();
+				$('#widget-bg-'+id_elem).css("background-image", "none");
 			}
-	});
+		});
+	}
+	else if (type_elem == 2){
+		$.ajax({
+			url: "/templates/default/form/form_custom_delete_room.php",
+			type: "POST",
+			data: "room="+id_elem,
+			success: function(data){
+				customUploadDelete();
+				$('#room-bg-'+id_elem).css("background-image", "none");
+			}
+		});
+	}
+}
+
+function customUploadDelete() {
+	$("#uploadSuccess").hide();
+	$('#deleteBtn').hide();
+	$("#uploadBtn").show();
+	$("#uploadMsg").show();
+	$("#previewImg").removeClass("aspect-square");
+	$("#previewImg").addClass("aspect-square-little");
+	fileImage.css("background-image", "none");
+	files = "";
 }
 
 /*** Scenarios ***/

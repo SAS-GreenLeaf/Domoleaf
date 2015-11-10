@@ -642,7 +642,7 @@ class User {
 		}
 		
 		$sql = 'SELECT room.room_name, room.room_id, user_room.room_order, 
-		               floor
+		               floor, user_room.room_bgimg
 		        FROM room
 		        JOIN user_room ON room.room_id=user_room.room_id
 		        JOIN user_floor ON room.floor=user_floor.floor_id AND
@@ -654,10 +654,11 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$listRoom[$do->room_id] = array(
-				'room_name' => $do->room_name,
-				'room_id' => $do->room_id,
-				'room_order'   => $do->room_order,
-				'floor_id' => $do->floor
+				'room_name'  => $do->room_name,
+				'room_id'    => $do->room_id,
+				'room_order' => $do->room_order,
+				'room_bgimg'  => $do->room_bgimg,
+				'floor_id'   => $do->floor
 			);
 		}
 		$sql = 'SELECT room_device.name, room_device.room_device_id,
@@ -830,7 +831,7 @@ class User {
 			);
 		}
 		
-		$sql = 'SELECT room.room_id, room_name, floor, room_order, room_allowed
+		$sql = 'SELECT room.room_id, room_name, floor, room_order, room_allowed, user_room.room_bgimg
 		        FROM room
 		        JOIN user_room ON user_room.room_id = room.room_id
 		        WHERE user_id=:user_id AND room_allowed=1
@@ -843,6 +844,7 @@ class User {
 				'room_id'     => $do->room_id,
 				'room_name'   => $do->room_name,
 				'room_allowed'=> $do->room_allowed,
+				'room_bgimg'  => $do->room_bgimg,
 				'room_order'  => $do->room_order,
 				'devices'     => array()
 			);
@@ -1089,11 +1091,58 @@ class User {
 	}
 	
 	function confUserDeviceEnable($userid){
-		return null;
+		$userid = $this -> getId();
+		
+		$link = Link::get_link('domoleaf');
+		$list = array();
+
+		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order,
+		               device_bgimg
+		        FROM user_device
+		        WHERE user_id=:user_id
+		        ORDER BY room_device_id ASC';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->room_device_id] = array(
+				'user_id'       => $do->user_id,
+				'room_device_id'=> $do->room_device_id,
+				'device_allowed'=> $do->device_allowed,
+				'device_bgimg'  => $do->device_bgimg,
+				'device_order'  => $do->device_order
+			);
+		}
+		
+		return $list;
 	}
 	
 	function confUserPermissionDevice($iduser, $deviceid, $status){
 		return null;
+	}
+	
+	function confUserRoomEnable($userid){
+		$link = Link::get_link('domoleaf');
+		$list = array();
+	
+		$sql = 'SELECT user_id, room_id, room_allowed, room_order, room_bgimg
+		        FROM user_room
+		        WHERE user_id=:user_id
+		        ORDER BY room_id ASC';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->room_id] = array(
+					'user_id'     => $do->user_id,
+					'room_id'     => $do->room_id,
+					'room_allowed'=> $do->room_allowed,
+					'room_bgimg'  => $do->room_bgimg,
+					'room_order'  => $do->room_order
+			);
+		}
+	
+		return $list;
 	}
 	
 	function confUserPermissionRoom($iduser, $roomid, $status){
@@ -1119,7 +1168,21 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
+	}
+	
+	function confUserRoomBgimg($idroom, $bgimg, $userid=0){
+		$userid = $this->getId();
+	
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user_room
+		        SET room_bgimg=:bgimg
+		        WHERE user_id=:user_id AND room_id=:idroom';
+		$req = $link->prepare($sql);
+		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->bindValue(':idroom', $idroom, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
 	/*** Smartcommand ***/
