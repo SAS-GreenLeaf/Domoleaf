@@ -52,7 +52,7 @@ footer {
 	margin-top:30px!important;
 }
 
-.margin-bottom {
+.margin-bottom-30 {
 	margin-bottom:30px!important;
 }
 
@@ -1482,6 +1482,19 @@ a.carousel-control-camera:hover {
 
 .bootstrap-switch-disabled-with-opacity {
 	opacity: 1 !important;
+}
+
+/*** Graphics ***/
+
+#user-graphic-menu
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+	width: 100%;
+}
+
+#user-graphic-menu {
+	height: auto;
+	text-align: center;
+	width: 100%;
 }
 
 /*** Smartcommands ***/

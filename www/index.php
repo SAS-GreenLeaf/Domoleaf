@@ -34,6 +34,11 @@ if($request->is_co()) {
 				$page = $_GET['page'];
 			break;
 			
+			//Profile graphics
+			case 'profile_user_graphics':
+				$page = $_GET['page'];
+			break;
+			
 			//Profile smartcmd
 			case 'profile_user_smartcmd':
 				$page = $_GET['page'];
@@ -164,6 +169,11 @@ if($request->is_co()) {
 			
 			//Profile installation
 			case 'profile_user_installation':
+				$page = $_GET['page'];
+			break;
+			
+			//Profile graphics
+			case 'profile_user_graphics':
 				$page = $_GET['page'];
 			break;
 			
