@@ -2,7 +2,8 @@
 
 include('profile-menu.php');
 
-$dir = "/templates/default/custom/device/";
+$dir_device = "/templates/default/custom/device/";
+$dir_room = "/templates/default/custom/room/";
 
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
@@ -22,142 +23,121 @@ echo '
 						<div id="floor-panel-'.$floor->floor_id.'" class="timeline-panel">';
 							if ($floor->floor_allowed == 1){
 								echo '
-								<div id="floor-heading-'.$floor->floor_id.'" onclick="ShowTimeline(\'floor-body-'.$floor->floor_id.'\')" class="timeline-heading cursor col-xs-8">';
+							<div id="floor-heading-'.$floor->floor_id.'"
+							     onclick="ShowTimeline(\'floor-body-'.$floor->floor_id.'\', 1, '.$floor->floor_id.')"
+							     class="timeline-heading cursor col-xs-8">';
 							}
 							else {
 								echo '
-								<div id="floor-heading-'.$floor->floor_id.'" class="timeline-heading cursor col-xs-8">';
+							<div id="floor-heading-'.$floor->floor_id.'" class="timeline-heading cursor col-xs-8">';
 							}
-									echo '
-									<h4 class="timeline-title">'.$floor->floor_name.'</h4>
-									<p>
-										<small class="text-muted">
-											<i class="glyphicon glyphicon-home"></i>
-											'.$room.' '._('rooms').'
-										</small>
-									</p>
-								</div>
-							<div class="col-xs-4 center">';
-							if (!empty($floor->floor_order)){
-								echo '
-								<div class="checkbox btn-group">
-									<input class="visi-floor-floor-'.$floor->floor_id.'"
-									       id="floor-visible-'.$floor->floor_id.'"
-									       type="checkbox"
-									       onchange="SetVisibleFloor(\''.$floor->floor_id.'\')"
-									       checked
-									       data-on-color="primary"
-					 				       data-label-width="0"
-									       data-on-text="<i class=\'fa fa-eye\'></i>"
-									       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
-								</div>
-								<script type="text/javascript">
-									$("#floor-visible-'.$floor->floor_id.'").bootstrapSwitch();
-								</script>';
-							}
-							else {
-								echo '
+							echo '
+								<h4 class="timeline-title">'.$floor->floor_name.'</h4>
+								<p>
+									<small class="text-muted">
+										<i class="glyphicon glyphicon-home"></i>
+										'.$room.' '._('rooms').'
+									</small>
+								</p>
+							</div>
+							<div class="col-xs-4 center">
 								<div class="checkbox btn-group">
 									<input id="floor-visible-'.$floor->floor_id.'"
 									       type="checkbox"
-									       onchange="SetVisibleFloor(\''.$floor->floor_id.'\')"
+									       onchange="SetVisibleFloor(\''.$floor->floor_id.'\')" ';
+									if (!empty($floor->floor_order)){
+										echo '
+									       class="visi-floor-floor-'.$floor->floor_id.'"
+									       checked ';
+									}
+									echo '
 									       data-on-color="primary"
-					 				       data-label-width="0"
+									       data-label-width="0"
 									       data-on-text="<i class=\'fa fa-eye\'></i>"
 									       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
 								</div>
 								<script type="text/javascript">
 									$("#floor-visible-'.$floor->floor_id.'").bootstrapSwitch();
-								</script>';
-							}
-							echo '
-							<div class="btn-group">
-								<button type="button"
-								        class="btn btn-warning"
-								        onclick="SetOrder(\''.$floor->floor_id.'\', -1, 0, \''.$floor->floor_order.'\')">
-									<i class="glyphicon glyphicon-arrow-up"></i>
-								</button>
-								<button type="button"
-								        class="btn btn-warning"
-								        onclick="SetOrder(\''.$floor->floor_id.'\', 1, 0, \''.$floor->floor_order.'\')">
-									<i class="glyphicon glyphicon-arrow-down"></i>
-								</button>
-							</div>';
-						echo '
-						</div>
-						<div id="floor-body-'.$floor->floor_id.'" class="timeline-body col-xs-12">';
+								</script>
+								<div class="btn-group">
+									<button type="button"
+									        class="btn btn-warning"
+									        onclick="SetOrder(\''.$floor->floor_id.'\', -1, 0, \''.$floor->floor_order.'\')">
+										<i class="glyphicon glyphicon-arrow-up"></i>
+									</button>
+									<button type="button"
+									        class="btn btn-warning"
+									        onclick="SetOrder(\''.$floor->floor_id.'\', 1, 0, \''.$floor->floor_order.'\')">
+										<i class="glyphicon glyphicon-arrow-down"></i>
+									</button>
+								</div>';
+								echo '
+							</div>
+							<div id="floor-body-'.$floor->floor_id.'" class="timeline-body col-xs-12">';
 							foreach ($floor->room as $room){
 								echo '
-								<ul id="current-room-'.$room->room_id.'" class="timeline">';
-								$device = count((array)$room->devices);
+								<ul id="current-room-'.$room->room_id.'" class="timeline timeline-rooms">';
+									$device = count((array)$room->devices);
 									echo '
 									<li>
 										<div class="timeline-badge">
 											<i class="glyphicon glyphicon-home"></i>
 										</div>
-										<div class="timeline-panel">';
+										<div class="timeline-panel" id="timeline-room-'.$room->room_id.'">
+											<div id="room-heading-'.$room->room_id.'"';
 											if ($room->room_allowed == 1){
 												echo '
-												<div id="room-heading-'.$room->room_id.'"
-												     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\')"
-												     class="timeline-heading cursor col-xs-6">';
-											}
-											else {
-												echo '
-												<div id="room-heading-'.$room->room_id.'"
-												     class="timeline-heading cursor col-xs-4">';
-											}
-												echo '
-													<h4 class="timeline-title">'.$room->room_name.'</h4>
-													<p>
-														<small class="text-muted">
-															<i class="fa fa-cube"></i>
-															'.$device.' '._('device').'
-														</small>
-													</p>
-												</div>
-										<div class="col-xs-6 center">';
-											if (!empty($room->room_order)){
-												echo '
-												<div class="checkbox btn-group">
-													<input class="visi-floor-room-'.$floor->floor_id.'"
-													       id="room-visible-'.$room->room_id.'"
-													       type="checkbox"
-													       onchange="SetVisibleRoom(\''.$room->room_id.'\')"
-													       checked
-													       data-on-color="primary"
-									 				       data-label-width="0"
-													       data-on-text="<i class=\'fa fa-eye\'></i>"
-													       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
-												</div>
-												<script type="text/javascript">
-													$("#room-visible-'.$room->room_id.'").bootstrapSwitch();
-												</script>';
-											}
-											else {
-												echo '
-												<div class="checkbox btn-group">
-													<input class="visi-floor-room-'.$floor->floor_id.'"
-													       id="room-visible-'.$room->room_id.'"
-													       type="checkbox"
-													       onchange="SetVisibleRoom(\''.$room->room_id.'\')"
-													       data-on-color="primary"
-									 				       data-label-width="0"
-													       data-on-text="<i class=\'fa fa-eye\'></i>"
-													       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
-												</div>
-												<script type="text/javascript">
-													$("#room-visible-'.$room->room_id.'").bootstrapSwitch();
-												</script>';
+											     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 2, '.$room->room_id.')"';
 											}
 											echo '
-											<div class="btn-group">
-												<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$room->room_id.'\', -1, 1, \''.$room->room_order.'\')"><i class="glyphicon glyphicon-arrow-up"></i></button>
-												<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$room->room_id.'\', 1, 1, \''.$room->room_order.'\')"><i class="glyphicon glyphicon-arrow-down"></i></button>
-											</div>';
-										echo '
-										</div>
-										<div id="room-body-'.$room->room_id.'" class="timeline-body col-xs-12">';
+											     class="timeline-heading cursor col-xs-6 z-index-50">
+												<h4 class="timeline-title">'.$room->room_name.'</h4>
+												<p>
+													<small class="text-muted">
+														<i class="fa fa-cube"></i>
+														'.$device.' '._('device').'
+													</small>
+												</p>
+											</div>
+											<div class="col-xs-6 center z-index-50">
+												<div class="checkbox btn-group">
+													<input class="visi-floor-room-'.$floor->floor_id.'"
+													       id="room-visible-'.$room->room_id.'"
+													       type="checkbox"
+													       onchange="SetVisibleRoom(\''.$room->room_id.'\')"';
+												if (!empty($room->room_order)){
+													echo '
+													       checked';
+												}
+													echo '
+													       data-on-color="primary"
+													       data-label-width="0"
+													       data-on-text="<i class=\'fa fa-eye\'></i>"
+													       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+												</div>
+												<script type="text/javascript">
+													$("#room-visible-'.$room->room_id.'").bootstrapSwitch();
+												</script>
+												<div class="btn-group">
+													<button type="button" class="btn btn-warning"
+													        onclick="SetOrder(\''.$room->room_id.'\', -1, 1, \''.$room->room_order.'\')">
+														<i class="glyphicon glyphicon-arrow-up"></i>
+													</button>
+													<button type="button" class="btn btn-warning"
+													        onclick="SetOrder(\''.$room->room_id.'\', 1, 1, \''.$room->room_order.'\')">
+														<i class="glyphicon glyphicon-arrow-down"></i>
+													</button>
+												</div>
+												<div class="btn-group">
+													<button title="'._('Custom').'"
+													        onclick="CustomPopup(2, '.$room->room_id.')"
+													        class="btn btn-greenleaf"
+													        type="button">
+													        <span class="fa fa-paint-brush md"></span>
+													</button>
+												</div>
+											</div>
+											<div id="room-body-'.$room->room_id.'" class="timeline-body col-xs-12">';
 											foreach ($room->devices as $device){
 												echo '
 												<div id="widget-'.$device->room_device_id.'" class="box col-md-3 col-sm-6 col-xs-12">
@@ -166,82 +146,80 @@ echo '
 														<div class="info col-xs-12">
 															<div class="info-widget">
 																<button title="'._('Custom').'"
-																        onclick="CustomPopup(0, '.$device->room_device_id.', 0)"
+																        onclick="CustomPopup(1, '.$device->room_device_id.')"
 																        class="btn btn-greenleaf"
 																        type="button">
 																        <span class="fa fa-paint-brush md"></span>
 																</button>
 															</div>
-															<h3 class="title">'.$device->name.'</h3>';
-															if (!empty($device->device_order)){
+															<h3 class="title">'.$device->name.'</h3>
+															<div class="checkbox">
+																<input class="visi-room-device-'.$room->room_id.'"
+																       id="device-visible-'.$device->room_device_id.'"
+																       type="checkbox"
+																       onchange="SetVisibleDevice(\''.$device->room_device_id.'\')"';
+																if (!empty($device->device_order)){
+																	echo '
+																       checked=""';
+																}
 																echo '
-																<div class="checkbox">
-																	<input class="visi-room-device-'.$room->room_id.'"
-																	       id="device-visible-'.$device->room_device_id.'"
-																	       type="checkbox"
-																	       onchange="SetVisibleDevice(\''.$device->room_device_id.'\')"
-																	       checked=""
-																	       data-on-color="primary"
-													 				       data-label-width="0"
-																	       data-on-text="<i class=\'fa fa-eye\'></i>"
-																	       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
-																</div>
-																<script type="text/javascript">
-																	$("#device-visible-'.$device->room_device_id.'").bootstrapSwitch();
-																</script>';
-															}
-															else {
-																echo '
-																<div class="checkbox">
-																	<input class="visi-room-device-'.$room->room_id.'"
-																	       id="device-visible-'.$device->room_device_id.'"
-																	       type="checkbox"
-																	       onchange="SetVisibleDevice(\''.$device->room_device_id.'\')"
-																	       data-on-color="primary"
-													 				       data-label-width="0"
-																	       data-on-text="<i class=\'fa fa-eye\'></i>"
-																	       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
-																</div>
-																<script type="text/javascript">
-																	$("#device-visible-'.$device->room_device_id.'").bootstrapSwitch();
-																</script>';
-															}
-															echo '
+																       data-on-color="primary"
+																       data-label-width="0"
+																       data-on-text="<i class=\'fa fa-eye\'></i>"
+																       data-off-text="<i class=\'fa fa-eye-slash\'></i>" />
+															</div>
+															<script type="text/javascript">
+																$("#device-visible-'.$device->room_device_id.'").bootstrapSwitch();
+															</script>
 															<div class="padding-bottom btn-group">
-																<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', -1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-up rotate--90"></i></button>
-																<button type="button" class="btn btn-warning" onclick="SetOrder(\''.$device->room_device_id.'\', 1, 2, \''.$device->device_order.'\')"><i class="glyphicon glyphicon-arrow-down rotate--90"></i></button>
+																<button type="button" class="btn btn-warning"
+																        onclick="SetOrder(\''.$device->room_device_id.'\', -1, 2, \''.$device->device_order.'\')">
+																	<i class="glyphicon glyphicon-arrow-up rotate--90"></i>
+																</button>
+																<button type="button" class="btn btn-warning"
+																        onclick="SetOrder(\''.$device->room_device_id.'\', 1, 2, \''.$device->device_order.'\')">
+																	<i class="glyphicon glyphicon-arrow-down rotate--90"></i>
+																</button>
 															</div>
 														</div>
-														<div id="widget-bg-'.$device->room_device_id.'" class="info-bg" ';
+														<div id="widget-bg-'.$device->room_device_id.'" class="installation-device-bg bg-image" ';
 															if (!empty($device->device_bgimg)) {
-																echo 'style="background-image: url(\''.$dir.$device->device_bgimg.'\');"';
+																echo 'style="background-image: url(\''.$dir_device.$device->device_bgimg.'\');"';
 															}
 														echo '>
 														</div>
 													</div>&nbsp;
 												</div>';
 											}
-										echo '
+											echo '
+											</div>
+											<div id="room-bg-'.$room->room_id.'" class="installation-room-bg bg-image" ';
+												if (!empty($room->room_bgimg)) {
+													echo 'style="background-image: url(\''.$dir_room.$room->room_bgimg.'\');"';
+												}
+											echo '>
+											</div>
+										</div>
+										
 									</li>
 								</ul>';
 							}
-						echo '
+							echo '
 						</div>
 					</li>
 				</ul>';
 			}
-		echo '
-		</div>';
-	echo '
+			echo '
+		</div>
 	</div>
 </div>';
-
+		
 echo '<script type="text/javascript">
 
-	$(document).ready(function(){
-		WidgetSize();
-		activateMenuElem(\'installation\');
-	});
+$(document).ready(function(){
+	WidgetSize();
+	activateMenuElem(\'installation\');
+});
 
 function swap(elem, action){
 	if (action == 1){
@@ -376,7 +354,7 @@ function WidgetSize(){
 		
 	});
 	$(".info").css("height", (height+10)+"px");
-	$(".info-bg").css("height", (height+10)+"px");
+	$(".installation-device-bg").css("height", (height+10)+"px");
 }
 
 </script>';
