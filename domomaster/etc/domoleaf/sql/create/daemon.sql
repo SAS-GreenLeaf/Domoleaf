@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `daemon` (
   `secretkey` varchar(127) NOT NULL DEFAULT '',
   `validation` tinyint(3) unsigned DEFAULT '0',
   `version` varchar(15) DEFAULT '',
-  `wifi_essid` varchar(63) DEFAULT NULL,
+  `wifi_ssid` varchar(63) DEFAULT NULL,
   `wifi_password` varchar(128) DEFAULT NULL,
   `wifi_security` varchar(31) DEFAULT NULL,
   `wifi_mode` tinyint(4) unsigned DEFAULT '0',

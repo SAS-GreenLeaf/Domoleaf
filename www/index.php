@@ -1,6 +1,12 @@
 <?php
 
 header('GLD3: 780923');
+
+if(isset($_SERVER['HTTP_USER_AGENT']) &&
+   (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+	header('X-UA-Compatible: IE=edge');
+}
+
 include('config.php');
 include('libs/Link.class.php');
 include('functions.php');
