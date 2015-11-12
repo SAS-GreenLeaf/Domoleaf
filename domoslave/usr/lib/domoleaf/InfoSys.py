@@ -21,7 +21,7 @@ class InfoSys:
         disk = os.popen("df / | tail -n 1 | awk '{print $1}'").read().split('\n')[0];
         disk = disk.rstrip('[0-9]')
         
-        if disk[0:6] == "/dev/sd":
+        if disk[0:7] == "/dev/sd":
             return disk
         
         disk = os.popen("cat /etc/fstab | grep ' / ' | awk '{print $1}'").read().split('\n')[0];
@@ -35,9 +35,9 @@ class InfoSys:
         disk = InfoSys.diskDetect()
         if disk[0:11] == "/dev/mmcblk":
             return os.popen("udevadm info -a -n "+disk+" | grep -i cid | awk -F \\\" '{print $2}'").read().split('\n')[0];
-        elif disk[0:6] == "/dev/sd":
+        elif disk[0:7] == "/dev/sd":
             serial = os.popen("hdparm -i /dev/sda | grep -oE 'SerialNo=.*'").read().split('\n')[0];
-            return serial[8:]
+            return serial[9:]
         return ""
     
     def softMaster():
