@@ -2,11 +2,6 @@
 
 include('header.php');
 
-$request =  new Api();
-$request -> add_request('confRoomList');
-$result  =  $request -> send_request();
-
-
 if (!empty($_GET['id']))
 {
 	$request =  new Api();
