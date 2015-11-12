@@ -59,4 +59,4 @@ class GLManager:
             "iv": aes_IV
         }
         r = requests.post("http://"+admin_addr+"/md_receive.php", data = data)
-    
+        return r
