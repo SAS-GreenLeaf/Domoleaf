@@ -442,7 +442,7 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confFloorNew($name) {
+	function confFloorNew($namefloor, $nameroom = 0) {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'INSERT INTO floor
@@ -450,7 +450,7 @@ class Admin extends User {
 		        VALUES
 		        (:name)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name', $name, PDO::PARAM_STR);
+		$req->bindValue(':name', $namefloor, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newfloorid = $link->lastInsertId();
@@ -462,6 +462,10 @@ class Admin extends User {
 			        FROM user';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			if (!empty($nameroom)) {
+				$this->confRoomNew($nameroom, $newfloorid);
+			}
 		}
 		
 		return $newfloorid;
