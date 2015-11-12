@@ -890,18 +890,14 @@ a.carousel-control-camera:hover {
     color: #ffffff;
 }
 
-.btn-group-greenleaf .dropdown-menu:hover, .btn-greenleaf:hover {
+.btn-group-greenleaf .dropdown-menu:hover,
+.btn-greenleaf:hover,
+.dropdown-confgreenleaf > li > a:hover{
     background-color: #7eb527;
     border-color: #4c6c18;
     color: #ffffff;
 }
 
-
-.dropdown-confgreenleaf > li > a:hover {
-    background-color: white !important;
-    border-color: #449d44;
-    color: black;
-}
 
 .dropdown-confgreenleaf > li > a {
     background-color: #86bf2b !important;

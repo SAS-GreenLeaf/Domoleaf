@@ -39,7 +39,7 @@ if (!empty($_GET['schedule_id'])) {
 				'$.ajax({'.
 					'type: "GET",'.
 					'url: "/templates/default/form/form_update_schedule_name.php",'.
-					'data: "schedule_id="+'.$_GET['schedule_id'].'+"&schedule_name="+name,'.
+					'data: "schedule_id="+'.$_GET['schedule_id'].'+"&schedule_name="+encodeURIComponent(name),'.
 					'success: function(result) {'.
 						'if (result && result.split("-1")[1]) {'.
 							'$("#errorMsg").html(result.split("-1")[1]);'.
