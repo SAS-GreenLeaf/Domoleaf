@@ -740,14 +740,14 @@ class Api {
 						
 						case 'createNewSmartcmd' :
 							if (!empty($var[0])){
-								$res = $user->createNewSmartcmd($var[0]);
+								$res = $user->createNewSmartcmd(ucfirst(trim($var[0])));
 							}
 						break;
 							
 						case 'updateSmartcmdName' :
 							if (!empty($var[0]) && !empty($var[1])){
 								if (!empty($user->searchSmartcmdById($var[0]))) {
-									$res = $user->updateSmartcmdName($var[0], $var[1]);
+									$res = $user->updateSmartcmdName($var[0], ucfirst(trim($var[1])));
 								}
 							}
 						break;
@@ -854,7 +854,7 @@ class Api {
 						
 						case 'createNewTrigger' :
 							if (!empty($var[0])){
-								$res = $user->createNewTrigger($var[0]);
+								$res = $user->createNewTrigger(ucfirst(trim($var[0])));
 							}
 						break;
 						
@@ -869,7 +869,7 @@ class Api {
 						case 'updateTriggerName' :
 							if (!empty($var[0]) && !empty($var[1])){
 								if (!empty($user->searchTriggerById($var[0]))) {
-									$res = $user->updateTriggerName($var[0], $var[1]);
+									$res = $user->updateTriggerName($var[0], ucfirst(trim($var[1])));
 								}
 							}
 						break;
@@ -956,17 +956,17 @@ class Api {
 							$res = $user->getSchedule($var[0]);
 						break;
 						
-						case 'updateScheduleName' :
-							if (!empty($var[0]) && !empty($var[1])){
-								if (!empty($user->searchScheduleById($var[0]))) {
-									$res = $user->updateScheduleName($var[0], $var[1]);
-								}
+						case 'createNewSchedule' :
+							if (!empty($var[0])){
+								$res = $user->createNewSchedule(ucfirst(trim($var[0])));
 							}
 						break;
 						
-						case 'createNewSchedule' :
-							if (!empty($var[0])){
-								$res = $user->createNewSchedule($var[0]);
+						case 'updateScheduleName' :
+							if (!empty($var[0]) && !empty($var[1])){
+								if (!empty($user->searchScheduleById($var[0]))) {
+									$res = $user->updateScheduleName($var[0], ucfirst(trim($var[1])));
+								}
 							}
 						break;
 						
@@ -996,7 +996,7 @@ class Api {
 						
 						case 'createNewScenario' :
 							if (!empty($var[0])){
-								$res = $user->createNewScenario($var[0]);
+								$res = $user->createNewScenario(ucfirst(trim($var[0])));
 							}
 						break;
 						
@@ -1048,7 +1048,7 @@ class Api {
 						case 'updateScenarioName' :
 							if (!empty($var[0]) && !empty($var[1])){
 								if (!empty($user->searchScenarioById($var[0]))) {
-									$res = $user->updateScenarioName($var[0], $var[1]);
+									$res = $user->updateScenarioName($var[0], ucfirst(trim($var[1])));
 								}
 							}
 						break;

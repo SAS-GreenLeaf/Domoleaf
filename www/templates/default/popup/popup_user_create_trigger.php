@@ -46,7 +46,7 @@ echo
 			'$.ajax({'.
 				'type: "GET",'.
 				'url: "/templates/default/form/form_create_new_trigger.php",'.
-				'data: "trigger_name="+name,'.
+				'data: "trigger_name="+encodeURIComponent(name),'.
 				'success: function(result) {'.
 					'if (result && result == -1) {'.
 						'$("#popupError").show();'.

@@ -39,7 +39,7 @@ if (!empty($_GET['smartcmd_id'])) {
 				'$.ajax({'.
 					'type: "GET",'.
 					'url: "/templates/default/form/form_update_smartcmd_name.php",'.
-					'data: "smartcmd_id="+'.$_GET['smartcmd_id'].'+"&smartcmd_name="+name,'.
+					'data: "smartcmd_id="+'.$_GET['smartcmd_id'].'+"&smartcmd_name="+encodeURIComponent(name),'.
 					'success: function(result) {'.
 						'if (result && result.split("-1")[1]) {'.
 							'$("#errorMsg").html(result.split("-1")[1]);'.

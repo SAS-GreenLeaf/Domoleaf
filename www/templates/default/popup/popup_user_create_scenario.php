@@ -41,7 +41,7 @@ echo
 			'$.ajax({'.
 				'type: "GET",'.
 				'url: "/templates/default/form/form_create_new_scenario.php",'.
-				'data: "scenario_name="+name,'.
+				'data: "scenario_name="+encodeURIComponent(name),'.
 				'success: function(result) {'.
 					'if (result && result == -1) {'.
 						'$("#popupError").show();'.
