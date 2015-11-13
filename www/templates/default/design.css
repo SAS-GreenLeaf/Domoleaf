@@ -77,6 +77,12 @@ footer {
 	text-align: right;
 }
 
+.info-warning {
+	margin-left: -15px;
+	text-align: left;
+	position: absolute;
+}
+
 .right {
 	text-align: right;
 }
