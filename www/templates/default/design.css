@@ -621,36 +621,9 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	color: #222; 
 }
 
-.info-bg {
-	background-position: center center;
-	background-size: cover;
-	margin-top: -24px;
-	opacity: 0.7;
-	z-index: -1;
-}
-
-.installation-device-bg {
-	background-position: center center;
-	background-size: cover;
-	margin-top: -24px;
-	opacity: 0.7;
-	z-index: -1;
-}
-
-.installation-room-bg {
-	/*background-position: center center;
-	background-size: cover;*/
-	z-index: -1;
-	opacity: 0.7;
-}
-
 .box .space { 
 	height: 30px; 
 }
-
-/***.custom-icon{
-	margin: 1px 1px 0px 0px;
-}**/
 
 .width {
 	width: 75%;
@@ -1326,9 +1299,45 @@ a.carousel-control-camera:hover {
 
 /*** Popup Custom (Upload File) ***/
 
+.text-b-and-w {
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	color: black;
+	blur-radius: 5px;
+}
+
 .bg-image {
 	background-position: center center;
 	background-size: cover;
+}
+
+.info-bg {
+	background-position: center center;
+	background-size: cover;
+	margin-top: -24px;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+.installation-device-bg {
+	background-position: center center;
+	background-size: cover;
+	margin-top: -24px;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+.installation-room-bg {
+	background-position: center center;
+	background-size: cover;
+	z-index: -1;
+	opacity: 0.7;
+}
+
+.installation-room-mc-bg {
+	background-position: center center;
+	background-size: cover;
+	z-index: -1;
+	opacity: 0.7;
 }
 
 .bg-image.aspect-square:before {
@@ -1497,6 +1506,12 @@ a.carousel-control-camera:hover {
 
 .bootstrap-switch-disabled-with-opacity {
 	opacity: 1 !important;
+}
+
+.colorUserInstall {
+	color: black;
+	padding: 2px;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 /*** Smartcommands ***/

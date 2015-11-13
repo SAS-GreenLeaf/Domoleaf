@@ -8,7 +8,13 @@ $dir_room = "/templates/default/custom/room/";
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 	echo '
-	<div class="center"><h2>'._('User Installation').'</h2></div><br/><br/>
+	<div class="center">
+		<h2>'._('User Installation').'
+		<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, 0)">
+			<span class="fa fa-paint-brush md colorUserInstall"></span>
+		</button>
+	</h2>
+	</div><br/><br/>
 	<div class="col-md-12">
 		<div class="panel-group" id="accordion">';
 			foreach ($accordioninfo as $floor){
@@ -87,7 +93,7 @@ echo '
 											<div id="room-heading-'.$room->room_id.'"';
 											if ($room->room_allowed == 1){
 												echo '
-											     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 2, '.$room->room_id.')"';
+											    onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 2, '.$room->room_id.')"';
 											}
 											echo '
 											     class="timeline-heading cursor col-xs-6 z-index-50">
@@ -130,7 +136,7 @@ echo '
 												</div>
 												<div class="btn-group">
 													<button title="'._('Custom').'"
-													        onclick="CustomPopup(2, '.$room->room_id.')"
+													        onclick="CustomPopup(2, '.$room->room_id.', '.$userid.')"
 													        class="btn btn-greenleaf"
 													        type="button">
 													        <span class="fa fa-paint-brush md"></span>
@@ -146,7 +152,7 @@ echo '
 														<div class="info col-xs-12">
 															<div class="info-widget">
 																<button title="'._('Custom').'"
-																        onclick="CustomPopup(1, '.$device->room_device_id.')"
+																        onclick="CustomPopup(1, '.$device->room_device_id.', '.$userid.')"
 																        class="btn btn-greenleaf"
 																        type="button">
 																        <span class="fa fa-paint-brush md"></span>
@@ -219,6 +225,7 @@ echo '<script type="text/javascript">
 $(document).ready(function(){
 	WidgetSize();
 	activateMenuElem(\'installation\');
+	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
 });
 
 function swap(elem, action){

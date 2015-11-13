@@ -98,16 +98,16 @@ function PopupDeleteUser(iduser){
 		}
 	});
 }
-						
+
 function Permission(userid, lvl){
 	location.href="/conf_users/"+userid+"/"+lvl;
 }
-												
-function	GetUser(id){
+
+function GetUser(id){
 	location.href="/conf_users/"+id;
 }
-							
-function	NewUser(){
+
+function NewUser(){
 	var username = $("#newusername").val();
 	var password = $("#newpassword").val();
 	var lastname = $("#newlastname").val();
@@ -131,8 +131,8 @@ function	NewUser(){
 		}
 	});		
 }
-						
-function 	DeleteUser(iduser){
+
+function DeleteUser(iduser){
 	
 	$.ajax({
 		type:"GET",

@@ -15,7 +15,12 @@ else {
 	$rooms = $result->confUserRoomEnable;
 }
 
-$iduser = $request -> getId();
+if (empty($_POST['userid'])) {
+	$iduser = $request -> getId();
+}
+else {
+	$iduser = $_POST['userid'];
+}
 
 $target_dir_abs = "/etc/domoleaf/www/templates/default/custom/room/";
 $target_dir = "/templates/default/custom/room/";

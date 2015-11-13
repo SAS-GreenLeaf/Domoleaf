@@ -8,7 +8,7 @@ class Admin extends User {
 		$list = array();
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
-		               gender, phone, language, design, activity, user_level
+		               gender, phone, language, design, activity, user_level, bg_color
 		        FROM user';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1750,7 +1750,10 @@ class Admin extends User {
 	
 	//room
 	
-	function confUserRoomEnable($userid){
+	function confUserRoomEnable($userid = 0){
+		if (empty($userid)) {
+			$userid = $this -> getId();
+		}
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
@@ -2267,13 +2270,13 @@ class Admin extends User {
 	
 	/*** User customisation ***/
 	
-	function confUserDeviceBgimg($iddevice, $bgimg, $userid=0){
-		if ($userid == 0) {
+	function confUserDeviceBgimg($iddevice, $bgimg, $userid = 0){
+		if (empty($userid)) {
 			$userid = $this->getId();
 		}
 
 		$link = Link::get_link('domoleaf');
-	
+		
 		$sql = 'UPDATE user_device
 		        SET device_bgimg=:bgimg
 		        WHERE user_id=:user_id AND room_device_id=:iddevice';
@@ -2282,7 +2285,39 @@ class Admin extends User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
 	
+	function confUserRoomBgimg($idroom, $bgimg, $userid = 0){
+		if (empty($userid)) {
+			$userid = $this->getId();
+		}
+		
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user_room
+		        SET room_bgimg=:bgimg
+		        WHERE user_id=:user_id AND room_id=:idroom';
+		$req = $link->prepare($sql);
+		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->bindValue(':idroom', $idroom, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function userUpdateBGColor($color, $userid = 0){
+		if (empty($userid)) {
+			$userid = $this->getId();
+		}
+	
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user
+		        SET bg_color=:color
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':color', $color, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
 	/*** KNX action ***/

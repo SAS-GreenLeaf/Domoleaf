@@ -482,7 +482,7 @@ function display_commande($info){
 function display_lampe($info){
 	if (!empty($info->device_id) && $info->device_id == 78){
 		$display = '<div class="info-widget">
-						<button title="'._('More').'" onclick="HandlePopup(3, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
+						<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0)" class="btn btn-greenleaf" type="button">
 							<span class="fa fa-plus md"></span>
 						</button>
 					</div>
