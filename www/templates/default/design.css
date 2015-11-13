@@ -1836,3 +1836,7 @@ span.round-tab:hover {
 		left: 35%;
 	}
 }
+
+.border-invalid {
+	border: 2px solid red;
+}

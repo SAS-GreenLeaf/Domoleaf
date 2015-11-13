@@ -278,6 +278,7 @@ function submitFormUpload(event) {
 		$("#uploadFileForm").click();
 	}
 }
+
 function uploadDeviceImg(event) {
 	if (files != ""){
 		var data = new FormData();

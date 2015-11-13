@@ -543,6 +543,21 @@ class Api {
 							}
 						break;
 						
+						case 'confSaveWifi':
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3])){
+								if (empty($var[4])){
+									$var[4] = 0;
+								}
+								$res = $user->confSaveWifi($var[0], $var[1], $var[2], $var[3], $var[4]);
+							}
+						break;
+						
+						case 'confWifi':
+							if (!empty($var[0])){
+								$res = $user->confWifi($var[0]);
+							}
+						break;
+						
 						case 'confD3Reboot':
 							if (!empty($var[0])){
 								$res = $user->confD3Reboot($var[0]);

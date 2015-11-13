@@ -65,6 +65,7 @@ SEND_TECH               = 'send_tech';
 SEND_ALIVE              = 'send_alive';
 SEND_INTERFACES         = 'send_interfaces';
 REBOOT_D3               = 'reboot_d3';
+WIFI_UPDATE             = 'wifi_update';
 
 def individual2string(addr):
     """
@@ -113,7 +114,8 @@ class SlaveDaemon:
             SEND_TECH           : self.send_tech,
             SEND_ALIVE          : self.send_alive,
             SEND_INTERFACES     : self.send_interfaces,
-            REBOOT_D3           : self.reboot_d3
+            REBOOT_D3           : self.reboot_d3,
+            WIFI_UPDATE         : self.wifi_update
         };
 
     def update(self, json_obj, connection):
@@ -580,3 +582,20 @@ class SlaveDaemon:
 
     def reboot_d3(self, json_obj, connection):
         call(['reboot']);
+
+    def wifi_update(self, json_obj, connection):
+        try:
+            self._parser.writeValueFromSection('wifi', 'ssid', json_obj['ssid']);
+            self._parser.writeValueFromSection('wifi', 'password', json_obj['password']);
+            self._parser.writeValueFromSection('wifi', 'security', json_obj['security']);
+            self._parser.writeValueFromSection('wifi', 'mode', json_obj['mode']);
+        except Exception as e:
+            self.logger.error(e);
+        json_str = '{"packet_type": "wifi_update", "aes_pass": "' + self.private_aes + '"}';
+        master_hostname = str(json_obj['sender_name']);
+        encrypt_IV = AESManager.get_IV();
+        spaces = 16 - len(json_str) % 16;
+        json_str = json_str + (spaces * ' ')
+        encode_obj = AES.new(self.private_aes, AES.MODE_CBC, encrypt_IV);
+        data = encode_obj.encrypt(json_str);
+        connection.send(bytes(encrypt_IV, 'utf-8') + data);

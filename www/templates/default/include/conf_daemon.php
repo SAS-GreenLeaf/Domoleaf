@@ -22,7 +22,7 @@ echo '
 					<th>'._('Protocol').'</th>
 					<th class="center">'._('Version').'</th>
 					<th class="col-xs-1">'._('Validation').'</th>
-					<th class="col-sm-2 col-xs-2 center">&nbsp;</th>
+					<th class="center">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>';
@@ -61,6 +61,9 @@ echo '
 						echo '
 						</td>
 						<td class="center">
+							<button type="button" title="'._('Wifi Configuration').'" class="btn btn-info" onclick="PopupWifi('.$elem->daemon_id.')">
+								<span class="fa fa-wifi" aria-hidden="true"></span>
+							</button>
 							<button type="button" title="'._('Reboot').'" class="btn btn-warning" onclick="PopupRebootD3('.$elem->daemon_id.')">
 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 							</button>
@@ -155,6 +158,64 @@ function PopupNewDaemon(){
 				title: "'._('New Daemon').'",
 			message: msg
 		});
+		}
+	});
+}
+
+function SaveWifi(){
+	var daemon_id = $("#inputDaemonId").val();
+	var ssid = $("#ssid").val();
+	var password = $("#wifiPassword").val();
+	var security = $("#wifiSecurity").val();
+	var mode = $("#wifiMode").val();
+
+		$.ajax({
+		type:"GET",
+		url: "/form/form_save_wifi.php",
+		data: "daemon_id="+daemon_id+"&ssid="+ssid+"&password="+password+"&security="+security+"&mode="+mode,
+		success: function(msg) {
+			popup_close();
+		}
+	});
+}
+
+function submitFormWifi(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	$("#form_wifi").submit();
+}
+
+function validate_ssid(){
+	$("#form_wifi").validate({
+		submitHandler: function(form, event) {
+			$("#ssid").removeClass("border-invalid");
+			SaveWifi();
+			return false;
+		},
+		rules: {
+			ssid: {
+				required: true,
+				ssid_validate: true
+			}
+		},
+		highlight: function() {
+			$("#ssid").addClass("border-invalid");
+		},
+		errorLabelContainer: "#wifiError",
+		errorElement: "em"
+	});
+}
+
+function PopupWifi(daemon_id){
+		$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_wifi.php",
+		data: "daemon_id="+daemon_id,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: "'._('Wifi Configuration').'",
+			message: msg
+			});
 		}
 	});
 }
