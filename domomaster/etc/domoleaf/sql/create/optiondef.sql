@@ -416,6 +416,7 @@ VALUES
 	(405, 'Ventilation 5', 0, 0, 0.0, 0, '', '', 'Ventilation 5', '', 4),
 	(406, 'Ventilation 6', 0, 0, 0.0, 0, '', '', 'Ventilation 6', '', 4),
 	(407, 'Power', 1, 0, 0.0, 1, '', '', 'Puissance', '', 6),
-	(408, 'Picture', 1, 9, 0.0, 1, '', '', 'Photo', '', 4);
+	(408, 'Picture', 1, 9, 0.0, 1, '', '', 'Photo', '', 4),
+	(409, NULL, 0, 0, 0.0, 1, '', '', 'Circuit ouvert', '', 4);
 
 SET FOREIGN_KEY_CHECKS=1;
