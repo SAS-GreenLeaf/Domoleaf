@@ -8,7 +8,7 @@ class Admin extends User {
 		$list = array();
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
-		               gender, phone, language, design, activity, user_level
+		               gender, phone, language, design, activity, user_level, bg_color
 		        FROM user';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -2283,6 +2283,22 @@ class Admin extends User {
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	
+	}
+	
+	function userUpdateBGColor($color, $userid = 0){
+		if (empty($userid)) {
+			$userid = $this->getId();
+		}
+	
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user
+		        SET bg_color=:color
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':color', $color, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
 	/*** KNX action ***/

@@ -8,7 +8,13 @@ $dir_room = "/templates/default/custom/room/";
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 	echo '
-	<div class="center"><h2>'._('User Installation').'</h2></div><br/><br/>
+	<div class="center">
+		<h2>'._('User Installation').'
+		<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, 0)">
+			<span class="fa fa-paint-brush md colorUserInstall"></span>
+		</button>
+	</h2>
+	</div><br/><br/>
 	<div class="col-md-12">
 		<div class="panel-group" id="accordion">';
 			foreach ($accordioninfo as $floor){
@@ -219,6 +225,7 @@ echo '<script type="text/javascript">
 $(document).ready(function(){
 	WidgetSize();
 	activateMenuElem(\'installation\');
+	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
 });
 
 function swap(elem, action){

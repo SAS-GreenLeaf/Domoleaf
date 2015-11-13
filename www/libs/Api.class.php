@@ -713,7 +713,16 @@ class Api {
 								$res = $user->confUserRoomBgimg($var[0], $var[1], $var[2]);
 							}
 						break;
-							
+						
+						case 'userUpdateBGColor':
+							if (empty($var[1])){
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								$res = $user->userUpdateBGColor($var[0], $var[1]);
+							}
+						break;
+						
 						case 'searchSmartcmdById' :
 							if (!empty($var[0])){
 								$res = $user->searchSmartcmdById($var[0]);

@@ -305,7 +305,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
-		               gender, phone, language, design
+		               gender, phone, language, design, bg_color
 		        FROM user
 		        WHERE user_id= :user_id';
 		$req = $link->prepare($sql);
@@ -1182,6 +1182,20 @@ class User {
 		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':idroom', $idroom, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function userUpdateBGColor($color, $userid = 0){
+		$userid = $this->getId();
+	
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user
+		        SET bg_color=:color
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':color', $color, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	

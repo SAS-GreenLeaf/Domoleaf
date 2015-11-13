@@ -648,10 +648,6 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	height: 30px; 
 }
 
-/***.custom-icon{
-	margin: 1px 1px 0px 0px;
-}**/
-
 .width {
 	width: 75%;
 }
@@ -1497,6 +1493,12 @@ a.carousel-control-camera:hover {
 
 .bootstrap-switch-disabled-with-opacity {
 	opacity: 1 !important;
+}
+
+.colorUserInstall {
+	color: black;
+	padding: 2px;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 /*** Smartcommands ***/

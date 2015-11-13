@@ -270,11 +270,24 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 
 /*** Custom Configuration ***/
 
-function CustomPopup(type_elem, id_elem){
+function PopupLoading(){
+	$.ajax({
+		url: "/templates/default/popup/popup_loading.php",
+		success: function(result){
+			BootstrapDialog.show({
+				closable: false,
+				title: '<div id="popupLoading"></div>',
+				message: result
+			});
+		}
+	});
+}
+
+function popupChromaWheel(iddevice, bg_color, userid){
 	$.ajax({
 		type:"GET",
-		url: "/templates/default/popup/popup_custom_device.php",
-		data: "type_elem="+type_elem+"&idelem="+id_elem,
+		url: "/templates/default/popup/popup_ChromaWheel.php",
+		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',
@@ -403,6 +416,20 @@ function customUploadDelete() {
 	$("#previewImg").addClass("aspect-square-little");
 	fileImage.css("background-image", "none");
 	files = "";
+}
+
+function updateBGColor(color, userid){
+	$.ajax({
+		type:"GET",
+		url: "/templates/default/form/form_update_bg_color.php",
+		data: "color="+encodeURIComponent(color)+"&userid="+userid,
+		success: function(result) {
+			if (result) {
+				$("#colorUserInstallBg").css("background-color", result);
+				popup_close();
+			} 
+		},
+	});
 }
 
 /*** Scenarios ***/

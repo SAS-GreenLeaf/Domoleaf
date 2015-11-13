@@ -48,9 +48,12 @@ echo '
 echo '
 <script type="text/javascript">
 
-$("#current-room").val(0);
-$("#current-application").val(0);
-WidgetSize();
+$(document).ready(function(){
+	$("#current-room").val(0);
+	$("#current-application").val(0);
+	WidgetSize();
+	$(document.body).css(\'background-color\', "'.$bg_color.'");
+});
 
 /*for (var i=0; i<360; i++) {
 	var color = document.createElement("span")

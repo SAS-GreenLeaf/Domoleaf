@@ -4,6 +4,8 @@ echo '<title>'._('Master Command').'</title>';
 $request =  new Api();
 $request -> add_request('mcVisible');
 $request -> add_request('confApplicationAll');
+$request -> add_request('profileList');
+$request -> add_request('profileInfo');
 $result  =  $request -> send_request();
 
 $listAllVisible = $result->mcVisible;
@@ -15,6 +17,15 @@ $smartcmdLinked = $listAllVisible->ListSmartcmd;
 $allapp =  $listAllVisible->ListApp;
 
 $app = $result->confApplicationAll;
+
+$userid = $request->getId();
+$listuser = $result->profileList;
+$userinfo = $result->profileInfo;
+$bg_color = $userinfo->bg_color;
+
+if (empty($bg_color)) {
+	$bg_color = "#eee";
+}
 
 $icons = array(
 			1 => 'fa fa-lightbulb-o',
