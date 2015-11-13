@@ -39,7 +39,9 @@ echo '
 
 echo '<script type="text/javascript">
 
-
+	$(document).ready(function(){
+		activateMenuElem(\'graphics\');
+	});
 
 </script>';
 
