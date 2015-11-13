@@ -93,7 +93,7 @@ echo '
 											<div id="room-heading-'.$room->room_id.'"';
 											if ($room->room_allowed == 1){
 												echo '
-											     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 2, '.$room->room_id.')"';
+											    onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 2, '.$room->room_id.')"';
 											}
 											echo '
 											     class="timeline-heading cursor col-xs-6 z-index-50">
@@ -136,7 +136,7 @@ echo '
 												</div>
 												<div class="btn-group">
 													<button title="'._('Custom').'"
-													        onclick="CustomPopup(2, '.$room->room_id.')"
+													        onclick="CustomPopup(2, '.$room->room_id.', '.$userid.')"
 													        class="btn btn-greenleaf"
 													        type="button">
 													        <span class="fa fa-paint-brush md"></span>
@@ -152,7 +152,7 @@ echo '
 														<div class="info col-xs-12">
 															<div class="info-widget">
 																<button title="'._('Custom').'"
-																        onclick="CustomPopup(1, '.$device->room_device_id.')"
+																        onclick="CustomPopup(1, '.$device->room_device_id.', '.$userid.')"
 																        class="btn btn-greenleaf"
 																        type="button">
 																        <span class="fa fa-paint-brush md"></span>

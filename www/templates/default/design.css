@@ -621,29 +621,6 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	color: #222; 
 }
 
-.info-bg {
-	background-position: center center;
-	background-size: cover;
-	margin-top: -24px;
-	opacity: 0.7;
-	z-index: -1;
-}
-
-.installation-device-bg {
-	background-position: center center;
-	background-size: cover;
-	margin-top: -24px;
-	opacity: 0.7;
-	z-index: -1;
-}
-
-.installation-room-bg {
-	/*background-position: center center;
-	background-size: cover;*/
-	z-index: -1;
-	opacity: 0.7;
-}
-
 .box .space { 
 	height: 30px; 
 }
@@ -1322,9 +1299,45 @@ a.carousel-control-camera:hover {
 
 /*** Popup Custom (Upload File) ***/
 
+.text-b-and-w {
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	color: black;
+	blur-radius: 5px;
+}
+
 .bg-image {
 	background-position: center center;
 	background-size: cover;
+}
+
+.info-bg {
+	background-position: center center;
+	background-size: cover;
+	margin-top: -24px;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+.installation-device-bg {
+	background-position: center center;
+	background-size: cover;
+	margin-top: -24px;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+.installation-room-bg {
+	background-position: center center;
+	background-size: cover;
+	z-index: -1;
+	opacity: 0.7;
+}
+
+.installation-room-mc-bg {
+	background-position: center center;
+	background-size: cover;
+	z-index: -1;
+	opacity: 0.7;
 }
 
 .bg-image.aspect-square:before {

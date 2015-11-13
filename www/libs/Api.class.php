@@ -654,6 +654,13 @@ class Api {
 							}
 						break;
 						
+						case 'confUserRoomEnable':
+							if (empty($var[0])) {
+								$var[0] = 0;
+							}
+							$res = $user->confUserRoomEnable($var[0]);
+						break;
+							
 						case 'confUserVisibleRoom':
 							if (empty($var[2])){
 								$var[2] = 0;

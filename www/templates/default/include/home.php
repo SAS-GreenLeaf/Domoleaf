@@ -3,6 +3,8 @@
 include('templates/'.TEMPLATE.'/function/display_widget.php');
 include('templates/'.TEMPLATE.'/function/display_smartcmd.php');
 
+$dir_room = "/templates/default/custom/room/";
+
 echo '
 <input type="hidden" id="current-room" value="0">
 <input type="hidden" id="current-application" value="0">
@@ -20,13 +22,35 @@ echo '
 	</div>
 	<div class="col-md-2 col-sm-2 col-xs-3 bhoechie-tab-menu sidebar">
 		<div class="list-group">';
-			foreach ($roomallowed as $room){
+		foreach ($roomallowed as $room){
 			echo '
-			<a href="#" id="room-'.$room->room_id.'" onclick="displayRoom('.$room->room_id.')" class="list-group-item text-center">
-				<h4 class="fa fa-cube lg"></h4><br/>'.$room->room_name.'
-			</a>';
-			}
-			
+			<a href="#" id="room-'.$room->room_id.'"
+			   onclick="displayRoom('.$room->room_id.')"
+			   class="list-group-item text-center z-index-50">';
+				if (empty($room->room_bgimg)) {
+					echo 
+					'<h4 class="fa fa-cube lg"></h4>
+					<br/>'.$room->room_name.'';
+				}
+				else {
+					echo
+					'<h4 class="margin-top margin-bottom text-b-and-w">'.$room->room_name.'</h4>';
+				}
+				echo
+			'</a>';
+				if (!empty($room->room_bgimg)) {
+					echo
+					'<div id="room-bg-'.$room->room_id.'" class="installation-room-mc-bg bg-image image-ok"
+					      style="background-image: url(\''.$dir_room.$room->room_bgimg.'\');">';
+				}
+				else {
+					echo
+					'<div id="room-bg-'.$room->room_id.'" class="installation-room-mc-bg bg-image">';
+				}
+			echo
+			'</div>';
+		}
+		
 		echo '
 		</div>
 	</div>
@@ -52,6 +76,7 @@ $(document).ready(function(){
 	$("#current-room").val(0);
 	$("#current-application").val(0);
 	WidgetSize();
+	RoomBgSizeSidebar();
 	$(document.body).css(\'background-color\', "'.$bg_color.'");
 });
 

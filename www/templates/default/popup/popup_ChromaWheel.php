@@ -12,7 +12,7 @@ if (!empty($_GET['iddevice'])) {
 			echo
 			'<button class="btn btn-warning" onclick="updateBGColor(\'#eee\', '.$_GET['userid'].')">'.
 				_('Reset').
-				'<span class="glyphicon glyphicon-refresh"></span>'.
+				'&nbsp<span class="glyphicon glyphicon-refresh"></span>'.
 			'</button>';
 		}
 	echo
@@ -28,11 +28,11 @@ if (!empty($_GET['iddevice'])) {
 		}
 		echo '>'.
 			_('Send').
-			'<span class="glyphicon glyphicon-ok"></span>'.
+			'&nbsp<span class="glyphicon glyphicon-ok"></span>'.
 		'</button> '.
 		'<button onclick="popup_close()" class="btn btn-danger">'.
 			_('Close').
-			'<span class="glyphicon glyphicon-remove"></span>'.
+			'&nbsp<span class="glyphicon glyphicon-remove"></span>'.
 		'</button>'.
 	'</div>'.
 	

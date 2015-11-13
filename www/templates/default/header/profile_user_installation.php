@@ -12,7 +12,12 @@ $result  =  $request -> send_request();
 $userid = $request->getId();
 $listuser = $result->profileList;
 $userinfo = $result->profileInfo;
-$bg_color = $userinfo->bg_color;
+if (!empty($listuser->$userid)) {
+	$bg_color = $listuser->$userid->bg_color;
+}
+else {
+	$bg_color = $userinfo->bg_color;
+}
 if (empty($bg_color)) {
 	$bg_color = "#eee";
 }

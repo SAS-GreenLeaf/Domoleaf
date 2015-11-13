@@ -15,7 +15,12 @@ else {
 	$devices = $result->confUserDeviceEnable;
 }
 
-$iduser = $request -> getId();
+if (empty($_POST['userid'])) {
+	$iduser = $request -> getId();
+}
+else {
+	$iduser = $_POST['userid'];
+}
 
 $target_dir_abs = "/etc/domoleaf/www/templates/default/custom/device/";
 $target_dir = "/templates/default/custom/device/";
@@ -40,7 +45,7 @@ if (!empty($_POST['id_elem']) && !empty($devices->$_POST['id_elem']) && !empty($
 	if (!empty($current_device->device_bgimg)){
 		unlink($target_dir_abs.$current_device->device_bgimg);
 	}
-	$request =  new Api();
+	$request = new Api();
 	$request -> add_request('confUserDeviceBgimg',
 							array($_POST['id_elem'], $filename, $iduser));
 	$result  =  $request -> send_request();

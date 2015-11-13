@@ -1121,7 +1121,9 @@ class User {
 		return null;
 	}
 	
-	function confUserRoomEnable($userid){
+	function confUserRoomEnable($userid = 0){
+		$userid = $this->getId();
+		
 		$link = Link::get_link('domoleaf');
 		$list = array();
 	
