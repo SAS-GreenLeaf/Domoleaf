@@ -78,6 +78,7 @@ CAMERA_BOTTOM       = 'bottom';             # Bottom command id
 CAMERA_LEFT         = 'left';               # Left command id
 CAMERA_RIGHT        = 'right';              # Right command id
 CAMERA_HOME         = 'home';               # Home command id
+CAMERA_PICTURE      = 'picture';            # Picture command id
 
 
 #################################################
@@ -165,11 +166,12 @@ class MasterDaemon:
             UPNP_SET_VOLUME     : self.upnp_set_volume
         };
         self.http_req_function = {
-            CAMERA_TOP          : self.camera_move,
-            CAMERA_BOTTOM       : self.camera_move,
-            CAMERA_LEFT         : self.camera_move,
-            CAMERA_RIGHT        : self.camera_move,
-            CAMERA_HOME         : self.camera_move
+            CAMERA_TOP          : self.camera_action,
+            CAMERA_BOTTOM       : self.camera_action,
+            CAMERA_LEFT         : self.camera_action,
+            CAMERA_RIGHT        : self.camera_action,
+            CAMERA_HOME         : self.camera_action,
+            CAMERA_PICTURE      : self.camera_action
         };
         self.enocean_function = {};
         self.data_function = {
@@ -723,8 +725,8 @@ class MasterDaemon:
         """
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume(desired_volume = int(json_obj['data']['value']));
 
-    def camera_move(self, json_obj, dev, hostname):
-        HttpReq.camera_move(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
+    def camera_action(self, json_obj, dev, hostname):
+        HttpReq.camera_action(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
 
     def protocol_ip(self, json_obj, dev, hostname):
         """

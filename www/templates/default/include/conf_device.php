@@ -288,7 +288,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			366 => 'glyphicon glyphicon-forward',
 			367 => 'glyphicon glyphicon-backward',
 			368 => 'glyphicon glyphicon-volume-off',
-			383 =>  'fa fa-volume-up'
+			383 => 'fa fa-volume-up',
+			408 => 'glyphicon glyphicon-camera'
 		);
 		
 		echo '<table class="table" id="tabopt">
