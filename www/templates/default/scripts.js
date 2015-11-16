@@ -37,12 +37,6 @@ function ShowTimeline(id, opt, optional_id){
 	
 }
 
-function RoomBgSize(id) {
-	$("#room-bg-"+id).height(0);
-	height = $("#timeline-room-"+id).height();
-	$("#room-bg-"+id).height(height);
-}
-
 function PopupLoading(){
 	$.ajax({
 		url: "/templates/default/popup/popup_loading.php",
@@ -270,11 +264,46 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 
 /*** Custom Configuration ***/
 
-function CustomPopup(type_elem, id_elem){
+function RoomBgSize(id) {
+	$("#room-bg-"+id).height(0);
+	height = $("#timeline-room-"+id).height();
+	$("#room-bg-"+id).height(height);
+}
+
+function RoomBgSizeSidebar() {
+	$(".list-group a").each(function(index) {
+		room_id = $(this).attr("id").split("room-")[1];
+		$("#room-bg-"+room_id).height(0);
+		height = $("#room-"+room_id).height();
+		height = height+10+15+2-5;// padding & border size
+		$("#room-bg-"+room_id).height(height);
+		$("#room-bg-"+room_id).css("margin-top", "-"+(height)+"px");
+		if ($("#room-bg-"+room_id).hasClass("image-ok")) {
+			$("#room-"+room_id).css("background-color", "transparent");
+		}
+	});
+	
+}
+
+function CustomPopup(type_elem, id_elem, userid){
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/popup/popup_custom_device.php",
-		data: "type_elem="+type_elem+"&idelem="+id_elem,
+		data: "type_elem="+type_elem+"&idelem="+id_elem+"&userid="+userid,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: msg
+			});
+		}
+	});
+}
+
+function popupChromaWheel(iddevice, bg_color, userid){
+	$.ajax({
+		type:"GET",
+		url: "/templates/default/popup/popup_ChromaWheel.php",
+		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',
@@ -297,10 +326,12 @@ function submitFormUpload(event) {
 
 function uploadElemImg(event) {
 	if (files != ""){
+		userid = $("#userid").val();
 		type_elem = $("#type_elem").val();
 		id_elem = $("#id_elem").val();
 
 		var data = new FormData();
+		data.append("userid", userid);
 		data.append("id_elem", id_elem);
 		data.append("fileToUpload", files[0]);
 		if (type_elem == 1) {
@@ -404,6 +435,20 @@ function customUploadDelete() {
 	$("#previewImg").addClass("aspect-square-little");
 	fileImage.css("background-image", "none");
 	files = "";
+}
+
+function updateBGColor(color, userid){
+	$.ajax({
+		type:"GET",
+		url: "/templates/default/form/form_update_bg_color.php",
+		data: "color="+encodeURIComponent(color)+"&userid="+userid,
+		success: function(result) {
+			if (result) {
+				$("#colorUserInstallBg").css("background-color", result);
+				popup_close();
+			} 
+		},
+	});
 }
 
 /*** Scenarios ***/
@@ -596,6 +641,7 @@ function listRoomsOfFloor(elem_id, opt) {
 		}
 	});
 	if (floor_id == 0 && opt == 1) {
+		$("#selectRoom-"+elem_id).val(0);
 		saveLinkedRoom(elem_id);
 	}
 	if (opt == 0){
@@ -646,13 +692,12 @@ function saveLinkedRoom(smartcmd_id) {
 		url: "/templates/default/form/form_save_linked_room.php",
 		data: "smartcmd_id="+smartcmd_id+"&room_id="+room_id,
 		success: function(result) {
-			if (result == 0) {
-				changeSaveBtnState("#saveLR_btn", 1);
+			if (room_id == 0) {
+				$("#alert-linked-room").show();
 			}
 			else {
-				changeSaveBtnState("#saveLR_btn", 2);
+				$("#alert-linked-room").hide();
 			}
-			
 		}
 	});
 }

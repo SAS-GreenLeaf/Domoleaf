@@ -12,8 +12,8 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 	$request = new Api();
 	
 	$request -> add_request('mcAllowed');
-	$request -> add_request('confUserDeviceEnable');
-	$request -> add_request('confUserRoomEnable');
+	$request -> add_request('confUserDeviceEnable', array($_GET['userid']));
+	$request -> add_request('confUserRoomEnable', array($_GET['userid']));
 	$result  =  $request -> send_request();
 	
 	$listAllVisible = $result->mcAllowed;
@@ -65,6 +65,7 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 									'<i id="uploadFileIcon" class="fa fa-cloud-upload lg"></i>'.
 								'</div>'.
 								'<input id="image" type="file" name="fileToUpload" data-droppable-input="" class="required" accept="image/*"/>'.
+								'<input id="userid" type="hidden" value="'.$_GET['userid'].'"/>'.
 								'<input id="type_elem" type="hidden" value="'.$type_elem.'"/>'.
 								'<input id="id_elem" type="hidden" value="'.$_GET['idelem'].'"/>'.
 								'<i class="fa fa-camera fa-2x image-select__icon"></i>'.

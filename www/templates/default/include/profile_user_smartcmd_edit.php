@@ -67,6 +67,18 @@ echo '
 	echo '
 	<div id="linked-room" class="navbar-brand">
 		'._('Linked Room').'
+		<a id="alert-linked-room" 
+		        class="btn btn-warning"
+		        data-toggle="popover"
+		        role="button"
+		        tabindex="0"
+		        data-content="'._('You have not selected a Linked Room.
+		        Until you have not select one, your Smartcommand will not appear in the Mastercommand
+		        (but you will be able to select it in Scenarios)"').'"
+		        data-placement="bottom"
+		        data-trigger="focus">
+			<i class="glyphicon glyphicon-warning-sign"></i>
+		</a>
 		<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
 		        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
 			<option value="0">'._('No floor selected').'</option>';
@@ -99,6 +111,7 @@ echo
 		ShowScenarios();
 		activateMenuElem(\'smartcmds\');
 		openDivs('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
+		$("#alert-linked-room").popover();
 	});
 	
 	function popupUpdateSmartcmdName(smartcmd_id) {
@@ -229,6 +242,10 @@ echo
 				setDroppable();
 				if ('.$smartcmd_infos->floor_id.' != 0 && '.$smartcmd_infos->room_id.' != 0) {
 					setLinkedRoom('.$smartcmd_infos->floor_id.', '.$smartcmd_infos->room_id.');
+					$("#alert-linked-room").hide();
+				}
+				else {
+					$("#alert-linked-room").show();
 				}
 			}
 		});

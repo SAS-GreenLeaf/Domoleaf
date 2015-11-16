@@ -669,6 +669,13 @@ class Api {
 							}
 						break;
 						
+						case 'confUserRoomEnable':
+							if (empty($var[0])) {
+								$var[0] = 0;
+							}
+							$res = $user->confUserRoomEnable($var[0]);
+						break;
+							
 						case 'confUserVisibleRoom':
 							if (empty($var[2])){
 								$var[2] = 0;
@@ -728,7 +735,16 @@ class Api {
 								$res = $user->confUserRoomBgimg($var[0], $var[1], $var[2]);
 							}
 						break;
-							
+						
+						case 'userUpdateBGColor':
+							if (empty($var[1])){
+								$var[1] = 0;
+							}
+							if (!empty($var[0])){
+								$res = $user->userUpdateBGColor($var[0], $var[1]);
+							}
+						break;
+						
 						case 'searchSmartcmdById' :
 							if (!empty($var[0])){
 								$res = $user->searchSmartcmdById($var[0]);
