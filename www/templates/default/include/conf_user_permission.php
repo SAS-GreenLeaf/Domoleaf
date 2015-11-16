@@ -23,7 +23,7 @@ echo '
 								if ($floor->floor_allowed == 1){
 									echo '
 									<div id="floor-heading-'.$floor->floor_id.'"
-									     onclick="ShowTimeline(\'floor-body-'.$floor->floor_id.'\')"
+									     onclick="ShowTimeline(\'floor-body-'.$floor->floor_id.'\', 0, 0)"
 									     class="timeline-heading cursor col-xs-8">';
 								}
 								else {
@@ -119,7 +119,9 @@ echo '
 											<div class="timeline-panel">';
 												if ($room->room_allowed == 1){
 													echo '
-													<div id="room-heading-'.$room->room_id.'" onclick="ShowTimeline(\'room-body-'.$room->room_id.'\')" class="timeline-heading cursor col-xs-6">';
+													<div id="room-heading-'.$room->room_id.'"
+													     onclick="ShowTimeline(\'room-body-'.$room->room_id.'\', 0, 0)"
+													     class="timeline-heading cursor col-xs-6">';
 												}
 												else {
 													echo '
@@ -437,7 +439,7 @@ function OnOffFloor(idfloor){
 	var userid = "'.$userid.'";
 	
 	if (allow == 1){
-		$("#floor-heading-"+idfloor).attr("onclick", "ShowTimeline(\'floor-body-"+idfloor+"\')");
+		$("#floor-heading-"+idfloor).attr("onclick", "ShowTimeline(\'floor-body-"+idfloor+"\', 0, 0)");
 		$("#floor-visible-"+idfloor).prop("checked", true).change();
 		$("#floor-visible-"+idfloor).bootstrapSwitch(\'toggleDisabled\', \'false\', \'true\');
 		$(".enable-floor-room-"+idfloor).prop("checked", true).change();
@@ -468,7 +470,7 @@ function OnOffRoom(idroom){
 	var userid = "'.$userid.'";
 
 	if (allow == 1){
-		$("#room-heading-"+idroom).attr("onclick", "ShowTimeline(\'room-body-"+idroom+"\')");
+		$("#room-heading-"+idroom).attr("onclick", "ShowTimeline(\'room-body-"+idroom+"\', 0, 0)");
 		$("#room-visible-"+idroom).prop("checked", true).change();
 		$("#room-visible-"+idroom).bootstrapSwitch(\'toggleDisabled\', \'false\', \'true\');
 		$(".enable-room-device-"+idroom).prop("checked", true).change();

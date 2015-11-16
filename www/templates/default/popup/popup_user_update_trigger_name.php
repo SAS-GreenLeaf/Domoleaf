@@ -39,7 +39,7 @@ if (!empty($_GET['trigger_id'])) {
 				'$.ajax({'.
 					'type: "GET",'.
 					'url: "/templates/default/form/form_update_trigger_name.php",'.
-					'data: "trigger_id="+'.$_GET['trigger_id'].'+"&trigger_name="+name,'.
+					'data: "trigger_id="+'.$_GET['trigger_id'].'+"&trigger_name="+encodeURIComponent(name),'.
 					'success: function(result) {'.
 						'if (result && result.split("-1")[1]) {'.
 							'$("#errorMsg").html(result.split("-1")[1]);'.

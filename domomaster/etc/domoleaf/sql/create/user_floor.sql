@@ -1,4 +1,4 @@
-CREATE TABLE `user_floor` (
+CREATE TABLE IF NOT EXISTS `user_floor` (
   `user_id` int(10) unsigned NOT NULL,
   `floor_id` int(10) unsigned NOT NULL,
   `floor_allowed` tinyint(3) unsigned NOT NULL DEFAULT '0',

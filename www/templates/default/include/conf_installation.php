@@ -108,8 +108,8 @@ function PopupRenameRoom(idroom){
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('Edit Room').'",
-           		message: msg
-        	});
+				message: msg
+			});
 		}
 	});
 }
@@ -122,12 +122,12 @@ function PopupRemoveFloor(idfloor) {
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('Remove floor').'",
-           		message: msg
-        	});
+				message: msg
+			});
 		}
 	});
 }
-						
+
 function PopupRemoveRoom(roomid, floorid){
 		
 		$.ajax({
@@ -143,7 +143,7 @@ function PopupRemoveRoom(roomid, floorid){
 	});
 	
 }
-						
+
 function PopupNewFloor(){
 	$.ajax({
 		type:"GET",
@@ -151,10 +151,10 @@ function PopupNewFloor(){
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('New floor').'",
-           		message: msg
-        	});
+				message: msg
+			});
 		}
-	});					
+	});
 }
 
 function PopupNewRoom(){
@@ -164,21 +164,22 @@ function PopupNewRoom(){
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: "'._('New Room').'",
-           		message: msg
-        	});
+ 				message: msg
+			});
 		}
-	});						
+	});
 }
-						
+
 function FloorNew(){
-	var name = $("#newfloor").val();
-						
-	if (name != \'\')
-	{
+	var namefloor = $("#newfloor").val();
+	var nameroom = $("#newroom").val();
+
+	if (namefloor != \'\' && namefloor != \'\') {
 		$.ajax({
 			type:"GET",
 			url: "/form/form_floor_new.php",
-			data: "name="+encodeURIComponent(name),
+			data: "namefloor="+encodeURIComponent(namefloor)
+			      +"&nameroom="+encodeURIComponent(nameroom),
 			beforeSend:function(result, status){
 				PopupLoading();
 			},
@@ -187,11 +188,12 @@ function FloorNew(){
 			}
 		});
 	}
-	else{
-		location.href=\'/conf_installation\';
+	else {
+		$("#popupError").show();
+		$("#errorMsg").html("'._('Invalid Name').'");
 	}
 }
-						
+
 function floorRemove(floorid) {
 	$.ajax({
 		type:"GET",
@@ -202,9 +204,8 @@ function floorRemove(floorid) {
 		}
 	});
 }
-						
-function RemoveRoom(roomid, floorid) {
 
+function RemoveRoom(roomid, floorid) {
 	$.ajax({
 		type:"GET",
 		url: "/form/form_room_remove.php",
@@ -214,22 +215,21 @@ function RemoveRoom(roomid, floorid) {
 		}
 	});
 }
-						
+
 function FloorRename(floorid){
-	var name = $("#newfloorname").val();
-						
-	if (name != \'\')
-	{
+	var namefloor = $("#newfloorname").val();
+
+	if (namefloor != \'\') {
 		$.ajax({
 			type:"GET",
 			url: "/form/form_floor_new.php",
-			data: "name="+encodeURIComponent(name)+"&id="+floorid,
+			data: "namefloor="+encodeURIComponent(namefloor)+"&id="+floorid,
 			complete: function(result, status) {
 				location.href=\'/conf_installation\';
 			}
 		});
 	}
-	else{
+	else {
 		location.href=\'/conf_installation\';
 	}
 }
@@ -260,12 +260,12 @@ function RoomManager(idroom){
 			location.href=\'/conf_installation\';
 		}
 }
-						
-function 	RoomNew(){
+
+function RoomNew() {
 	var idfloor = $("#floorsel").val();
 	var name = $("#newroom").val();
 	
-    if(idfloor != 0){
+	if (idfloor != 0) {
 		$.ajax({
 			type:"GET",
 			url: "/form/form_room_new.php",

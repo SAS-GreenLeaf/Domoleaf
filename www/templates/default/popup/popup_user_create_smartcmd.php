@@ -47,7 +47,7 @@ echo
 			'$.ajax({'.
 				'type: "GET",'.
 				'url: "/templates/default/form/form_create_new_smartcmd.php",'.
-				'data: "smartcmd_name="+name,'.
+				'data: "smartcmd_name="+encodeURIComponent(name),'.
 				'success: function(result) {'.
 					'if (result && result == -1) {'.
 						'$("#popupError").show();'.

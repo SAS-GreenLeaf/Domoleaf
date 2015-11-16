@@ -3,7 +3,7 @@ var fileInput = $('[data-droppable-input=""]');
 var fileImage = $('[data-droppable-image=""]');
 
 var fileSelect = function (ev) {
-	files = ev.target.files || (ev.dataTransfer && ev.dataTransfer.files);
+	files = (ev.target && ev.target.files) || (ev.dataTransfer && ev.dataTransfer.files);
 	if (files) {
 		var reader = new FileReader();
 		reader.onload = function(e) {
@@ -13,11 +13,11 @@ var fileSelect = function (ev) {
 		reader.readAsDataURL(files[0]);
 		$("#uploadSuccess").hide();
 		$("#uploadFail").hide();
-		$("#uploadMsg").hide();
 		if ($('#deleteBtn').is(":visible")) {
 			$('#deleteBtn').hide();
 			$("#uploadBtn").show();
 		}
+		$("#uploadMsg").hide();
 		$("#previewImg").removeClass("aspect-square-little");
 		$("#previewImg").addClass("aspect-square");
 	}
@@ -36,7 +36,7 @@ var files="";
 
 var validator = $("#uploadFileForm").validate({
 	submitHandler: function(form, event) {
-		uploadDeviceImg(event);
+		uploadElemImg(event);
 		return false;
 	},
 	highlight: function() {

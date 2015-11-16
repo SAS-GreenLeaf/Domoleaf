@@ -39,7 +39,7 @@ if (!empty($_GET['scenario_id'])) {
 				'$.ajax({'.
 					'type: "GET",'.
 					'url: "/templates/default/form/form_update_scenario_name.php",'.
-					'data: "scenario_id="+'.$_GET['scenario_id'].'+"&scenario_name="+name,'.
+					'data: "scenario_id="+'.$_GET['scenario_id'].'+"&scenario_name="+encodeURIComponent(name),'.
 					'success: function(result) {'.
 						'if (result && result.split("-1")[1]) {'.
 							'$("#errorMsg").html(result.split("-1")[1]);'.

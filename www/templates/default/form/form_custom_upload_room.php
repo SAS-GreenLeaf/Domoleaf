@@ -4,26 +4,26 @@ include('header.php');
 
 $request =  new Api();
 $request -> add_request('mcAllowed');
-$request -> add_request('confUserDeviceEnable');
+$request -> add_request('confUserRoomEnable');
 $result  =  $request -> send_request();
 
-if (empty($result -> confUserDeviceEnable) || sizeof($result -> confUserDeviceEnable) == 0) {
+if (empty($result -> confUserRoomEnable) || sizeof($result -> confUserRoomEnable) == 0) {
 	$listAllVisible = $result->mcAllowed;
-	$devices = $listAllVisible->ListDevice;
+	$rooms = $listAllVisible->ListRoom;
 }
 else {
-	$devices = $result->confUserDeviceEnable;
+	$rooms = $result->confUserRoomEnable;
 }
 
 $iduser = $request -> getId();
 
-$target_dir_abs = "/etc/domoleaf/www/templates/default/custom/device/";
-$target_dir = "/templates/default/custom/device/";
+$target_dir_abs = "/etc/domoleaf/www/templates/default/custom/room/";
+$target_dir = "/templates/default/custom/room/";
 $target_file = $target_dir_abs . basename($_FILES["fileToUpload"]["name"]);
 $imageFileType = "jpg";
 $uploadOk = 0;
 
-if (!empty($_POST['id_elem']) && !empty($devices->$_POST['id_elem']) && !empty($iduser)){
+if (!empty($_POST['id_elem']) && !empty($rooms->$_POST['id_elem']) && !empty($iduser)){
 	$filename = $iduser.'_'.$_POST['id_elem'].'_'.$_SERVER['REQUEST_TIME'].'.'.$imageFileType;
 	$target_file = $target_dir_abs.$filename;
 	if (empty($_FILES["fileToUpload"]["tmp_name"]) || empty($target_file)) {
@@ -36,12 +36,12 @@ if (!empty($_POST['id_elem']) && !empty($devices->$_POST['id_elem']) && !empty($
 	if (!(rename($compressed, $target_file))){
 		echo 0;
 	}
-	$current_device = $devices->$_POST['id_elem'];
-	if (!empty($current_device->device_bgimg)){
-		unlink($target_dir_abs.$current_device->device_bgimg);
+	$current_room = $rooms->$_POST['id_elem'];
+	if (!empty($current_room->room_bgimg)){
+		unlink($target_dir_abs.$current_room->room_bgimg);
 	}
 	$request =  new Api();
-	$request -> add_request('confUserDeviceBgimg',
+	$request -> add_request('confUserRoomBgimg',
 							array($_POST['id_elem'], $filename, $iduser));
 	$result  =  $request -> send_request();
 	$uploadOk = $target_dir.$filename;

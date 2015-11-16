@@ -442,7 +442,7 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confFloorNew($name) {
+	function confFloorNew($namefloor, $nameroom = 0) {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'INSERT INTO floor
@@ -450,7 +450,7 @@ class Admin extends User {
 		        VALUES
 		        (:name)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name', $name, PDO::PARAM_STR);
+		$req->bindValue(':name', $namefloor, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newfloorid = $link->lastInsertId();
@@ -462,6 +462,10 @@ class Admin extends User {
 			        FROM user';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			
+			if (!empty($nameroom)) {
+				$this->confRoomNew($nameroom, $newfloorid);
+			}
 		}
 		
 		return $newfloorid;
@@ -1509,8 +1513,8 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT room.room_name, room.room_id, user_room.room_order, 
-		               floor
+		$sql = 'SELECT room.room_name, room.room_id, user_room.room_order,
+		               floor, user_room.room_bgimg
 		        FROM room
 		        JOIN user_room ON room.room_id=user_room.room_id
 		        JOIN user_floor ON room.floor=user_floor.floor_id AND
@@ -1525,6 +1529,7 @@ class Admin extends User {
 				'room_name' => $do->room_name,
 				'room_id'   => $do->room_id,
 				'room_order'=> $do->room_order,
+				'room_bgimg'=> $do->room_bgimg,
 				'floor_id'  => $do->floor
 			);
 		}
@@ -1695,7 +1700,8 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT room.room_id, room_name, floor, room_order
+		$sql = 'SELECT room.room_id, room_name, floor, room_order,
+		               user_room.room_bgimg
 		        FROM room
 		        JOIN user_room ON user_room.room_id = room.room_id
 		        WHERE user_id=:user_id
@@ -1709,6 +1715,7 @@ class Admin extends User {
 				'room_name'   => $do->room_name,
 				'room_allowed'=> 1,
 				'room_order'  => $do->room_order,
+				'room_bgimg'  => $do->room_bgimg,
 				'devices'     => array()
 			);
 		}
@@ -1809,7 +1816,7 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
-		$sql = 'SELECT user_id, room_id, room_allowed, room_order
+		$sql = 'SELECT user_id, room_id, room_allowed, room_order, room_bgimg
 		        FROM user_room
 		        WHERE user_id=:user_id
 		        ORDER BY room_id ASC';
@@ -1821,6 +1828,7 @@ class Admin extends User {
 				'user_id'     => $do->user_id,
 				'room_id'     => $do->room_id,
 				'room_allowed'=> $do->room_allowed,
+				'room_bgimg'  => $do->room_bgimg,
 				'room_order'  => $do->room_order
 			);
 		}

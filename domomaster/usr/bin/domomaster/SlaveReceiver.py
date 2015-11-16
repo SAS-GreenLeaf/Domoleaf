@@ -4,9 +4,14 @@ from Crypto.Cipher import AES;
 import json;
 from MasterSql import *;
 import hashlib;
+from Logger import *;
+
+log_flag = False;
+LOG_FILE = '/var/log/domoleaf/domomaster.log'
 
 class SlaveReceiver(Thread):
     def __init__(self, connection, hostname, daemon):
+        self.logger = Logger(log_flag, LOG_FILE);
         """
         Threaded class for reading from a slave and send the data to the treatment function
         """
@@ -20,6 +25,7 @@ class SlaveReceiver(Thread):
         """
         Thread run function overload
         """
+        self.logger.error('SELECT serial, secretkey FROM daemon WHERE serial=\'' + self.connected_host + '\'')
         res = self.sql.mysql_handler_personnal_query('SELECT serial, secretkey FROM daemon WHERE serial=\'' + self.connected_host + '\'');
         aes_key = '';
         for r in res:

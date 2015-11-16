@@ -152,7 +152,6 @@ echo '
 		else {
 			state = "0";
 		}
-		console.log("STATE = "+state);
 		$.ajax({
 			type:"GET",
 			url: "/templates/'.TEMPLATE.'/form/form_change_scenario_state.php",
