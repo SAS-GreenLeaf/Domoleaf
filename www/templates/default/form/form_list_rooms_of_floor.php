@@ -2,24 +2,26 @@
 
 include('header.php');
 
-$listRooms = '<option value="0">'._('No Room selected').'</option>';
+$resRooms = '<option value="0">'._('No Room selected').'</option>';
 
 if (!empty($_GET['floor_id'])) {
 
 	$request = new Api();
-	$request -> add_request('confUserInstallation');
+	$request -> add_request('mcAllowed');
 	$result  =  $request -> send_request();
 	
-	$install_info = $result->confUserInstallation;
+	$install_info = $result->mcAllowed;
 	
 	$floor_id = $_GET['floor_id'];
-	$floor = $install_info->$floor_id;
+	$listRoom = $install_info->ListRoom;
 	
-	foreach ($floor->room as $room) {
-		$listRooms.='<option value="'.$room->room_id.'">'.$room->room_name.'</option>';
+	foreach ($listRoom as $room) {
+		if ($room->floor_id == $floor_id){
+			$resRooms.='<option value="'.$room->room_id.'">'.$room->room_name.'</option>';
+		}
 	}
 }
 
-echo $listRooms;
+echo $resRooms;
 
 ?>

@@ -40,7 +40,7 @@ from GLManager import *;
 from HttpReq import *;
 
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
-MASTER_CONF_FILE        = '/etc/domoleaf/master.conf';         # Configuration file name
+MASTER_CONF_FILE        = '/etc/domoleaf/master.conf';          # Configuration file name
 SELECT_TIMEOUT          = 0.05;                                 # Timeout for the select
 MAX_SLAVES              = 100;                                  # Max slave that can be connected at the same time
 MAX_CMDS                = 100;                                  # Max domoleaf interface that can be connected at the same time
@@ -78,6 +78,7 @@ CAMERA_BOTTOM       = 'bottom';             # Bottom command id
 CAMERA_LEFT         = 'left';               # Left command id
 CAMERA_RIGHT        = 'right';              # Right command id
 CAMERA_HOME         = 'home';               # Home command id
+CAMERA_PICTURE      = 'picture';            # Picture command id
 
 
 #################################################
@@ -116,6 +117,7 @@ DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 DATA_SEND_INTERFACES          = 'send_interfaces';
 DATA_REBOOT_D3                = 'reboot_d3';
+DATA_WIFI_UPDATE              = 'wifi_update';
 
 HOSTS_CONF                    = '/etc/domoleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
@@ -164,11 +166,12 @@ class MasterDaemon:
             UPNP_SET_VOLUME     : self.upnp_set_volume
         };
         self.http_req_function = {
-            CAMERA_TOP          : self.camera_move,
-            CAMERA_BOTTOM       : self.camera_move,
-            CAMERA_LEFT         : self.camera_move,
-            CAMERA_RIGHT        : self.camera_move,
-            CAMERA_HOME         : self.camera_move
+            CAMERA_TOP          : self.camera_action,
+            CAMERA_BOTTOM       : self.camera_action,
+            CAMERA_LEFT         : self.camera_action,
+            CAMERA_RIGHT        : self.camera_action,
+            CAMERA_HOME         : self.camera_action,
+            CAMERA_PICTURE      : self.camera_action
         };
         self.enocean_function = {};
         self.data_function = {
@@ -204,7 +207,8 @@ class MasterDaemon:
             DATA_SEND_ALIVE                   : self.send_request,
             DATA_SEND_TECH                    : self.send_request,
             DATA_SEND_INTERFACES              : self.send_interfaces,
-            DATA_REBOOT_D3                    : self.reboot_d3
+            DATA_REBOOT_D3                    : self.reboot_d3,
+            DATA_WIFI_UPDATE                  : self.wifi_update
         };
 
     def get_aes_slave_keys(self):
@@ -721,8 +725,8 @@ class MasterDaemon:
         """
         UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume(desired_volume = int(json_obj['data']['value']));
 
-    def camera_move(self, json_obj, dev, hostname):
-        HttpReq.camera_move(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
+    def camera_action(self, json_obj, dev, hostname):
+        HttpReq.camera_action(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
 
     def protocol_ip(self, json_obj, dev, hostname):
         """
@@ -1067,4 +1071,60 @@ class MasterDaemon:
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
+        connection.close();
+
+    def wifi_update(self, json_obj, connection):
+        """
+        Send "wifi_update" to the slave described in json_obj for update the wifi configuration.
+        """
+        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        res = self.sql.mysql_handler_personnal_query(query);
+        if res is None or len(res) == 0:
+            self.logger.error('in wifi_update: No daemon for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        elif len(res) > 1:
+            self.logger.error('in wifi_update: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+            connection.close();
+            return ;
+        hostname = res[0][0];
+        ip = '';
+        for h in self.hostlist:
+            if hostname in h._Hostname.upper():
+                ip = h._IpAddr;
+        if ip == '':
+            self.logger.error('in wifi_update: ' + hostname + ' not in hostlist. Try perform network scan again.');
+            connection.close();
+            return ;
+        port = self._parser.getValueFromSection('connect', 'port');
+        sock = socket.create_connection((ip, port));
+        self_hostname = socket.gethostname();
+        if '.' in self_hostname:
+            self_hostname = self_hostname.split('.')[0];
+        aes_IV = AESManager.get_IV();
+        aes_key = self.get_secret_key(hostname);
+        obj_to_send = '{"packet_type": "wifi_update", "sender_name": "' + self_hostname + '", "ssid": "' + json_obj['data']['ssid'] + '", "password": "' + json_obj['data']['password'] + '", "security": "' + json_obj['data']['security'] + '", "mode": "' + str(json_obj['data']['mode']) + '"}';
+        encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
+        spaces = 16 - len(obj_to_send) % 16;
+        sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
+        rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 300);
+        re = '';
+        for s in rlist:
+            data = sock.recv(4096);
+            if not data:
+                continue;
+            decrypt_IV = data[:16].decode();
+            host = None;
+            for h in self.hostlist:
+                if h._IpAddr == ip:
+                    host = h;
+            decode_obj = AES.new(res[0][1], AES.MODE_CBC, decrypt_IV);
+            data2 = decode_obj.decrypt(data[16:]).decode();
+            resp = json.JSONDecoder().decode(data2);
+            hostname = host._Hostname;
+            if '.' in host._Hostname:
+                hostname = host._Hostname.split('.')[0];
+            if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
+                re = '1';
+            connection.send(bytes(re, 'utf-8'));
         connection.close();

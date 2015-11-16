@@ -68,10 +68,18 @@ if (!empty($_GET['iddevice'])){
 			}
 			
 		 echo '<img id="cmd-camera-display" class="media-object" src="'.$proto.$auth.$host.'/camera/'.$deviceinfo->room_device_id.$opt->addr.'">'.
-			'</div>';
+			'</div>'.
+		 	'<div class="center">';
+		 
 			 if (!empty($deviceinfo->device_opt->{'361'})){
-			 	echo '<div class="center"><button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'home\', \''.$deviceinfo->device_opt->{'361'}->option_id.'\')"><span class="glyphicon glyphicon-home"></span></button></div>';
+			 	echo '<button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'home\', \''.$deviceinfo->device_opt->{'361'}->option_id.'\')"><span class="glyphicon glyphicon-home"></span></button> ';
 			 }
+			 if (!empty($deviceinfo->device_opt->{'408'})){
+			 	echo ' <button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'picture\', \''.$deviceinfo->device_opt->{'408'}->option_id.'\')"><span class="glyphicon glyphicon-camera"></span></button>';
+			 }
+
+			 echo '</div>';
+			 
 		}
 	 	else if (!empty($deviceinfo->device_opt->{'355'}) && !empty($deviceinfo->device_opt->{'355'}->addr)){
 	 		$opt = $deviceinfo->device_opt->{'355'};

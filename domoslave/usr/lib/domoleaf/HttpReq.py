@@ -9,7 +9,7 @@ LOG_FLAG        = True;
 
 class HttpReq:
 
-    def camera_move(addr, pos, login, password):
+    def camera_action(addr, pos, login, password):
         url = ('http://' + str(addr) + str(pos));
         s = requests.Session();
         answer = s.get(url, auth=HTTPDigestAuth(str(login), str(password)));

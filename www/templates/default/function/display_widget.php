@@ -480,28 +480,35 @@ function display_commande($info){
 
 //widget lampe
 function display_lampe($info){
+	$display = '';
+	if (!empty($info->device_id) && !((!empty($info->device_opt->{409})) || $info->device_id == 78)){
+		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	}
+	if (!empty($info->device_id) && !empty($info->device_opt->{409})){
+		$display .= '<div class="info-warning">
+					<button title="'._('More').'"
+					onclick="HandlePopup(2, '.$info->room_device_id.')"';
+		if (!empty($info->device_opt->{409}) && $info->device_opt->{409}->valeur == 1){
+			$display .= 'class="btn btn-danger"';
+		}
+		else{
+			$display .= 'class="btn btn-greenleaf"';
+		}
+		$display .= 'type="button">
+					<span class="fa fa-info-circle md"></span>
+					</button>
+					</div>';
+		if ($info->device_id != 78){
+			$display .= '<h3 class="title margin-top">'.$info->name.'</h3>';
+		}
+	}
 	if (!empty($info->device_id) && $info->device_id == 78){
-		$display = '<div class="info-widget">
+		$display .= '<div class="info-widget">
 						<button title="'._('More').'" onclick="HandlePopup(3, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
 							<span class="fa fa-plus md"></span>
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
-	}
-	
-	else{
-		/*
-		$display = '<div class="info-widget">
-						<button title="'._('More').'"
-								onclick="HandlePopup(2, '.$info->room_device_id.')"
-								class="btn btn-greenleaf"
-								type="button">
-									<span class="fa fa-info-circle md"></span>
-						</button>
-					</div>
-					<h3 class="title">'.$info->name.'</h3>';
-		*/
-		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
 
 	if (!empty($info->device_opt->{12})){
@@ -542,6 +549,11 @@ function display_consumption($info){
 	//consumption option
 	if (!empty($info->device_opt->{399})){
 		$display.= display_consumption_option($info);
+	}
+	
+	//power option
+	if (!empty($info->device_opt->{407})){
+		$display.= display_power_option($info);
 	}
 	
 	return $display;
@@ -778,6 +790,21 @@ function display_consumption_option($info){
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{399}->unit.'</span>
+				</div>';
+
+	return $display;
+}
+
+//Power
+function display_power_option($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{407}->valeur)){
+		$tmp = $info->device_opt->{407}->valeur;
+	}
+	$display = '<div>
+					<i class="fa fa-bolt"></i>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{407}->option_id.'">'.$tmp.'</span>
+					<span>'.$info->device_opt->{407}->unit.'</span>
 				</div>';
 
 	return $display;

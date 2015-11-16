@@ -8,6 +8,9 @@ echo '<div class="col-xs-2 bhoechie-tab-menu sidebar">
 				<a title="'._('Installation').'" href="/profile_user_installation" id="menu-installation" class="list-group-item text-center">
 					<h4 class="fa fa-server lg"></h4><br/><span class="hidden-xs">'._('Installation').'</span>
 				</a>
+				<a title="'._('Graphics').'" href="/profile_user_graphics" id="menu-graphics" class="list-group-item text-center">
+					<h4 class="fa fa-bar-chart lg"></h4><br/><span class="hidden-xs">'._('Graphics').'</span>
+				</a>
 				<a title="'._('Smartcommands & Scenarios').'" href="#" onclick="ShowScenarios()" class="list-group-item text-center change">
 					<h4 class="fi flaticon-playbutton17 lg"></h4><span class="hidden-xs">'._('Smartcommands & Scenarios').'</span>
 				</a>

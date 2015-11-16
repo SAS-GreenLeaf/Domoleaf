@@ -1002,4 +1002,8 @@ $.validator.addMethod("filesize", function(value, element, param) {
     return this.optional(element) || (element.files[0].size <= param); 
 }, "");
 
+$.validator.addMethod("ssid_validate", function(value, element) {
+	return this.optional(element) || /^[a-zA-Z0-9\_-]{4,32}$/.test(value);
+}, "");
+
 }));
