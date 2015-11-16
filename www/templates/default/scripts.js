@@ -625,9 +625,9 @@ function dropZoneStop(trigger) {
 	}
 }
 
-function listRoomsOfFloor(elem_id) {
+function listRoomsOfFloor(elem_id, opt) {
 	var floor_id;
-	
+
 	floor_id = parseInt($("#selectFloor-"+elem_id).val());
 	$.ajax({
 		type: "GET",
@@ -640,10 +640,47 @@ function listRoomsOfFloor(elem_id) {
 			}
 		}
 	});
-	if (floor_id == 0) {
+	if (floor_id == 0 && opt == 1) {
 		$("#selectRoom-"+elem_id).val(0);
 		saveLinkedRoom(elem_id);
 	}
+	if (opt == 0){
+		listDeviceOfRoom();
+	}
+}
+
+function listDeviceOfRoom() {
+	var room_id;
+
+	room_id = parseInt($("#selectRoom-0").val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_list_devices_of_room.php",
+		data: "room_id="+room_id,
+		success: function(result) {
+			if (result) {
+				$("#selectDevice").html(result);
+				$('.selectpicker').selectpicker('refresh');
+			}
+		}
+	});
+}
+
+function listOptionOfDevice() {
+	var room_device_id;
+
+	room_device_id = parseInt($("#selectDevice").val());
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/form/form_list_options_of_device.php",
+		data: "room_device_id="+room_device_id,
+		success: function(result) {
+			if (result) {
+				$("#selectOption").html(result);
+				$('.selectpicker').selectpicker('refresh');
+			}
+		}
+	});
 }
 
 function saveLinkedRoom(smartcmd_id) {

@@ -1207,8 +1207,7 @@ class Admin extends User {
 	}
 	
 	function confDaemonNew($name, $serial, $skey) {
-		$link = Link::get_link('domoleaf');
-		
+		$link = Link::get_link('domoleaf');	
 		if(empty($name) or empty($serial) or empty($skey)) {
 			return 0;
 		}
@@ -1225,6 +1224,69 @@ class Admin extends User {
 		
 		return $link->lastInsertId();
 	}
+	
+	function confSaveWifi($daemon_id, $ssid, $password, $security, $mode = 0) {
+		if (!($mode == 0 || $mode == 1 || $mode == 2)){
+			error_log('An invalid has been enter for configuration wifi');
+			return;
+		}
+		
+		if (!(preg_match('/^[[:alnum:]\-_]{4,32}$/', $ssid))){
+			error_log('SSID for config wifi is not valid');
+			return;
+		}
+
+		$socket = new Socket();
+		$data = array(
+				'daemon_id' => $daemon_id,
+				'ssid'     => $ssid,
+				'password' => $password,
+				'security' => $security,
+				'mode'     => $mode
+		);
+		$socket->send('wifi_update', $data, 1);
+
+		$res = $socket->receive();
+
+		if (empty($res)){
+			error_log('No answer from slave for confSaveWifi');
+			return;
+		}
+
+		$link = Link::get_link('domoleaf');
+
+		$sql = 'UPDATE daemon
+			    SET wifi_ssid=:ssid, wifi_password=:password, wifi_security=:security, wifi_mode=:mode
+			    WHERE daemon_id=:daemon_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':ssid', $ssid, PDO::PARAM_STR);
+		$req->bindValue(':password', $password, PDO::PARAM_STR);
+		$req->bindValue(':security', $security, PDO::PARAM_STR);
+		$req->bindValue(':mode', $mode, PDO::PARAM_INT);
+		$req->bindValue(':daemon_id', $daemon_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		return;
+	}
+	
+	function confWifi($daemon_id) {
+		$link = Link::get_link('domoleaf');
+		
+		$sql = 'SELECT wifi_ssid, wifi_password, wifi_security, wifi_mode
+		        FROM daemon
+				WHERE daemon_id=:daemon_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':daemon_id', $daemon_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		$list = array(
+				'ssid'     => $do->wifi_ssid,
+				'password' => $do->wifi_password,
+				'security' => $do->wifi_security,
+				'mode'     => $do->wifi_mode
+		);
+		return $list;
+	}	
 	
 	function confD3Reboot($iddaemon) {
 		$socket = new Socket();

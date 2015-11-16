@@ -52,7 +52,7 @@ footer {
 	margin-top:30px!important;
 }
 
-.margin-bottom {
+.margin-bottom-30 {
 	margin-bottom:30px!important;
 }
 
@@ -75,6 +75,12 @@ footer {
 .info-widget {
 	margin-right: -15px;
 	text-align: right;
+}
+
+.info-warning {
+	margin-left: -15px;
+	text-align: left;
+	position: absolute;
 }
 
 .right {
@@ -1297,7 +1303,7 @@ a.carousel-control-camera:hover {
 }
 
 
-/*** Popup Custom (Upload File) ***/
+/*** Custom (Upload File & change background) ***/
 
 .text-b-and-w {
 	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -1490,6 +1496,12 @@ a.carousel-control-camera:hover {
 	z-index: 50;
 }
 
+.colorUserInstall {
+	color: black;
+	padding: 2px;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
 /*** Bootstrap Switch ***/
 
 .bootstrap-switch-greenleaf {
@@ -1508,10 +1520,17 @@ a.carousel-control-camera:hover {
 	opacity: 1 !important;
 }
 
-.colorUserInstall {
-	color: black;
-	padding: 2px;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+/*** Graphics ***/
+
+#user-graphic-menu
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+	width: 100%;
+}
+
+#user-graphic-menu {
+	height: auto;
+	text-align: center;
+	width: 100%;
 }
 
 /*** Smartcommands ***/
@@ -1856,4 +1875,8 @@ span.round-tab:hover {
 		position: absolute;
 		left: 35%;
 	}
+}
+
+.border-invalid {
+	border: 2px solid red;
 }

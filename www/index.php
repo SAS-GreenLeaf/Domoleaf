@@ -1,6 +1,12 @@
 <?php
 
 header('GLD3: 780923');
+
+if(isset($_SERVER['HTTP_USER_AGENT']) &&
+   (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+	header('X-UA-Compatible: IE=edge');
+}
+
 include('config.php');
 include('libs/Link.class.php');
 include('functions.php');
@@ -31,6 +37,11 @@ if($request->is_co()) {
 			
 			//Profile installation
 			case 'profile_user_installation':
+				$page = $_GET['page'];
+			break;
+			
+			//Profile graphics
+			case 'profile_user_graphics':
 				$page = $_GET['page'];
 			break;
 			
@@ -164,6 +175,11 @@ if($request->is_co()) {
 			
 			//Profile installation
 			case 'profile_user_installation':
+				$page = $_GET['page'];
+			break;
+			
+			//Profile graphics
+			case 'profile_user_graphics':
 				$page = $_GET['page'];
 			break;
 			

