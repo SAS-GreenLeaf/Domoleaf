@@ -1526,7 +1526,7 @@ class User {
 	
 	function smartcmdSaveLinkedRoom($smartcmd_id, $room_id) {
 		$link = Link::get_link('domoleaf');
-	
+
 		if ($room_id == 0) {
 			$room_id = NULL;
 		}

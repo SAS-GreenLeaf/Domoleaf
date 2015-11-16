@@ -1640,6 +1640,10 @@ a.carousel-control-camera:hover {
 	margin-top: -5px;
 }
 
+#linked-room .popover-content {
+	color: black;
+}
+
 #popup_smartcmd_content .input-group {
 	width: 50% !important;
 	margin: auto;

@@ -641,6 +641,7 @@ function listRoomsOfFloor(elem_id) {
 		}
 	});
 	if (floor_id == 0) {
+		$("#selectRoom-"+elem_id).val(0);
 		saveLinkedRoom(elem_id);
 	}
 }
@@ -654,13 +655,12 @@ function saveLinkedRoom(smartcmd_id) {
 		url: "/templates/default/form/form_save_linked_room.php",
 		data: "smartcmd_id="+smartcmd_id+"&room_id="+room_id,
 		success: function(result) {
-			if (result == 0) {
-				changeSaveBtnState("#saveLR_btn", 1);
+			if (room_id == 0) {
+				$("#alert-linked-room").show();
 			}
 			else {
-				changeSaveBtnState("#saveLR_btn", 2);
+				$("#alert-linked-room").hide();
 			}
-			
 		}
 	});
 }
