@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `daemon` (
   `wifi_ssid` varchar(63) DEFAULT NULL,
   `wifi_password` varchar(128) DEFAULT NULL,
   `wifi_security` varchar(31) DEFAULT NULL,
-  `wifi_mode` tinyint(4) unsigned DEFAULT '0',
+  `wifi_mode` tinyint(3) unsigned DEFAULT '0',
   PRIMARY KEY (`daemon_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
