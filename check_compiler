@@ -21,6 +21,7 @@ check_package libconfig-dev
 check_package autoconf
 check_package libtool
 check_package libxml2-dev
+check_package gettext
 
 if [ "$packages" != "" ];
 then

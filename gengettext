@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for inode in $(find domomaster/etc/domoleaf/www/locales -type d)
+do
+	if [ -f ${inode}/messages.po ]
+	then
+		msgfmt ${inode}/messages.po -o ${inode}/messages.mo
+		rm ${inode}/messages.po
+	fi
+done

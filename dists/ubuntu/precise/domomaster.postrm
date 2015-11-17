@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo -e "[ \033[32mOK\033[0m ] Done removing Domoleaf master daemon"
-
-rm -f /var/run/domomaster.pid
-rm -f /var/log/domoleaf/domomaster.log
