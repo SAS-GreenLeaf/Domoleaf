@@ -486,9 +486,9 @@ function display_lampe($info){
 	}
 	if (!empty($info->device_id) && !empty($info->device_opt->{409})){
 		$display .= '<div class="info-warning">
-					<button title="'._('More').'"
+					<button id="widget_info-'.$info->room_device_id.'-409" title="'._('More').'"
 					onclick="HandlePopup(2, '.$info->room_device_id.')"';
-		if (!empty($info->device_opt->{409}) && $info->device_opt->{409}->valeur == 1){
+		if ($info->device_opt->{409}->valeur == 1){
 			$display .= 'class="btn btn-danger"';
 		}
 		else{
@@ -503,7 +503,7 @@ function display_lampe($info){
 		}
 	}
 	if (!empty($info->device_id) && $info->device_id == 78){
-		$display = '<div class="info-widget">
+		$display .= '<div class="info-widget">
 						<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0)" class="btn btn-greenleaf" type="button">
 							<span class="fa fa-plus md"></span>
 						</button>

@@ -18,7 +18,10 @@ $device = $deviceallowed->{$_GET['iddevice']};
 echo '<div class="center">'.
 		'<br/>';
 if ($device->device_opt->{409} && $device->device_opt->{409}->valeur == 1){
-	echo ''._('Lightning default (open circuit)').'';
+	echo ''._('Lightning default (open circuit)').' ';
+	if ($request->getLevel() > 1){
+		echo '</button><button onclick="resetError('.$_GET['iddevice'].', 409)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>';
+	}
 }
 else {
 	echo ''._('No default have been detected').'';
@@ -31,6 +34,9 @@ echo '<div class="controls center">'.
 
 echo '<script type="text/javascript">'.
 		'$("#popupTitle").html("'.$device->name.'");'.
+		'setTimeout(function(){'.
+			'$("#popupTitle").html("'.$device->name.'");'.
+		'}, 200);'.
 	 '</script>';
 
 ?>

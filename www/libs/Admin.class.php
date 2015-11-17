@@ -1673,6 +1673,18 @@ class Admin extends User {
 		);
 	}
 	
+	function mcResetError($room_device_id, $option_id) {
+		$link = Link::get_link('domoleaf');
+
+		$sql = 'UPDATE room_device_option
+		        SET valeur = "0"
+		        WHERE room_device_id=:room_device_id AND option_id=:option_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
+		$req->bindValue(':option_id', $option_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
 	function confUserInstallation($userid) {
 		$link = Link::get_link('domoleaf');
 		

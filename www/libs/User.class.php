@@ -799,7 +799,11 @@ class User {
 				'ListApp'      => $listApps
 		);
 	}
-	
+
+	function mcResetError($room_device_id, $option_id) {
+		return null;
+	}
+
 	/**
 	 * 
 	 * @param unknown $userid

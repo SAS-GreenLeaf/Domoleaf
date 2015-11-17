@@ -1287,7 +1287,13 @@ class Api {
 								$res = $user->mcCamera($var[0], $var[1], $var[2]);
 							}
 						break;
-							
+
+						case 'mcResetError':
+							if (!empty($var[0]) && !empty($var[1])){
+								$res = $user->mcResetError($var[0], $var[1]);
+							}
+						break;
+
 					}
 					$answer['request'][$action] = $res;
 				}
