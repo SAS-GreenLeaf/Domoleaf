@@ -21,11 +21,12 @@ function defineLocale($lang='') {
 			 define('LOCALE', detect_language());
 		break;
 	}
-	putenv("LC_ALL=".LOCALE);
-	setlocale(LC_ALL, LOCALE);
-	bind_textdomain_codeset("messages", "UTF-8");
-	bindtextdomain("messages", "./locales");
-	textdomain("messages");
+	$results = putenv("LC_ALL=".LOCALE);
+	$results = putenv("LANG=".LOCALE);
+	$results = setlocale(LC_ALL, LOCALE.'.utf8');
+	$results = bind_textdomain_codeset("messages", "UTF-8");
+	$results = bindtextdomain("messages", "./locales");
+	$results = textdomain("messages");
 }
 
 /**

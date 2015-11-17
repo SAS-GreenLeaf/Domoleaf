@@ -63,9 +63,9 @@ echo '
 		<label class="control-label" for="smtpSecure">'._('SMTP Secure').'</label>
 		<div class="controls">
 			<input name="smtpSecure" id="smtpSecure-0" value="0" type="radio">
-				'._('None ').'
+				'._('None').' 
 			<input name="smtpSecure" id="smtpSecure-1" value="1" type="radio">
-				'._('SSL ').'
+				'._('SSL').' 
 			<input name="smtpSecure" id="smtpSecure-2" value="2" type="radio">
 				'._('TLS').'
 		</div>
@@ -73,11 +73,11 @@ echo '
 			<label class="control-label" for="smtpPort">'._('SMTP Port').'</label>
 			<div class="controls">
 				<input name="smtpPort" id="smtpPort-25" value="25" type="radio">
-					'._('25 ').'
+					'._('25').'
 				<input name="smtpPort" id="smtpPort-465" value="465" type="radio">
-					'._('465 ').'
+					'._('465').'
 				<input name="smtpPort" id="smtpPort-587" value="587" type="radio">
-					'._('587 ').'
+					'._('587').'
 				<input name="smtpPort" id="smtpPort-0" value="0" type="radio">
 					'._('Other').'
 			</div>
@@ -208,7 +208,7 @@ function PopupPreConfigurationMail(){
 		data: "fromMailval="+encodeURIComponent(fromMailval),
 		success: function(result) {
 			BootstrapDialog.show({
-				title: "'._('Pre-configuration mail').'",
+				title: "'._('Pre-configuration email').'",
 				message: result
 			});
 		}

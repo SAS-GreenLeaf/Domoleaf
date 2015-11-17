@@ -8,7 +8,6 @@ $result  =  $request -> send_request();
 
 $devices = $result->confDeviceAll;
 
-
 if (!empty($_GET['idapp']) && !empty($devices)){
 	echo '<option value="0">'._('Choose your device').'</option>';
 	foreach($devices as $elem){

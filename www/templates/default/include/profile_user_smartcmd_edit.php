@@ -204,7 +204,7 @@ echo
 		}
 		$.ajax({
 			type:"GET",
-			url: "/templates/default/form/form_smartcmd_elem_order.php",
+			url: "/form/form_smartcmd_elem_order.php",
 			data: "id_smartcmd="+id_smartcmd
 					+"&old_id_exec="+old_id_exec
 					+"&new_id_exec="+new_id_exec,
@@ -268,7 +268,7 @@ echo
 	function RemoveSmartcmdElem(exec_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_smartcmd_elem.php",
+			url: "/form/form_remove_smartcmd_elem.php",
 			data: "id_exec="+exec_id+"&id_smartcmd="+'.$id_smartcmd.',
 			success: function(result) {
 				displaySmartcmd('.$id_smartcmd.');

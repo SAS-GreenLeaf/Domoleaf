@@ -1,7 +1,5 @@
 <?php 
 
-echo '<title>'._('Users permission').'</title>';
-
 if (!empty($_GET['userid'])){
 	
 	$request =  new Api();
@@ -25,5 +23,11 @@ if (!empty($_GET['userid'])){
 	$accordioninfo = $result->confUserInstallation;
 
 }
+else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+}
+
+echo '<title>'._('Users permission').'</title>';
 
 ?>

@@ -17,7 +17,7 @@ if (!empty($_GET['manufacturer_id']) && $_GET['manufacturer_id'] != 0){
 		<br/><div class="control-group" >
 			<label class="control-label" for="productList">'._('Product list').'</label>
 			<select class="selectpicker form-control" id="productList" onchange="">
-				<option value="0">'._('-- Nothing selected --').'</option>';
+				<option value="0">-- '._('Nothing selected').' --</option>';
 				foreach ($productList as $product){
 					echo '<option value="'.$product->product_id.'">'.$product->name.'</option>';
 				}

@@ -37,7 +37,7 @@ echo '
 						echo $listDaemon->{$elem->daemon_id}->name;
 					}
 					else{
-						echo _('Unknow');
+						echo _('Unknown');
 					}
 			echo '
 					('.$listtype[$elem->type].')</td>

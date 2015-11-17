@@ -14,6 +14,9 @@ if (empty($_POST['newPasswordBisval'])){
 	$_POST['newPasswordBisval'] = '';
 }
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 if ($_POST['resetKeyval'] == '' || $_POST['newPasswordval'] == '' || $_POST['newPasswordBisval'] == ''){
 	echo '
 		<div class="alert alert-danger alert-dismissible center" role="alert">

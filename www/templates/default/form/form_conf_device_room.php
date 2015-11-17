@@ -3,7 +3,6 @@
 include('header.php');
 
 if (!empty($_GET['floor'])){
-	
 	$request =  new Api();
 	$request -> add_request('confRoomList', array($_GET['floor']));
 	$result  =  $request -> send_request();

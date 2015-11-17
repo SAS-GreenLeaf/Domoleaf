@@ -1,10 +1,10 @@
 <?php
 
-echo '<title>'._('General Configuration').'</title>';
-
 $request =  new Api();
 $request -> add_request('conf_load');
 $result  =  $request -> send_request();
+
+echo '<title>'._('General Configuration').'</title>';
 
 $generalinfo = $result->conf_load;
 

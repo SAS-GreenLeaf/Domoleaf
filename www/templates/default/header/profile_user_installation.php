@@ -1,13 +1,12 @@
 <?php 
 
-echo '<title>'._('Profile').'</title>';
-
-
 $request =  new Api();
 $request -> add_request('confUserInstallation');
 $request -> add_request('profileList');
 $request -> add_request('profileInfo');
 $result  =  $request -> send_request();
+
+echo '<title>'._('Profile').'</title>';
 
 $userid = $request->getId();
 $listuser = $result->profileList;

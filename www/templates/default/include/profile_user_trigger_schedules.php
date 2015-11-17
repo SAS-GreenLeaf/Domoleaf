@@ -81,7 +81,7 @@ echo '
 	function RemoveSchedule(schedule_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_schedule.php",
+			url: "/form/form_remove_schedule.php",
 			data: "id_schedule="+schedule_id,
 			success: function(result) {
 				$("#schedule-"+schedule_id).remove();

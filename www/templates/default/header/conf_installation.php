@@ -1,11 +1,11 @@
 <?php 
 
-echo '<title>'._('Installation').'</title>';
-
 $request =  new Api();
 $request -> add_request('confFloorList');
 $request -> add_request('confRoomList', array(0));
 $result  =  $request -> send_request();
+
+echo '<title>'._('Installation').'</title>';
 
 $floorlist = $result->confFloorList;
 $roomlist = $result->confRoomList;

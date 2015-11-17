@@ -478,7 +478,7 @@ function updateBGColor(color, userid){
 function ElemToScenario(id_scenario, id_elem, nb_elem) {
 	$.ajax({
 		type:"GET",
-		url: "/templates/default/form/form_update_scenario.php",
+		url: "/form/form_update_scenario.php",
 		data: "id_scenario="+id_scenario
 		     +"&id_elem="+id_elem
 		     +"&elem="+nb_elem,
@@ -549,7 +549,7 @@ function saveSmartcmdOption(id_smartcmd, room_id_device, id_option, id_exec, mod
 	val = $("#smartcmdPopupValue-"+room_id_device).val();
 	$.ajax({
 			type: "GET",
-			url: "/templates/default/form/form_save_smartcmd_elem.php",
+			url: "/form/form_save_smartcmd_elem.php",
 			data: "id_smartcmd="+id_smartcmd
 					+"&room_id_device="+room_id_device
 					+"&id_option="+id_option
@@ -587,7 +587,7 @@ function saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exe
 	}
 	$.ajax({
 			type: "GET",
-			url: "/templates/default/form/form_save_smartcmd_elem.php",
+			url: "/form/form_save_smartcmd_elem.php",
 			data: "id_smartcmd="+id_smartcmd
 					+"&room_id_device="+room_id_device
 					+"&id_option="+id_option
@@ -618,7 +618,7 @@ function selectDelay(smartcmd_id, exec_id) {
 	
 	$.ajax({
 		type: "GET",
-		url: "/templates/default/form/form_smartcmd_update_delay.php",
+		url: "/form/form_smartcmd_update_delay.php",
 		data: "smartcmd_id="+smartcmd_id
 				+"&exec_id="+exec_id
 				+"&delay="+delay,
@@ -711,7 +711,7 @@ function saveLinkedRoom(smartcmd_id) {
 	room_id = parseInt($("#selectRoom-"+smartcmd_id).val());
 	$.ajax({
 		type: "GET",
-		url: "/templates/default/form/form_save_linked_room.php",
+		url: "/form/form_save_linked_room.php",
 		data: "smartcmd_id="+smartcmd_id+"&room_id="+room_id,
 		success: function(result) {
 			if (room_id == 0) {
@@ -868,7 +868,7 @@ function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, 
 	op = $("#triggerPopupOperator-"+room_id_device).val();
 	$.ajax({
 		type: "GET",
-		url: "/templates/default/form/form_save_trigger_elem.php",
+		url: "/form/form_save_trigger_elem.php",
 		data: "id_trigger="+id_trigger
 				+"&room_id_device="+room_id_device
 				+"&id_option="+id_option
@@ -1006,7 +1006,7 @@ function SaveSchedule(schedule_id) {
 		$("#saveTS_btn").addClass("m-progress");
 		$.ajax({
 			type: "GET",
-			url: "/templates/default/form/form_save_trigger_schedule.php",
+			url: "/form/form_save_trigger_schedule.php",
 			data: "id_schedule="+schedule_id
 			      +"&months="+months
 			      +"&weekdays="+weekdays

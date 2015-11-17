@@ -15,6 +15,8 @@ if (!empty($_GET['schedule_name'])) {
 	}
 }
 else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '-2';
 }
 

@@ -81,7 +81,7 @@ echo '
 	function RemoveTrigger(trigger_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_trigger.php",
+			url: "/form/form_remove_trigger.php",
 			data: "id_trigger="+trigger_id,
 			success: function(result) {
 				$("#trigger-"+trigger_id).remove();

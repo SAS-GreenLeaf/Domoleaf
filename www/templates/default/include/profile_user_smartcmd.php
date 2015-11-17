@@ -88,7 +88,7 @@ echo '
 	function RemoveSmartcmd(smartcmd_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_smartcmd.php",
+			url: "/form/form_remove_smartcmd.php",
 			data: "id_smartcmd="+smartcmd_id,
 			success: function(result) {
 				$("#smartcmd-"+smartcmd_id).remove();

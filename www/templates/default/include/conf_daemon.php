@@ -345,7 +345,7 @@ function RenameDaemon(id){
 
 	$.ajax({
 		type:"GET",
-		url: "/templates/'.TEMPLATE.'/form/form_conf_daemon_rename.php",
+		url: "/form/form_conf_daemon_rename.php",
 		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean+"&interface_knx_arg="+interface_knx_arg+"&interface_EnOcean_arg="+interface_EnOcean_arg,
 		beforeSend:function(result, status){
 			PopupLoading();

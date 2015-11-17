@@ -53,14 +53,14 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 					'<p>'._('Fail').'<p>'.
 				'</div>'.
 				'<div id="uploadError" class="alert alert-danger center" role="alert" hidden>'.
-					_('File must be JPG or PNG, less than 1MB').
+					_('Image must be JPG or PNG, and size less than 1MB').
 				'</div>'.
 				'<div class="cd-panel">'.
 					'<div class="cd-panel-content">'.
 						'<label for="image">'.
 							'<form id="uploadFileForm" action="" method="post" enctype="multipart/form-data" class="image-select cmxform">'.
 								'<div id="uploadMsg" class="center">'.
-									_('Click or Drag file here').
+									_('Click or Drag image here').
 									'</br>'.
 									'<i id="uploadFileIcon" class="fa fa-cloud-upload lg"></i>'.
 								'</div>'.

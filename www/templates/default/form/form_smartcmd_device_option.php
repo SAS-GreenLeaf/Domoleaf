@@ -5,6 +5,8 @@ include('header.php');
 if (!empty($_GET['id_smartcmd']) && !empty($_GET['room_id_device'])
 	&& !empty($_GET['id_option']) && !empty($_GET['id_exec'])
 	&& !empty($_GET['modif'])) {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	showPopup($_GET['id_smartcmd'], $_GET['room_id_device'], $_GET['id_option'], $_GET['id_exec'], $_GET['modif']);
 }
 
@@ -206,7 +208,5 @@ function display_smartcmd_color_wheel($room_id_device) {
 	
 	return $display;
 }
-
-
 
 ?>

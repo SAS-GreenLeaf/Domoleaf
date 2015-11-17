@@ -13,8 +13,8 @@ echo '<div class="center"><h2>'._('Monitor KNX').'</h2></div>
 							  <button type="button" id="dae" class="btn btn-greenleaf"> '._('All').'</button>
 							  <button type="button" class="btn btn-greenleaf dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 							  <ul class="dropdown-menu dropdown-confgreenleaf  dropdown-menu-right">
-								<li><a onclick="SwitchActionDae(-1, \'All\')">'._('All').'</a></li>
-								<li><a onclick="SwitchActionDae(0, \'Unknow\')">'._('Unknow').'</a></li>
+								<li><a onclick="SwitchActionDae(-1, \''._('All').'\')">'._('All').'</a></li>
+								<li><a onclick="SwitchActionDae(0, \''._('Unknown').'\')">'._('Unknown').'</a></li>
 								<li role="presentation" class="divider"></li>';
 								foreach ($listdae as $elem){
 									if (!empty($elem->protocol->{1})){

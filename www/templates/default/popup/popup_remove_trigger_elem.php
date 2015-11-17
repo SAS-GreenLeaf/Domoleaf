@@ -2,6 +2,9 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 if (empty($_GET['condition_id']) || $_GET['condition_id'] <= 0){
 	redirect();
 }

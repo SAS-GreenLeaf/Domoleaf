@@ -3,6 +3,9 @@
 include('header.php');
 
 if (!empty($_GET['iddevice'])) {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+	
 	echo
 	'<div class="center">'.
 		'<form class="btn center padding-bottom">'.

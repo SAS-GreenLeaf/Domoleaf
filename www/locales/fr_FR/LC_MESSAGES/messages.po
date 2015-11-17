@@ -3,55 +3,1876 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-23 14:18+0200\n"
-"PO-Revision-Date: 2014-10-23 15:46+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2015-11-16 14:54+0100\n"
+"PO-Revision-Date: 2015-11-16 14:54+0100\n"
+"Last-Translator: Greenleaf <contact@greenleaf.fr>\n"
+"Language-Team: Greenleaf <contact@greenleaf.fr>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.10\n"
 
-msgid "Username"
-msgstr "Nom d'utilisateur"
+#: popup/popup_audio_view.php:49 popup/popup_camera_view.php:99
+#: popup/popup_ChromaWheel.php:34 popup/popup_clim.php:81
+#: popup/popup_info_device.php:7 popup/popup_list_db_usb.php:58
+#: popup/popup_password_lost.php:23 popup/popup_password_reset.php:33
+#: popup/popup_pre_configuration_device.php:30
+#: popup/popup_pre_configuration_mail.php:23 popup/popup_show_username.php:17
+#: popup/popup_test_mail.php:14 popup/popup_user_create_scenario.php:23
+#: popup/popup_user_create_schedule.php:30
+#: popup/popup_user_create_smartcmd.php:31
+#: popup/popup_user_create_trigger.php:30
+#: popup/popup_user_update_scenario_name.php:23
+#: popup/popup_user_update_schedule_name.php:23
+#: popup/popup_user_update_smartcmd_name.php:23
+#: popup/popup_user_update_trigger_name.php:23
+#: form/form_pre_configuration_mail.php:13
+#: form/form_pre_configuration_mail.php:19
+#: form/form_pre_configuration_mail.php:29 form/form_reset_password.php:20
+#: form/form_reset_password.php:26 form/form_reset_password.php:32
+#: form/form_reset_password.php:46 form/form_send_test_mail.php:12
+#: form/form_send_test_mail.php:18 form/form_smartcmd_device_option.php:31
+#: form/form_trigger_device_option.php:41
+#: form/form_update_scenario_name.php:13 form/form_update_scenario_name.php:26
+#: form/form_update_schedule_name.php:13 form/form_update_schedule_name.php:26
+#: form/form_update_smartcmd_name.php:13 form/form_update_smartcmd_name.php:26
+#: form/form_update_trigger_name.php:13 form/form_update_trigger_name.php:26
+#: function/display_widget.php:557
+msgid "Close"
+msgstr "Fermer"
 
-msgid "Password"
-msgstr "Mot de passe"
+#: popup/popup_camera_view.php:93 popup/popup_new_daemon.php:61
+#: popup/popup_new_user.php:9 form/form_conf_alert_error.php:9
+#: form/form_conf_alert_error.php:16 include/signin.php:40
+msgid "Error:"
+msgstr "Erreur:"
 
+#: popup/popup_camera_view.php:93
+msgid "No compatible stream available"
+msgstr "Aucun flux compatible disponible"
+
+#: popup/popup_check_updates.php:7
+msgid "Checking for updates. This may take a few minutes. Please wait..."
+msgstr "Vérification des mises à jour. Cela peut prendre quelques minutes. Merci de patienter..."
+
+#: popup/popup_ChromaWheel.php:14
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: popup/popup_ChromaWheel.php:30 popup/popup_password_lost.php:22
+#: popup/popup_password_reset.php:32 popup/popup_test_mail.php:13
+#: include/monitor_knx.php:56
+msgid "Send"
+msgstr "Envoyer"
+
+#: popup/popup_ChromaWheel.php:40
+msgid "Chroma Wheel"
+msgstr "Roue Chromatique"
+
+#: popup/popup_clim.php:27
+msgid "Fans"
+msgstr "Ventilateur"
+
+#: popup/popup_clim.php:31 function/display_widget.php:342
+msgid "0"
+msgstr "0"
+
+#: popup/popup_clim.php:34 function/display_widget.php:345
+msgid "1"
+msgstr "1"
+
+#: popup/popup_clim.php:37 function/display_widget.php:348
+msgid "2"
+msgstr "2"
+
+#: popup/popup_clim.php:40 function/display_widget.php:351
+msgid "3"
+msgstr "3"
+
+#: popup/popup_clim.php:43 function/display_widget.php:354
+msgid "4"
+msgstr "4"
+
+#: popup/popup_clim.php:46
+msgid "5"
+msgstr "5"
+
+#: popup/popup_clim.php:49
+msgid "6"
+msgstr "6"
+
+#: popup/popup_clim.php:72
+msgid "Confort"
+msgstr "Confort"
+
+#: popup/popup_clim.php:73
+msgid "Night"
+msgstr "Nuit"
+
+#: popup/popup_clim.php:74
+msgid "Eco"
+msgstr "Eco"
+
+#: popup/popup_clim.php:75
+msgid "Frost free"
+msgstr "Hors Gel"
+
+#: popup/popup_conf_db_usb.php:10 include/conf_db.php:21
+msgid "Create Backup"
+msgstr "Créer Sauvegarde"
+
+#: popup/popup_conf_db_usb.php:14
+msgid "Loading in progress..."
+msgstr "Chargement en cours..."
+
+#: popup/popup_conf_update_version.php:7
+msgid "Updating Box. This may take a few minutes. Please wait..."
+msgstr "Mise à jour de la Box. Cela peut prendre quelques minutes. Merci de patienter..."
+
+#: popup/popup_custom_device.php:50
+msgid "Success"
+msgstr "Succès"
+
+#: popup/popup_custom_device.php:53
+msgid "Fail"
+msgstr "Echec"
+
+#: popup/popup_custom_device.php:56
+msgid "Image must be JPG or PNG, and size less than 1MB"
+msgstr "L'image doit être au format JPG ou PNG, d'un poids inférieur à 1MB."
+
+#: popup/popup_custom_device.php:63
+msgid "Click or Drag image here"
+msgstr "Clicker ou Déposer votre image ici"
+
+#: popup/popup_custom_device.php:88
+msgid "Upload Image"
+msgstr "Envoyer l'image"
+
+#: popup/popup_custom_device.php:93
+msgid "Delete Image"
+msgstr "Supprimer l'image"
+
+#: popup/popup_custom_device.php:111
+msgid "Upload Device Image"
+msgstr "Envoyer l'image de l'appareil"
+
+#: popup/popup_custom_device.php:117
+msgid "Upload Room Image"
+msgstr "Envoyer l'image de la salle"
+
+#: popup/popup_delete_daemon.php:15 popup/popup_delete_floor.php:13
+#: popup/popup_delete_user.php:13 popup/popup_remove_device.php:13
+#, php-format
+msgid "Do you want to delete %s?"
+msgstr "Voulez-vous supprimer %s?"
+
+#: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
+#: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
+#: popup/popup_new_room.php:26 popup/popup_reboot_d3.php:19
+#: popup/popup_remove_db_local.php:17 popup/popup_remove_db_usb.php:17
+#: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:18
+#: popup/popup_remove_schedule.php:18 popup/popup_remove_smartcmd_elem.php:18
+#: popup/popup_remove_smartcmd.php:18 popup/popup_remove_trigger_elem.php:15
+#: popup/popup_remove_trigger.php:18 popup/popup_restore_db_local.php:17
+#: popup/popup_restore_db_usb.php:17
+msgid "Yes"
+msgstr "Oui"
+
+#: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
+#: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
+#: popup/popup_new_room.php:30 popup/popup_reboot_d3.php:19
+#: popup/popup_remove_db_local.php:18 popup/popup_remove_db_usb.php:18
+#: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:22
+#: popup/popup_remove_schedule.php:22 popup/popup_remove_smartcmd_elem.php:22
+#: popup/popup_remove_smartcmd.php:22 popup/popup_remove_trigger_elem.php:19
+#: popup/popup_remove_trigger.php:22 popup/popup_restore_db_local.php:18
+#: popup/popup_restore_db_usb.php:18
+msgid "No"
+msgstr "Non"
+
+#: popup/popup_delete_room.php:11
+msgid "Are you sure you want to delete this room ?"
+msgstr "Etes-vous sûrs de vouloir supprimer cette salle ? "
+
+#: popup/popup_list_db_usb.php:14
+msgid "File"
+msgstr "Fichier"
+
+#: popup/popup_list_db_usb.php:15
+msgid "Size"
+msgstr "Poids"
+
+#: popup/popup_list_db_usb.php:16 form/form_conf_list_db.php:19
+msgid "Action"
+msgstr "Action"
+
+#: popup/popup_list_db_usb.php:35 form/form_conf_list_db.php:36
+msgid "Restore backup"
+msgstr "Restaurer la sauvegarde"
+
+#: popup/popup_list_db_usb.php:38 form/form_conf_list_db.php:39
+msgid "Delete backup"
+msgstr "Supprimer la sauvegarde"
+
+#: popup/popup_list_db_usb.php:54 form/form_conf_list_db.php:56
+msgid "No backup created"
+msgstr "Aucune sauvegarde créée"
+
+#: popup/popup_loading.php:10
+msgid "Please wait..."
+msgstr "Merci de patienter..."
+
+#: popup/popup_loading.php:16
+msgid "Loading in progress"
+msgstr "Chargement en cours"
+
+#: popup/popup_new_box.php:13 include/conf_daemon.php:12
+msgid "New Box"
+msgstr "Nouvelle Box"
+
+#: popup/popup_new_box.php:14
+msgid "Enter the Box name"
+msgstr "Entrez le nom de la Box"
+
+#: popup/popup_new_box.php:17 popup/popup_new_daemon.php:38
+#: form/form_conf_new_daemon.php:17
+msgid "Serial number"
+msgstr "Numéro de série"
+
+#: popup/popup_new_box.php:18 popup/popup_new_daemon.php:25
+#: popup/popup_rename_daemon.php:29
+msgid "Enter the serial number"
+msgstr "Entrez le numéro de série"
+
+#: popup/popup_new_box.php:21 form/form_conf_device_ip.php:15
+#: include/configuration-menu.php:29
+msgid "Ip"
+msgstr "IP"
+
+#: popup/popup_new_box.php:22
+msgid "Enter the Ip (optional) "
+msgstr "Entrez l'IP (optionnel)"
+
+#: popup/popup_new_box.php:29 popup/popup_new_daemon.php:65
+#: popup/popup_new_floor.php:24 popup/popup_new_user.php:35
+#: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
+#: popup/popup_rename_room.php:35 popup/popup_user_create_scenario.php:19
+#: popup/popup_user_create_schedule.php:26
+#: popup/popup_user_create_smartcmd.php:27
+#: popup/popup_user_create_trigger.php:26
+#: popup/popup_user_update_scenario_name.php:19
+#: popup/popup_user_update_schedule_name.php:19
+#: popup/popup_user_update_smartcmd_name.php:19
+#: popup/popup_user_update_trigger_name.php:19
+#: form/form_smartcmd_device_option.php:45
+#: form/form_trigger_device_option.php:55 include/conf_device.php:149
+#: include/conf_device.php:242 include/conf_device.php:244
+#: include/conf_device.php:332 include/conf_general.php:40
+#: include/conf_general.php:102 include/conf_profiles.php:129
+#: include/profile.php:73 include/profile.php:126
+#: include/profile_user_trigger_schedules_edit.php:31
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: popup/popup_new_box.php:29 popup/popup_new_daemon.php:65
+#: popup/popup_new_floor.php:28 popup/popup_new_user.php:35
+#: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
+#: popup/popup_rename_room.php:39 include/conf_device_new.php:9
+msgid "Cancel"
+msgstr "Annuler"
+
+#: popup/popup_new_daemon.php:13
+msgid "Create a new daemon"
+msgstr "Créer un nouveau Daemon"
+
+#: popup/popup_new_daemon.php:19 popup/popup_rename_daemon.php:23
+msgid "Enter daemon name"
+msgstr "Entrez le nom du Daemon"
+
+#: popup/popup_new_daemon.php:31 popup/popup_rename_daemon.php:35
+msgid "Enter the secret key"
+msgstr "Entrez la clé secrète"
+
+#: popup/popup_new_daemon.php:39 form/form_conf_monitor_ip.php:17
+#: form/form_conf_new_daemon.php:18
+msgid "Ip address"
+msgstr "Adresse IP"
+
+#: popup/popup_new_daemon.php:61
+msgid "Empty field"
+msgstr "Champ vide"
+
+#: popup/popup_new_floor.php:9
+msgid "Add a new floor"
+msgstr "Ajouter un nouvel étage"
+
+#: popup/popup_new_floor.php:16 include/conf_installation.php:14
+#: include/conf_installation.php:28 include/conf_installation.php:153
+msgid "New floor"
+msgstr "Nouvel étage"
+
+#: popup/popup_new_floor.php:17
+msgid "Enter the floor name"
+msgstr "Entrez le nom de l'étage"
+
+#: popup/popup_new_floor.php:20 popup/popup_new_room.php:20
+#: include/conf_installation.php:20
+msgid "New room"
+msgstr "Nouvelle salle"
+
+#: popup/popup_new_floor.php:21 popup/popup_new_room.php:21
+msgid "Enter the room name"
+msgstr "Entrez le nom de la salle"
+
+#: popup/popup_new_room.php:11
+msgid "Add a new room"
+msgstr "Ajouter une nouvelle salle"
+
+#: popup/popup_new_user.php:9
+msgid "Username already exist"
+msgstr "Ce nom d'utilisateur existe déjà"
+
+#: popup/popup_new_user.php:15
+msgid "Enter the Username"
+msgstr "Entrez le Nom d'utilisateur"
+
+#: popup/popup_new_user.php:21
+msgid "Enter the Lastname"
+msgstr "Entrez le Nom de famille"
+
+#: popup/popup_new_user.php:27
+msgid "Enter the Firstname"
+msgstr "Entrez le Prénom"
+
+#: popup/popup_new_user.php:33
+msgid "Enter the Password"
+msgstr "Entrez le Mot de passe"
+
+#: popup/popup_password_lost.php:9
+msgid "Please, enter your reset key for reinitialising your admin password"
+msgstr "Merci d'entrer votre clé de réinitialisation pour réinitialiser votre mot de passe admin"
+
+#: popup/popup_password_lost.php:12 popup/popup_password_lost.php:13
+#: popup/popup_password_reset.php:18 popup/popup_password_reset.php:19
+msgid "Reset Key"
+msgstr "Clé de Réinitialisation"
+
+#: popup/popup_password_lost.php:18
+msgid "Bad key, try again"
+msgstr "Mauvaise clé, réessayez"
+
+#: popup/popup_password_reset.php:14
+msgid "Enter your new password desired"
+msgstr "Entrez votre nouveau mot de passe"
+
+#: popup/popup_password_reset.php:23 popup/popup_password_reset.php:24
+#: include/conf_profiles.php:106 include/profile.php:101
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: popup/popup_password_reset.php:28 popup/popup_password_reset.php:29
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: popup/popup_pre_configuration_device.php:17
+msgid "Manufacturer list"
+msgstr "Liste des Fabricants"
+
+#: popup/popup_pre_configuration_device.php:19
+#: form/form_pre_configuration_device.php:20
+msgid "Nothing selected"
+msgstr "Aucune sélection"
+
+#: popup/popup_pre_configuration_device.php:29
+#: popup/popup_pre_configuration_mail.php:22
+msgid "Pre-configure"
+msgstr "Pré-configurer"
+
+#: popup/popup_pre_configuration_mail.php:12
+msgid "Enter your email to complete your configuration"
+msgstr "Entrez votre email pour compléter votre configuration"
+
+#: popup/popup_reboot_d3.php:15
+#, php-format
+msgid "Do you want to reboot %s?"
+msgstr "Voulez-vous redémarrer %s?"
+
+#: popup/popup_reboot_d3.php:16
+msgid "It will take 60 seconds."
+msgstr "Cela va prendre 60 secondes."
+
+#: popup/popup_remove_db_local.php:14 popup/popup_remove_db_usb.php:14
+#, php-format
+msgid "Do you want to delete the save of %s?"
+msgstr "Voulez-vous supprimer la sauvegarde du %s"
+
+#: popup/popup_remove_scenario.php:14
+msgid "Do you want to delete this Scenario ?"
+msgstr "Voulez-vous supprimer ce Scenario ?"
+
+#: popup/popup_remove_schedule.php:14
+msgid "Do you want to delete this schedule ?"
+msgstr "Voulez-vous supprimer cet horaire ?"
+
+#: popup/popup_remove_smartcmd_elem.php:14
+msgid "Do you want to delete this element ?"
+msgstr "Voulez-vous supprimer cet élément ?"
+
+#: popup/popup_remove_smartcmd.php:14
+msgid "Do you want to delete this Smartcommand ?"
+msgstr "Voulez-vous supprimer cette Smartcommand ?"
+
+#: popup/popup_remove_trigger_elem.php:11
+msgid "Do you want to delete this condition ?"
+msgstr "Voulez-vous supprimer cette condition ?"
+
+#: popup/popup_remove_trigger.php:14
+msgid "Do you want to delete this Trigger ?"
+msgstr "Voulez-vous supprimer ce déclencheur ?"
+
+#: popup/popup_rename_daemon.php:16 popup/popup_rename_floor.php:13
+#: popup/popup_rename_room.php:14
+#, php-format
+msgid "Do you want to rename %s?"
+msgstr "Voulez-vous renommer %s?"
+
+#: popup/popup_rename_daemon.php:59
+msgid "KNX TP Interface"
+msgstr "Interface KNX Filaire"
+
+#: popup/popup_rename_daemon.php:61 popup/popup_rename_daemon.php:90
+msgid "Serial Interface"
+msgstr "Interface Série"
+
+#: popup/popup_rename_daemon.php:62 popup/popup_rename_daemon.php:91
+msgid "IP Interface"
+msgstr "Interface IP"
+
+#: popup/popup_rename_daemon.php:66 popup/popup_rename_daemon.php:101
+#: include/conf_daemon.php:21
+msgid "Serial"
+msgstr "Série"
+
+#: popup/popup_rename_daemon.php:67 popup/popup_rename_daemon.php:102
+msgid "Serial 0"
+msgstr "Série 0"
+
+#: popup/popup_rename_daemon.php:68 popup/popup_rename_daemon.php:103
+msgid "Serial 1"
+msgstr "Série 1"
+
+#: popup/popup_rename_daemon.php:69 popup/popup_rename_daemon.php:104
+msgid "Serial 2"
+msgstr "Série 2"
+
+#: popup/popup_rename_daemon.php:77 popup/popup_rename_daemon.php:80
+#: popup/popup_rename_daemon.php:112 popup/popup_rename_daemon.php:115
+msgid "Enter IP Adress"
+msgstr "Entrez l'Adresse IP"
+
+#: popup/popup_rename_daemon.php:87
+msgid "EnOcean Interface"
+msgstr "Interface EnOcean"
+
+#: popup/popup_rename_daemon.php:89
+msgid "USB Interface"
+msgstr "Interface USB"
+
+#: popup/popup_rename_daemon.php:95
+msgid "USB 0"
+msgstr "USB 0"
+
+#: popup/popup_rename_daemon.php:96
+msgid "USB 1"
+msgstr "USB 1"
+
+#: popup/popup_rename_floor.php:17 popup/popup_rename_room.php:18
+msgid "New name"
+msgstr "Nouveau Nom"
+
+#: popup/popup_restore_db_local.php:14 popup/popup_restore_db_usb.php:14
+#, php-format
+msgid "Do you want to restore the save of %s?"
+msgstr "Voulez-vous restaurer la sauvegarde du %s?"
+
+#: popup/popup_restore_db_local.php:14 popup/popup_restore_db_usb.php:14
+#, php-format
+msgid "Caution, maybe you will be logout."
+msgstr "Attention, vous risquez d'être déconnecté."
+
+#: popup/popup_show_username.php:14
+msgid ""
+"You have succeeded to change your password, don't forget, your username is "
+msgstr ""
+"Vous avez réussi à changer votre mot de passe, n'oubliez pas, votre nom d'utilisateur est "
+
+#: popup/popup_smartcmd_device_option.php:14
+#: popup/popup_trigger_device_option.php:14
+msgid "Option value"
+msgstr "Valeur de l'option"
+
+#: popup/popup_test_mail.php:10
+msgid ""
+"After the validation of the configuration email, you will receive a test "
+"email. If it not come, go check your configuration of your mail and your "
+"server SMTP"
+msgstr ""
+"Après la validation de la configuration email, vous allez recevoir un email "
+"de test. Si vous ne le recevez pas, vérifiez la configuration des mails et le serveur SMTP"
+
+#: popup/popup_user_create_scenario.php:10
+msgid "Please enter the Scenario name :"
+msgstr "Entrez le nom du Scénario :"
+
+#: popup/popup_user_create_scenario.php:12
+#: popup/popup_user_create_schedule.php:19
+#: popup/popup_user_create_smartcmd.php:19
+#: popup/popup_user_create_trigger.php:19
+#: popup/popup_user_update_scenario_name.php:11
+#: popup/popup_user_update_schedule_name.php:11
+#: popup/popup_user_update_smartcmd_name.php:11
+#: popup/popup_user_update_trigger_name.php:11
+#: form/form_conf_room_device_list.php:23 include/conf_daemon.php:20
+msgid "Name"
+msgstr "Nom"
+
+#: popup/popup_user_create_scenario.php:13
+#: popup/popup_user_update_scenario_name.php:12
+#: include/profile_user_scenarios.php:25
+msgid "Scenario Name"
+msgstr "Nom du Scénario"
+
+#: popup/popup_user_create_scenario.php:32
+msgid "New Scenario"
+msgstr "Nouveau Scénario"
+
+#: popup/popup_user_create_scenario.php:48
+#: popup/popup_user_create_schedule.php:53
+#: popup/popup_user_create_smartcmd.php:54
+#: popup/popup_user_create_trigger.php:53
+#: form/form_update_scenario_name.php:16 form/form_update_schedule_name.php:16
+#: form/form_update_smartcmd_name.php:16 form/form_update_trigger_name.php:16
+msgid "Name already existing"
+msgstr "Nom déjà existant"
+
+#: popup/popup_user_create_scenario.php:52
+#: popup/popup_user_create_schedule.php:57
+#: popup/popup_user_create_smartcmd.php:58
+#: popup/popup_user_create_trigger.php:57
+#: form/form_update_scenario_name.php:29 form/form_update_schedule_name.php:29
+#: form/form_update_smartcmd_name.php:29 form/form_update_trigger_name.php:29
+#: include/conf_installation.php:193
+msgid "Invalid Name"
+msgstr "Nom invalid"
+
+#: popup/popup_user_create_schedule.php:17
+msgid "Please enter the Schedule name :"
+msgstr "Entrez le nom de l'horaire :"
+
+#: popup/popup_user_create_schedule.php:20
+#: popup/popup_user_update_schedule_name.php:12
+#: include/profile_user_trigger_schedules.php:25
+msgid "Schedule Name"
+msgstr "Nom de l'Horaire"
+
+#: popup/popup_user_create_schedule.php:38
+msgid "New Schedule"
+msgstr "Nouvel Horaire"
+
+#: popup/popup_user_update_schedule_name.php:31
+msgid "Rename Schedule"
+msgstr "Renommer Horaire"
+
+#: popup/popup_user_create_smartcmd.php:17
+msgid "Please enter the Smartcommand name :"
+msgstr "Entrez le nom de la Smartcommand :"
+
+#: popup/popup_user_create_smartcmd.php:20
+#: include/profile_user_smartcmd.php:26
+msgid "Smartcommand Name"
+msgstr "Nom de la Smartcommand"
+
+#: popup/popup_user_create_smartcmd.php:39
+msgid "New Smartcommand"
+msgstr "Nouvelle Smartcommand"
+
+#: popup/popup_user_update_smartcmd_name.php:31
+msgid "Rename Smartcommand"
+msgstr "Renommer Smartcommand"
+
+#: popup/popup_user_create_trigger.php:17
+msgid "Please enter the Trigger name :"
+msgstr "Entrez le nom du Déclencheur :"
+
+#: popup/popup_user_create_trigger.php:20
+#: popup/popup_user_update_trigger_name.php:12
+#: include/profile_user_trigger_events.php:25
+msgid "Trigger Name"
+msgstr "Nom du Déclencheur"
+
+#: popup/popup_user_create_trigger.php:38
+msgid "New Trigger"
+msgstr "Nouveau Déclencheur"
+
+#: popup/popup_user_update_trigger_name.php:31
+msgid "Rename Trigger"
+msgstr "Renommer Déclencheur"
+
+#: popup/popup_user_update_scenario_name.php:9
+msgid "Please enter the new Scenario name :"
+msgstr "Entrez le nouveau nom du Scénario :"
+
+#: popup/popup_user_update_scenario_name.php:31
+msgid "New scenario"
+msgstr "Nouveau Scénario"
+
+#: popup/popup_user_update_schedule_name.php:9
+msgid "Please enter the new Schedule name :"
+msgstr "Entrez le nouveau nom de l'Horaire :"
+
+#: popup/popup_user_update_smartcmd_name.php:9
+msgid "Please enter the new Smartcommand name :"
+msgstr "Entrez le nouveau nom de la Smartcommand :"
+
+#: popup/popup_user_update_trigger_name.php:9
+msgid "Please enter the new Trigger name :"
+msgstr "Entrez le nouveau nom du Déclencheur :"
+
+#: form/form_conf_device_ip.php:14 form/form_conf_monitor_bluetooth.php:16
+#: form/form_conf_monitor_ip.php:16
+msgid "Hostname"
+msgstr "Nom d'hôte"
+
+#: form/form_conf_device_knx.php:15
+msgid "Physical Address"
+msgstr "Adresse Physique"
+
+#: form/form_conf_device_list.php:13
+msgid "Choose your device"
+msgstr "Sélectionnez votre appareil"
+
+#: form/form_conf_list_db.php:17 form/form_conf_monitor_enocean.php:18
+#: form/form_conf_monitor_knx.php:27
+msgid "Date"
+msgstr "Date"
+
+#: form/form_conf_list_db.php:18
+msgid "Poids"
+msgstr "Size"
+
+#: form/form_conf_list_db.php:33
+msgid "Download backup"
+msgstr "Télécharger la sauvegarde"
+
+#: form/form_conf_monitor_bluetooth.php:17
+msgid "bluetooth address"
+msgstr "Adresse Bluetooth"
+
+#: form/form_conf_monitor_bluetooth.php:18 form/form_conf_monitor_ip.php:18
+#: include/conf_device_new.php:119
+msgid "Mac address"
+msgstr "Adresse Mac"
+
+#: form/form_conf_monitor_bluetooth.php:38
+msgid "No bluetooth device."
+msgstr "Pas d'appareil Bluetooth"
+
+#: form/form_conf_monitor_enocean.php:16
+msgid "Type"
+msgstr "Type"
+
+#: form/form_conf_monitor_enocean.php:17
+#: form/form_conf_room_device_list.php:26
+msgid "Address"
+msgstr "Adresse"
+
+#: form/form_conf_monitor_enocean.php:39
+msgid "No Enocean device."
+msgstr "Pas d'appareil EnOcean"
+
+#: form/form_conf_monitor_ip.php:39
+msgid "No Ip device."
+msgstr "Pas d'appareil IP"
+
+#: form/form_conf_monitor_knx.php:18
+msgid "R"
+msgstr "R"
+
+#: form/form_conf_monitor_knx.php:18
+msgid "A"
+msgstr "A"
+
+#: form/form_conf_monitor_knx.php:18
+msgid "Ws"
+msgstr "Ws"
+
+#: form/form_conf_monitor_knx.php:18
+msgid "Wl"
+msgstr "Wl"
+
+#: form/form_conf_monitor_knx.php:23 include/conf_device_new.php:66
+#: include/conf_device.php:29
+msgid "Daemon"
+msgstr "Daemon"
+
+#: form/form_conf_monitor_knx.php:24 include/conf_device.php:298
+#: include/conf_device.php:314
+msgid "Source"
+msgstr "Source"
+
+#: form/form_conf_monitor_knx.php:25
+msgid "Destination"
+msgstr "Destination"
+
+#: form/form_conf_monitor_knx.php:26 include/monitor_knx.php:51
+msgid "Value"
+msgstr "Valeur"
+
+#: form/form_conf_monitor_knx.php:40 include/monitor_knx.php:17
+#: popup/popup_list_db_usb.php:28
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: form/form_conf_monitor_knx.php:66
+msgid "No monitor KNX."
+msgstr "Pas de moniteur KNX"
+
+#: form/form_conf_room_device_list.php:24 include/conf_daemon.php:22
+#: include/conf_device_new.php:60
+msgid "Protocol"
+msgstr "Protocole"
+
+#: form/form_conf_room_device_list.php:25 include/conf_device_new.php:55
+msgid "Device"
+msgstr "Appareil"
+
+#: form/form_display_smartcmd.php:109
+msgid "Edit Smartcommand Element"
+msgstr "Editer cet élément de la Smartcommand"
+
+#: form/form_display_smartcmd.php:117
+msgid "Delete Smartcommand Element"
+msgstr "Supprimer cet élément de la Smartcommand"
+
+#: form/form_display_trigger.php:78
+msgid "Edit Condition"
+msgstr "Editer cette condition"
+
+#: form/form_display_trigger.php:86
+#: include/profile_user_trigger_events_edit.php:226
+msgid "Delete Condition"
+msgstr "Supprimer cette condition"
+
+#: form/form_display_trigger.php:291 form/form_trigger_device_option.php:179
+msgid "Greater or Equal"
+msgstr "Supérieur ou Egal"
+
+#: form/form_display_trigger.php:292 form/form_trigger_device_option.php:180
+msgid "Lesser or Equal"
+msgstr "Inférieur ou Egal"
+
+#: form/form_list_devices_of_room.php:5
+msgid "No Device selected"
+msgstr "Pas d'appareil sélectionné"
+
+#: form/form_list_rooms_of_floor.php:5
+msgid "No Room selected"
+msgstr "Pas de salle sélectionnée"
+
+#: form/form_pre_configuration_device.php:18
+msgid "Product list"
+msgstr "Liste des Produits"
+
+#: form/form_pre_configuration_mail.php:14
+msgid ""
+"Your email is not listed in our database. Please, complete manually the "
+"configuration."
+msgstr ""
+"Votre email n'est pas listé dans notre base de données. Merci de compléter"
+"manuellement votre configuration."
+
+#: form/form_pre_configuration_mail.php:20
+msgid "Your email is not valid. Please, enter a valid email."
+msgstr "Votre email est invalide. Merci d'entrer un email valide."
+
+#: form/form_pre_configuration_mail.php:30
+msgid "You must enter an email."
+msgstr "Vous devez entrez une adresse email"
+
+#: form/form_reset_password.php:21
+msgid "All fields must be fill"
+msgstr "Tous les champs doivent être remplis"
+
+#: form/form_reset_password.php:27
+msgid "The passwords are not the same"
+msgstr "Les mots de passe sont différents"
+
+#: form/form_reset_password.php:33
+msgid "Your new password is too short ! (6 characters min)"
+msgstr "Votre nouveau mot de passe est trop court ! (6 caractères min)"
+
+#: form/form_reset_password.php:47
+msgid "Your reset key is not good"
+msgstr "Votre clé de réinitialisation est incorrecte"
+
+#: form/form_send_test_mail.php:13
+msgid "An error occured for send mail. Please, check your configuration mail."
+msgstr "Une erreur est survenue durent l'envoi de mail. Merci de vérifier votre configuration."
+
+#: form/form_send_test_mail.php:19
+msgid "The mail have been send."
+msgstr "Le mail a été envoyé."
+
+#: form/form_show_scenario_summary.php:46
+msgid "Edit Scenario Name"
+msgstr "Editer le nom du Scénario"
+
+#: form/form_show_scenario_summary.php:56
+msgid "You must select a smartcommand."
+msgstr "Vous devez sélectionnez une Smartcommand."
+
+#: form/form_show_scenario_summary.php:62
+msgid "Smartcommand : "
+msgstr "Smartcommand : "
+
+#: form/form_show_scenario_summary.php:68
+msgid "No Trigger Selected"
+msgstr "Aucun Déclencheur Sélectionné"
+
+#: form/form_show_scenario_summary.php:74
+msgid "Trigger : "
+msgstr "Déclencheur : "
+
+#: form/form_show_scenario_summary.php:81
+msgid "No Schedule Selected (All Time)"
+msgstr "Ancun Horaire sélectionné (Tout le temps)"
+
+#: form/form_show_scenario_summary.php:87
+msgid "Schedule : "
+msgstr "Horaire : "
+
+#: form/form_show_scenario_summary.php:94
+msgid "You must select at least one trigger or one schedule."
+msgstr "Vous devez sélectionnez au moins un déclencheur ou un Horaire."
+
+#: form/form_smartcmd_device_option.php:34
+#: form/form_trigger_device_option.php:44
+msgid "Option not available"
+msgstr "Option indisponible"
+
+#: header/conf_daemon.php:3 include/conf_daemon.php:8
+msgid "Box configuration"
+msgstr "Configuration de la Box"
+
+#: header/conf_db.php:3 include/conf_db.php:7
+msgid "Database configuration"
+msgstr "Configuration de la Base de Données"
+
+#: header/conf_device.php:65 header/conf_device.php:69
+#: header/conf_device.php:73 header/conf_device.php:77
+#: header/conf_device.php:81 header/conf_device.php:85
+#: header/conf_device.php:89
+msgid "1 bit"
+msgstr "1 bit"
+
+#: header/conf_device.php:66 header/conf_device.php:70
+#: header/conf_device.php:74 header/conf_device.php:78
+#: header/conf_device.php:82 header/conf_device.php:86
+#: header/conf_device.php:90
+msgid "8 bits"
+msgstr "8 bits"
+
+#: header/conf_general.php:3
+msgid "General Configuration"
+msgstr "Configuration Générale"
+
+#: header/conf_installation.php:3 include/configuration-menu.php:12
+#: include/configuration-menu.php:13 include/profile-menu.php:8
+#: include/profile-menu.php:9
+msgid "Installation"
+msgstr "Installation"
+
+#: header/conf_user_permission.php:3
+msgid "Users permission"
+msgstr "Permissions des utilisateurs"
+
+#: header/conf_users.php:3 include/conf_users.php:6
+msgid "Users configuration"
+msgstr "Configuration des utilisateurs"
+
+#: header/home.php:2
+msgid "Master Command"
+msgstr "Master Command"
+
+#: header/monitor_enocean.php:3 include/monitor_enocean.php:7
+msgid "Monitor enocean"
+msgstr "Moniteur EnOcean"
+
+#: header/monitor_ip.php:3 include/monitor_ip.php:8
+msgid "Monitor Ip"
+msgstr "Moniteur IP"
+
+#: header/monitor_knx.php:3 include/monitor_knx.php:7
+msgid "Monitor KNX"
+msgstr "Moniteur KNX"
+
+#: header/profile.php:3 header/profile_user_installation.php:3
+#: include/profile.php:6
+msgid "Profile"
+msgstr "Profil"
+
+#: header/signin.php:3 include/signin.php:7 include/signin.php:33
 msgid "Sign in"
 msgstr "Se connecter"
 
-msgid "Please sign in"
-msgstr "Connexion"
+#: include/conf_daemon.php:23 include/conf_general.php:15
+msgid "Version"
+msgstr "Version"
 
-msgid "Error:"
-msgstr "Erreur :"
+#: include/conf_daemon.php:24 include/profile_user_scenario_edit.php:35
+msgid "Validation"
+msgstr "Validation"
 
+#: include/conf_daemon.php:55 include/conf_daemon.php:59
+msgid "Ask validation"
+msgstr "Demander la validation"
+
+#: include/conf_daemon.php:64
+msgid "Reboot"
+msgstr "Redémarrer"
+
+#: include/conf_daemon.php:67 include/conf_installation.php:45
+#: include/conf_installation.php:65 include/conf_users.php:34
+msgid "Edit"
+msgstr "Editer"
+
+#: include/conf_daemon.php:70 include/conf_users.php:48
+msgid "Delete"
+msgstr "Supprimer"
+
+#: include/conf_daemon.php:85
+msgid "No Box. Please add a box"
+msgstr "Aucune Box. Merci d'ajouter une box"
+
+#: include/conf_daemon.php:155
+msgid "New Daemon"
+msgstr "Nouveau Daemon"
+
+#: include/conf_daemon.php:169
+msgid "Reboot D3"
+msgstr "Redémarrer D3"
+
+#: include/conf_daemon.php:183
+msgid "Rename Daemon"
+msgstr "Renommer Daemon"
+
+#: include/conf_daemon.php:197
+msgid "Delete Daemon"
+msgstr "Supprimer Daemon"
+
+#: include/conf_db.php:14
+msgid "USB Backup"
+msgstr "Sauvegarde USB"
+
+#: include/conf_db.php:66
+msgid "Database USB"
+msgstr "Base de données USB"
+
+#: include/conf_db.php:106 include/conf_db.php:120 include/conf_db.php:174
+msgid "Delete Database"
+msgstr "Supprimer la Base de Données"
+
+#: include/conf_db.php:188
+msgid "Restore Database"
+msgstr "Restaurer la Base de Données"
+
+#: include/conf_device_new.php:8
+msgid "New device"
+msgstr "Nouvel Appareil"
+
+#: include/conf_device_new.php:13 include/conf_device.php:17
+msgid "Device Name"
+msgstr "Nom de l'appareil"
+
+#: include/conf_device_new.php:18 include/conf_device.php:22
+msgid "Enter your device name"
+msgstr "Entrez le nom de l'appareil"
+
+#: include/conf_device_new.php:22 include/conf_device.php:49
+msgid "Floor"
+msgstr "Etage"
+
+#: include/conf_device_new.php:24
+msgid "Choose the floor"
+msgstr "Choisissez l'étage"
+
+#: include/conf_device_new.php:33 include/profile_user_smartcmd.php:27
+msgid "Room"
+msgstr "Salle"
+
+#: include/conf_device_new.php:41
+msgid "Application"
+msgstr "Application"
+
+#: include/conf_device_new.php:44
+msgid "Choose your application"
+msgstr "Sélectionnez votre application"
+
+#: include/conf_device_new.php:76
+msgid "Enter the KNX address"
+msgstr "Entrez l'adresse KNX"
+
+#: include/conf_device_new.php:78
+msgid "KNX physical address"
+msgstr "Adresse Physique KNX"
+
+#: include/conf_device_new.php:81 include/conf_device_new.php:121
+#: include/conf_device_new.php:138
+msgid "Add"
+msgstr "Ajouter"
+
+#: include/conf_device_new.php:95 include/conf_device.php:91
+msgid "IP address or name"
+msgstr "Adresse IP ou nom"
+
+#: include/conf_device_new.php:101 include/conf_device.php:98
+msgid "Port"
+msgstr "Port"
+
+#: include/conf_device_new.php:101 include/conf_device.php:98
+msgid "Default: 80"
+msgstr "Défaut: 80"
+
+#: include/conf_device_new.php:107 include/conf_device.php:112
+msgid "Login"
+msgstr "S'identifier"
+
+#: include/conf_device_new.php:113 include/conf_device.php:119
+#: include/signin.php:27
+msgid "Password"
+msgstr "Mot de passe"
+
+#: include/conf_device_new.php:134
+msgid "Enocean address "
+msgstr "Adresse EnOcean"
+
+#: include/conf_device_new.php:215
+msgid "Empty ip address"
+msgstr "Adresse IP vide"
+
+#: include/conf_device_new.php:227
+msgid "Empty knx address"
+msgstr "Adresse KNX vide"
+
+#: include/conf_device_new.php:231
+msgid "No daemon associate"
+msgstr "Aucun Daemon associé"
+
+#: include/conf_device_new.php:241
+msgid "Empty enocean address"
+msgstr "Adresse EnOcean vide"
+
+#: include/conf_device_new.php:246
+msgid "Missing protocol"
+msgstr "Protocole manquant"
+
+#: include/conf_device_new.php:250
+msgid "Floor and room is required"
+msgstr "L'étage et la salle sont requis"
+
+#: include/conf_device_new.php:254
+msgid "Empty device name"
+msgstr "Nom de l'appareil vide"
+
+#: include/conf_device.php:7
+msgid "Device configuration"
+msgstr "Configuration de l'appareil"
+
+#: include/conf_device.php:10 include/conf_room.php:13
+msgid "Back"
+msgstr "Retour"
+
+#: include/conf_device.php:14 include/home.php:174
+msgid "Information"
+msgstr "Information"
+
+#: include/conf_device.php:104
+msgid "Mac Address"
+msgstr "Adresse Mac"
+
+#: include/conf_device.php:130
+msgid "KNX address or name"
+msgstr "Adresse KNX ou nom"
+
+#: include/conf_device.php:141
+msgid "Enocean address or name"
+msgstr "Adresse EnOcean ou nom"
+
+#: include/conf_device.php:155
+msgid "Options"
+msgstr "Options"
+
+#: include/conf_device.php:164 include/conf_device.php:257
+#: include/conf_device.php:341
+msgid "Save All"
+msgstr "Tout sauvegarder"
+
+#: include/conf_device.php:175 include/conf_device.php:297
+msgid "Option"
+msgstr "Option"
+
+#: include/conf_device.php:176 include/conf_device.php:190
+msgid "Write address"
+msgstr "Adresse d'écriture"
+
+#: include/conf_device.php:177 include/conf_device.php:193
+#: include/conf_device.php:196
+msgid "Return address"
+msgstr "Adresse de retour"
+
+#: include/conf_device.php:229 include/conf_device.php:321
+msgid "Enable"
+msgstr "Activer"
+
+#: include/conf_device.php:230 include/conf_device.php:322
+msgid "Disable"
+msgstr "Désactiver"
+
+#: include/conf_device.php:459
+msgid "Pre-configuration device"
+msgstr "Pré-configuration de l'appareil"
+
+#: include/conf_general.php:8
+msgid "General configuration"
+msgstr "Configuration générale"
+
+#: include/conf_general.php:13
+msgid "No update available"
+msgstr "Aucune mise à jour disponible"
+
+#: include/conf_general.php:16
+msgid "Current:"
+msgstr "Actuelle:"
+
+#: include/conf_general.php:17
+msgid "Check Updates"
+msgstr "Vérifier les Mises à jour"
+
+#: include/conf_general.php:20
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: include/conf_general.php:25
+msgid "Activate remote access"
+msgstr "Activer l'accès à distance"
+
+#: include/conf_general.php:28 include/conf_general.php:29
+msgid "Remote access port"
+msgstr "Port de l'accès à distance"
+
+#: include/conf_general.php:32 include/conf_general.php:33
+msgid "Secure remote access port"
+msgstr "Port sécurisé de l'accès à distance"
+
+#: include/conf_general.php:38
+msgid "Force securised mode"
+msgstr "Forcer le mode sécurisé"
+
+#: include/conf_general.php:47
+msgid "Email configuration"
+msgstr "Configuration Email"
+
+#: include/conf_general.php:48 include/conf_general.php:211
+msgid "Pre-configuration email"
+msgstr "Pré-configuration email"
+
+#: include/conf_general.php:52 include/conf_general.php:53
+#: popup/popup_pre_configuration_mail.php:18
+msgid "From Mail"
+msgstr "Adresse mail de l'Expéditeur"
+
+#: include/conf_general.php:56 include/conf_general.php:57
+msgid "From Name"
+msgstr "Nom de l'Expéditeur"
+
+#: include/conf_general.php:60 include/conf_general.php:61
+msgid "SMTP Host"
+msgstr "Hôte SMTP"
+
+#: include/conf_general.php:63
+msgid "SMTP Secure"
+msgstr "SMTP Sécurisé"
+
+#: include/conf_general.php:66 include/profile_user_smartcmd.php:37
+msgid "None"
+msgstr "Aucun"
+
+#: include/conf_general.php:68
+msgid "SSL"
+msgstr "SSL"
+
+#: include/conf_general.php:70
+msgid "TLS"
+msgstr "TLS"
+
+#: include/conf_general.php:73 include/conf_general.php:85
+msgid "SMTP Port"
+msgstr "Port SMTP"
+
+#: include/conf_general.php:76
+msgid "25"
+msgstr "25"
+
+#: include/conf_general.php:78
+msgid "465"
+msgstr "465"
+
+#: include/conf_general.php:80
+msgid "587"
+msgstr "587"
+
+#: include/conf_general.php:82
+msgid "Other"
+msgstr "Autre"
+
+#: include/conf_general.php:88
+msgid "Activate authentification access"
+msgstr "Activer l'authentification"
+
+#: include/conf_general.php:91 include/conf_general.php:92
+msgid "SMTP Username"
+msgstr "Nom d'utilisateur SMTP"
+
+#: include/conf_general.php:95 include/conf_general.php:96
+msgid "SMTP Password"
+msgstr "Mot de passe SMTP"
+
+#: include/conf_general.php:103
+msgid "Test"
+msgstr "Tester"
+
+#: include/conf_general.php:248
+msgid "Test mail"
+msgstr "Mail de test"
+
+#: include/conf_general.php:278
+msgid "Checking updates"
+msgstr "Vérification des mises à jour"
+
+#: include/conf_general.php:317
+msgid "Updating box"
+msgstr "Mise à jour de la Box"
+
+#: include/configuration-menu.php:6 include/configuration-menu.php:7
+msgid "General"
+msgstr "Général"
+
+#: include/configuration-menu.php:9 include/configuration-menu.php:10
+msgid "Database"
+msgstr "Base de Données"
+
+#: include/configuration-menu.php:15 include/configuration-menu.php:16
+msgid "Box"
+msgstr "Box"
+
+#: include/configuration-menu.php:18 include/configuration-menu.php:19
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: include/configuration-menu.php:21 include/configuration-menu.php:22
+msgid "Busmonitor"
+msgstr "Moniteur de bus"
+
+#: include/configuration-menu.php:26
+msgid "Enocean"
+msgstr "EnOcean"
+
+#: include/configuration-menu.php:32
+msgid "KNX"
+msgstr "KNX"
+
+#: include/conf_installation.php:8
+msgid "Configuration installation"
+msgstr "Configuration de l'installation"
+
+#: include/conf_installation.php:48
+msgid "Delete floor"
+msgstr "Supprimer étage"
+
+#: include/conf_installation.php:68
+msgid "Delete room"
+msgstr "Supprimer salle"
+
+#: include/conf_installation.php:95
+msgid "Edit Floor"
+msgstr "Editer étage"
+
+#: include/conf_installation.php:110
+msgid "Edit Room"
+msgstr "Editer salle"
+
+#: include/conf_installation.php:124
+msgid "Remove floor"
+msgstr "Supprimer étage"
+
+#: include/conf_installation.php:139
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: include/conf_installation.php:166
+msgid "New Room"
+msgstr "Nouvelle salle"
+
+#: include/conf_profiles.php:10 include/profile.php:10
+msgid "Personal informations"
+msgstr "Informations personelles"
+
+#: include/conf_profiles.php:12 include/conf_users.php:17
+#: include/signin.php:19
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: include/conf_profiles.php:17
+msgid "Enter your username name"
+msgstr "Entrer votre nom d'utilisateur"
+
+#: include/conf_profiles.php:20 include/profile.php:12
+msgid "Last Name"
+msgstr "Nom de Famille"
+
+#: include/conf_profiles.php:25 include/profile.php:17
+msgid "Enter your last name"
+msgstr "Entrez votre nom de famille"
+
+#: include/conf_profiles.php:28 include/profile.php:21
+msgid "First Name"
+msgstr "Prénom"
+
+#: include/conf_profiles.php:33 include/profile.php:26
+msgid "Enter your first name"
+msgstr "Entrez votre prénom"
+
+#: include/conf_profiles.php:36 include/profile.php:29
+msgid "Gender"
+msgstr "Genre"
+
+#: include/conf_profiles.php:41 include/conf_profiles.php:48
+#: include/profile.php:33 include/profile.php:39
+msgid "Male"
+msgstr "Mâle"
+
+#: include/conf_profiles.php:43 include/conf_profiles.php:50
+#: include/profile.php:35 include/profile.php:41
+msgid "Female"
+msgstr "Femelle"
+
+#: include/conf_profiles.php:55 include/profile.php:47
+msgid "Phone"
+msgstr "Télephone"
+
+#: include/conf_profiles.php:60 include/profile.php:52
+msgid "Enter your phone number (mobile)"
+msgstr "Entrez votre numéro de téléphone (portable)"
+
+#: include/conf_profiles.php:63 include/profile.php:55
+msgid "Language"
+msgstr "Langue"
+
+#: include/conf_profiles.php:84 include/profile.php:80
+msgid "Change password"
+msgstr "Changer le mot de passe"
+
+#: include/conf_profiles.php:87 include/profile.php:83
+msgid "Warning : Please fill the 3 password inputs !"
+msgstr "Attention : Merci de remplir les 3 champs de mot de passe"
+
+#: include/conf_profiles.php:92 include/profile.php:87
+msgid "Old password"
+msgstr "Ancien mot de passe"
+
+#: include/conf_profiles.php:97 include/profile.php:92
+msgid "Type old password"
+msgstr "Entrez votre ancien mot de passe"
+
+#: include/conf_profiles.php:102 include/profile.php:98
+msgid "Warning : Your new password is too short ! (6 characters min)"
+msgstr "Attention : Votre nouveau mot de passe est trop court ! (6 caractères min)"
+
+#: include/conf_profiles.php:111 include/profile.php:106
+msgid "Type new password"
+msgstr "Entrez le nouveau mot de passe"
+
+#: include/conf_profiles.php:116 include/profile.php:111
+msgid "Warning : Passwords are not matching !"
+msgstr "Attention : Les mots de passe sont différents !"
+
+#: include/conf_profiles.php:120 include/conf_profiles.php:125
+#: include/profile.php:115 include/profile.php:120
+msgid "Retype new password"
+msgstr "Entrez de nouveau le nouveau mot de passe"
+
+#: include/conf_profiles.php:148 include/profile.php:148
+msgid "Loading"
+msgstr "Chargement"
+
+#: include/conf_profiles.php:149 include/profile.php:149
+msgid "Load in progress"
+msgstr "Chargement en cours"
+
+#: include/conf_room.php:8
+msgid "Room configuration : "
+msgstr "Configuration de la salle : "
+
+#: include/conf_room.php:17
+msgid "Add a device"
+msgstr "Ajouter un appareil"
+
+#: include/conf_room.php:19
+msgid "New Device"
+msgstr "Nouvel Appareil"
+
+#: include/conf_room.php:55
+msgid "Remove device"
+msgstr "Supprimer appareil"
+
+#: include/conf_room.php:83
+msgid "No device"
+msgstr "Aucun appareil"
+
+#: include/conf_user_permission.php:13
+msgid "User permission:"
+msgstr "Permissions de l'utilisateur:"
+
+#: include/conf_user_permission.php:45
+#: include/profile_user_installation.php:45
+msgid "rooms"
+msgstr "salles"
+
+#: include/conf_user_permission.php:140
+#: include/profile_user_installation.php:104
+msgid "device"
+msgstr "appareil"
+
+#: include/conf_user_permission.php:216 include/conf_user_permission.php:232
+#: include/profile_user_installation.php:138
+#: include/profile_user_installation.php:154
+msgid "Custom"
+msgstr "Personnalisation"
+
+#: include/conf_users.php:9 include/conf_users.php:80
+msgid "New user"
+msgstr "Nouvel utilisateur"
+
+#: include/conf_users.php:15
+msgid "Lastname"
+msgstr "Nom de famille"
+
+#: include/conf_users.php:16
+msgid "Firstname"
+msgstr "Prénom"
+
+#: include/conf_users.php:18
+msgid "Activity"
+msgstr "Activité"
+
+#: include/conf_users.php:29
+msgid "Never"
+msgstr "Jamais"
+
+#: include/conf_users.php:95
+msgid "Delete user"
+msgstr "Supprimer utilisateur"
+
+#: include/home.php:168
+msgid "Camera view"
+msgstr "Vue de la caméra"
+
+#: include/home.php:171
+msgid "Audio view"
+msgstr "Vue de l'appareil audio"
+
+#: include/home.php:177
+msgid "ChromaWheel"
+msgstr "Roue Chromatique"
+
+#: include/home.php:180
+msgid "Air conditioner"
+msgstr "Climatisation"
+
+#: include/monitor_bluetooth.php:7
+msgid "Bluetooth monitor"
+msgstr "Moniteur Bluetooth"
+
+#: include/monitor_knx.php:13 include/monitor_knx.php:16
+msgid "All"
+msgstr "Tout"
+
+#: include/monitor_knx.php:28 include/monitor_knx.php:31
+#: include/monitor_knx.php:125
+msgid "Write (short)"
+msgstr "Ecriture (court)"
+
+#: include/monitor_knx.php:32 include/monitor_knx.php:129
+msgid "Write (long)"
+msgstr "Ecriture (long)"
+
+#: include/monitor_knx.php:33 include/monitor_knx.php:133
+msgid "Read"
+msgstr "Lecture"
+
+#: include/monitor_knx.php:43
+msgid "KNX address"
+msgstr "Adresse KNX"
+
+#: include/profile-menu.php:5 include/profile-menu.php:6
+msgid "Settings"
+msgstr "Paramètres"
+
+#: include/profile-menu.php:11 include/profile-menu.php:12
+msgid "Smartcommands & Scenarios"
+msgstr "Smartcommands & Scénarios"
+
+#: include/profile-menu.php:18
+msgid "Scenarios"
+msgstr "Scénarios"
+
+#: include/profile-menu.php:24
+msgid "Smartcommands"
+msgstr "Smartcommands"
+
+#: include/profile-menu.php:30
+msgid "Triggers"
+msgstr "Déclencheurs"
+
+#: include/profile-menu.php:36
+msgid "Schedules"
+msgstr "Horaires"
+
+#: include/profile_user_installation.php:12
+msgid "User Installation"
+msgstr "Installation de l'utilisateur"
+
+#: include/profile_user_scenario_edit.php:11
+#: include/profile_user_scenario_edit.php:47
+msgid "Smartcommand"
+msgstr "Smartcommand"
+
+#: include/profile_user_scenario_edit.php:19
+#: include/profile_user_scenario_edit.php:80
+msgid "Trigger"
+msgstr "Déclencheur"
+
+#: include/profile_user_scenario_edit.php:27
+#: include/profile_user_scenario_edit.php:113
+msgid "Schedule"
+msgstr "Horaire"
+
+#: include/profile_user_scenario_edit.php:48
+msgid "Choose the Smartcommand launched by the Scenario or Create a new one."
+msgstr "Sélectionnez la Smartcommand associée à ce Scénario ou créez-en une nouvelle"
+
+#: include/profile_user_scenario_edit.php:52
+msgid "Create Smartcommand"
+msgstr "Créer une Smartcommand"
+
+#: include/profile_user_scenario_edit.php:56
+#: include/profile_user_scenario_edit.php:76
+#: include/profile_user_scenario_edit.php:89
+#: include/profile_user_scenario_edit.php:109
+#: include/profile_user_scenario_edit.php:122
+#: include/profile_user_scenario_edit.php:142
+msgid "Save & Next Step"
+msgstr "Sauvegarder & Etape Suivante"
+
+#: include/profile_user_scenario_edit.php:63
+#: include/profile_user_smartcmd.php:18
+msgid "No Smartcommand"
+msgstr "Aucune Smartcommand"
+
+#: include/profile_user_scenario_edit.php:81
+msgid "Choose the Trigger which will launch the Scenario or Create a new one."
+msgstr "Sélectionnez le Déclencheur qui lancera le Scénario ou créez-en un nouveau"
+
+#: include/profile_user_scenario_edit.php:85
+msgid "Create Trigger"
+msgstr "Créer un Déclencheur"
+
+#: include/profile_user_scenario_edit.php:96
+#: include/profile_user_trigger_events.php:17
+msgid "No Trigger"
+msgstr "Aucun Déclencheur"
+
+#: include/profile_user_scenario_edit.php:114
+msgid ""
+"Choose the Schedule to select the time period of the Scenario or Create a "
+"new one."
+msgstr ""
+"Sélectionnez l'Horaire pour séectionner la période durant laquelle se lancera le Scénario"
+"ou créez-en un nouveau."
+
+#: include/profile_user_scenario_edit.php:118
+msgid "Create Schedule"
+msgstr "Créer un Horaire"
+
+#: include/profile_user_scenario_edit.php:129
+msgid "No Schedule (All time)"
+msgstr "Aucun Horaire (Tout le temps)"
+
+#: include/profile_user_scenario_edit.php:146
+msgid "Summary"
+msgstr "Résumé"
+
+#: include/profile_user_scenario_edit.php:153
+msgid "Save Scenario"
+msgstr "Sauvegarder Scénario"
+
+#: include/profile_user_scenarios.php:9
+msgid "Create New Scenario"
+msgstr "Créer un nouveau Scénario"
+
+#: include/profile_user_scenarios.php:17
+msgid "No Scenario"
+msgstr "Aucun Scénario"
+
+#: include/profile_user_scenarios.php:26
+msgid "Smartcommand Linked"
+msgstr "Smartcommand Reliée"
+
+#: include/profile_user_scenarios.php:27
+msgid "Status"
+msgstr "Statut"
+
+#: include/profile_user_scenarios.php:28 include/profile_user_smartcmd.php:28
+#: include/profile_user_trigger_events.php:26
+#: include/profile_user_trigger_schedules.php:26
+msgid "Actions"
+msgstr "Actions"
+
+#: include/profile_user_scenarios.php:50 include/profile_user_scenarios.php:78
+msgid "Edit scenario"
+msgstr "Editer le Scenario"
+
+#: include/profile_user_scenarios.php:60 function/display_widget.php:607
+#: function/display_widget.php:624 function/display_widget.php:641
+#: function/display_widget.php:649
+msgid "On"
+msgstr "On"
+
+#: include/profile_user_scenarios.php:61 function/display_widget.php:608
+#: function/display_widget.php:625 function/display_widget.php:642
+#: function/display_widget.php:650
+msgid "Off"
+msgstr "Off"
+
+#: include/profile_user_scenarios.php:84 include/profile_user_scenarios.php:128
+msgid "Delete scenario"
+msgstr "Supprimer Scénario"
+
+#: include/profile_user_smartcmd_edit.php:53
+msgid "Edit Smartcommand Name"
+msgstr "Editer le nom de la Smartcommand"
+
+#: include/profile_user_smartcmd_edit.php:61
+#: include/profile_user_smartcmd_edit.php:64
+#: include/profile_user_trigger_events_edit.php:61
+#: include/profile_user_trigger_events_edit.php:64
+#: include/profile_user_trigger_schedules_edit.php:19
+#: include/profile_user_trigger_schedules_edit.php:22
+msgid "Back to Scenario"
+msgstr "Retour au Scénario"
+
+#: include/profile_user_smartcmd_edit.php:69
+msgid "Linked Room"
+msgstr "Salle Reliée"
+
+#: include/profile_user_smartcmd_edit.php:75
+msgid ""
+"You have not selected a Linked Room.\n"
+"\t\t        Until you have not select one, your Smartcommand will not appear "
+"in the Mastercommand\n"
+"\t\t        (but you will be able to select it in Scenarios)\""
+msgstr ""
+"Vous n'avez pas sélectionné de Salle Reliée.\n"
+"\t\t        Tant que vous n'en sélectionnerez pas une, votre Smartcommand n'apparaîtra pas"
+"dans la Mastercommand\n"
+"\t\t        (mais vous pourrez l'utiliser dans les Scénarios)\""
+
+#: include/profile_user_smartcmd_edit.php:84
+#: include/profile_user_smartcmd_edit.php:92
+msgid "No floor selected"
+msgstr "Pas d'étage sélectionné"
+
+#: include/profile_user_smartcmd_edit.php:261
+#: include/profile_user_smartcmd.php:81
+msgid "Delete Smartcommand Elem"
+msgstr "Supprimer élément de la Smartcommand"
+
+#: include/profile_user_smartcmd.php:10
+msgid "Create New SmartCommand"
+msgstr "Créer une Nouvelle Smartcommand"
+
+#: include/profile_user_smartcmd.php:44
+msgid "Edit Smartcommand"
+msgstr "Editer Smartcommand"
+
+#: include/profile_user_smartcmd.php:50
+msgid "Delete Smartcommand"
+msgstr "Supprimer Smartcommand"
+
+#: include/profile_user_trigger_events_edit.php:53
+msgid "Edit Trigger Name"
+msgstr "Editer le nom du Déclencheur"
+
+#: include/profile_user_trigger_events.php:9
+msgid "Create New Trigger"
+msgstr "Créer un nouveau Déclencheur"
+
+#: include/profile_user_trigger_events.php:37
+msgid "Edit Trigger"
+msgstr "Editer Déclencheur"
+
+#: include/profile_user_trigger_events.php:43
+#: include/profile_user_trigger_events.php:74
+msgid "Delete Trigger"
+msgstr "Supprimer Déclencheur"
+
+#: include/profile_user_trigger_schedules_edit.php:11
+msgid "Edit schedule Name"
+msgstr "Editer le nom de l'Horaire"
+
+#: include/profile_user_trigger_schedules_edit.php:27
+msgid "Save Schedule"
+msgstr "Sauvegarder Horaire"
+
+#: include/profile_user_trigger_schedules.php:9
+msgid "Create New Schedule"
+msgstr "Créer un nouvel Horaire"
+
+#: include/profile_user_trigger_schedules.php:17
+msgid "No Schedule"
+msgstr "Aucun Horaire"
+
+#: include/profile_user_trigger_schedules.php:37
+msgid "Edit schedule"
+msgstr "Editer Horaire"
+
+#: include/profile_user_trigger_schedules.php:43
+#: include/profile_user_trigger_schedules.php:74
+msgid "Delete schedule"
+msgstr "Supprimer Horaire"
+
+#: include/signin.php:12
 msgid "Info:"
-msgstr "Information :"
+msgstr "Info:"
 
-msgid "Toggle navigation"
-msgstr "Basculer la navigation"
+#: include/signin.php:13
+msgid "Please enter the username and password to acces to the remote control"
+msgstr "Merci d'entrer le nom d'utilsateur et le mot de passe pour accéder à l'accès à distance"
 
-msgid "Please enter your username and password to acces to the remote control"
-msgstr "Entrez votre identifiant et votre mot de passe pour accéder à votre télécommande"
-
+#: include/signin.php:29
 msgid "Password lost"
-msgstr "Mot de passe perdu"
+msgstr "Mot de passe oublié"
 
+#: include/signin.php:47
 msgid "Develop by "
 msgstr "Développé par "
 
-msgid "All Areas"
-msgstr "Toutes Zones"
+#: include/signin.php:67 include/signin.php:82 include/signin.php:97
+msgid "Reset password"
+msgstr "Réinitialiser mot de passe"
 
-msgid "Board"
-msgstr "Tableau"
+#: function/display_smartcmd.php:15
+msgid "Go"
+msgstr "Go"
 
-msgid "Suitcase"
-msgstr "Valise"
+#: function/display_widget.php:206 function/display_widget.php:329
+#: function/display_widget.php:389 function/display_widget.php:485
+msgid "More"
+msgstr "Plus"
+
+#: function/display_widget.php:255
+msgid "Speed 0"
+msgstr "Vitesse 0"
+
+#: function/display_widget.php:258
+msgid "Speed 1"
+msgstr "Vitesse 1"
+
+#: function/display_widget.php:261
+msgid "Speed 2"
+msgstr "Vitesse 2"
+
+#: function/display_widget.php:264
+msgid "Speed 3"
+msgstr "Vitesse 3"
+
+#: function/display_widget.php:267
+msgid "Speed 4"
+msgstr "Vitesse 4"
+
+#: function/display_widget.php:270
+msgid "Speed 5"
+msgstr "Vitesse 5"
+
+#: function/display_widget.php:273
+msgid "Speed 6"
+msgstr "Vitesse 6"
+
+#: function/display_widget.php:521
+msgid "View"
+msgstr "Voir"
+
+#: function/display_widget.php:556
+msgid "Open"
+msgstr "Ouvrir"
+
+#: function/show_time_select_schedule.php:29
+msgid "Months"
+msgstr "Mois"
+
+#: function/show_time_select_schedule.php:34
+#: function/show_time_select_schedule.php:35
+msgid "All&nbspyear"
+msgstr "Toute&nbspl'année"
+
+#: function/show_time_select_schedule.php:96
+msgid "Weekdays"
+msgstr "Jours de la semaine"
+
+#: function/show_time_select_schedule.php:101
+#: function/show_time_select_schedule.php:102
+msgid "All&nbspweek"
+msgstr "Toute&nbspla semaine"
+
+#: function/show_time_select_schedule.php:163
+msgid "Days"
+msgstr "Jours"
+
+#: function/show_time_select_schedule.php:168
+#: function/show_time_select_schedule.php:169
+msgid "All&nbspdays"
+msgstr "Tous&nbsples jours"
+
+#: function/show_time_select_schedule.php:234
+msgid "Hours"
+msgstr "Heures"
+
+#: function/show_time_select_schedule.php:239
+#: function/show_time_select_schedule.php:240
+msgid "All&nbsphours"
+msgstr "Toutes&nbsples heures"
+
+#: function/show_time_select_schedule.php:305
+msgid "Mins"
+msgstr "Minutes"
+
+#: function/show_time_select_schedule.php:310
+#: function/show_time_select_schedule.php:311
+msgid "All&nbspminutes"
+msgstr "Toutes&nbsples minutes"

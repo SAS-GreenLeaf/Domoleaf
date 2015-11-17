@@ -2,6 +2,9 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 if (!empty($_GET['iddevice'])){
 	$request =  new Api();
 	$request -> add_request('confRoomDeviceAll', array($_GET['iddevice']));
