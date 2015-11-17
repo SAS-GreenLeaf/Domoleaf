@@ -3,13 +3,16 @@
 include('header.php');
 
 if (!empty($_GET['schedule_id'])) {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+	
 	echo
 		'<div>'.
 			'<div id="errorMsg"></div>'.
 			'<div class ="center">'._('Please enter the new Schedule name :').'</div>'.
 			'<div class="input-group margin-top">'.
 				'<label class="input-group-addon left" for="scheduleName">'._('Name').'</label>'.
-				'<input id="scheduleName" name="scheduleName" title="'._('schedule Name').'" '.
+				'<input id="scheduleName" name="scheduleName" title="'._('Schedule Name').'" '.
 				'value="" placeholder="Schedule name" type="text" class="form-control">'.
 			'</div>'.
 		'</div>'.
@@ -28,7 +31,7 @@ if (!empty($_GET['schedule_id'])) {
 	echo
 		'<script type="text/javascript">'.
 		
-			'$("#popupTitle").html("'._("New Schedule").'");'.
+			'$("#popupTitle").html("'._("Rename Schedule").'");'.
 			
 			'function updateScheduleName() {'.
 				'var name = "";'.

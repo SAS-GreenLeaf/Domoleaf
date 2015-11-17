@@ -6,7 +6,7 @@ if (!empty($_GET['daemon_id'])){
 
 	$request =  new Api();
 	$request -> add_request('confWifi', array($_GET['daemon_id']));
-	$result  =  $request ->	send_request();
+	$result  =  $request -> send_request();
 	
 	$wifi = $result->confWifi;
 	

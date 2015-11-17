@@ -24,6 +24,8 @@ $result  =  $request -> send_request();
 	}
 }
 else{
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '
 		<br/><div class="alert alert-danger alert-dismissible center" role="alert">
 		<button type="button" class="close" data-dismiss="alert" aria-label="'._('Close').'"><span aria-hidden="true">&times;</span></button>

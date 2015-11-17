@@ -13,5 +13,9 @@ if (!empty($_GET['floor'])){
 		redirect('/conf_installation');
 	}
 }
+else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+}
 
 ?>

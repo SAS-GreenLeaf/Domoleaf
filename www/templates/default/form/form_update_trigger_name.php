@@ -21,6 +21,8 @@ if (!empty($_GET['trigger_id']) && !empty($_GET['trigger_name'])) {
 	}
 }
 else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '-1'.
 			'<div class="alert alert-danger alert-dismissible center" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="'._('Close').'">

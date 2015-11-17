@@ -175,7 +175,7 @@ echo
 		}
 		$.ajax({
 			type:"GET",
-			url: "/templates/default/form/form_trigger_elem_order.php",
+			url: "/form/form_trigger_elem_order.php",
 			data: "id_trigger="+id_trigger
 					+"&old_id_condition="+old_id_condition
 					+"&new_id_condition="+new_id_condition,
@@ -233,7 +233,7 @@ echo
 	function RemoveTriggerElem(condition_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_trigger_elem.php",
+			url: "/form/form_remove_trigger_elem.php",
 			data: "condition_id="+condition_id+"&id_trigger="+'.$id_trigger.',
 			success: function(result) {
 				displayTrigger('.$id_trigger.');

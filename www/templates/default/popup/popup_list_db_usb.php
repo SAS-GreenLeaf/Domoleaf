@@ -11,7 +11,7 @@ $listBackupUsb = $result->confDbListUsb;
 	if (!empty($listBackupUsb && sizeof($listBackupUsb > 0))){
 		echo '<table class="table table-bordered table-striped table-condensed">'.
 			'<thead>'.
-				'<th>'._('Fichier').'</th>'.
+				'<th>'._('File').'</th>'.
 				'<th>'._('Size').'</th>'.
 				'<th>'._('Action').'</th>'.
 			'</thead>'.
@@ -25,7 +25,7 @@ $listBackupUsb = $result->confDbListUsb;
 							echo format_date($parse[2]);
 						}
 						else{
-							echo _('Unkown');
+							echo _('Unknown');
 						}
 				echo '</td>'.
 					'<td class="center">'.
@@ -51,7 +51,7 @@ $listBackupUsb = $result->confDbListUsb;
 		<br/>
 		<div class="alert alert-warning alert-dismissible col-xs-3 col-xs-offset-4 alert-backup center" role="alert" id ="signerr" >
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'.
-					_(' No backup created').'
+					 _('No backup created').'
 		</div>';
 	};
 	echo '<div class="center">'.

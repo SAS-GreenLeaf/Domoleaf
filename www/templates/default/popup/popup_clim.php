@@ -69,10 +69,10 @@ if (!empty($_GET['iddevice'])){
 	
 	//if option 'type' actived
 	echo '<div class="center">';
-	echo '<button onclick="" class="btn btn-info">'._('Confort').'</button> ';
-	echo '<button onclick="" class="btn btn-info">'._('Nuit').'</button> ';
+	echo '<button onclick="" class="btn btn-info">'._('Comfort').'</button> ';
+	echo '<button onclick="" class="btn btn-info">'._('Night').'</button> ';
 	echo '<button onclick="" class="btn btn-info">'._('Eco').'</button> ';
-	echo '<button onclick="" class="btn btn-info">'._('Hors Gel').'</button> ';
+	echo '<button onclick="" class="btn btn-info">'._('Frost free').'</button> ';
 	echo '</div>';
 	
 	echo '</div>'.

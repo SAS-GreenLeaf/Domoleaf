@@ -81,7 +81,7 @@ echo '
 								</button>
 							</a>
 							<button type="button"
-							        title="'._('Delete scenario').'"
+							        title="'._('Delete Scenario').'"
 							        class="btn btn-danger"
 							        onclick="PopupRemoveScenario('.$elem->scenario_id.')">
 								<i class="fa fa-trash-o"></i>
@@ -135,7 +135,7 @@ echo '
 	function RemoveScenario(scenario_id) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_remove_scenario.php",
+			url: "/form/form_remove_scenario.php",
 			data: "id_scenario="+scenario_id,
 			success: function(result) {
 				$("#scenario-"+scenario_id).remove();
@@ -154,7 +154,7 @@ echo '
 		}
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_change_scenario_state.php",
+			url: "/form/form_change_scenario_state.php",
 			data: "id_scenario="+scenario_id
 					+"&scenario_state="+state,
 			success: function(result) {

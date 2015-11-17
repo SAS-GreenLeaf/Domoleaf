@@ -15,6 +15,8 @@ if (!empty($_GET['id_scenario'])) {
 							$scenario_infos->id_trigger, $scenario_infos->id_schedule, $id_scenario);
 }
 else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '';
 }
 

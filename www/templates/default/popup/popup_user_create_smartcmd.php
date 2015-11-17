@@ -2,6 +2,9 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 if (empty($_GET['id_scenario'])) {
 	$id_scenario = 0;
 }
@@ -36,7 +39,7 @@ echo
 echo
 	'<script type="text/javascript">'.
 	
-		'$("#popupTitle").html("'._("New SmartCommand").'");'.
+		'$("#popupTitle").html("'._("New Smartcommand").'");'.
 		
 		'function saveNewSmartcommand() {'.
 			'var name = "";'.

@@ -15,7 +15,7 @@ if (!empty($listDbLocal) && sizeof($listDbLocal) > 0) {
 			<table class="table table-bordered table-striped table-condensed">
 				<thead>
 					<th>'._('Date').'</th>
-					<th>'._('Poids').'</th>
+					<th>'._('Size').'</th>
 					<th>'._('Action').'</th>
 				</thead>
 				<tbody>';

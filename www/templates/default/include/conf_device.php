@@ -161,7 +161,7 @@ echo '
 
 <br/>
 <div class="center">
-	<button type="button" title="'._('Save all').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
+	<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
 </div>';
 
 if (!empty($tabopt) && sizeof($tabopt) > 0){
@@ -254,7 +254,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 		}
 		echo				'
 				<div class="center">
-				<button type="button" title="'._('Save all').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
+				<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
 			</div>';
 		echo '<script type="text/javascript">';
 		foreach ($listoptdevice as $elem){
@@ -339,7 +339,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 		echo '	</tbody>
 			</table>
 			<div class="center">
-				<button type="button" title="'._('Save all').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
+				<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
 			</div>';
 		
 		echo '<script type="text/javascript">';

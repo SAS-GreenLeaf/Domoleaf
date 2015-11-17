@@ -6,6 +6,9 @@ if (!empty($_GET['id_trigger']) && !empty($_GET['id_option'])
 	&& !empty($_GET['room_id_device']) && !empty($_GET['id_condition'])
 	&& !empty($_GET['modif'])) {
 	
+	$request =  new Api();
+	$result  =  $request -> send_request();
+	
 	echo
 	'<div id="popup_trigger_content" class="center"></div>'.
 	

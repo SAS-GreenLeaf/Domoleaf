@@ -58,6 +58,10 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 		}
 	}
 }
+else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+}
 
 /*** Modify options name ***/
 $option_overload = array(

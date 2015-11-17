@@ -3,6 +3,9 @@
 include('header.php');
 
 if (!empty($_GET['scenario_id'])) {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+	
 	echo
 		'<div>'.
 			'<div id="errorMsg"></div>'.

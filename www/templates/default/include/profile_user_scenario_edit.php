@@ -192,7 +192,7 @@ echo '
 		id_elem = $("#scenario-"+type_elem+"-list .active").attr(\'id\').split("scenario-"+type_elem+"-")[1];
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_update_scenario.php",
+			url: "/form/form_update_scenario.php",
 			data: "id_scenario="+'.$id_scenario.'
 					+"&id_elem="+id_elem
 					+"&elem="+nb_elem,
@@ -219,7 +219,7 @@ echo '
 	function completeScenario(id_scenario) {
 		$.ajax({
 			type:"GET",
-			url: "/templates/'.TEMPLATE.'/form/form_complete_scenario.php",
+			url: "/form/form_complete_scenario.php",
 			data: "id_scenario="+id_scenario,
 			success: function(result) {
 				redirect("/profile_user_scenarios");

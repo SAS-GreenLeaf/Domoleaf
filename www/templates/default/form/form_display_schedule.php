@@ -33,6 +33,8 @@ if (!empty($_GET['schedule_id'])) {
 	echo showtimeSelect($months, $weekdays, $days, $hours, $mins);
 }
 else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '';
 }
 ?>

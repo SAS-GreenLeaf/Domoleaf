@@ -1,5 +1,4 @@
 <?php 
-echo '<title>'._('Master Command').'</title>';
 
 $request =  new Api();
 $request -> add_request('mcVisible');
@@ -7,6 +6,8 @@ $request -> add_request('confApplicationAll');
 $request -> add_request('profileList');
 $request -> add_request('profileInfo');
 $result  =  $request -> send_request();
+
+echo '<title>'._('Master Command').'</title>';
 
 $listAllVisible = $result->mcVisible;
 

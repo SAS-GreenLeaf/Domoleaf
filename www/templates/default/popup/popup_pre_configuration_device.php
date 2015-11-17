@@ -16,7 +16,7 @@ echo '<div class="clearfix"></div>'.
 	'<div class="control-group" >'.
 		'<label class="control-label" for="manufacturerList">'._('Manufacturer list').'</label>'.
 		'<select class="selectpicker form-control" id="manufacturerList" onchange="ProductList('.$_GET['device_id'].')">'.
-			'<option value="0">'._('-- Nothing selected --').'</option>';
+			'<option value="0">-- '._('Nothing selected').' --</option>';
 			foreach ($manufacturerList as $manufacturer){
 				echo '<option value="'.$manufacturer->manufacturer_id.'">'.$manufacturer->name.'</option>';
 			}

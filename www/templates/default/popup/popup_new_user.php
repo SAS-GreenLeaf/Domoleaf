@@ -2,6 +2,8 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
 
 echo '<div class="alert alert-danger alert-hidden alert-dismissible" role="alert" id ="signerr" >'
 			.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'

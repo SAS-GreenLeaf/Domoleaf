@@ -193,7 +193,6 @@ function saveProfile() {
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
 
-	alert("ok");
 	if ($("#sexe-1").is(\':checked\'))
 	{
 		var gender = 1;

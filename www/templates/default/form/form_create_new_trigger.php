@@ -15,6 +15,8 @@ if (!empty($_GET['trigger_name'])) {
 	}
 }
 else {
+	$request =  new Api();
+	$result  =  $request -> send_request();
 	echo '-2';
 }
 

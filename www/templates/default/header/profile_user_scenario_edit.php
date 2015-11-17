@@ -7,7 +7,6 @@ if (empty($_GET['id_scenario']) || empty($_GET['step'])) {
 $step = $_GET['step'];
 $id_scenario = $_GET['id_scenario'];
 
-
 $request = new Api();
 $request -> add_request('getScenario', array($id_scenario));
 $request -> add_request('listSmartcmd');

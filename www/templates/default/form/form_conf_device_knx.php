@@ -8,7 +8,6 @@ $result  =  $request -> send_request();
 
 $listknx = $result->confKnxAddrList;
 
-
 echo '
 <table class="table table-top table-bordered table-striped table-condensed">
 	<thead>

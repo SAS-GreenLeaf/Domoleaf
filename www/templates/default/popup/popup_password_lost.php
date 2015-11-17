@@ -15,7 +15,7 @@ echo '
 	'<div id="wrongKey" class="hide">'.
 		'<br/>'.
 		'<div class="alert alert-danger alert-dismissible alert-backup center" role="alert" id ="signerr">'.
-			'<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'._(' Bad key, try again').
+			'<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '._('Bad key, try again').
 		'</div>'.
 	'</div>'.
 	'<br/><div class="controls center">'.

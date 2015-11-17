@@ -2,6 +2,9 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 echo
 	'<div>'.
 		'<div id="popupError" class="alert alert-danger alert-dismissible center" role="alert" hidden>'.

@@ -6,7 +6,7 @@ $request =  new Api();
 $result  =  $request -> send_request();
 
 if ($request->getLevel() < 2){
-	redirect();	
+	redirect();
 }
 
 if (empty($_GET['file']) or !($_GET['file'] > 0)){

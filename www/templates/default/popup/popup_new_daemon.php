@@ -58,7 +58,7 @@ echo '	<div class="col-xs-6">
 		'<div class="col-xs-12"><div class="alert alert-danger alert-hidden alert-dismissible" role="alert" id ="signerr" >'.
 			'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'.
 			'<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'.
-			'<span class="sr-only">'._('Error:').'</span>'._(' Empty field').'</div>'.
+			'<span class="sr-only">'._('Error:').'</span> '._('Empty field').'</div>'.
 		'</div>'.
 	'<div class="clearfix"></div>'.
 	'<div class="controls center">		

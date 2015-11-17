@@ -2,6 +2,9 @@
 
 include('header.php');
 
+$request =  new Api();
+$result  =  $request -> send_request();
+
 if (empty($_GET['id_scenario'])) {
 	$id_scenario = 0;
 }

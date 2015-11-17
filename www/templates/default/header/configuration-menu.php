@@ -6,6 +6,4 @@ $result  =  $request -> send_request();
 
 $floorlist = $result->confFloorList;
 
-
-
 ?>

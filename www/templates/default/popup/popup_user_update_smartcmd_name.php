@@ -3,6 +3,9 @@
 include('header.php');
 
 if (!empty($_GET['smartcmd_id'])) {
+	$request =  new Api();
+	$result  =  $request -> send_request();
+	
 	echo
 		'<div>'.
 			'<div id="errorMsg"></div>'.
@@ -28,7 +31,7 @@ if (!empty($_GET['smartcmd_id'])) {
 	echo
 		'<script type="text/javascript">'.
 		
-			'$("#popupTitle").html("'._("New SmartCommand").'");'.
+			'$("#popupTitle").html("'._("Rename Smartcommand").'");'.
 			
 			'function updateSmartcmdName() {'.
 				'var name = "";'.

@@ -74,10 +74,10 @@ echo '<div id="div-interface-KNXTP">'.
 				'<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.
 			'</label>';
 		if (!empty($daemon->protocol->{1}->interface) && filter_var($daemon->protocol->{1}->interface_arg, FILTER_VALIDATE_IP)){
-			echo '<input type="text" id="input-interface-KNXTP-IP" placeholder="'._('Enter IP').'" value="'.$daemon->protocol->{1}->interface_arg.'" class="form-control">';
+			echo '<input type="text" id="input-interface-KNXTP-IP" placeholder="'._('Enter IP Adress').'" value="'.$daemon->protocol->{1}->interface_arg.'" class="form-control">';
 		}
 		else{
-			echo '<input type="text" id="input-interface-KNXTP-IP" placeholder="'._('Enter IP').'" value="" class="form-control">';
+			echo '<input type="text" id="input-interface-KNXTP-IP" placeholder="'._('Enter IP Adress').'" value="" class="form-control">';
 		}
 
 echo 	'</div>'.
@@ -109,10 +109,10 @@ echo 	'</div>'.
 				'<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.
 			'</label>';
 		if (!empty($daemon->protocol->{2}->interface) && filter_var($daemon->protocol->{2}->interface_arg, FILTER_VALIDATE_IP)){
-			echo '<input type="text" id="input-interface-EnOcean-IP" placeholder="'._('Enter IP').'" value="'.$daemon->protocol->{2}->interface_arg.'" class="form-control">';
+			echo '<input type="text" id="input-interface-EnOcean-IP" placeholder="'._('Enter IP Adress').'" value="'.$daemon->protocol->{2}->interface_arg.'" class="form-control">';
 		}
 		else{
-			echo '<input type="text" id="input-interface-EnOcean-IP" placeholder="'._('Enter IP').'" value="" class="form-control">';
+			echo '<input type="text" id="input-interface-EnOcean-IP" placeholder="'._('Enter IP Adress').'" value="" class="form-control">';
 		}		
 
 echo	'</div>'.
