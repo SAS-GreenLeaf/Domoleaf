@@ -187,7 +187,7 @@ function HandlePopup(type, iddevice){
 			data: "iddevice="+iddevice,
 			success: function(msg) {
 				BootstrapDialog.show({
-					title: \'<div id="popupTitle"></div>\',
+					title: \'<div id="popupTitle">\'+data[1]+\'</div>\',
 					message: msg,
 					onhide: function(){
 						if ($("#cmd-camera-display").length) {

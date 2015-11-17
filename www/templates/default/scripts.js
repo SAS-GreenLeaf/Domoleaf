@@ -196,6 +196,18 @@ function changeSpeedFan(iddevice, value, optionid){
 	});
 }
 
+function resetError(room_device_id, device_opt){
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_reset_error.php",
+		data: "room_device_id="+room_device_id+"&device_opt="+device_opt,
+		complete: function(result) {
+		popup_close();
+		HandlePopup(2, room_device_id);
+		}
+	});
+}
+
 /*** Widget return ***/
 
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
@@ -259,6 +271,16 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		current_color = current_color.replaceAt(5, blue[0]);
 		current_color = current_color.replaceAt(6, blue[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
+	}
+	else if (idopt == 409){
+		if (val.valeur == 0){
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");
+		}
+		else{
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
+		}
 	}
 }
 
