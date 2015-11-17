@@ -5,7 +5,9 @@ VERSION_MASTER := $(shell cat domomaster/etc/domoleaf/.domomaster.version)
 VERSION_SLAVE := $(shell cat domoslave/etc/domoleaf/.domoslave.version)
 
 # Get arch
-ARCH := $(shell dpkg --print-architecture)
+ifeq ($(ARCH),)
+	ARCH := $(shell dpkg --print-architecture)
+endif
 
 # Master's package name
 MASTER_NAME = domomaster_$(VERSION_MASTER)_all.deb
@@ -17,8 +19,8 @@ SLAVE_NAME  = domoslave_$(VERSION_SLAVE)_$(ARCH).deb
 all: prepare-debian compile packages
 
 debian : prepare-debian compile packages
-ubuntu1204: prepare-ubuntu1204 compile packages
-ubuntu1404: prepare-ubuntu1404 compile packages
+ubuntu1204: prepare-debian prepare-ubuntu1204 compile packages
+ubuntu1404: prepare-debian prepare-ubuntu1404 compile packages
 
 prepare-debian:
 	
@@ -40,39 +42,17 @@ prepare-debian:
 
 prepare-ubuntu1204:
 	
-	@rm -rf domomaster/DEBIAN
-	@mkdir domomaster/DEBIAN
 	@cp dists/ubuntu/precise/domomaster.control domomaster/DEBIAN/control
-	@cp dists/ubuntu/precise/domomaster.preinst domomaster/DEBIAN/preinst
 	@cp dists/ubuntu/precise/domomaster.postinst domomaster/DEBIAN/postinst
-	@cp dists/ubuntu/precise/domomaster.prerm domomaster/DEBIAN/prerm
-	@cp dists/ubuntu/precise/domomaster.postrm domomaster/DEBIAN/postrm
 	
-	@rm -rf domoslave/DEBIAN
-	@mkdir domoslave/DEBIAN
 	@cp dists/ubuntu/precise/domoslave.control domoslave/DEBIAN/control
-	@cp dists/ubuntu/precise/domoslave.preinst domoslave/DEBIAN/preinst
 	@cp dists/ubuntu/precise/domoslave.postinst domoslave/DEBIAN/postinst
-	@cp dists/ubuntu/precise/domoslave.prerm domoslave/DEBIAN/prerm
-	@cp dists/ubuntu/precise/domoslave.postrm domoslave/DEBIAN/postrm
 
 prepare-ubuntu1404:
 	
-	@rm -rf domomaster/DEBIAN
-	@mkdir domomaster/DEBIAN
-	@cp dists/ubuntu/trusty/domomaster.control domomaster/DEBIAN/control
-	@cp dists/ubuntu/trusty/domomaster.preinst domomaster/DEBIAN/preinst
 	@cp dists/ubuntu/trusty/domomaster.postinst domomaster/DEBIAN/postinst
-	@cp dists/ubuntu/trusty/domomaster.prerm domomaster/DEBIAN/prerm
-	@cp dists/ubuntu/trusty/domomaster.postrm domomaster/DEBIAN/postrm
 	
-	@rm -rf domoslave/DEBIAN
-	@mkdir domoslave/DEBIAN
-	@cp dists/ubuntu/trusty/domoslave.control domoslave/DEBIAN/control
-	@cp dists/ubuntu/trusty/domoslave.preinst domoslave/DEBIAN/preinst
 	@cp dists/ubuntu/trusty/domoslave.postinst domoslave/DEBIAN/postinst
-	@cp dists/ubuntu/trusty/domoslave.prerm domoslave/DEBIAN/prerm
-	@cp dists/ubuntu/trusty/domoslave.postrm domoslave/DEBIAN/postrm
 
 # compilation rules
 compile:
@@ -85,11 +65,13 @@ compile:
 
 # Rule to generate debian packages
 packages:
+	@chmod 755 gengettext
 	@cp monitor_knx/monitor_knx              domoslave/usr/bin
 	@cp monitor_enocean/monitor_enocean      domoslave/usr/bin
 	@rm -rf domomaster/etc/domoleaf/www
 	@mkdir -p domomaster/etc/domoleaf
 	@cp -r www domomaster/etc/domoleaf/
+	@./gengettext
 	@sed -i 's/\[version\]/$(VERSION_MASTER)/g' domomaster/DEBIAN/control
 	@dpkg-deb --build domomaster > /dev/null
 	@sed -i 's/\[version\]/$(VERSION_SLAVE)/g' domoslave/DEBIAN/control
