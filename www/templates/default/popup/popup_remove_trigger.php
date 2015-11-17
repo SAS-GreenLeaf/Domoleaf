@@ -15,12 +15,12 @@ echo '
 '</div>'.
 '<div class="controls center margin-top">'.
 	'<button onclick="RemoveTrigger('.$_GET['id_trigger'].')" class="btn btn-success">'.
-		''._('Yes').''.
-		'<span class="glyphicon glyphicon-ok"></span>'.
+		_('Yes').
+		' <span class="glyphicon glyphicon-ok"></span>'.
 	'</button> '.
 	'<button onclick="popup_close_last()" class="btn btn-danger">'.
-		''._('No').''.
-		'<span class="glyphicon glyphicon-remove"></span>'.
+		_('No').
+		' <span class="glyphicon glyphicon-remove"></span>'.
 	'</button>'.
 '</div>';
 

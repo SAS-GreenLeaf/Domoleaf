@@ -12,6 +12,6 @@ $floorallowed = $listAllAllowed->ListFloor;
 $roomallowed = $listAllAllowed->ListRoom;
 $deviceallowed = $listAllAllowed->ListDevice;
 
-echo '<title>'._('User Graphics').'</title>'
+echo '<title>'._('Graphics').'</title>'
 
 ?>

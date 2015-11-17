@@ -19,12 +19,12 @@ if (!empty($_GET['smartcmd_id'])) {
 		'<br/>'.
 		'<div class="controls center">'.
 			'<button onclick="updateSmartcmdName()" class="btn btn-success">'.
-				''._('Save').''.
-				'<span class="glyphicon glyphicon-ok"></span>'.
+				_('Save').
+				' <span class="glyphicon glyphicon-ok"></span>'.
 			'</button> '.
 			'<button onclick="popup_close()" class="btn btn-danger">'.
-				''._('Close').''.
-				'<span class="glyphicon glyphicon-remove"></span>'.
+				_('Close').
+				' <span class="glyphicon glyphicon-remove"></span>'.
 			'</button>'.
 		'</div>';
 	
