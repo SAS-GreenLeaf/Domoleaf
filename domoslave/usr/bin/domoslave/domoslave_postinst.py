@@ -54,7 +54,7 @@ def slave_conf_init():
     file.writeValueFromSection('personnal_key', 'aes', KEY.hexdigest());
     
     #KNX Interface
-    knx_edit = 'KNXD_OPTS="-D -T -S -u '
+    knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u '
     if os.path.exists('/dev/ttyAMA0'):
         knx_edit = knx_edit + 'tpuarts:/dev/ttyAMA0"';
     elif os.path.exists('/dev/ttyS0'):
