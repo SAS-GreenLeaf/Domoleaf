@@ -923,7 +923,7 @@ msgid "Monitor KNX"
 msgstr "Moniteur KNX"
 
 #: header/profile.php:3 header/profile_user_installation.php:3
-#: include/profile.php:6
+#: include/profile.php:6 top_connected.php
 msgid "Profile"
 msgstr "Profil"
 
@@ -1876,3 +1876,15 @@ msgstr "Minutes"
 #: function/show_time_select_schedule.php:311
 msgid "All&nbspminutes"
 msgstr "Toutes&nbsples minutes"
+
+#: top_connected.php
+msgid "Configuration"
+msgstr "Configuration"
+
+#: top_connected.php
+msgid "Disconnect"
+msgstr "Déconnexion"
+
+#: top_connected.php
+msgid "Toggle navigation"
+msgstr "Basculer la navigation"
