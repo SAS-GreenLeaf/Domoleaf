@@ -22,11 +22,11 @@ echo '
 	'</div>
 	<button id="eventSave" onclick="FloorNew()" class="btn btn-greenleaf">'.
 		_('Save').
-		'<span class="glyphicon glyphicon-ok"></span>'.
+		' <span class="glyphicon glyphicon-ok"></span>'.
 	'</button>'.
 	'<button onclick="popup_close()" class="btn btn-danger margin-left">'.
 		_('Cancel').
-		'<span class="glyphicon glyphicon-remove"></span>'.
+		' <span class="glyphicon glyphicon-remove"></span>'.
 	'</button>
 </div>';
 

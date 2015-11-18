@@ -32,12 +32,12 @@ echo
 	'<button id="eventSave"'.
 	        'onclick="RoomManager('.$_GET['idroom'].')"'.
 	        'class="btn btn-greenleaf">'.
-		''._('Save').''.
-		'<span class="glyphicon glyphicon-ok"></span>'.
+		_('Save').
+		' <span class="glyphicon glyphicon-ok"></span>'.
 	'</button>'.
 	'<button onclick="popup_close()" class="btn btn-danger">'.
-		''._('Cancel').''.
-		'<span class="glyphicon glyphicon-remove"></span>'.
+		_('Cancel').
+		' <span class="glyphicon glyphicon-remove"></span>'.
 	'</button>'.
 '</div>'.
 '<script type="text/javascript">'.
