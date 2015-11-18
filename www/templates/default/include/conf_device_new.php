@@ -212,7 +212,7 @@ function AddNewDevice(){
 						SendByAjax(data+"&ipaddr="+ipaddr+"&port="+port+"&login="+login+"&pass="+pass+"&macaddr="+macaddr);
 					}
 					else {
-						CatchError(\''._('Empty ip address').'\');
+						CatchError("'._('Empty ip address').'");
 					}
 				}
 				else if (proto == 1){
@@ -224,11 +224,11 @@ function AddNewDevice(){
 							SendByAjax(data+"&knxaddr="+knxaddr+"&daemon="+daemon);
 						}
 						else {
-							CatchError(\''._('Empty knx address').'\');
+							CatchError("'._('Empty knx address').'");
 						}
 					}
 					else {
-							CatchError(\''._('No daemon associate').'\');
+							CatchError("'._('No daemon associate').'");
 					}
 				}
 				else {
@@ -238,20 +238,20 @@ function AddNewDevice(){
 						SendByAjax(data+"&enoceanaddr="+enoceanaddr);
 					}
 					else {
-						CatchError(\''._('Empty enocean address').'\');
+						CatchError("'._('Empty enocean address').'");
 					}
 				}
 			}
 			else {
-				CatchError(\''._('Missing protocol').'\');
+				CatchError("'._('Missing protocol').'");
 			}
 		}
 		else {
-				CatchError(\''._('Floor and room is required').'\');
+				CatchError("'._('Floor and room is required').'");
 		}
 	}
 	else {
-		CatchError(\''._('Empty device name').'\');
+		CatchError("'._('Empty device name').'");
 	}
 }
 

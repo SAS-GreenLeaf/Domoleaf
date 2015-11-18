@@ -58,7 +58,7 @@ function PopupRemoveDevice(iddevice){
 		}
 	});	
 }
-		
+
 function CatchError(msg){
 	$.ajax({
 		type:"GET",
@@ -71,21 +71,21 @@ function CatchError(msg){
 }
 
 function GetDeviceList(){
-		var room = '.$_GET['room'].';
-		var floor = '.$_GET['floor'].';
-		$.ajax({
-				type:"GET",
-				url: "/templates/'.TEMPLATE.'/form/form_conf_room_device_list.php",
-				data: "room="+room,
-				success: function(result) {
-					$("#listdevice").html(result);
-					if (result.split("</td>").length == 1) {
-						 CatchError(\''._('No device').'\');
-					}
-				},
-				error: function(result, status, error){
-				}
-			});
+	var room = '.$_GET['room'].';
+	var floor = '.$_GET['floor'].';
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/form/form_conf_room_device_list.php",
+		data: "room="+room,
+		success: function(result) {
+			$("#listdevice").html(result);
+			if (result.split("</td>").length == 1) {
+				 CatchError("'._('No device').'");
+			}
+		},
+		error: function(result, status, error){
+		}
+	});
 }
 
 function SelectRow(id){
