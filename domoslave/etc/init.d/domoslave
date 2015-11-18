@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides: domoslave
-# Required-Start: $local_fs $network $syslog $mysql $remote_fs udev-finish knxd
+# Required-Start: $local_fs $network $syslog $remote_fs knxd
 # Required-Stop: $local_fs $syslog $remote_fs
 # Should-Start: $syslog
 # Should-Stop: $network $syslog
