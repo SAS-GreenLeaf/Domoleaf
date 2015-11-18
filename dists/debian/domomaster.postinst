@@ -61,5 +61,6 @@ chmod +x /usr/bin/CronOpenPort.py
 
 chmod +x /usr/bin/domomaster.py
 chmod +x /etc/init.d/domomaster
-systemctl enable domomaster
+update-rc.d domomaster defaults
+update-rc.d domomaster enable
 service domomaster start

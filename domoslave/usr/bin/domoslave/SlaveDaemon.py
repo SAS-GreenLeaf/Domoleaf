@@ -547,14 +547,15 @@ class SlaveDaemon:
     def send_interfaces(self, json_obj, connection):
         try:
             if os.path.exists('/tmp/eib'):
-                call(['systemctl', '-q', 'stop', 'knxd']);
+                call(['service', 'knxd', 'stop']);
             previous_val_knx = self._parser.getValueFromSection('knx', 'interface');
             previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
             new_val = str(json_obj['interface_arg_knx'])
             self._parser.writeValueFromSection('knx', 'interface', new_val);
             self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_arg_EnOcean']));
             if previous_val_knx == '' or previous_val_knx == None:
-                call(['systemctl', '-q', 'enable', 'knxd']);
+                call(['update-rc.d', 'knxd', 'defaults']);
+                call(['update-rc.d', 'knxd', 'enable']);
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
@@ -566,7 +567,7 @@ class SlaveDaemon:
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
-                Popen(['systemctl', '-q', 'start', 'knxd']);
+                Popen(['service', 'knxd', 'start']);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';
@@ -578,7 +579,7 @@ class SlaveDaemon:
         data = encode_obj.encrypt(json_str);
         connection.send(bytes(encrypt_IV, 'utf-8') + data);
         if previous_val_EnOcean != str(json_obj['interface_arg_EnOcean']):
-            call(['systemctl', '-q', 'restart', 'domoslave']);
+            call(['service', 'domoslave', 'restart']);
 
     def reboot_d3(self, json_obj, connection):
         call(['reboot']);

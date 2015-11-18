@@ -29,10 +29,12 @@ chmod +x /usr/bin/CronSendAlive.py
 chmod +x /usr/bin/CronSendTech.py
 
 #KNXD
-systemctl enable knxd
+update-rc.d knxd defaults
+update-rc.d knxd enable
 service knxd restart
 
 chmod +x /usr/bin/domoslave.py
 chmod +x /etc/init.d/domoslave
 update-rc.d domoslave defaults
-service domoslave restart
+update-rc.d domoslave enable
+service domoslave start
