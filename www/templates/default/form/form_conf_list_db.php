@@ -52,8 +52,8 @@ else {
 			<div class="clearfix"></div>
 			<br/>
 			<div class="alert alert-warning alert-dismissible col-xs-3 col-xs-offset-4 alert-backup center" role="alert" id ="signerr" >
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'.
-				_(' No backup created').'
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '.
+				_('No backup created').'
 			</div>';
 }
 

@@ -5,7 +5,7 @@ include('header.php');
 $request =  new Api();
 $result  =  $request -> send_request();
 
-$resRooms = '<option value="0">'._('No Room selected').'</option>';
+$resRooms = '<option value="0">'._('No room selected').'</option>';
 
 if (!empty($_GET['floor_id'])) {
 

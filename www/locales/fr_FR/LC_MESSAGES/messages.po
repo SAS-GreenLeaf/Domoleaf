@@ -778,11 +778,11 @@ msgid "Lesser or Equal"
 msgstr "Inférieur ou Egal"
 
 #: form/form_list_devices_of_room.php:5
-msgid "No Device selected"
+msgid "No device selected"
 msgstr "Pas d'appareil sélectionné"
 
-#: form/form_list_rooms_of_floor.php:5
-msgid "No Room selected"
+#: form/form_list_rooms_of_floor.php:5 include/profile_user_graphics.php
+msgid "No room selected"
 msgstr "Pas de salle sélectionnée"
 
 #: form/form_pre_configuration_device.php:18
@@ -1533,6 +1533,10 @@ msgstr "Adresse KNX"
 #: include/profile-menu.php:5 include/profile-menu.php:6
 msgid "Settings"
 msgstr "Paramètres"
+
+#: include/profile-menu.php header/profile_user_graphics.php
+msgid "Graphics"
+msgstr "Graphiques"
 
 #: include/profile-menu.php:11 include/profile-menu.php:12
 msgid "Smartcommands & Scenarios"
