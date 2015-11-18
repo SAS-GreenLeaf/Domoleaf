@@ -12,7 +12,10 @@ echo '
 		<h2>
 			'._('User permission:').' '.$listuser->$_GET['userid']->username.'
 			<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, '.$_GET['userid'].')">
-				<span class="fa fa-paint-brush md colorUserInstall"></span>
+				<span class="fa fa-pencil-square-o md colorUserInstall"></span>
+			</button>
+			<button id="colorUserMenusBorderBg" class="btn" onclick="popupChromaWheel(1, 2, '.$_GET['userid'].')">
+				<span class="fa fa-columns md colorUserInstall"></span>
 			</button>
 		</h2>
 	</div><br/><br/>
@@ -346,6 +349,7 @@ echo '
 $(document).ready(function(){
 	WidgetSize();
 	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
+	$("#colorUserMenusBorderBg").css(\'background-color\', "'.$menus_color.'");
 });
 
 function swap(elem, action){

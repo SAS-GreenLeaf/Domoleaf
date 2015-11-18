@@ -12,11 +12,21 @@ if (!empty($_GET['iddevice'])) {
 			'<input type="text" id="color" name="color" value="#123456" disabled="disabled"/>'.
 		'</form>';
 		if (!empty($_GET['bg_color'])) {
-			echo
-			'<button class="btn btn-warning" onclick="updateBGColor(\'#eee\', '.$_GET['userid'].')">'.
-				_('Reset').
-				'&nbsp<span class="glyphicon glyphicon-refresh"></span>'.
-			'</button>';
+			if ($_GET['bg_color'] == 1) {
+				echo
+				'<button class="btn btn-warning" onclick="updateBGColor(\'#eee\', '.$_GET['userid'].', 1)">'.
+					_('Reset').
+					'&nbsp<span class="glyphicon glyphicon-refresh"></span>'.
+				'</button>';
+			}
+			else {
+				echo
+				'<button class="btn btn-warning" onclick="updateBGColor(\'#f5f5f5\', '.$_GET['userid'].', 2)">'.
+					_('Reset').
+					'&nbsp<span class="glyphicon glyphicon-refresh"></span>'.
+				'</button>';
+			}
+			
 		}
 	echo
 	'</div>'.
@@ -26,8 +36,11 @@ if (!empty($_GET['iddevice'])) {
 		if (empty($_GET['bg_color'])) {
 			echo 'onclick="updateRGBColor('.$_GET['iddevice'].', $(\'#color\').val())"';
 		}
+		else if ($_GET['bg_color'] == 1) {
+			echo 'onclick="updateBGColor($(\'#color\').val(), '.$_GET['userid'].', 1)"';
+		}
 		else {
-			echo 'onclick="updateBGColor($(\'#color\').val(), '.$_GET['userid'].')"';
+			echo 'onclick="updateBGColor($(\'#color\').val(), '.$_GET['userid'].', 2)"';
 		}
 		echo '>'.
 			_('Send').
