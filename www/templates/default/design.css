@@ -1311,6 +1311,10 @@ a.carousel-control-camera:hover {
 	blur-radius: 5px;
 }
 
+#colorUserInstallBg, #colorUserMenusBorderBg {
+	border: 2px solid white;
+}
+
 .bg-image {
 	background-position: center center;
 	background-size: cover;
