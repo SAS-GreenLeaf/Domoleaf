@@ -305,7 +305,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
-		               gender, phone, language, design, bg_color
+		               gender, phone, language, design, bg_color, border_color
 		        FROM user
 		        WHERE user_id= :user_id';
 		$req = $link->prepare($sql);
@@ -1198,6 +1198,20 @@ class User {
 	
 		$sql = 'UPDATE user
 		        SET bg_color=:color
+		        WHERE user_id=:user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':color', $color, PDO::PARAM_STR);
+		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+	
+	function userUpdateMenusBordersColor($color, $userid = 0){
+		$userid = $this->getId();
+	
+		$link = Link::get_link('domoleaf');
+	
+		$sql = 'UPDATE user
+		        SET border_color=:color
 		        WHERE user_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':color', $color, PDO::PARAM_STR);

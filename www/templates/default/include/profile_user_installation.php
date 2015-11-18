@@ -11,7 +11,10 @@ echo '
 	<div class="center">
 		<h2>'._('User Installation').'
 		<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, 0)">
-			<span class="fa fa-paint-brush md colorUserInstall"></span>
+			<span class="fa fa-pencil-square-o md colorUserInstall"></span>
+		</button>
+		<button id="colorUserMenusBorderBg" class="btn" onclick="popupChromaWheel(1, 2, 0)">
+			<span class="fa fa-columns md colorUserInstall"></span>
 		</button>
 	</h2>
 	</div><br/><br/>
@@ -226,6 +229,7 @@ $(document).ready(function(){
 	WidgetSize();
 	activateMenuElem(\'installation\');
 	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
+	$("#colorUserMenusBorderBg").css(\'background-color\', "'.$menus_color.'");
 });
 
 function swap(elem, action){

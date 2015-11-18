@@ -459,14 +459,19 @@ function customUploadDelete() {
 	files = "";
 }
 
-function updateBGColor(color, userid){
+function updateBGColor(color, userid, idelem){
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/form/form_update_bg_color.php",
-		data: "color="+encodeURIComponent(color)+"&userid="+userid,
+		data: "color="+encodeURIComponent(color)+"&userid="+userid+"&idelem="+idelem,
 		success: function(result) {
 			if (result) {
-				$("#colorUserInstallBg").css("background-color", result);
+				if (idelem == 1) {
+					$("#colorUserInstallBg").css("background-color", result);
+				}
+				else {
+					$("#colorUserMenusBorderBg").css("background-color", result);
+				}
 				popup_close();
 			} 
 		},

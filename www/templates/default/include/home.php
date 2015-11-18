@@ -78,6 +78,7 @@ $(document).ready(function(){
 	WidgetSize();
 	RoomBgSizeSidebar();
 	$(document.body).css(\'background-color\', "'.$bg_color.'");
+	$(".sidebar").css(\'background-color\', "'.$menus_color.'");
 });
 
 /*for (var i=0; i<360; i++) {
