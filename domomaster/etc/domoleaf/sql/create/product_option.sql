@@ -6,6 +6,7 @@ CREATE TABLE `product_option` (
   `product_id` int(11) unsigned NOT NULL,
   `option_id` int(11) unsigned NOT NULL DEFAULT '0',
   `addr` varchar(255) DEFAULT NULL,
+  `addr_plus` varchar(255) DEFAULT NULL,
   `dpt_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`product_id`,`option_id`),
   KEY `option_id` (`option_id`),
