@@ -546,7 +546,7 @@ class SlaveDaemon:
 
     def send_interfaces(self, json_obj, connection):
         try:
-            if os.path.exists('/tmp/eib'):
+            if os.path.exists('/var/run/eib'):
                 call(['service', 'knxd', 'stop']);
             previous_val_knx = self._parser.getValueFromSection('knx', 'interface');
             previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
