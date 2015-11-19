@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides: domomaster
-# Required-Start: $local_fs $network $syslog mysql
+# Required-Start: $local_fs $network $syslog mysql domoslave
 # Required-Stop: $local_fs $syslog
 # Should-Start: $syslog
 # Should-Stop: $network $syslog
