@@ -11,9 +11,6 @@ if (!empty($_GET['daemon_id'])){
 	$wifi = $result->confWifi;
 	
 	echo '<form id="form_wifi" class="cmxform">'.
-					'<div id="uploadError" class="alert alert-danger center" role="alert" hidden>'.
-						_('File must be JPG or PNG, less than 1MB').
-					'</div>'.
 			'<div id="wifiError" hidden>'._('The SSID is not valid').'</div>'.
 			'<div class="control-group">'.
 				'<label class="control-label" for="wifiMode">'._('Mode').'</label>'.
@@ -25,15 +22,15 @@ if (!empty($_GET['daemon_id'])){
 			'</div>'.
 			'<div class="control-group">'.
 				'<label class="control-label" for="ssid">'._('SSID').'</label>'.
-				'<input id="ssid" required name="ssid" title="'._('').'" type="text" placeholder="SSID" value="'.$wifi->ssid.'" class="form-control">'.
+				'<input id="ssid" required name="ssid" title="" type="text" placeholder="'._('SSID').'" value="'.$wifi->ssid.'" class="form-control">'.
 			'</div>'.
 			'<div class="control-group">'.
 				'<label class="control-label" for="wifiPassword">'._('Password').'</label>'.
-				'<input id="wifiPassword" name="wifiPassword" title="'._('Password').'" type="password" placeholder="Password" value="'.$wifi->password.'" class="form-control">'.
+				'<input id="wifiPassword" name="wifiPassword" title="" type="password" placeholder="'._('Password').'" value="'.$wifi->password.'" class="form-control">'.
 			'</div>'.
 			'<div class="control-group">'.
 				'<label class="control-label" for="wifiSecurity">'._('Security').'</label>'.
-				'<input id="wifiSecurity" name="wifiSecurity" title="'._('Security').'" type="text" value="'.$wifi->security.'" class="form-control">'.
+				'<input id="wifiSecurity" name="wifiSecurity" title="" type="text" value="'.$wifi->security.'" class="form-control">'.
 			'</div>'.
 		 '</form>'.
 		 '<input hidden id="inputDaemonId" value="'.$_GET['daemon_id'].'"/>'.
