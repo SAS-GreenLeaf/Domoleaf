@@ -75,6 +75,7 @@ function getIcon($iddevice = 1){
 			71 => 'fi flaticon-minisplit',
 			72 => 'fi flaticon-minisplit',
 			73 => 'fi flaticon-minisplit',
+			74 => 'fi flaticon-minisplit',
 			75 => 'fi flaticon-minisplit',
 			76 => 'fi flaticon-minisplit',
 			77 => 'fi flaticon-minisplit',
@@ -83,7 +84,8 @@ function getIcon($iddevice = 1){
 			80 => 'fa fa-volume-up',
 			81 => 'fa fa-question',
 			82 => 'fa fa-question',
-			83 => 'fa fa-question'
+			83 => 'fa fa-question',
+			84 => 'fa fa-question'
 	);
 	
 	return $icons[$iddevice];
@@ -159,7 +161,10 @@ function display_widget($info){
 			77 => "display_clim",
 			78 => "display_lampe",
 			80 => "display_audio",
-			81 => "display_cam"
+			81 => "display_cam",
+			82 => "display_commande",
+			83 => "display_commande",
+			84 => "display_commande"
 	);
 	
 	
@@ -384,6 +389,7 @@ function display_audio($info){
 	switch($info->protocol_id){
 		case 1:
 			// KNX
+			$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 			break;
 		case 6:
 			$display = '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(1, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
@@ -405,6 +411,7 @@ function display_audio($info){
 		default :
 			// TODO
 			// infra rouge
+			$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 			break;
 	}
 
@@ -449,15 +456,16 @@ function display_portal($info){
 function display_shutter($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
-	if (!empty($info->device_opt->{54})){
-		$display.=display_UpDown($info);
-	}
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
 	if (!empty($info->device_opt->{13})){
 		$display.=display_varie($info, 2);
 	}
+	if (!empty($info->device_opt->{54})){
+		$display.=display_UpDown($info);
+	}
+
 	return $display;
 }
 
@@ -465,14 +473,17 @@ function display_shutter($info){
 function display_commande($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	
+	if (!empty($info->device_opt->{6})){
+		$display.=display_hygrometry($info);
+	}
+	if (!empty($info->device_opt->{12})){
+		$display.=display_OnOff($info);
+	}
 	if (!empty($info->device_opt->{79})){
 		$display.=display_luminosity($info);
 	}
 	if (!empty($info->device_opt->{72})){
 		$display.= display_temperature($info);
-	}
-	if (!empty($info->device_opt->{6})){
-		$display.=display_hygrometry($info);
 	}
 
 	return $display;
