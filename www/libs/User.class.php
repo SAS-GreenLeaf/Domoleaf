@@ -97,6 +97,10 @@ class User {
 		return null;
 	}
 	
+	function confSaveWifi($daemon_id, $ssid, $password, $security = 3, $mode = 0){
+		return null;
+	}
+	
 	function confDeamonRemove($id) {
 		return null;
 	}
