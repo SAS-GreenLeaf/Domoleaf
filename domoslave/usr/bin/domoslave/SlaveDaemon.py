@@ -546,7 +546,7 @@ class SlaveDaemon:
 
     def send_interfaces(self, json_obj, connection):
         try:
-            if os.path.exists('/var/run/eib'):
+            if os.path.exists('/tmp/knxd'):
                 call(['service', 'knxd', 'stop']);
             previous_val_knx = self._parser.getValueFromSection('knx', 'interface');
             previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
@@ -559,7 +559,7 @@ class SlaveDaemon:
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u ';
+                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd ';
                 if json_obj['interface_knx'] == 'tpuarts':
                     knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
