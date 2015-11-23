@@ -1225,14 +1225,16 @@ class Admin extends User {
 		return $link->lastInsertId();
 	}
 	
-	function confSaveWifi($daemon_id, $ssid, $password, $security, $mode = 0) {
+	function confSaveWifi($daemon_id, $ssid, $password, $security = 3, $mode = 0) {
 		if (!($mode == 0 || $mode == 1 || $mode == 2)){
-			error_log('An invalid has been enter for configuration wifi');
+			return;
+		}
+		
+		if (!($security > 0 && $security <= 3)){
 			return;
 		}
 		
 		if (!(preg_match('/^[[:alnum:]\-_]{4,32}$/', $ssid))){
-			error_log('SSID for config wifi is not valid');
 			return;
 		}
 

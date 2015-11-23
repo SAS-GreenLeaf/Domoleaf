@@ -554,7 +554,7 @@ class Api {
 								if (empty($var[4])){
 									$var[4] = 0;
 								}
-								$res = $user->confSaveWifi($var[0], $var[1], $var[2], $var[3], $var[4]);
+								$res = $user->confSaveWifi($var[0], $var[1], $var[2], round($var[3]), $var[4]);
 							}
 						break;
 						

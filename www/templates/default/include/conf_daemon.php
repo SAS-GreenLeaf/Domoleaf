@@ -169,11 +169,14 @@ function SaveWifi(){
 	var security = $("#wifiSecurity").val();
 	var mode = $("#wifiMode").val();
 
-		$.ajax({
+	$.ajax({
 		type:"GET",
 		url: "/form/form_save_wifi.php",
 		data: "daemon_id="+daemon_id+"&ssid="+ssid+"&password="+password+"&security="+security+"&mode="+mode,
-		success: function(msg) {
+		beforeSend:function(result, status){
+			PopupLoading();
+		},
+		complete: function(result, status) {
 			popup_close();
 		}
 	});
@@ -410,6 +413,19 @@ function CheckKNXTPType(){
 	else{
 		$("#div-interface-KNXTP-Serial").hide();
 		$("#div-interface-KNXTP-IP").hide();
+	}
+}
+
+function CheckWifiMode(){
+	if ($("#wifiMode").val() == 0){
+		$("#div-ssid").hide();
+		$("#div-wifiPassword").hide();
+		$("#div-wifiSecurity").hide();
+	}
+	else{
+		$("#div-ssid").show();
+		$("#div-wifiPassword").show();
+		$("#div-wifiSecurity").show();
 	}
 }
 				
