@@ -1265,7 +1265,7 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':ssid', $ssid, PDO::PARAM_STR);
 		$req->bindValue(':password', $password, PDO::PARAM_STR);
-		$req->bindValue(':security', $security, PDO::PARAM_STR);
+		$req->bindValue(':security', $security, PDO::PARAM_INT);
 		$req->bindValue(':mode', $mode, PDO::PARAM_INT);
 		$req->bindValue(':daemon_id', $daemon_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
