@@ -24,10 +24,10 @@ sed -i 's/opcache.enable=0/opcache.enable=1/g' /etc/php5/fpm/php.ini
 bash /etc/domoleaf/sql/database.sh
 python3 /usr/bin/domomaster/domomaster_postinst.py
 
-user=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT user_id FROM user WHERE user_id = 1;"`
+user=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT mcuser_id FROM mcuser WHERE mcuser_id = 1;"`
 if [ "$user" = "" ]; then
     adminpasswd=`echo -n '1_admin' | sha256sum | sed 's/  -//g'`
-    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO user (\`user_id\`, \`username\`, \`user_level\`, \`user_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
+    mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "INSERT INTO mcuser (\`mcuser_id\`, \`username\`, \`mcuser_level\`, \`mcuser_password\`) VALUE (1, 'admin', 3, '$adminpasswd')"
 fi
 
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "UPDATE configuration SET configuration_value='$domomaster' WHERE configuration_id=4"
@@ -57,7 +57,7 @@ chown www-data:www-data /etc/domoleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/room
 
 #CRON
-chmod +x /usr/bin/CronOpenPort.py
+chmod +x /etc/domoleaf/cron/CronOpenPort.py
 
 chmod +x /usr/bin/domomaster.py
 chmod +x /etc/init.d/domomaster

@@ -7,20 +7,20 @@ class Guest {
 	 	* @param token
 	 	*/
 	 public static function connect($token) {
-	 	$token = trim($token);
+		$token = trim($token);
 		
-	 	$link = Link::get_link('domoleaf');
-	 	$sql = 'SELECT user.user_id, user_level, language, design
-		        FROM user_token
-	 			JOIN user ON user_token.user_id=user.user_id
+		$link = Link::get_link('domoleaf');
+		$sql = 'SELECT mcuser.mcuser_id, mcuser_level, language, design
+		        FROM mcuser_token
+		        JOIN mcuser ON mcuser_token.mcuser_id=mcuser.mcuser_id
 		        WHERE token= :token';
-	 	$req = $link->prepare($sql);
-	 	$req->bindValue(':token', $token, PDO::PARAM_STR);
-	 	$req->execute() or die (error_log(serialize($req->errorInfo())));
-	 	$do  = $req->fetch(PDO::FETCH_OBJ);
+		$req = $link->prepare($sql);
+		$req->bindValue(':token', $token, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do  = $req->fetch(PDO::FETCH_OBJ);
 	
-	 	if(!empty($do->user_id)) {
-	 		return array('id' => $do->user_id, 'level' => $do->user_level,
+	 	if(!empty($do->mcuser_id)) {
+	 		return array('id' => $do->mcuser_id, 'level' => $do->mcuser_level,
 	 				'language' => $do->language, 'design' => $do->design);
 	 	}
 	 	else {
@@ -42,29 +42,29 @@ class Guest {
 	 	$password = trim($pass);
 	 	$link = Link::get_link('domoleaf');
 	 
-	 	$sql = 'SELECT user_id, user_password, user_level, language, design
-		        FROM user
+	 	$sql = 'SELECT mcuser_id, mcuser_password, mcuser_level, language, design
+		        FROM mcuser
 		        WHERE username= :username';
 	 	$req = $link->prepare($sql);
 	 	$req->bindValue(':username', $username, PDO::PARAM_STR);
 	 	$req->execute() or die (error_log(serialize($req->errorInfo())));
 	 	$do = $req->fetch(PDO::FETCH_OBJ);
 	 
-	 	if(!empty($do->user_id)) {
-	 		if($do->user_password == hash('sha256', $do->user_id.'_'.$password)) {
-	 			$return['id']       = $do->user_id;
-	 			$return['level']    = $do->user_level;
+	 	if(!empty($do->mcuser_id)) {
+	 		if($do->mcuser_password == hash('sha256', $do->mcuser_id.'_'.$password)) {
+	 			$return['id']       = $do->mcuser_id;
+	 			$return['level']    = $do->mcuser_level;
 	 			$return['language'] = $do->language;
 	 			$return['design']   = $do->design;
 	 			//New token
 	 			$token = self::create_token();
-	 			$sql = 'INSERT INTO user_token
-	 			        (token, user_id, lastupdate)
+	 			$sql = 'INSERT INTO mcuser_token
+	 			        (token, mcuser_id, lastupdate)
 	 			        VALUES
 	 			        (:token, :user, :lastupdate)';
 	 			$req = $link->prepare($sql);
 	 			$req->bindValue(':token', $token, PDO::PARAM_STR);
-	 			$req->bindValue(':user',  $do->user_id, PDO::PARAM_INT);
+	 			$req->bindValue(':user',  $do->mcuser_id, PDO::PARAM_INT);
 	 			$req->bindValue(':lastupdate', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT);
 	 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 	 			$req->fetch(PDO::FETCH_OBJ);

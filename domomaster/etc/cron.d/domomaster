@@ -1,1 +1,1 @@
-15 * * * * root /usr/bin/CronOpenPort.py
+15 * * * * root /etc/domoleaf/cron/CronOpenPort.py

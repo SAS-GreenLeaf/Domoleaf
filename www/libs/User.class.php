@@ -44,9 +44,9 @@ class User {
 	function activity() {
 		$link = Link::get_link('domoleaf');
 			
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET activity= :activity
-		        WHERE user_id= :user_id';
+		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':activity', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -62,7 +62,7 @@ class User {
 	function disconnect($token) {
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'DELETE user_token
+		$sql = 'DELETE mcuser_token
 		        WHERE token= :token';
 		$req = $link->prepare($sql);
 		$req->bindValue(':token', $token, PDO::PARAM_STR);
@@ -308,10 +308,10 @@ class User {
 	function profileInfo($id=0) {
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
+		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
 		               gender, phone, language, design, bg_color, border_color
-		        FROM user
-		        WHERE user_id= :user_id';
+		        FROM mcuser
+		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -349,13 +349,13 @@ class User {
 			$language = $this->getLanguage();
 		}
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET lastname= :lastname,
 		            firstname= :firstname,
 		            gender= :gender,
 		            phone= :phone,
 		            language= :language
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
 		$req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
@@ -383,20 +383,20 @@ class User {
 	function profilePassword($last, $new, $id=0) {
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'SELECT user_id, user_password
-		        FROM user
-		        WHERE user_id= :id';
+		$sql = 'SELECT mcuser_id, mcuser_password
+		        FROM mcuser
+		        WHERE mcuser_id= :id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if($do->user_password == hash('sha256', $do->user_id.'_'.$last)) {
-			$sql = 'UPDATE user
-			        SET user_password=:user_password
-			        WHERE user_id=:user_id';
+		if($do->user_password == hash('sha256', $do->mcuser_id.'_'.$last)) {
+			$sql = 'UPDATE mcuser
+			        SET mcuser_password=:user_password
+			        WHERE mcuser_id=:user_id';
 			$req = $link->prepare($sql);
-			$req->bindValue(':user_password', hash('sha256', $do->user_id.'_'.$new), PDO::PARAM_STR);
+			$req->bindValue(':user_password', hash('sha256', $do->mcuser_id.'_'.$new), PDO::PARAM_STR);
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -436,8 +436,8 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT floor_order, floor_id
-		        FROM user_floor
-		        WHERE user_id=:user_id AND floor_id=:floor_id';
+		        FROM mcuser_floor
+		        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id',$this->getId(), PDO::PARAM_INT);
 		$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
@@ -447,8 +447,8 @@ class User {
 		$order = $do->floor_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT floor_order, floor_id
-			        FROM user_floor
-			        WHERE floor_order=:order AND user_id=:user_id';
+			        FROM mcuser_floor
+			        WHERE floor_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -456,18 +456,18 @@ class User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 			
 			if(!empty($do2)) {
-				$sql = 'UPDATE user_floor
+				$sql = 'UPDATE mcuser_floor
 				        SET floor_order=:order
-				        WHERE user_id=:user_id AND floor_id=:floor_id';
+				        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->floor_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 				
-				$sql = 'UPDATE  user_floor
+				$sql = 'UPDATE  mcuser_floor
 				        SET floor_order=:order
-				        WHERE floor_id=:floor_id AND user_id=:user_id';
+				        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->floor_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -488,8 +488,8 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT room_order, room_id
-		        FROM user_room
-		        WHERE user_id=:user_id AND room_id=:room_id';
+		        FROM mcuser_room
+		        WHERE mcuser_id=:user_id AND room_id=:room_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
@@ -499,8 +499,8 @@ class User {
 		$order = $do->room_order + $action;
 		if($order >= 1){
 			$sql = 'SELECT room_order, room_id
-			        FROM user_room
-			        WHERE room_order=:order AND user_id=:user_id';
+			        FROM mcuser_room
+			        WHERE room_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -508,18 +508,18 @@ class User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 		
 			if(!empty($do2)){
-				$sql = 'UPDATE user_room
+				$sql = 'UPDATE mcuser_room
 				        SET room_order=:order
-				        WHERE user_id=:user_id AND room_id=:room_id';
+				        WHERE mcuser_id=:user_id AND room_id=:room_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->room_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-				$sql = 'UPDATE  user_room
+				$sql = 'UPDATE  mcuser_room
 				        SET room_order=:order
-				        WHERE room_id=:room_id AND user_id=:user_id';
+				        WHERE room_id=:room_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->room_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -539,8 +539,8 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT  device_order, room_device_id
-		        FROM user_device
-		        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
@@ -550,8 +550,8 @@ class User {
 		$order = $do->device_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT device_order, room_device_id
-			        FROM user_device
-			        WHERE device_order=:order AND user_id=:user_id';
+			        FROM mcuser_device
+			        WHERE device_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -559,18 +559,18 @@ class User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 			
 			if(!empty($do2)){
-				$sql = 'UPDATE user_device
+				$sql = 'UPDATE mcuser_device
 				        SET device_order=:order
-				        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+				        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->device_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 				
-				$sql = 'UPDATE  user_device
+				$sql = 'UPDATE  mcuser_device
 				        SET device_order=:order
-				        WHERE room_device_id=:room_device_id AND user_id=:user_id';
+				        WHERE room_device_id=:room_device_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->device_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -629,10 +629,10 @@ class User {
 		$listSmartcmd = array();
 		$listApps= array();
 		
-		$sql = 'SELECT floor_name, user_floor.floor_id, user_floor.floor_order
-		        FROM user_floor
-		        JOIN floor ON user_floor.floor_id=floor.floor_id
-		        WHERE user_id=:user_id AND user_floor.floor_allowed = 1
+		$sql = 'SELECT floor_name, mcuser_floor.floor_id, mcuser_floor.floor_order
+		        FROM mcuser_floor
+		        JOIN floor ON mcuser_floor.floor_id=floor.floor_id
+		        WHERE mcuser_id=:user_id AND mcuser_floor.floor_allowed = 1
 		        ORDER BY floor_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -645,14 +645,14 @@ class User {
 			);
 		}
 		
-		$sql = 'SELECT room.room_name, room.room_id, user_room.room_order, 
-		               floor, user_room.room_bgimg
+		$sql = 'SELECT room.room_name, room.room_id, mcuser_room.room_order, 
+		               floor, mcuser_room.room_bgimg
 		        FROM room
-		        JOIN user_room ON room.room_id=user_room.room_id
-		        JOIN user_floor ON room.floor=user_floor.floor_id AND
-		                           user_floor.user_id=user_room.user_id
-		        WHERE user_room.user_id=:user_id AND   user_room.room_allowed = 1
-		        ORDER BY user_floor.floor_order ASC, room_order ASC';
+		        JOIN mcuser_room ON room.room_id=user_room.room_id
+		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
+		                           mcuser_floor.mcuser_id=user_room.mcuser_id
+		        WHERE mcuser_room.mcuser_id=:user_id AND   mcuser_room.room_allowed = 1
+		        ORDER BY mcuser_floor.floor_order ASC, room_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -667,20 +667,20 @@ class User {
 		}
 		$sql = 'SELECT room_device.name, room_device.room_device_id,
 		               room_device.room_id, room_order,
-		               user_device.device_order, application_id,
+		               mcuser_device.device_order, application_id,
 		               room_device.device_id, room_device.protocol_id,
-		               user_device.device_bgimg
+		               mcuser_device.device_bgimg
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
-		        JOIN user_device ON room_device.room_device_id=user_device.room_device_id
-		        JOIN user_room ON room_device.room_id=user_room.room_id AND 
-		                          user_room.user_id=user_device.user_id
+		        JOIN mcuser_device ON room_device.room_device_id=user_device.room_device_id
+		        JOIN mcuser_room ON room_device.room_id=user_room.room_id AND 
+		                          mcuser_room.mcuser_id=user_device.mcuser_id
 		        JOIN room ON room.room_id=room_device.room_id
-		        JOIN user_floor ON room.floor=user_floor.floor_id AND
-		                          user_floor.user_id=user_device.user_id
-		        WHERE user_device.user_id=:user_id AND user_device.device_allowed = 1
-		        ORDER BY user_floor.floor_order ASC, user_room.room_order ASC, 
-		                 user_device.device_order ASC';
+		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
+		                          mcuser_floor.mcuser_id=user_device.mcuser_id
+		        WHERE mcuser_device.mcuser_id=:user_id AND mcuser_device.device_allowed = 1
+		        ORDER BY mcuser_floor.floor_order ASC, mcuser_room.room_order ASC, 
+		                 mcuser_device.device_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -701,9 +701,9 @@ class User {
 			}
 		}
 		
-		$sql = 'SELECT smartcommand_id, name, user_id, room_id
+		$sql = 'SELECT smartcommand_id, name, mcuser_id, room_id
 		        FROM smartcommand_list
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -711,7 +711,7 @@ class User {
 			$listSmartcmd[$do->smartcommand_id] = array(
 					'smartcmd_id' => $do->smartcommand_id,
 					'name'            => $do->name,
-					'user_id'         => $do->user_id,
+					'user_id'         => $do->mcuser_id,
 					'room_id'         => $do->room_id
 			);
 		}
@@ -823,8 +823,8 @@ class User {
 		$list = array();
 		$sql = 'SELECT floor.floor_id, floor_name, floor_allowed, floor_order
 		        FROM floor
-		        JOIN user_floor ON user_floor.floor_id=floor.floor_id
-		        WHERE user_id=:user_id AND floor_allowed=1
+		        JOIN mcuser_floor ON mcuser_floor.floor_id=floor.floor_id
+		        WHERE mcuser_id=:user_id AND floor_allowed=1
 		        ORDER BY floor_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -839,10 +839,10 @@ class User {
 			);
 		}
 		
-		$sql = 'SELECT room.room_id, room_name, floor, room_order, room_allowed, user_room.room_bgimg
+		$sql = 'SELECT room.room_id, room_name, floor, room_order, room_allowed, mcuser_room.room_bgimg
 		        FROM room
-		        JOIN user_room ON user_room.room_id = room.room_id
-		        WHERE user_id=:user_id AND room_allowed=1
+		        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
+		        WHERE mcuser_id=:user_id AND room_allowed=1
 		        ORDER BY room_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -863,8 +863,8 @@ class User {
 		               device_allowed, device_bgimg, device_id
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
-		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
-		        WHERE user_id=:user_id AND device_allowed=1
+		        JOIN mcuser_device ON mcuser_device.room_device_id=room_device.room_device_id
+		        WHERE mcuser_id=:user_id AND device_allowed=1
 		        ORDER BY device_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -896,10 +896,10 @@ class User {
 			$userid = $this->getId();
 		}
 		
-		$sql = 'SELECT user_device.room_device_id, device_order, room_id
-		        FROM user_device
-		        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
-		        WHERE user_device.room_device_id=:room_device_id AND user_device.user_id=:user_id';
+		$sql = 'SELECT mcuser_device.room_device_id, device_order, room_id
+		        FROM mcuser_device
+		        JOIN room_device ON mcuser_device.room_device_id = room_device.room_device_id
+		        WHERE mcuser_device.room_device_id=:room_device_id AND mcuser_device.mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -910,9 +910,9 @@ class User {
 			if($status == 1){
 				if($do->device_order == 0){
 					$sql = 'SELECT device_order
-				 	        FROM user_device
-					        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
-					        WHERE user_id=:user_id AND room_id =:room_id
+				 	        FROM mcuser_device
+					        JOIN room_device ON mcuser_device.room_device_id = room_device.room_device_id
+					        WHERE mcuser_id=:user_id AND room_id =:room_id
 					        ORDER BY device_order DESC
 					        LIMIT 1';
 					$req = $link->prepare($sql);
@@ -921,9 +921,9 @@ class User {
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
 					
-					$sql = 'UPDATE user_device
+					$sql = 'UPDATE mcuser_device
 				 	        SET device_order = :order
-					        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+					        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 					$req = $link->prepare($sql);
 					$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 					$req->bindValue(':order', $do2->device_order + 1, PDO::PARAM_INT);
@@ -932,9 +932,9 @@ class User {
 				}
 			}
 			else {
-				$sql = 'UPDATE user_device
+				$sql = 'UPDATE mcuser_device
 			 	        SET device_order = 0
-				        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+				        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -942,9 +942,9 @@ class User {
 		
 				if($do->device_order > 0){
 					$sql = 'UPDATE room_device
-					        JOIN user_device ON user_device.room_device_id = room_device.room_device_id
+					        JOIN mcuser_device ON mcuser_device.room_device_id = room_device.room_device_id
 					        SET device_order = device_order - 1
-					        WHERE room_device.room_id =:room_id AND user_device.user_id=:user_id AND
+					        WHERE room_device.room_id =:room_id AND mcuser_device.mcuser_id=:user_id AND
 					              device_order > :device_order';
 					$req = $link->prepare($sql);
 					$req->bindValue(':room_id', $do->room_id, PDO::PARAM_INT);
@@ -969,10 +969,10 @@ class User {
 			$userid = $this->getId();
 		}
 		
-		$sql = 'SELECT user_room.room_id, room_order, floor
-		        FROM user_room
-		        JOIN room ON user_room.room_id = room.room_id
-		        WHERE user_room.room_id=:room_id AND user_room.user_id=:user_id';
+		$sql = 'SELECT mcuser_room.room_id, room_order, floor
+		        FROM mcuser_room
+		        JOIN room ON mcuser_room.room_id = room.room_id
+		        WHERE mcuser_room.room_id=:room_id AND mcuser_room.mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -983,9 +983,9 @@ class User {
 			if($status == 1){
 				if($do->room_order == 0){
 					$sql = 'SELECT room_order
-				 	        FROM user_room
-					        JOIN room ON user_room.room_id = room.room_id
-					        WHERE user_id=:user_id AND floor =:floor
+				 	        FROM mcuser_room
+					        JOIN room ON mcuser_room.room_id = room.room_id
+					        WHERE mcuser_id=:user_id AND floor =:floor
 					        ORDER BY room_order DESC
 					        LIMIT 1';
 					$req = $link->prepare($sql);
@@ -994,9 +994,9 @@ class User {
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
 					
-					$sql = 'UPDATE user_room
+					$sql = 'UPDATE mcuser_room
 				 	        SET room_order = :order
-					        WHERE user_id=:user_id AND room_id=:room_id';
+					        WHERE mcuser_id=:user_id AND room_id=:room_id';
 					$req = $link->prepare($sql);
 					$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 					$req->bindValue(':order', $do2->room_order + 1, PDO::PARAM_INT);
@@ -1005,9 +1005,9 @@ class User {
 				}
 			}
 			else {
-				$sql = 'UPDATE user_room
+				$sql = 'UPDATE mcuser_room
 			 	        SET room_order = 0
-				        WHERE user_id=:user_id AND room_id=:room_id';
+				        WHERE mcuser_id=:user_id AND room_id=:room_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1015,10 +1015,10 @@ class User {
 				
 				if($do->room_order > 0){
 					$sql = 'UPDATE room
-					        JOIN user_room ON user_room.room_id = room.room_id
+					        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
 					        SET room_order = room_order - 1
 					        WHERE room.floor =:floor AND 
-					              user_room.user_id=:user_id AND 
+					              mcuser_room.mcuser_id=:user_id AND 
 					              room_order > :room_order';
 					$req = $link->prepare($sql);
 					$req->bindValue(':floor', $do->floor, PDO::PARAM_INT);
@@ -1045,8 +1045,8 @@ class User {
 		$list = array();
 		
 		$sql = 'SELECT floor_id, floor_order
-		        FROM user_floor
-		        WHERE floor_id=:floor_id AND user_id=:user_id';
+		        FROM mcuser_floor
+		        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1057,8 +1057,8 @@ class User {
 			if($status == 1){
 				if($do->floor_order == 0){
 					$sql = 'SELECT floor_order
-					        FROM user_floor
-					        WHERE user_id=:user_id
+					        FROM mcuser_floor
+					        WHERE mcuser_id=:user_id
 					        ORDER BY floor_order DESC
 					        LIMIT 1';
 					$req = $link->prepare($sql);
@@ -1066,9 +1066,9 @@ class User {
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
 		
-					$sql = 'UPDATE user_floor
+					$sql = 'UPDATE mcuser_floor
 				 	        SET floor_order = :order
-					        WHERE user_id=:user_id AND floor_id=:floor_id';
+					        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 					$req = $link->prepare($sql);
 					$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 					$req->bindValue(':order', $do2->floor_order + 1, PDO::PARAM_INT);
@@ -1077,18 +1077,18 @@ class User {
 				}
 			}
 			else {
-				$sql = 'UPDATE user_floor
+				$sql = 'UPDATE mcuser_floor
 				        SET floor_order = 0
-				        WHERE user_id=:user_id AND floor_id=:floor_id';
+				        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':user_id',   $userid,   PDO::PARAM_INT);
 				$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 				
 				if($do->floor_order > 0){
-					$sql = 'UPDATE user_floor
+					$sql = 'UPDATE mcuser_floor
 					        SET floor_order= floor_order - 1
-					        WHERE user_id=:user_id AND floor_order > :floor_order';
+					        WHERE mcuser_id=:user_id AND floor_order > :floor_order';
 					$req = $link->prepare($sql);
 					$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 					$req->bindValue(':floor_order', $do->floor_order, PDO::PARAM_INT);
@@ -1104,17 +1104,17 @@ class User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 
-		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order,
+		$sql = 'SELECT mcuser_id, room_device_id, device_allowed, device_order,
 		               device_bgimg
-		        FROM user_device
-		        WHERE user_id=:user_id
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id
 		        ORDER BY room_device_id ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->room_device_id] = array(
-				'user_id'       => $do->user_id,
+				'user_id'       => $do->mcuser_id,
 				'room_device_id'=> $do->room_device_id,
 				'device_allowed'=> $do->device_allowed,
 				'device_bgimg'  => $do->device_bgimg,
@@ -1135,16 +1135,16 @@ class User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 	
-		$sql = 'SELECT user_id, room_id, room_allowed, room_order, room_bgimg
-		        FROM user_room
-		        WHERE user_id=:user_id
+		$sql = 'SELECT mcuser_id, room_id, room_allowed, room_order, room_bgimg
+		        FROM mcuser_room
+		        WHERE mcuser_id=:user_id
 		        ORDER BY room_id ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->room_id] = array(
-					'user_id'     => $do->user_id,
+					'user_id'     => $do->mcuser_id,
 					'room_id'     => $do->room_id,
 					'room_allowed'=> $do->room_allowed,
 					'room_bgimg'  => $do->room_bgimg,
@@ -1170,9 +1170,9 @@ class User {
 
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'UPDATE user_device
+		$sql = 'UPDATE mcuser_device
 		        SET device_bgimg=:bgimg
-		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
 		$req = $link->prepare($sql);
 		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1185,9 +1185,9 @@ class User {
 	
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user_room
+		$sql = 'UPDATE mcuser_room
 		        SET room_bgimg=:bgimg
-		        WHERE user_id=:user_id AND room_id=:idroom';
+		        WHERE mcuser_id=:user_id AND room_id=:idroom';
 		$req = $link->prepare($sql);
 		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1200,9 +1200,9 @@ class User {
 	
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET bg_color=:color
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':color', $color, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1214,9 +1214,9 @@ class User {
 	
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET border_color=:color
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':color', $color, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1228,9 +1228,9 @@ class User {
 	function searchSmartcmdByName($smartcmd_name){
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'SELECT smartcommand_id, user_id
+		$sql = 'SELECT smartcommand_id, mcuser_id
 				FROM smartcommand_list
-				WHERE name=:smartcmd_name AND user_id=:user_id';
+				WHERE name=:smartcmd_name AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1241,7 +1241,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do->smartcommand_id;
@@ -1250,7 +1250,7 @@ class User {
 	function searchSmartcmdById($smartcmd_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT smartcommand_list.name, user_id,
+		$sql = 'SELECT smartcommand_list.name, mcuser_id,
 				       smartcommand_list.room_id AS room_id,
 				       room.floor AS floor_id, floor.floor_name AS floor_name
 				FROM smartcommand_list
@@ -1265,7 +1265,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1293,7 +1293,7 @@ class User {
 		$sql = 'SELECT smartcommand_id, name, room.room_name
 				FROM smartcommand_list
 				LEFT OUTER JOIN room ON smartcommand_list.room_id = room.room_id
-				WHERE user_id=:user_id
+				WHERE mcuser_id=:user_id
 				ORDER BY name';
 		
 		$req = $link->prepare($sql);
@@ -1383,7 +1383,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'INSERT INTO smartcommand_list
-		        (name, user_id)
+		        (name, mcuser_id)
 				VALUES
 				(:smartcmd_name, :user_id)';
 		$req = $link->prepare($sql);
@@ -1566,9 +1566,9 @@ class User {
 	function searchTriggerByName($trigger_name){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT id_trigger, user_id
+		$sql = 'SELECT id_trigger, mcuser_id
 				FROM trigger_events_list
-				WHERE trigger_name=:trigger_name AND user_id=:user_id';
+				WHERE trigger_name=:trigger_name AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1578,7 +1578,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do->id_trigger;
@@ -1587,7 +1587,7 @@ class User {
 	function searchTriggerById($trigger_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT trigger_name, user_id
+		$sql = 'SELECT trigger_name, mcuser_id
 				FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
@@ -1598,7 +1598,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1623,7 +1623,7 @@ class User {
 	
 		$sql = 'SELECT id_trigger, trigger_name
 				FROM trigger_events_list
-				WHERE user_id=:user_id
+				WHERE mcuser_id=:user_id
 				ORDER BY trigger_name';
 	
 		$req = $link->prepare($sql);
@@ -1712,7 +1712,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO trigger_events_list
-		        (trigger_name, user_id)
+		        (trigger_name, mcuser_id)
 				VALUES 
 				(:trigger_name, :user_id)';
 		$req = $link->prepare($sql);
@@ -1877,9 +1877,9 @@ class User {
 	function searchScheduleByName($schedule_name){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT id_schedule, user_id
+		$sql = 'SELECT id_schedule, mcuser_id
 				FROM trigger_schedules_list
-				WHERE schedule_name=:schedule_name AND user_id=:user_id';
+				WHERE schedule_name=:schedule_name AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1889,7 +1889,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do->id_schedule;
@@ -1899,7 +1899,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT schedule_name,
-				       user_id
+				       mcuser_id
 				FROM trigger_schedules_list
 				WHERE id_schedule=:schedule_id';
 		$req = $link->prepare($sql);
@@ -1910,7 +1910,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -1921,7 +1921,7 @@ class User {
 	
 		$sql = 'SELECT id_schedule, schedule_name
 				FROM trigger_schedules_list
-				WHERE trigger_schedules_list.user_id=:user_id
+				WHERE trigger_schedules_list.mcuser_id=:user_id
 				ORDER BY schedule_name';
 	
 		$req = $link->prepare($sql);
@@ -1944,7 +1944,7 @@ class User {
 	
 		$sql = 'UPDATE trigger_schedules_list
 				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
-				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
 
 		$req = $link->prepare($sql);
 		$req->bindValue(':months', $months, PDO::PARAM_INT);
@@ -1963,7 +1963,7 @@ class User {
 	
 		$sql = 'SELECT months, weekdays, days, hours, mins
 				FROM trigger_schedules_list
-				WHERE id_schedule=:schedule_id AND user_id = :user_id';
+				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
 	
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
@@ -2001,7 +2001,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO trigger_schedules_list
-		        (schedule_name, user_id, months, weekdays, days, hours, mins)
+		        (schedule_name, mcuser_id, months, weekdays, days, hours, mins)
 				VALUES
 				(:schedule_name, :user_id, :months, :weekdays, :days, :hours, :mins)';
 		$req = $link->prepare($sql);
@@ -2041,7 +2041,7 @@ class User {
 	
 		$sql = 'SELECT id_scenario
 				FROM scenarios_list
-				WHERE name_scenario=:name_scenario AND user_id=:user_id';
+				WHERE name_scenario=:name_scenario AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':name_scenario', $scenario_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -2058,7 +2058,7 @@ class User {
 	function searchScenarioById($scenario_id){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT name_scenario, user_id
+		$sql = 'SELECT name_scenario, mcuser_id
 				FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
 		$req = $link->prepare($sql);
@@ -2069,7 +2069,7 @@ class User {
 			return 0;
 		}
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		return $do;
@@ -2083,7 +2083,7 @@ class User {
 				       smartcommand_list.name AS name_smartcmd, activated, complete
 				FROM scenarios_list
 				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
-				WHERE scenarios_list.user_id=:user_id
+				WHERE scenarios_list.mcuser_id=:user_id
 				ORDER BY name_scenario';
 	
 		$req = $link->prepare($sql);
@@ -2110,7 +2110,7 @@ class User {
 	function getScenario($idscenario){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete, user_id
+		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete, mcuser_id
 				FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
 	
@@ -2119,7 +2119,7 @@ class User {
 	
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->user_id) || $do->user_id != $this->getId()) {
+		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
 			return 0;
 		}
 		if (empty($do->id_trigger)) {
@@ -2143,7 +2143,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'INSERT INTO scenarios_list
-		        (name_scenario, user_id)
+		        (name_scenario, mcuser_id)
 		        VALUES
 		        (:scenario_name, :user_id)';
 		$req = $link->prepare($sql);
@@ -2496,8 +2496,8 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT device_allowed
-		        FROM user_device
-		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
 		$req = $link->prepare($sql);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -2521,10 +2521,10 @@ class User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT device_allowed, room_device_option.addr_plus
-		        FROM user_device
-		        JOIN room_device_option ON user_device.room_device_id=room_device_option.room_device_id
-		        WHERE user_id=:user_id AND 
-		              user_device.room_device_id=:room_device_id AND 
+		        FROM mcuser_device
+		        JOIN room_device_option ON mcuser_device.room_device_id=room_device_option.room_device_id
+		        WHERE mcuser_id=:user_id AND 
+		              mcuser_device.room_device_id=:room_device_id AND 
 		              option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);

@@ -7,14 +7,14 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 	
-		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
+		$sql = 'SELECT mcuser_id, username, user_mail, lastname, firstname,
 		               gender, phone, language, design, activity, user_level,
 		               bg_color, border_color
-		        FROM user';
+		        FROM mcuser';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->user_id] = clone $do;
+			$list[$do->mcuser_id] = clone $do;
 		}
 		
 		return $list;
@@ -27,11 +27,11 @@ class Admin extends User {
 			$id = $this->getId();
 		}
 		
-		$sql = 'SELECT user_id, username, user_mail, lastname, firstname,
+		$sql = 'SELECT mcuser_id, username, user_mail, lastname, firstname,
 		               gender, phone, language, design, activity, user_level
 		               bg_color, border_color
-		        FROM user
-		        WHERE user_id= :user_id';
+		        FROM mcuser
+		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -43,19 +43,19 @@ class Admin extends User {
 	function profileNew($username, $password) {
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT user_id
-		        FROM user
+		$sql = 'SELECT mcuser_id
+		        FROM mcuser
 		        WHERE username= :username';
 		$req = $link->prepare($sql);
 		$req->bindValue(':username', $username, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if(!empty($do->user_id)) {
+		if(!empty($do->mcuser_id)) {
 			return null;
 		}
 	
-		$sql = 'INSERT INTO user
+		$sql = 'INSERT INTO mcuser
 		        (username)
 		        VALUES
 		        (:username)';
@@ -69,30 +69,30 @@ class Admin extends User {
 			return null;
 		}
 		
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET user_password= :pass
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':pass', hash('sha256', $id.'_'.$password), PDO::PARAM_STR);
 		$req->bindValue(':user_id', $id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
 		$sql = 'INSERT INTO user_floor
-		        (user_id, floor_id)
+		        (mcuser_id, floor_id)
 		        SELECT '.$id.', floor_id
 		        FROM floor';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$sql = 'INSERT INTO user_room
-		        (user_id, room_id)
+		        (mcuser_id, room_id)
 		        SELECT '.$id.', room_id
 		        FROM room';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$sql = 'INSERT INTO user_device
-		        (user_id, room_device_id)
+		        (mcuser_id, room_device_id)
 		        SELECT '.$id.', room_device_id
 		        FROM room_device';
 		$req = $link->prepare($sql);
@@ -104,8 +104,8 @@ class Admin extends User {
 	function profileRemove($user_id) {
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'DELETE FROM user
-		        WHERE user_id=:user_id';
+		$sql = 'DELETE FROM mcuser
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -119,16 +119,16 @@ class Admin extends User {
 			$user_id = $this->getId();
 		}
 		
-		$sql = 'SELECT user_id
-		        FROM user
-		        WHERE user_id= :user_id';
+		$sql = 'SELECT mcuser_id
+		        FROM mcuser
+		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if(!empty($do->user_id)) {
-			$user = new User($do->user_id);
+		if(!empty($do->mcuser_id)) {
+			$user = new User($do->mcuser_id);
 			$user-> profileRename($lastname, $firstname, $gender, $phone, $language);
 		}
 	}
@@ -141,9 +141,9 @@ class Admin extends User {
 			$level = 1;
 		}
 		
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET user_level=:level
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':level',   $level, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $id,    PDO::PARAM_INT);
@@ -153,21 +153,21 @@ class Admin extends User {
 	function profileUsername($id, $username) {
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT user_id
-		        FROM user
+		$sql = 'SELECT mcuser_id
+		        FROM mcuser
 		        WHERE username= :username';
 		$req = $link->prepare($sql);
 		$req->bindValue(':username', $username, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if(!empty($do->user_id)) {
+		if(!empty($do->mcuser_id)) {
 			return null;
 		}
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET username=:username
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':username', $username, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $id, PDO::PARAM_INT);
@@ -181,21 +181,21 @@ class Admin extends User {
 		else {
 			$link = Link::get_link('domoleaf');
 			
-			$sql = 'SELECT user_id, user_password
-			        FROM user
-			        WHERE user_id= :user_id';
+			$sql = 'SELECT mcuser_id, user_password
+			        FROM mcuser
+			        WHERE mcuser_id= :user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id', $id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$do = $req->fetch(PDO::FETCH_OBJ);
 	
-			if(!empty($do->user_id)) {
-				$sql = 'UPDATE user
+			if(!empty($do->mcuser_id)) {
+				$sql = 'UPDATE mcuser
 				        SET user_password=:user_password
-				        WHERE user_id=:user_id';
+				        WHERE mcuser_id=:user_id';
 				$req = $link->prepare($sql);
-				$req->bindValue(':user_password', hash('sha256', $do->user_id.'_'.$new), PDO::PARAM_STR);
-				$req->bindValue(':user_id', $do->user_id, PDO::PARAM_INT);
+				$req->bindValue(':user_password', hash('sha256', $do->mcuser_id.'_'.$new), PDO::PARAM_STR);
+				$req->bindValue(':user_id', $do->mcuser_id, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 			}
 		}
@@ -459,9 +459,9 @@ class Admin extends User {
 		
 		if(!empty($newfloorid)){
 			$sql = 'INSERT INTO user_floor
-			        (user_id, floor_id)
-			        SELECT user_id, '.$newfloorid.'
-			        FROM user';
+			        (mcuser_id, floor_id)
+			        SELECT mcuser_id, '.$newfloorid.'
+			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
@@ -491,9 +491,9 @@ class Admin extends User {
 		
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'UPDATE user_floor
+		$sql = 'UPDATE mcuser_floor
 		        JOIN floor ON user_floor.floor_id = floor.floor_id
-		        JOIN user_floor as uf ON uf.floor_id =:floor_id AND user_floor.user_id= uf.user_id
+		        JOIN mcuser_floor as uf ON uf.floor_id =:floor_id AND user_floor.mcuser_id= uf.mcuser_id
 		        SET user_floor.floor_order = user_floor.floor_order - 1  
 		        WHERE user_floor.floor_order > uf.floor_order';
 		$req = $link->prepare($sql);
@@ -573,9 +573,9 @@ class Admin extends User {
 		
 		if(!empty($newroomid)){
 			$sql = 'INSERT INTO user_room
-			        (user_id, room_id)
-			        SELECT user_id, '.$newroomid.'
-			        FROM user';
+			        (mcuser_id, room_id)
+			        SELECT mcuser_id, '.$newroomid.'
+			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -629,9 +629,9 @@ class Admin extends User {
 	function confRoomRemove($idroom, $idfloor) {
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user_room
+		$sql = 'UPDATE mcuser_room
 		        JOIN room ON user_room.room_id = room.room_id
-		        JOIN user_room as ur ON ur.room_id =:room_id AND user_room.user_id= ur.user_id
+		        JOIN mcuser_room as ur ON ur.room_id =:room_id AND user_room.mcuser_id= ur.mcuser_id
 		        SET user_room.room_order = user_room.room_order - 1
 		        WHERE room.floor=:floor_id AND user_room.room_order > ur.room_order';
 		
@@ -674,10 +674,10 @@ class Admin extends User {
 		
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'UPDATE user_device
+		$sql = 'UPDATE mcuser_device
 		        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
-		        JOIN user_device as ud ON ud.room_device_id =:room_device_id AND 
-		                                  user_device.user_id= ud.user_id
+		        JOIN mcuser_device as ud ON ud.room_device_id =:room_device_id AND 
+		                                  user_device.mcuser_id= ud.mcuser_id
 		        SET user_device.device_order = user_device.device_order - 1
 		        WHERE room_device.room_id=:room_id AND 
 		              user_device.device_order > ud.device_order';
@@ -760,10 +760,10 @@ class Admin extends User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		
 		if($do->room_id != $idroom){
-			$sql = 'UPDATE user_device
+			$sql = 'UPDATE mcuser_device
 			        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
-			        JOIN user_device as ud ON ud.room_device_id =:room_device_id AND 
-			                                  user_device.user_id= ud.user_id
+			        JOIN mcuser_device as ud ON ud.room_device_id =:room_device_id AND 
+			                                  user_device.mcuser_id= ud.mcuser_id
 			        SET user_device.device_order = user_device.device_order - 1
 			        WHERE room_device.room_id=:room_id AND 
 			              user_device.device_order > ud.device_order AND 
@@ -773,7 +773,7 @@ class Admin extends User {
 			$req->bindValue(':room_id', $do->room_id, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			$sql = 'UPDATE user_device
+			$sql = 'UPDATE mcuser_device
 			        SET device_order = 0, device_allowed = 0
 			        WHERE room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
@@ -1007,9 +1007,9 @@ class Admin extends User {
 		
 		if(!empty($newdeviceid)){
 			$sql = 'INSERT INTO user_device
-			        (user_id, room_device_id)
-			        SELECT user_id, '.$newdeviceid.'
-			        FROM user';
+			        (mcuser_id, room_device_id)
+			        SELECT mcuser_id, '.$newdeviceid.'
+			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -1045,9 +1045,9 @@ class Admin extends User {
 		
 		if(!empty($newdeviceid)){
 			$sql = 'INSERT INTO user_device
-			        (user_id, room_device_id)
-			        SELECT user_id, '.$newdeviceid.'
-			        FROM user';
+			        (mcuser_id, room_device_id)
+			        SELECT mcuser_id, '.$newdeviceid.'
+			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -1079,9 +1079,9 @@ class Admin extends User {
 		
 		if(!empty($newdeviceid)){
 			$sql = 'INSERT INTO user_device
-			        (user_id, room_device_id)
-			        SELECT user_id, '.$newdeviceid.'
-			        FROM user';
+			        (mcuser_id, room_device_id)
+			        SELECT mcuser_id, '.$newdeviceid.'
+			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -1502,9 +1502,9 @@ class Admin extends User {
 		$listApps  = array();
 		
 		$sql = 'SELECT floor_name, user_floor.floor_id, user_floor.floor_order
-		        FROM user_floor
+		        FROM mcuser_floor
 		        JOIN floor ON user_floor.floor_id=floor.floor_id
-		        WHERE user_id=:user_id
+		        WHERE mcuser_id=:user_id
 		        ORDER BY floor_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1520,10 +1520,10 @@ class Admin extends User {
 		$sql = 'SELECT room.room_name, room.room_id, user_room.room_order,
 		               floor, user_room.room_bgimg
 		        FROM room
-		        JOIN user_room ON room.room_id=user_room.room_id
-		        JOIN user_floor ON room.floor=user_floor.floor_id AND
-		                           user_floor.user_id=user_room.user_id
-		        WHERE user_room.user_id=:user_id
+		        JOIN mcuser_room ON room.room_id=user_room.room_id
+		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
+		                           user_floor.mcuser_id=user_room.mcuser_id
+		        WHERE user_room.mcuser_id=:user_id
 		        ORDER BY user_floor.floor_order ASC, room_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1545,13 +1545,13 @@ class Admin extends User {
 		               user_device.device_bgimg
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
-		        JOIN user_device ON room_device.room_device_id=user_device.room_device_id
-		        JOIN user_room ON room_device.room_id=user_room.room_id AND 
-		                          user_room.user_id=user_device.user_id
+		        JOIN mcuser_device ON room_device.room_device_id=user_device.room_device_id
+		        JOIN mcuser_room ON room_device.room_id=user_room.room_id AND 
+		                          user_room.mcuser_id=user_device.mcuser_id
 		        JOIN room ON room.room_id=room_device.room_id
-		        JOIN user_floor ON room.floor=user_floor.floor_id AND
-		                          user_floor.user_id=user_device.user_id
-		        WHERE user_device.user_id=:user_id
+		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
+		                          user_floor.mcuser_id=user_device.mcuser_id
+		        WHERE user_device.mcuser_id=:user_id
 		        ORDER BY user_floor.floor_order ASC, user_room.room_order ASC, 
 		                 user_device.device_order ASC';
 		$req = $link->prepare($sql);
@@ -1603,9 +1603,9 @@ class Admin extends User {
 			}
 		}
 		
-		$sql = 'SELECT smartcommand_id, name, user_id, room_id
+		$sql = 'SELECT smartcommand_id, name, mcuser_id, room_id
 		        FROM smartcommand_list
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1613,7 +1613,7 @@ class Admin extends User {
 			$listSmartcmd[$do->smartcommand_id] = array(
 					'smartcmd_id' => $do->smartcommand_id,
 					'name'            => $do->name,
-					'user_id'         => $do->user_id,
+					'user_id'         => $do->mcuser_id,
 					'room_id'         => $do->room_id
 			);
 		}
@@ -1700,8 +1700,8 @@ class Admin extends User {
 	
 		$sql = 'SELECT floor.floor_id, floor_name, floor_order
 		        FROM floor
-		        JOIN user_floor ON user_floor.floor_id=floor.floor_id
-		        WHERE user_id=:user_id
+		        JOIN mcuser_floor ON user_floor.floor_id=floor.floor_id
+		        WHERE mcuser_id=:user_id
 		        ORDER BY floor_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1719,8 +1719,8 @@ class Admin extends User {
 		$sql = 'SELECT room.room_id, room_name, floor, room_order,
 		               user_room.room_bgimg
 		        FROM room
-		        JOIN user_room ON user_room.room_id = room.room_id
-		        WHERE user_id=:user_id
+		        JOIN mcuser_room ON user_room.room_id = room.room_id
+		        WHERE mcuser_id=:user_id
 		        ORDER BY room_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1741,8 +1741,8 @@ class Admin extends User {
 		               device_bgimg, device_id
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
-		        JOIN user_device ON user_device.room_device_id=room_device.room_device_id
-		        WHERE user_id=:user_id
+		        JOIN mcuser_device ON user_device.room_device_id=room_device.room_device_id
+		        WHERE mcuser_id=:user_id
 		        ORDER BY device_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1770,17 +1770,17 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 
-		$sql = 'SELECT user_id, room_device_id, device_allowed, device_order,
+		$sql = 'SELECT mcuser_id, room_device_id, device_allowed, device_order,
 		               device_bgimg
-		        FROM user_device
-		        WHERE user_id=:user_id
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id
 		        ORDER BY room_device_id ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->room_device_id] = array(
-				'user_id'       => $do->user_id,
+				'user_id'       => $do->mcuser_id,
 				'room_device_id'=> $do->room_device_id,
 				'device_allowed'=> $do->device_allowed,
 				'device_bgimg'  => $do->device_bgimg,
@@ -1795,10 +1795,10 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT user_device.room_device_id, device_order, room_id
-		        FROM user_device
+		        FROM mcuser_device
 		        JOIN room_device ON user_device.room_device_id = room_device.room_device_id
 		        WHERE user_device.room_device_id=:room_device_id AND 
-		              user_device.user_id=:user_id';
+		              user_device.mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1806,9 +1806,9 @@ class Admin extends User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		
 		if($status == 1){
-			$sql = 'UPDATE user_device
+			$sql = 'UPDATE mcuser_device
 			        SET device_allowed = 1
-			        WHERE user_id=:user_id AND 
+			        WHERE mcuser_id=:user_id AND 
 			              room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1816,9 +1816,9 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
-			$sql = 'UPDATE user_device
+			$sql = 'UPDATE mcuser_device
 			        SET device_allowed = 0
-			        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+			        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -1835,16 +1835,16 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
-		$sql = 'SELECT user_id, room_id, room_allowed, room_order, room_bgimg
-		        FROM user_room
-		        WHERE user_id=:user_id
+		$sql = 'SELECT mcuser_id, room_id, room_allowed, room_order, room_bgimg
+		        FROM mcuser_room
+		        WHERE mcuser_id=:user_id
 		        ORDER BY room_id ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->room_id] = array(
-				'user_id'     => $do->user_id,
+				'user_id'     => $do->mcuser_id,
 				'room_id'     => $do->room_id,
 				'room_allowed'=> $do->room_allowed,
 				'room_bgimg'  => $do->room_bgimg,
@@ -1859,9 +1859,9 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT user_room.room_id, room_order, floor
-		        FROM user_room
+		        FROM mcuser_room
 		        JOIN room ON user_room.room_id = room.room_id
-		        WHERE user_room.user_id=:user_id AND 
+		        WHERE user_room.mcuser_id=:user_id AND 
 		              user_room.room_id=:room_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
@@ -1870,18 +1870,18 @@ class Admin extends User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		
 		if($status == 1){
-			$sql = 'UPDATE user_room
+			$sql = 'UPDATE mcuser_room
 			        SET room_allowed = 1
-			        WHERE user_id=:user_id AND room_id=:room_id';
+			        WHERE mcuser_id=:user_id AND room_id=:room_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 			$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
-			$sql = 'UPDATE user_room
+			$sql = 'UPDATE mcuser_room
 			        SET room_allowed = 0
-			        WHERE user_id=:user_id AND room_id=:room_id';
+			        WHERE mcuser_id=:user_id AND room_id=:room_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 			$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
@@ -1895,16 +1895,16 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
-		$sql = 'SELECT user_id, floor_id, floor_allowed, floor_order
-		        FROM user_floor
-		        WHERE user_id=:user_id
+		$sql = 'SELECT mcuser_id, floor_id, floor_allowed, floor_order
+		        FROM mcuser_floor
+		        WHERE mcuser_id=:user_id
 		        ORDER BY floor_id ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->floor_id] = array(
-				'user_id'      => $do->user_id,
+				'user_id'      => $do->mcuser_id,
 				'floor_id'     => $do->floor_id,
 				'floor_allowed'=> $do->floor_allowed,
 				'floor_order'  => $do->floor_order
@@ -1917,8 +1917,8 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		$sql = 'SELECT floor_id
-		        FROM user_floor
-		        WHERE floor_id=:floor_id AND user_id=:user_id';
+		        FROM mcuser_floor
+		        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 		$req->bindValue(':user_id',  $userid,  PDO::PARAM_INT);
@@ -1926,18 +1926,18 @@ class Admin extends User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		
 		if($status == 1){
-			$sql = 'UPDATE user_floor
+			$sql = 'UPDATE mcuser_floor
 			        SET floor_allowed = 1
-			        WHERE user_id=:user_id AND floor_id=:floor_id';
+			        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id',  $userid,  PDO::PARAM_INT);
 			$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		else {
-			$sql = 'UPDATE user_floor
+			$sql = 'UPDATE mcuser_floor
 			        SET floor_allowed = 0
-			        WHERE user_id=:user_id AND floor_id=:floor_id';
+			        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':user_id',  $userid,  PDO::PARAM_INT);
 			$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
@@ -2076,16 +2076,16 @@ class Admin extends User {
 	function checkDevice($iddevice){
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'SELECT user_id
-		        FROM user_device
-		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		$sql = 'SELECT mcuser_id
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
 		$req = $link->prepare($sql);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if(empty($do->user_id)) {
+		if(empty($do->mcuser_id)) {
 			return false;
 		}
 	
@@ -2194,8 +2194,8 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT floor_order, floor_id
-		        FROM user_floor
-		        WHERE user_id=:user_id AND floor_id=:floor_id';
+		        FROM mcuser_floor
+		        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
@@ -2205,8 +2205,8 @@ class Admin extends User {
 		$order = $do->floor_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT floor_order, floor_id
-			        FROM user_floor
-			        WHERE floor_order=:order AND user_id=:user_id';
+			        FROM mcuser_floor
+			        WHERE floor_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2214,9 +2214,9 @@ class Admin extends User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 				
 			if(!empty($do2)) {
-				$sql = 'UPDATE user_floor
+				$sql = 'UPDATE mcuser_floor
 				        SET floor_order=:order
-				        WHERE user_id=:user_id AND floor_id=:floor_id';
+				        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->floor_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2225,7 +2225,7 @@ class Admin extends User {
 		
 				$sql = 'UPDATE  user_floor
 				        SET floor_order=:order
-				        WHERE floor_id=:floor_id AND user_id=:user_id';
+				        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->floor_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2250,8 +2250,8 @@ class Admin extends User {
 		}
 	
 		$sql = 'SELECT room_order, room_id
-		        FROM user_room
-		        WHERE user_id=:user_id AND room_id=:room_id';
+		        FROM mcuser_room
+		        WHERE mcuser_id=:user_id AND room_id=:room_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
@@ -2261,8 +2261,8 @@ class Admin extends User {
 		$order = $do->room_order + $action;
 		if($order >= 1){
 			$sql = 'SELECT room_order, room_id
-			        FROM user_room
-			        WHERE room_order=:order AND user_id=:user_id';
+			        FROM mcuser_room
+			        WHERE room_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2270,9 +2270,9 @@ class Admin extends User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 	
 			if(!empty($do2)){
-				$sql = 'UPDATE user_room
+				$sql = 'UPDATE mcuser_room
 				        SET room_order=:order
-				        WHERE user_id=:user_id AND room_id=:room_id';
+				        WHERE mcuser_id=:user_id AND room_id=:room_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->room_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2281,7 +2281,7 @@ class Admin extends User {
 					
 				$sql = 'UPDATE  user_room
 				        SET room_order=:order
-				        WHERE room_id=:room_id AND user_id=:user_id';
+				        WHERE room_id=:room_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->room_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2305,8 +2305,8 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT  device_order, room_device_id
-		        FROM user_device
-		        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+		        FROM mcuser_device
+		        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
@@ -2316,8 +2316,8 @@ class Admin extends User {
 		$order = $do->device_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT device_order, room_device_id
-			        FROM user_device
-			        WHERE device_order=:order AND user_id=:user_id';
+			        FROM mcuser_device
+			        WHERE device_order=:order AND mcuser_id=:user_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':order', $order, PDO::PARAM_INT);
 			$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2325,9 +2325,9 @@ class Admin extends User {
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
 				
 			if(!empty($do2)){
-				$sql = 'UPDATE user_device
+				$sql = 'UPDATE mcuser_device
 				        SET device_order=:order
-				        WHERE user_id=:user_id AND room_device_id=:room_device_id';
+				        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do->device_order + $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2336,7 +2336,7 @@ class Admin extends User {
 	
 				$sql = 'UPDATE  user_device
 				        SET device_order=:order
-				        WHERE room_device_id=:room_device_id AND user_id=:user_id';
+				        WHERE room_device_id=:room_device_id AND mcuser_id=:user_id';
 				$req = $link->prepare($sql);
 				$req->bindValue(':order', $do2->device_order - $action, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -2355,9 +2355,9 @@ class Admin extends User {
 
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'UPDATE user_device
+		$sql = 'UPDATE mcuser_device
 		        SET device_bgimg=:bgimg
-		        WHERE user_id=:user_id AND room_device_id=:iddevice';
+		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
 		$req = $link->prepare($sql);
 		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2372,9 +2372,9 @@ class Admin extends User {
 		
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user_room
+		$sql = 'UPDATE mcuser_room
 		        SET room_bgimg=:bgimg
-		        WHERE user_id=:user_id AND room_id=:idroom';
+		        WHERE mcuser_id=:user_id AND room_id=:idroom';
 		$req = $link->prepare($sql);
 		$req->bindValue(':bgimg', $bgimg, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2389,9 +2389,9 @@ class Admin extends User {
 	
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET bg_color=:color
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':color', $color, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
@@ -2405,9 +2405,9 @@ class Admin extends User {
 	
 		$link = Link::get_link('domoleaf');
 	
-		$sql = 'UPDATE user
+		$sql = 'UPDATE mcuser
 		        SET border_color=:color
-		        WHERE user_id=:user_id';
+		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':color', $color, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);

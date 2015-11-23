@@ -24,9 +24,9 @@ pip3 install scapy-python3
 python3 /usr/bin/domoslave/domoslave_postinst.py
 
 #CRON
-chmod +x /usr/bin/CronRefreshNetwork.py
-chmod +x /usr/bin/CronSendAlive.py
-chmod +x /usr/bin/CronSendTech.py
+chmod +x /etc/domoleaf/cron/CronRefreshNetwork.py
+chmod +x /etc/domoleaf/cron/CronSendAlive.py
+chmod +x /etc/domoleaf/cron/CronSendTech.py
 
 #KNXD
 update-rc.d knxd defaults

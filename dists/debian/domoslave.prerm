@@ -7,9 +7,9 @@ mv /etc/domoleaf/slave.conf /etc/domoleaf/slave.conf.save
 #Conf
 rm -f /etc/cron.d/domoslave*
 
-rm -f /usr/bin/CronRefreshNetwork.py
-rm -f /usr/bin/CronSendAlive.py
-rm -f /usr/bin/CronSendTech.py
+rm -f /etc/domoleaf/cron/CronRefreshNetwork.py
+rm -f /etc/domoleaf/cron/CronSendAlive.py
+rm -f /etc/domoleaf/cron/CronSendTech.py
 
 rm -f /usr/bin/domoslave.py
 rm -rf /usr/bin/domoslave /usr/lib/domoleaf

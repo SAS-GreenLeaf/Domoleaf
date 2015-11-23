@@ -31,13 +31,13 @@ echo '<table class="table table-bordered table-striped table-condensed">
 									echo $request->date($elem->activity, 3);
 								}
 							echo '</td><td class="center">
-									<button type="button" title="'._('Edit').'" class="btn btn-primary" id="" onclick="GetUser('.$elem->user_id.')">
+									<button type="button" title="'._('Edit').'" class="btn btn-primary" id="" onclick="GetUser('.$elem->mcuser_id.')">
 			  							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					  				</button>';
-						 		if ($currentuser != $elem->user_id){
-									if ($elem->user_level == 1){
+						 		if ($currentuser != $elem->mcuser_id){
+									if ($elem->mcuser_level == 1){
 									echo '
-											<a class="btn btn-warning" href="/conf_users/'.$elem->user_id.'/'.$elem->user_level.'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
+											<a class="btn btn-warning" href="/conf_users/'.$elem->mcuser_id.'/'.$elem->mcuser_level.'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
 									}
 									else {
 										echo '<button type="button" class="btn btn-invisible" onclick="">
@@ -45,7 +45,7 @@ echo '<table class="table table-bordered table-striped table-condensed">
 								  				</button>';
 									}
 									echo'
-										<button type="button" title="'._('Delete').'" id="" class="btn btn-danger" onclick="PopupDeleteUser('.$elem->user_id.')">
+										<button type="button" title="'._('Delete').'" id="" class="btn btn-danger" onclick="PopupDeleteUser('.$elem->mcuser_id.')">
 						  					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 						  				</button>';
 								}else {
