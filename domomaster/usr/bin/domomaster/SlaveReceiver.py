@@ -34,10 +34,13 @@ class SlaveReceiver(Thread):
                 break;
         if aes_key == '':
             return None;
-        data = self.connection.recv(MasterDaemon.MAX_DATA_LENGTH);
-        decrypt_IV = data[:16].decode();
-        decode_obj = AES.new(aes_key, AES.MODE_CBC, decrypt_IV);
-        data2 = decode_obj.decrypt(data[16:]).decode();
-        flag = False;
-        obj = data2;
-        self.daemon.parse_data(obj, self.connection);
+        try:
+            data = self.connection.recv(MasterDaemon.MAX_DATA_LENGTH);
+            decrypt_IV = data[:16].decode();
+            decode_obj = AES.new(aes_key, AES.MODE_CBC, decrypt_IV);
+            data2 = decode_obj.decrypt(data[16:]).decode();
+            flag = False;
+            obj = data2;
+            self.daemon.parse_data(obj, self.connection);
+        except Exception as e:
+            self.logger.error(e);
