@@ -272,6 +272,12 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		current_color = current_color.replaceAt(6, blue[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
+	else if (idopt == 399){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	}
+	else if (idopt == 407){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	}
 	else if (idopt == 409){
 		if (val.valeur == 0){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
