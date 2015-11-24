@@ -202,8 +202,7 @@ function resetError(room_device_id, device_opt){
 		url: "/form/form_mc_reset_error.php",
 		data: "room_device_id="+room_device_id+"&device_opt="+device_opt,
 		complete: function(result) {
-		popup_close();
-		HandlePopup(2, room_device_id);
+			popup_close();
 		}
 	});
 }
