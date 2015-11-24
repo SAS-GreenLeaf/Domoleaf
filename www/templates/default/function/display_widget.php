@@ -40,7 +40,7 @@ function getIcon($iddevice = 1){
 			35 => 'fa fa-question',
 			36 => 'fa fa-question',
 			37 => 'fa fa-question',
-			38 => 'fa fa-question',
+			38 => 'fi flaticon-switches4',
 			39 => 'fa fa-question',
 			40 => 'fa fa-question',
 			41 => 'fa fa-question',
@@ -478,6 +478,12 @@ function display_commande($info){
 	}
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
+	}
+	if (!empty($info->device_opt->{13})){
+		$display.=display_varie($info);
+	}
+	if (!empty($info->device_opt->{54})){
+		$display.=display_UpDown($info);
 	}
 	if (!empty($info->device_opt->{79})){
 		$display.=display_luminosity($info);
