@@ -648,9 +648,9 @@ class User {
 		$sql = 'SELECT room.room_name, room.room_id, mcuser_room.room_order, 
 		               floor, mcuser_room.room_bgimg
 		        FROM room
-		        JOIN mcuser_room ON room.room_id=user_room.room_id
-		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
-		                           mcuser_floor.mcuser_id=user_room.mcuser_id
+		        JOIN mcuser_room ON room.room_id=mcuser_room.room_id
+		        JOIN mcuser_floor ON room.floor=mcuser_floor.floor_id AND
+		                           mcuser_floor.mcuser_id=mcuser_room.mcuser_id
 		        WHERE mcuser_room.mcuser_id=:user_id AND   mcuser_room.room_allowed = 1
 		        ORDER BY mcuser_floor.floor_order ASC, room_order ASC';
 		$req = $link->prepare($sql);
@@ -672,12 +672,12 @@ class User {
 		               mcuser_device.device_bgimg
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
-		        JOIN mcuser_device ON room_device.room_device_id=user_device.room_device_id
-		        JOIN mcuser_room ON room_device.room_id=user_room.room_id AND 
-		                          mcuser_room.mcuser_id=user_device.mcuser_id
+		        JOIN mcuser_device ON room_device.room_device_id=mcuser_device.room_device_id
+		        JOIN mcuser_room ON room_device.room_id=mcuser_room.room_id AND 
+		                          mcuser_room.mcuser_id=mcuser_device.mcuser_id
 		        JOIN room ON room.room_id=room_device.room_id
-		        JOIN mcuser_floor ON room.floor=user_floor.floor_id AND
-		                          mcuser_floor.mcuser_id=user_device.mcuser_id
+		        JOIN mcuser_floor ON room.floor=mcuser_floor.floor_id AND
+		                          mcuser_floor.mcuser_id=mcuser_device.mcuser_id
 		        WHERE mcuser_device.mcuser_id=:user_id AND mcuser_device.device_allowed = 1
 		        ORDER BY mcuser_floor.floor_order ASC, mcuser_room.room_order ASC, 
 		                 mcuser_device.device_order ASC';
