@@ -1,6 +1,7 @@
 <?php 
 
 include('configuration-menu.php');
+$nb = 0;
 
 echo '<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 
@@ -18,7 +19,8 @@ echo '<div class="center"><h2>'._('Monitor KNX').'</h2></div>
 								<li role="presentation" class="divider"></li>';
 								foreach ($listdae as $elem){
 									if (!empty($elem->protocol->{1})){
-											echo '<li><a onclick="SwitchActionDae('.$elem->daemon_id.', \''.$elem->name.'\')">'.$elem->name.'</a></li>';
+										++$nb;
+										echo '<li><a onclick="SwitchActionDae('.$elem->daemon_id.', \''.$elem->name.'\')">'.$elem->name.'</a></li>';
 									}
 								}	
 					echo	  '</ul>
@@ -139,7 +141,16 @@ function SwitchAction(id){
 
 $("#btn-send").attr(\'disabled\', \'disabled\');
 $("#value").removeAttr(\'disabled\');
-$("#hiddendae").val(-1);			
-</script>';
+$("#hiddendae").val(-1);
+';
+if(!empty($nb)) {
+	foreach ($listdae as $elem){
+		if (!empty($elem->protocol->{1})){
+			$nb++;
+			echo 'SwitchActionDae('.$elem->daemon_id.', \''.$elem->name.'\');';
+		}
+	}
+}
+echo '</script>';
 
 ?>
