@@ -9,11 +9,15 @@ if (!empty($_GET['iddevice'])) {
 	
 	$device_opt = $result->confDeviceRoomOpt;
 	
-	echo
-	'<div class="center">'.
-		'<form class="btn center padding-bottom">'.
-			'<input type="text" id="color" name="color" value="#123456" disabled="disabled"/>'.
-		'</form>';
+	echo '<div class="center">'.
+		 '<form class="btn center padding-bottom">';
+	if (!empty($device_opt->{392}->valeur) && !empty($device_opt->{393}->valeur) && !empty($device_opt->{394}->valeur)){
+		echo '<input type="text" id="color" name="color" value="'.convertRGBToHexa($device_opt->{392}->valeur, $device_opt->{393}->valeur, $device_opt->{394}->valeur).'" disabled="disabled"/>';
+	}
+	else{
+		echo '<input type="text" id="color" name="color" value="#123456" disabled="disabled"/>';
+	}
+		echo '</form>';
 		if (!empty($_GET['bg_color'])) {
 			if ($_GET['bg_color'] == 1) {
 				echo
