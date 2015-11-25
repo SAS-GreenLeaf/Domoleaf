@@ -30,7 +30,11 @@ echo
 				foreach ($triggersList as $elem) {
 					echo '
 					<tr id="trigger-'.$elem->trigger_id.'">
-						<td>'.$elem->name.'</td>
+						<td>
+							<a href="/profile_user_trigger_events/'.$elem->trigger_id.'/0">'.
+								$elem->name.'
+							</a>
+						</td>
 						<td class="center">
 							<a href="/profile_user_trigger_events/'.$elem->trigger_id.'/0">
 								<button type="button"

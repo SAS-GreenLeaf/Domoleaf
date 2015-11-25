@@ -32,7 +32,11 @@ echo '
 			foreach ($smartcmdList as $elem) {
 				echo '
 				<tr id="smartcmd-'.$elem->smartcommand_id.'">
-					<td>'.$elem->name.'</td>';
+					<td>
+						<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'/0">'.
+							$elem->name.'
+						</a>
+					</td>';
 					if (empty($elem->room_name)) {
 						$elem->room_name = _('None');
 					}

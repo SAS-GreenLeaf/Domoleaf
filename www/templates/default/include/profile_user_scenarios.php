@@ -32,10 +32,17 @@ echo '
 			foreach ($scenarioList as $elem) {
 				echo '
 					<tr id="scenario-'.$elem->scenario_id.'">
-						<td>'.$elem->name.'</td>
+						<td>
+							<a href="/profile_user_scenarios/'.$elem->scenario_id.'/1">'.
+								$elem->name.'
+							</a>
+						</td>
 						<td>';
 						if ($elem->id_smartcmd != 0) {
-							echo $elem->name_smartcmd;
+							echo 
+							'<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'/'.$elem->scenario_id.'">'.
+								$elem->name_smartcmd.'
+							</a>';
 						}
 						else {
 							echo 'None';
