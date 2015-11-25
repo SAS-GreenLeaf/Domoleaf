@@ -871,8 +871,8 @@ msgid "Box configuration"
 msgstr "Configuration de la Box"
 
 #: header/conf_db.php:3 include/conf_db.php:7
-msgid "Database configuration"
-msgstr "Configuration de la Base de Données"
+msgid "Backups configuration"
+msgstr "Configuration des sauvegardes"
 
 #: header/conf_device.php:65 header/conf_device.php:69
 #: header/conf_device.php:73 header/conf_device.php:77
@@ -981,15 +981,15 @@ msgid "USB Backup"
 msgstr "Sauvegarde USB"
 
 #: include/conf_db.php:66
-msgid "Database USB"
+msgid "Backup USB"
 msgstr "Base de données USB"
 
 #: include/conf_db.php:106 include/conf_db.php:120 include/conf_db.php:174
-msgid "Delete Database"
+msgid "Delete Backup"
 msgstr "Supprimer la Base de Données"
 
 #: include/conf_db.php:188
-msgid "Restore Database"
+msgid "Restore Backup"
 msgstr "Restaurer la Base de Données"
 
 #: include/conf_device_new.php:8
@@ -1274,8 +1274,8 @@ msgid "General"
 msgstr "Général"
 
 #: include/configuration-menu.php:9 include/configuration-menu.php:10
-msgid "Database"
-msgstr "Base de Données"
+msgid "Backups"
+msgstr "Sauvegardes"
 
 #: include/configuration-menu.php:15 include/configuration-menu.php:16
 msgid "Box"

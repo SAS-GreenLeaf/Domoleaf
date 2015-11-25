@@ -6,8 +6,8 @@ echo
 		<a title="'._('General').'" href="/conf_general" id="menu-general" class="list-group-item text-center change">
 			<h4 class="fa fa-cog lg"></h4><br/><span class="hidden-xs">'._('General').'</span>
 		</a>
-		<a title="'._('Database').'" href="/conf_db" id="menu-database" class="list-group-item text-center change">
-			<h4 class="fa fa-database lg"></h4><br/><span class="hidden-xs">'._('Database').'</span>
+		<a title="'._('Backups').'" href="/conf_db" id="menu-database" class="list-group-item text-center change">
+			<h4 class="fa fa-database lg"></h4><br/><span class="hidden-xs">'._('Backups').'</span>
 		</a>
 		<a title="'._('Installation').'" href="/conf_installation" id="menu-install" class="list-group-item text-center change">
 			<h4 class="fa fa-flask lg"></h4><br/><span class="hidden-xs">'._('Installation').'</span>
