@@ -15,7 +15,7 @@ if (!empty($_GET['iddevice'])) {
 		echo '<input type="text" id="color" name="color" value="'.convertRGBToHexa($device_opt->{392}->valeur, $device_opt->{393}->valeur, $device_opt->{394}->valeur).'" disabled="disabled"/>';
 	}
 	else{
-		echo '<input type="text" id="color" name="color" value="#123456" disabled="disabled"/>';
+		echo '<input type="text" id="color" name="color" value="#000" disabled="disabled"/>';
 	}
 		echo '</form>';
 		if (!empty($_GET['bg_color'])) {
