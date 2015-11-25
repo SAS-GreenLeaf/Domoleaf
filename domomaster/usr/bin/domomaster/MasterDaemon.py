@@ -328,6 +328,7 @@ class MasterDaemon:
             return;
         query = 'UPDATE configuration SET configuration_value="" WHERE configuration_id=13';
         self.sql.mysql_handler_personnal_query(query);
+        Popen(['apt-get', 'update'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
         p = Popen(['apt-show-versions',  '-u', 'domomaster'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
         output, error = p.communicate();
         if p.returncode == 0:
