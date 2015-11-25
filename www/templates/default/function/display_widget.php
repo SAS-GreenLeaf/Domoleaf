@@ -85,7 +85,8 @@ function getIcon($iddevice = 1){
 			81 => 'fa fa-question',
 			82 => 'fa fa-question',
 			83 => 'fa fa-question',
-			84 => 'fa fa-question'
+			84 => 'fa fa-question',
+			85 => 'fa fa-lightbulb-o'
 	);
 	
 	return $icons[$iddevice];
@@ -164,7 +165,8 @@ function display_widget($info){
 			81 => "display_cam",
 			82 => "display_commande",
 			83 => "display_commande",
-			84 => "display_commande"
+			84 => "display_commande",
+			85 => "display_lampe"
 	);
 	
 	
@@ -498,7 +500,7 @@ function display_commande($info){
 //widget lampe
 function display_lampe($info){
 	$display = '';
-	if (!empty($info->device_id) && !((!empty($info->device_opt->{409})) || $info->device_id == 78)){
+	if (!empty($info->device_id) && !((!empty($info->device_opt->{409})) || $info->device_id == 78 || $info->device_id == 85)){
 		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
 	if (!empty($info->device_id) && !empty($info->device_opt->{409})){
@@ -515,14 +517,20 @@ function display_lampe($info){
 					<span class="fa fa-info-circle md"></span>
 					</button>
 					</div>';
-		if ($info->device_id != 78){
+		if ($info->device_id != 78 && $info->device_id != 85){
 			$display .= '<h3 class="title margin-top">'.$info->name.'</h3>';
 		}
 	}
-	if (!empty($info->device_id) && $info->device_id == 78){
-		$display .= '<div class="info-widget">
-						<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0)" class="btn btn-greenleaf" type="button">
-							<span class="fa fa-plus md"></span>
+	if (!empty($info->device_id) && ($info->device_id == 78 || $info->device_id == 85)){
+		$display .= '<div class="info-widget">';
+		
+		if ($info->device_id == 85){
+			$display .=	'<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 1)" class="btn btn-greenleaf" type="button">';
+		}
+		else{
+			$display .=	'<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 0)" class="btn btn-greenleaf" type="button">';
+		}
+		$display .=			'<span class="fa fa-plus md"></span>
 						</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';

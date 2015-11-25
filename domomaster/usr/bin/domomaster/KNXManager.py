@@ -33,6 +33,7 @@ OPTION_SPEED_FAN_6      = 406;  # Indice pour le traitement de la vitesse 6 d'un
 OPTION_COLOR_R          = 392;
 OPTION_COLOR_G          = 393;
 OPTION_COLOR_B          = 394;
+OPTION_COLOR_W          = 410;
 
 KNX_RESPONSE            = 1;    # Donnee KNX de type RESPONSE
 KNX_WRITE_SHORT         = 2;    # Donnee KNX de type ecriture courte (0 | 1)
@@ -59,7 +60,8 @@ class KNXManager:
             OPTION_TEMPERATURE_W: self.send_knx_write_temp,
             OPTION_COLOR_R      : self.send_knx_write_long_to_slave,
             OPTION_COLOR_G      : self.send_knx_write_long_to_slave,
-            OPTION_COLOR_B      : self.send_knx_write_long_to_slave
+            OPTION_COLOR_B      : self.send_knx_write_long_to_slave,
+            OPTION_COLOR_W      : self.send_knx_write_long_to_slave
         };
         self.logger = Logger(True, LOG_FILE);
         self.sql = MasterSql();

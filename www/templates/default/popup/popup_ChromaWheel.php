@@ -4,7 +4,10 @@ include('header.php');
 
 if (!empty($_GET['iddevice'])) {
 	$request =  new Api();
+	$request -> add_request('confDeviceRoomOpt', array($_GET['iddevice']));
 	$result  =  $request -> send_request();
+	
+	$device_opt = $result->confDeviceRoomOpt;
 	
 	echo
 	'<div class="center">'.
@@ -26,8 +29,43 @@ if (!empty($_GET['iddevice'])) {
 					'&nbsp<span class="glyphicon glyphicon-refresh"></span>'.
 				'</button>';
 			}
-			
 		}
+	if (!empty($_GET['white']) && $_GET['white'] == 1) {
+		
+		echo '<br/>'.
+			 '<div onclick="Variation(\''.$_GET['iddevice'].'\', \'410\', -1, 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">'.
+								'<i class="fa fa-certificate"></i>'.
+							'</div>';
+		if ($device_opt->{410}->valeur > 0){
+			$val = ceil(($device_opt->{410}->valeur * 100) / 255);
+			echo '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">'.
+					'<output id="range-'.$_GET['iddevice'].'-popup" for="slider-value-'.$_GET['iddevice'].'-popup">'.$val.'%</output>'.
+				 '</div>';
+		}
+		else {
+			echo '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">'.
+					'<output id="range-'.$_GET['iddevice'].'-popup" for="slider-value-'.$_GET['iddevice'].'-popup">50%</output>'.
+				 '</div>';
+		}
+		echo '<div onclick="Variation(\''.$_GET['iddevice'].'\', \'410\', 1, 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">'.
+				'<i class="fa fa-sun-o"></i>'.
+			 '</div>';
+
+
+		echo '<div class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
+		if (!empty($device_opt->{410}->valeur)){
+			echo '<input value="'.$device_opt->{410}->valeur.'" min="0" step="1" max="255"';
+		}
+		else{
+			echo '<input value="128" min="0" step="1" max="255"';
+		}
+		echo		'oninput="outputUpdate(\''.$_GET['iddevice'].'\', value, 1)"'.
+					'onchange="getVariation(\''.$_GET['iddevice'].'\', \''.$device_opt->{410}->option_id.'\', 1)"'.
+					'id="slider-value-'.$_GET['iddevice'].'-popup" type="range" style="background: #FFFF66"/>'.
+			 '</div>'.
+			 '<div class="clearfix"></div>'.
+			 '<br/>';
+	}
 	echo
 	'</div>'.
 	'<div id="colorpicker"></div>
@@ -57,4 +95,5 @@ if (!empty($_GET['iddevice'])) {
 		'$("#colorpicker").farbtastic("#color");'.
 	'</script>';
 }
+
 ?>
