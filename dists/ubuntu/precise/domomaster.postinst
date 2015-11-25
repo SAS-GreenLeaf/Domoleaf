@@ -39,15 +39,6 @@ ln -s /etc/nginx/sites-available/domoleaf.conf /etc/nginx/sites-enabled/domoleaf
 
 service nginx restart
 
-#Translation, .mo generation
-for inode in $(find /etc/domoleaf/www/locales -type d)
-do
-    if [ -f /etc/domoleaf/www/${inode}/messages.po ]
-    then
-        msgfmt /etc/domoleaf/www/${inode}/messages.po -o /etc/domoleaf/www/${inode}/messages.mo
-    fi
-done
-
 #Copy saved images
 if [ -d /etc/domoleaf/custom ]; then
     cp -r /etc/domoleaf/custom/* /etc/domoleaf/www/templates/default/custom/
