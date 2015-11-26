@@ -30,6 +30,7 @@ echo '
 											<i class="margin-right '.getIcon($device->device_id).'"></i>
 											'.$device->name.'
 										</div>
+										<ul id="optionList-'.$device->room_device_id.'" hidden="hidden" class="nav"></ul>
 									</li>';
 								}
 								echo '
@@ -94,13 +95,6 @@ echo '
 	</div>
 </div>
 <div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
-</div>
-<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-bottom">
-	<div class="navbar-brand">
-		Options
-	</div>
-	<div id="optionList" class="navbar-collapse" hidden>
-	</div>
 </div>';
 
 echo
@@ -226,7 +220,7 @@ echo
 				data: "room_id_device="+room_id_device
 				       +"&id_smartcmd="+id_smartcmd,
 				success: function(result) {
-					$("#optionList").html(result);
+					$("#optionList-"+room_id_device).html(result);
 				}
 			});
 		}
@@ -237,6 +231,9 @@ echo
 			type: "GET",
 			url: "/templates/default/form/form_display_smartcmd.php",
 			data: "id_smartcmd="+id_smartcmd,
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			success: function(result) {
 				$("#drop-smartcmd").html(result);
 				setDroppable();
@@ -247,6 +244,7 @@ echo
 				else {
 					$("#alert-linked-room").show();
 				}
+				popup_close_last();
 			}
 		});
 	}
@@ -276,7 +274,7 @@ echo
 			}
 		});
 	}
-						
+
 	function setLinkedRoom(floor_id, room_id) {
 		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
 		listRoomsOfFloor('.$id_smartcmd.', 1);

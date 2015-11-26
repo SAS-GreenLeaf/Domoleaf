@@ -816,12 +816,17 @@ function openDivs(floor_id, room_id) {
 }
 
 function selectDevice(id_trigger, room_id_device) {
-	
-	$("#optionList").hide();
 	$("li div.active").removeClass("active");
 	$("#device-"+room_id_device).addClass("active");
-	getDeviceOptions(room_id_device, id_trigger);
-	$("#optionList").show("slow");	
+	
+	if ($("#optionList-"+room_id_device).hasClass("open")) {
+		$("#optionList-"+room_id_device).removeClass("open");
+	}
+	else {
+		getDeviceOptions(room_id_device, id_trigger);
+		$("#optionList-"+room_id_device).addClass("open");
+	}
+	$("#optionList-"+room_id_device).toggle("fast");
 }
 
 /*** Triggers ***/

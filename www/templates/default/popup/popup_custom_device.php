@@ -55,6 +55,7 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 				'<div id="uploadError" class="alert alert-danger center" role="alert" hidden>'.
 					_('Image must be JPG or PNG, and size less than 1MB').
 				'</div>'.
+				'<p class="center">'._('Image must be JPG or PNG, and size less than 1MB').'</p>'.
 				'<div class="cd-panel">'.
 					'<div class="cd-panel-content">'.
 						'<label for="image">'.
@@ -100,23 +101,30 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 		echo
 			'<script type="text/javascript">'.
 				'$(document).ready(function(event) {';
-					if (!empty($elem->device_bgimg) ||!empty($elem->room_bgimg)) {
+					if (!empty($elem->device_bgimg) || !empty($elem->room_bgimg)) {
 						echo 
 						'$("#uploadMsg").hide();'.
 						'$("#previewImg").removeClass("aspect-square-little");'.
 						'$("#previewImg").addClass("aspect-square");';
 					}
-					if ($_GET['type_elem'] == 1 && !empty($elem->device_bgimg)){
+					error_log($_GET['type_elem']);
+					if ($_GET['type_elem'] == 1){
 						echo
-						'$("#popupTitle").html("'._("Upload Device Image").'");'.
-						'$("#deleteBtn").show();'.
-						'$("#uploadBtn").hide();';
+						'$("#popupTitle").html("'._("Upload Device Image").'");';
+						if (!empty($elem->device_bgimg)){
+							echo
+							'$("#deleteBtn").show();'.
+							'$("#uploadBtn").hide();';
+						}
 					}
-					else if ($_GET['type_elem'] == 2 && !empty($elem->room_bgimg)) {
+					else if ($_GET['type_elem'] == 2){
 						echo
-						'$("#popupTitle").html("'._("Upload Room Image").'");'.
-						'$("#deleteBtn").show();'.
-						'$("#uploadBtn").hide();';
+						'$("#popupTitle").html("'._("Upload Room Image").'");';
+						if (!empty($elem->room_bgimg)) {
+							echo
+							'$("#deleteBtn").show();'.
+							'$("#uploadBtn").hide();';
+						}
 					}
 					echo
 				'});'.

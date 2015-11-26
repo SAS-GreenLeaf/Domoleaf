@@ -11,7 +11,7 @@ if (empty($_GET['exec_id']) || $_GET['exec_id'] <= 0){
 
 echo '
 <div class="center">'.
-	''._('Do you want to delete this element ?').''.
+	_('Do you want to delete this element ?').
 '</div>'.
 '<div class="controls center margin-top">'.
 	'<button onclick="RemoveSmartcmdElem('.$_GET['exec_id'].')" class="btn btn-success">'.
