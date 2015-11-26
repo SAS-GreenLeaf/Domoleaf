@@ -144,7 +144,7 @@ msgstr "Echec"
 
 #: popup/popup_custom_device.php:56
 msgid "Image must be JPG or PNG, and size less than 1MB"
-msgstr "L'image doit être au format JPG ou PNG, d'un poids inférieur à 1MB."
+msgstr "L'image doit être au format JPG ou PNG, d'un poids inférieur à 1Mo."
 
 #: popup/popup_custom_device.php:63
 msgid "Click or Drag image here"
