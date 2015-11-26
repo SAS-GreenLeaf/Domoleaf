@@ -157,7 +157,7 @@ int main(int __attribute__((unused)) argc,
 	FILE *pid_file;
 	EIBConnection *conn;
 
-	if (argc > 2 && strcmp(argv[1], "--daemon") == 0)
+	if (argc > 2 && strcmp(argv[2], "--daemon") == 0)
 	{
 		if ((pid = fork()) == -1)
 		{
@@ -167,7 +167,7 @@ int main(int __attribute__((unused)) argc,
 		if (pid == 0)
 		{
 			check_args(argc, argv);
-			if ((conn = EIBSocketURL(argv[2])) == NULL)
+			if ((conn = EIBSocketURL(argv[1])) == NULL)
 			{
 				perror("EIBSocketURL");
 				return (1);
