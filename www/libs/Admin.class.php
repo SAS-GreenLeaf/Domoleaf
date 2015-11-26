@@ -137,7 +137,7 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		//only 3 lvl for the moment
-		if($level != 1 && $level != 2 && $level != 3) {
+		if(($level != 1 && $level != 2 && $level != 3) || $id == $this->getId()) {
 			return;
 		}
 		
