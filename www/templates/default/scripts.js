@@ -353,7 +353,7 @@ function popupChromaWheel(iddevice, bg_color, userid, white){
 	white = typeof white !== 'undefined' ? white : 0;
 	$.ajax({
 		type:"GET",
-		url: "/templates/default/popup/popup_ChromaWheel.php",
+		url: "/templates/default/popup/popup_chroma_wheel.php",
 		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid+"&white="+white,
 		success: function(msg) {
 			BootstrapDialog.show({
