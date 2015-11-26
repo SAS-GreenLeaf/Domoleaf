@@ -100,7 +100,7 @@ function showScenarioSummary($name, $id_smartcmd, $id_trigger, $id_schedule, $id
 	$display.=
 				'<script type="text/javascript">
 					$(document).ready(function(){
-						if ('.$id_trigger.' != 0 || '.$id_schedule.' != 0) {
+						if ('.$id_smartcmd.' != 0 && ('.$id_trigger.' != 0 || '.$id_schedule.' != 0)) {
 							$("#completeScenarioBtn").removeAttr(\'disabled\');
 						}
 						else {
