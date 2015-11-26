@@ -1243,10 +1243,10 @@ class Admin extends User {
 		$socket = new Socket();
 		$data = array(
 				'daemon_id' => $daemon_id,
-				'ssid'     => $ssid,
-				'password' => $password,
-				'security' => $security,
-				'mode'     => $mode
+				'ssid'      => $ssid,
+				'password'  => $password,
+				'security'  => $security,
+				'mode'      => $mode
 		);
 		$socket->send('wifi_update', $data, 1);
 

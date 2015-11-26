@@ -92,12 +92,13 @@ class Guest {
 	}
 	
 	public static function language() {
+		//TODO language on comment
 		$list = array(
-			'de' => _('Deutsch'),
+			//'de' => _('Deutsch'),
 			'en' => _('English'),
-			'es' => _('Español'),
+			//'es' => _('Español'),
 			'fr' => _('Français'),
-			'it' => _('Italiano'),
+			//'it' => _('Italiano'),
 		);
 		return $list;
 	}
