@@ -97,20 +97,37 @@ function RemoteAudio(action, iddevice, optionid){
 
 /*** Widget on/off varie ***/
 
-function Variation(iddevice, optionid, step){
-	var varie = $("#slider-value-"+iddevice).val();
+function Variation(iddevice, optionid, step, popup){
+	popup = typeof popup !== 'undefined' ? popup : 0;
+	if (popup == 1){
+		var varie = $("#slider-value-"+iddevice+"-popup").val();
+	}
+	else{
+		var varie = $("#slider-value-"+iddevice).val();
+	}
 
 	varie = parseInt(varie) + step;
 	if (varie == 0 || varie > 0 && varie <= 255){
-		$("#slider-value-"+iddevice).val(varie);
-		outputUpdate(iddevice, varie);
-		getVariation(iddevice, optionid);
+		if (popup == 1){
+			$("#slider-value-"+iddevice+"-popup").val(varie);
+		}
+		else{
+			$("#slider-value-"+iddevice).val(varie);
+		}
+		outputUpdate(iddevice, varie, popup);
+		getVariation(iddevice, optionid, popup);
 	}
 }
 		
-function outputUpdate(iddevice, val) {
+function outputUpdate(iddevice, val, popup) {
 	val = Math.round((parseInt(val)*100)/255);
-	$("#range-"+iddevice).html(val+"%");
+	popup = typeof popup !== 'undefined' ? popup : 0;
+	if (popup == 1){
+		$("#range-"+iddevice+"-popup").html(val+"%");
+	}
+	else{
+		$("#range-"+iddevice).html(val+"%");
+	}
 }
 		
 function onOffToggle(iddevice, optionid, popup){
@@ -136,8 +153,14 @@ function onOff(iddevice, value, optionid){
 	});
 }
 
-function getVariation(iddevice, optionid){
-	var value = $("#slider-value-"+iddevice).val();
+function getVariation(iddevice, optionid, popup){
+	popup = typeof popup !== 'undefined' ? popup : 0;
+	if (popup == 1){
+		var value = $("#slider-value-"+iddevice+"-popup").val();
+	}
+	else{
+		var value = $("#slider-value-"+iddevice).val();	
+	}
 	
 	$.ajax({
 		type:"GET",
@@ -202,8 +225,7 @@ function resetError(room_device_id, device_opt){
 		url: "/form/form_mc_reset_error.php",
 		data: "room_device_id="+room_device_id+"&device_opt="+device_opt,
 		complete: function(result) {
-		popup_close();
-		HandlePopup(2, room_device_id);
+			popup_close();
 		}
 	});
 }
@@ -272,6 +294,12 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		current_color = current_color.replaceAt(6, blue[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
+	else if (idopt == 399){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	}
+	else if (idopt == 407){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	}
 	else if (idopt == 409){
 		if (val.valeur == 0){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
@@ -321,11 +349,12 @@ function CustomPopup(type_elem, id_elem, userid){
 	});
 }
 
-function popupChromaWheel(iddevice, bg_color, userid){
+function popupChromaWheel(iddevice, bg_color, userid, white){
+	white = typeof white !== 'undefined' ? white : 0;
 	$.ajax({
 		type:"GET",
-		url: "/templates/default/popup/popup_ChromaWheel.php",
-		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid,
+		url: "/templates/default/popup/popup_chroma_wheel.php",
+		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid+"&white="+white,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',

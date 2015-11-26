@@ -30,7 +30,7 @@ PROG_SLAVE="domoslave"
 PROG_MONITOR_KNX="monitor_knx"
 PROG_MONITOR_ENOCEAN="monitor_enocean"
 
-MONITOR_KNX_OPTIONS="--daemon ip:localhost"
+MONITOR_KNX_OPTIONS="ip:localhost --daemon 10"
 MONITOR_ENOCEAN_OPTIONS="--daemon"
 
 start()
