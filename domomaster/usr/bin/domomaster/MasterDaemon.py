@@ -35,6 +35,7 @@ from Smartcommand import *;
 from Trigger import *;
 from Schedule import *;
 from Scenario import *;
+from CalcLogs import *;
 import utils;
 from GLManager import *;
 from HttpReq import *;
@@ -113,6 +114,7 @@ DATA_TRIGGERS_LIST_UPDATE     = 'triggers_list_update';
 DATA_SCHEDULES_LIST_UPDATE    = 'schedules_list_update';
 DATA_SCENARIOS_LIST_UPDATE    = 'scenarios_list_update';
 DATA_CHECK_ALL_SCHEDULES      = 'check_all_schedules';
+DATA_CALC_LOGS                = 'calc_logs';
 DATA_SEND_ALIVE               = 'send_alive';
 DATA_SEND_TECH                = 'send_tech';
 DATA_SEND_INTERFACES          = 'send_interfaces';
@@ -149,6 +151,7 @@ class MasterDaemon:
         self.trigger = Trigger(self);
         self.schedule = Schedule(self);
         self.scenario = Scenario(self);
+        self.calcLogs = CalcLogs(self);
         self.protocol_function = {
             PROTOCOL_KNX        : KNXManager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
@@ -202,6 +205,7 @@ class MasterDaemon:
             DATA_SCHEDULES_LIST_UPDATE        : self.schedules_list_update,
             DATA_SCENARIOS_LIST_UPDATE        : self.scenarios_list_update,
             DATA_CHECK_ALL_SCHEDULES          : self.check_schedules,
+            DATA_CALC_LOGS                    : self.launch_calc_logs,
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
@@ -963,6 +967,13 @@ class MasterDaemon:
 
     def check_schedules(self, json_obj, connection):
         self.schedule.check_all_schedules(connection);
+
+    def launch_calc_logs(self, json_obj, connection):
+        self.logger.error('YOUHOU');
+        try:
+            self.calcLogs.sort_logs(connection);
+        except Exception as e:
+            self.logger.error(e);
 
     def get_global_state(self):
         query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
