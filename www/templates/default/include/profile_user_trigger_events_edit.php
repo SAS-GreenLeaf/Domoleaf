@@ -30,6 +30,7 @@ echo '
 												<i class="margin-right '.getIcon($device->device_id).'"></i>
 												'.$device->name.'
 											</div>
+											<ul id="optionList-'.$device->room_device_id.'" hidden="hidden" class="nav"></ul>
 										</li>';
 									}
 									echo '
@@ -66,15 +67,7 @@ echo '
 		}
 		echo '
 	</div>
-	<div id="drop-conditions" class="col-xs-8 col-xs-offset-4">
-	</div>
-	<div class="col-xs-8 col-xs-offset-4 navbar navbar-inverse navbar-fixed-bottom">
-		<div class="navbar-brand">
-			Options
-		</div>
-		<div id="optionList" class="navbar-collapse" hidden>
-		</div>
-	</div>';
+	<div id="drop-conditions" class="col-xs-8 col-xs-offset-4"></div>';
 
 echo
 '<script type="text/javascript">
@@ -82,6 +75,7 @@ echo
 	$(document).ready(function(){
 		displayTrigger('.$id_trigger.');
 		ShowScenarios();
+		openDivs(0, 0);
 		activateMenuElem(\'triggers\');
 	});
 	
@@ -197,7 +191,7 @@ echo
 				data: "room_id_device="+room_id_device
 				       +"&id_trigger="+id_trigger,
 				success: function(result) {
-					$("#optionList").html(result);
+					$("#optionList-"+room_id_device).html(result);
 				}
 			});
 		}
@@ -208,10 +202,13 @@ echo
 			type: "GET",
 			url: "/templates/default/form/form_display_trigger.php",
 			data: "id_trigger="+id_trigger,
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			success: function(result) {
 				$("#drop-conditions").html(result);
 				setDroppable();
-				openDivs(0, 0);
+				popup_close_last();
 			}
 		});
 	}

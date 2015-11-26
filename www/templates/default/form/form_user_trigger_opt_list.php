@@ -18,20 +18,24 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_trigger'])) {
 		if (in_array($option->option_id, $available_opt)) {
 			if (($option->option_id == 392 || $option->option_id == 393 || $option->option_id == 394) && $option_rgb == 0) {
 				echo '
-					<div id="btn-option-'.$_GET['room_id_device'].'" class="btn btn-greenleaf btn-draggable"
-					     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
-						<input type="text" value="'.$option->option_id.'" hidden>
-						RGB
-					</div>';
+					<li class="list-item">
+						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
+						     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
+							<input type="text" value="'.$option->option_id.'" hidden>
+							'._('RGB').'
+						</div>
+					</li>';
 				$option_rgb = 1;
 			}
 			else if(($option->option_id != 392 && $option->option_id != 393 && $option->option_id != 394)){
 				echo '
-					<div id="btn-option-'.$_GET['room_id_device'].'" class="btn btn-greenleaf btn-draggable"
-					     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
-						<input type="text" value="'.$option->option_id.'" hidden>
-						'.$option->name.'
-					</div>';
+					<li class="list-item">
+						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
+						     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
+							<input type="text" value="'.$option->option_id.'" hidden>
+							'.$option->name.'
+						</div>
+					</li>';
 			}
 		}
 		
