@@ -15,6 +15,7 @@ $result  =  $request -> send_request();
 
 $profilInfo = $result->profileInfo;
 $language = $result->language;
+$currentuser = $request->getId();
 
 if (empty($profilInfo)){
 	redirect('/conf_users');

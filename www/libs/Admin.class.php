@@ -28,7 +28,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
-		               gender, phone, language, design, activity, mcuser_level
+		               gender, phone, language, design, activity, mcuser_level,
 		               bg_color, border_color
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -137,8 +137,8 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		//only 3 lvl for the moment
-		if($level != 2 && $level != 3) {
-			$level = 1;
+		if($level != 1 && $level != 2 && $level != 3) {
+			return;
 		}
 		
 		$sql = 'UPDATE mcuser
