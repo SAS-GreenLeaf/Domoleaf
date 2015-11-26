@@ -231,6 +231,9 @@ echo
 			type: "GET",
 			url: "/templates/default/form/form_display_smartcmd.php",
 			data: "id_smartcmd="+id_smartcmd,
+			beforeSend:function(result, status){
+				PopupLoading();
+			},
 			success: function(result) {
 				$("#drop-smartcmd").html(result);
 				setDroppable();
@@ -241,6 +244,7 @@ echo
 				else {
 					$("#alert-linked-room").show();
 				}
+				popup_close_last();
 			}
 		});
 	}
