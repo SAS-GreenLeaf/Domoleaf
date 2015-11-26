@@ -78,6 +78,7 @@ class MasterSql:
             if json_obj['sender_name'] == d[2]:
                 daemon_id = d[0];
                 break;
+
         db.insert_datas_in_table('knx_log', ["type", "addr_src", "addr_dest", "knx_value", "t_date", "daemon_id"],
                                  (json_obj['type'], json_obj['src_addr'], json_obj['dst_addr'], json_obj['value'],
                                   json_obj['date'],

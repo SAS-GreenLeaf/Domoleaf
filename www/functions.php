@@ -147,7 +147,7 @@ function format_size($bytes, $format = '%.2f') {
 }
 
 function convertHexaToRGB($color) {
-	if ($color[0] == '#') {		
+	if ($color[0] == '#') {
 		$color = substr($color, 1);
 	}
 	$red = substr($color, 0, 2);
