@@ -94,8 +94,7 @@ echo '
 		</select>
 	</div>
 </div>
-<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4">
-</div>';
+<div id="drop-smartcmd" class="col-xs-8 col-xs-offset-4"></div>';
 
 echo
 '<script type="text/javascript">
