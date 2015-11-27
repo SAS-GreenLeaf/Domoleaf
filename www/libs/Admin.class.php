@@ -447,12 +447,17 @@ class Admin extends User {
 	function confFloorNew($namefloor, $nameroom = 0) {
 		$link = Link::get_link('domoleaf');
 		
+		$tmpNameFloor = $namefloor;
+		if (empty($namefloor)) {
+			$tmpNameFloor = 'floor';
+		}
+		
 		$sql = 'INSERT INTO floor
 		        (floor_name)
 		        VALUES
 		        (:name)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name', $namefloor, PDO::PARAM_STR);
+		$req->bindValue(':name', $tmpNameFloor, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newfloorid = $link->lastInsertId();
@@ -465,9 +470,17 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			if (!empty($nameroom)) {
-				$this->confRoomNew($nameroom, $newfloorid);
+			if (empty($namefloor)){
+				$LOCALE = langToLocale($this->getLanguage());
+				putenv("LC_ALL=".$LOCALE);
+				setlocale(LC_ALL, $LOCALE);
+				bind_textdomain_codeset("messages", "UTF-8");
+				bindtextdomain("messages", "/etc/domoleaf/www/locales");
+				textdomain("messages");
+				$name = _('Floor').' '.$newfloorid;
+				$this->confFloorRename($newfloorid, $name);
 			}
+			$this->confRoomNew($nameroom, $newfloorid);
 		}
 		
 		return $newfloorid;
@@ -555,9 +568,12 @@ class Admin extends User {
 	function confRoomNew($name, $floor) {
 		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
-	
-		if(empty($name) or empty($floorList[$floor])) {
+		if(empty($floorList[$floor])) {
 			return null;
+		}
+		$tmpName = $name;
+		if(empty($name)) {
+			$tmpName = 'room';
 		}
 	
 		$sql = 'INSERT INTO room
@@ -565,7 +581,7 @@ class Admin extends User {
 		        VALUES
 		        (:name, :floor)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name',  $name,  PDO::PARAM_STR);
+		$req->bindValue(':name',  $tmpName,  PDO::PARAM_STR);
 		$req->bindValue(':floor', $floor, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
@@ -578,6 +594,16 @@ class Admin extends User {
 			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			if (empty($name)){
+				$LOCALE = langToLocale($this->getLanguage());
+				putenv("LC_ALL=".$LOCALE);
+				setlocale(LC_ALL, $LOCALE);
+				bind_textdomain_codeset("messages", "UTF-8");
+				bindtextdomain("messages", "/etc/domoleaf/www/locales");
+				textdomain("messages");
+				$name = _('Room').' '.$newroomid;
+				$this->confRoomRename($newroomid, $name);
+			}
 		}
 	}
 	

@@ -569,7 +569,7 @@ msgstr "Nom déjà existant"
 #: form/form_update_smartcmd_name.php:29 form/form_update_trigger_name.php:29
 #: include/conf_installation.php:193
 msgid "Invalid Name"
-msgstr "Nom invalid"
+msgstr "Nom invalide"
 
 #: popup/popup_user_create_schedule.php:17
 msgid "Please enter the Schedule name :"

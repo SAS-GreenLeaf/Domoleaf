@@ -3,7 +3,6 @@
 include('header.php');
 
 $request =  new Api();
-$request -> add_request('confFloorNew');
 $result  =  $request -> send_request();
 
 echo '<div class="center"><strong>'._('Add a new floor').'</strong></div>';
