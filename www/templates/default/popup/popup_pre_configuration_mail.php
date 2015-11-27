@@ -28,6 +28,12 @@ echo
 
 '<script type="text/javascript">'.
 
+'$(document).ready(function(){'.
+	'setTimeout(function(){'.
+		'$("#fromMailpopup").focus();'.
+	'}, 400);'.
+'});'.
+
 'function PreConfigurationMail(){'.
 	'var fromMailval = $("#fromMailpopup").val();'.
 	

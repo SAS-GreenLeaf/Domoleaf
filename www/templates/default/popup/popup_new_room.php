@@ -32,7 +32,12 @@ echo	'</select><br/><br/>'.
 		'</button>'.
 		'</div>'.
 		'<script type="text/javascript">'.
-			'$(".selectpicker").selectpicker();'.
+			'$(document).ready(function(){'.
+				'$(".selectpicker").selectpicker();'.
+				'setTimeout(function(){'.
+					'$("#newroom").focus();'.
+				'}, 400);'.
+			'});'.
 		'</script>';
 
 ?>

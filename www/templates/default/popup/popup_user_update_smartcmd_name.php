@@ -30,9 +30,14 @@ if (!empty($_GET['smartcmd_id'])) {
 	
 	echo
 		'<script type="text/javascript">'.
-		
-			'$("#popupTitle").html("'._("Rename Smartcommand").'");'.
-			
+
+			'$(document).ready(function(){'.
+				'$("#popupTitle").html("'._("Rename Smartcommand").'");'.
+				'setTimeout(function(){'.
+					'$("#smartcmdName").focus();'.
+				'}, 400);'.
+			'});'.
+
 			'function updateSmartcmdName() {'.
 				'var name = "";'.
 				

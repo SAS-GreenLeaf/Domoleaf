@@ -10,13 +10,13 @@ $result  =  $request -> send_request();
 $listip = $result->monitorIp;
 $listmonitor = $result->confDaemonList;
 
-echo '<div class="center"><strong>'._('Create a new daemon').'</strong></div>';
+echo '<div class="center"><strong>'._('Create a new box').'</strong></div>';
 echo '	<div class="col-xs-6">
 			<div class="input-group">
 				<label class="input-group-addon">'.
 				'<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 				</label>'.
-				'<input type="text" id="newdaemon" placeholder="'._('Enter daemon name').'" class="form-control">
+				'<input type="text" id="newdaemon" placeholder="'._('Enter the Box name').'" class="form-control">
 			</div>
 			<div class="input-group">
 				<label class="input-group-addon">'.
@@ -64,6 +64,13 @@ echo '	<div class="col-xs-6">
 	'<div class="controls center">		
 		<button  id="eventSave" onclick="NewDaemon()" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button>
 	</div>'.
-	'<script type="text/javascript">setInterval(function() { ListDaemon() }, 2000);</script>';
+	'<script type="text/javascript">'.
+		'setInterval(function() { ListDaemon() }, 2000);'.
+		'$(document).ready(function(){'.
+			'setTimeout(function(){'.
+			'$("#newdaemon").focus();'.
+			'}, 400);'.
+		'});'.
+	'</script>';
 
 ?>

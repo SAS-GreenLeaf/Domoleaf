@@ -38,7 +38,12 @@ echo
 echo
 	'<script type="text/javascript">'.
 	
-	'$("#popupTitle").html("'._("New Schedule").'");'.
+	'$(document).ready(function(){'.
+		'$("#popupTitle").html("'._("New Schedule").'");'.
+		'setTimeout(function(){'.
+			'$("#scheduleName").focus();'.
+		'}, 400);'.
+	'});'.
 	
 	'function saveNewSchedule() {'.
 		'var name = "";'.
