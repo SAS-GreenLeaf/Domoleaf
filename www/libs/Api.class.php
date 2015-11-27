@@ -404,7 +404,7 @@ class Api {
 						break;
 						
 						case 'confRoomNew':
-							if(!empty($var[0]) && !empty($var[1])) {
+							if(!empty($var[1])) {
 								$res = $user->confRoomNew(ucfirst(trim($var[0])), $var[1]);
 							}
 						break;
