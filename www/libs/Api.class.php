@@ -369,14 +369,12 @@ class Api {
 						break;
 						
 						case 'confFloorNew':
-							if(!empty($var[0])) {
-								if (!empty($var[1])) {
-									$res = $user->confFloorNew(ucfirst(trim($var[0])), ucfirst(trim($var[1])));
-								}
-								else {
-									$res = $user->confFloorNew(ucfirst(trim($var[0])));
-								}
+							if (!empty($var[1])) {
+								$res = $user->confFloorNew(ucfirst(trim($var[0])), ucfirst(trim($var[1])));
 							}
+							else {
+								$res = $user->confFloorNew(ucfirst(trim($var[0])));
+							}	
 						break;
 						
 						case 'confFloorRename':

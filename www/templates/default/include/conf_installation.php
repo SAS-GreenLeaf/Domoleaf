@@ -174,24 +174,18 @@ function FloorNew(){
 	var namefloor = $("#newfloor").val();
 	var nameroom = $("#newroom").val();
 
-	if (namefloor != \'\' && namefloor != \'\') {
-		$.ajax({
-			type:"GET",
-			url: "/form/form_floor_new.php",
-			data: "namefloor="+encodeURIComponent(namefloor)
-			      +"&nameroom="+encodeURIComponent(nameroom),
-			beforeSend:function(result, status){
-				PopupLoading();
-			},
-			complete: function(result, status) {
-				location.href=\'/conf_installation\';
-			}
-		});
-	}
-	else {
-		$("#popupError").show();
-		$("#errorMsg").html("'._('Invalid Name').'");
-	}
+	$.ajax({
+		type:"GET",
+		url: "/form/form_floor_new.php",
+		data: "namefloor="+encodeURIComponent(namefloor)
+		      +"&nameroom="+encodeURIComponent(nameroom),
+		beforeSend:function(result, status){
+			PopupLoading();
+		},
+		complete: function(result, status) {
+			location.href=\'/conf_installation\';
+		}
+	});
 }
 
 function floorRemove(floorid) {
