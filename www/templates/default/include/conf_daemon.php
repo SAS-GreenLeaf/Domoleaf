@@ -155,7 +155,7 @@ function PopupNewDaemon(){
 		success: function(msg) {
 			ListDaemon();
 			BootstrapDialog.show({
-				title: "'._('New Daemon').'",
+				title: "'._('New Box').'",
 			message: msg
 		});
 		}

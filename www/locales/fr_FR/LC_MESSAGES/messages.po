@@ -232,34 +232,30 @@ msgstr "Merci de patienter..."
 msgid "Loading in progress"
 msgstr "Chargement en cours"
 
-#: popup/popup_new_box.php:13 include/conf_daemon.php:12
+#: include/conf_daemon.php:155 include/conf_daemon.php:12
 msgid "New Box"
 msgstr "Nouvelle Box"
 
-#: popup/popup_new_box.php:14
+#: popup/popup_new_daemon.php
 msgid "Enter the Box name"
 msgstr "Entrez le nom de la Box"
 
-#: popup/popup_new_box.php:17 popup/popup_new_daemon.php:38
+#: popup/popup_new_daemon.php:38
 #: form/form_conf_new_daemon.php:17
 msgid "Serial number"
 msgstr "Numéro de série"
 
-#: popup/popup_new_box.php:18 popup/popup_new_daemon.php:25
+#: popup/popup_new_daemon.php:25
 #: popup/popup_rename_daemon.php:29
 msgid "Enter the serial number"
 msgstr "Entrez le numéro de série"
 
-#: popup/popup_new_box.php:21 form/form_conf_device_ip.php:15
+#:  form/form_conf_device_ip.php:15
 #: include/configuration-menu.php:29
 msgid "Ip"
 msgstr "IP"
 
-#: popup/popup_new_box.php:22
-msgid "Enter the Ip (optional) "
-msgstr "Entrez l'IP (optionnel)"
-
-#: popup/popup_new_box.php:29 popup/popup_new_daemon.php:65
+#: popup/popup_new_daemon.php:65
 #: popup/popup_new_floor.php:24 popup/popup_new_user.php:35
 #: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
 #: popup/popup_rename_room.php:35 popup/popup_user_create_scenario.php:19
@@ -280,7 +276,7 @@ msgstr "Entrez l'IP (optionnel)"
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: popup/popup_new_box.php:29 popup/popup_new_daemon.php:65
+#: popup/popup_new_daemon.php:65
 #: popup/popup_new_floor.php:28 popup/popup_new_user.php:35
 #: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
 #: popup/popup_rename_room.php:39 include/conf_device_new.php:9
@@ -288,8 +284,8 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: popup/popup_new_daemon.php:13
-msgid "Create a new daemon"
-msgstr "Créer un nouveau Daemon"
+msgid "Create a new box"
+msgstr "Créer une nouvelle box"
 
 #: popup/popup_new_daemon.php:19 popup/popup_rename_daemon.php:23
 msgid "Enter daemon name"
@@ -962,10 +958,6 @@ msgstr "Supprimer"
 #: include/conf_daemon.php:85
 msgid "No Box. Please add a box"
 msgstr "Aucune Box. Merci d'ajouter une box"
-
-#: include/conf_daemon.php:155
-msgid "New Daemon"
-msgstr "Nouveau Daemon"
 
 #: include/conf_daemon.php:169
 msgid "Reboot D3"

@@ -10,13 +10,13 @@ $result  =  $request -> send_request();
 $listip = $result->monitorIp;
 $listmonitor = $result->confDaemonList;
 
-echo '<div class="center"><strong>'._('Create a new daemon').'</strong></div>';
+echo '<div class="center"><strong>'._('Create a new box').'</strong></div>';
 echo '	<div class="col-xs-6">
 			<div class="input-group">
 				<label class="input-group-addon">'.
 				'<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 				</label>'.
-				'<input type="text" id="newdaemon" placeholder="'._('Enter daemon name').'" class="form-control">
+				'<input type="text" id="newdaemon" placeholder="'._('Enter the Box name').'" class="form-control">
 			</div>
 			<div class="input-group">
 				<label class="input-group-addon">'.
