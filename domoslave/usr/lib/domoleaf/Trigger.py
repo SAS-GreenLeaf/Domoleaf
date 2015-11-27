@@ -50,7 +50,7 @@ class Trigger:
 
     def get_device_state(self, room_device_id, option_id, global_state):
         device_state = [];
-       for elem in global_state:
+        for elem in global_state:
             if elem[0] == room_device_id and elem[1] == option_id:
                 device_state = elem;
                 return device_state;
