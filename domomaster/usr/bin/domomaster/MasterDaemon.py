@@ -324,15 +324,15 @@ class MasterDaemon:
             frameinfo = getframeinfo(currentframe());
 
     def check_updates(self, json_obj, connection):
-        self.logger.info('CHECKING UPDATES');
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=4';
         actual_version = self.sql.mysql_handler_personnal_query(query);
         if not actual_version:
-            self.logger.error("NO MASTER VERSION");
+            self.logger.error("CHECK_UPDATE : No Master Version");
             return;
         query = 'UPDATE configuration SET configuration_value="" WHERE configuration_id=13';
         self.sql.mysql_handler_personnal_query(query);
-        Popen(['apt-get', 'update'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
+        p = Popen(['apt-get', 'update'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
+        output, error = p.communicate();
         p = Popen(['apt-show-versions',  '-u', 'domomaster'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
         output, error = p.communicate();
         if p.returncode == 0:
@@ -342,11 +342,12 @@ class MasterDaemon:
             version = actual_version[0][0];
         query = 'UPDATE configuration SET configuration_value="' + version + '" WHERE configuration_id=13';
         self.sql.mysql_handler_personnal_query(query);
-        self.logger.info('END');
 
     def update(self, json_obj, connection):
         call(['apt-get', 'update']);
-        call(['DEBIAN_FRONTED=noninteractive', 'apt-get', 'install', 'domomaster', 'domoslave', '-y']);
+        p = Popen("DEBIAN_FRONTEND=noninteractive apt-get install domomaster domoslave -y ",
+              shell=True, stdin=None, stdout=False, stderr=False,executable="/bin/bash");
+        output, error = p.communicate();
         hostname = socket.gethostname();
         if '.' in hostname:
             hostname = hostname.split('.')[0];
@@ -557,7 +558,7 @@ class MasterDaemon:
         Updates room_device_option values in the database.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-
+        self.logger.info(json_obj);
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
         self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection);
 
