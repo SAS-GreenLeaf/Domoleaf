@@ -196,6 +196,9 @@ function AddNewDevice(){
 	var device = $("#listdevice").val();
 	var proto = $("#listproto").val();
 
+	if (name == \'\'){
+		name = $("#listdevice option:selected").text();
+	}
 	if (name != \'\'){
 		if (floor != 0 && room != null){
 			if (proto){
@@ -218,7 +221,7 @@ function AddNewDevice(){
 				else if (proto == 1){
 					var knxaddr = $("#knxaddr").val();
 					var daemon = $("#listdaemon").val();
-	
+
 					if (daemon){
 						if (knxaddr != \'\'){
 							SendByAjax(data+"&knxaddr="+knxaddr+"&daemon="+daemon);
@@ -249,10 +252,10 @@ function AddNewDevice(){
 		else {
 				CatchError("'._('Floor and room is required').'");
 		}
-	}
-	else {
+	}	else {
 		CatchError("'._('Empty device name').'");
 	}
+
 }
 
 function CatchError(msg){
