@@ -710,8 +710,6 @@ class Admin extends User {
 			$req2->execute() or die (error_log(serialize($req2->errorInfo())));
 		}
 		
-		$listSmartcmd = array_unique($listSmartcmd);
-		$listSmartcmd = implode(', ', $listSmartcmd);
 		
 		$sql = 'DELETE FROM room_device
 		        WHERE room_device_id=:room_device_id';
@@ -719,13 +717,16 @@ class Admin extends User {
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
-		$sql = 'DELETE smartcommand_list
-				FROM smartcommand_list
-				LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
-				WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
-		$req = $link->prepare($sql);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+		if(sizeof($listSmartcmd) > 0) {
+			$listSmartcmd = array_unique($listSmartcmd);
+			$listSmartcmd = implode(', ', $listSmartcmd);
+			$sql = 'DELETE smartcommand_list
+					FROM smartcommand_list
+					LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
+					WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
+			$req = $link->prepare($sql);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
 	}
 	
 	/**
