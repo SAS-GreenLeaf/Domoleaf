@@ -107,7 +107,7 @@ msgid "6"
 msgstr "6"
 
 #: popup/popup_clim.php:72
-msgid "Confort"
+msgid "Comfort"
 msgstr "Confort"
 
 #: popup/popup_clim.php:73
