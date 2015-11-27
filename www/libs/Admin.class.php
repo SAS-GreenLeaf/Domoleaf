@@ -112,7 +112,7 @@ class Admin extends User {
 		return $req->rowCount();
 	}
 	
-	function profileRename($lastname, $firstname, $gender, $phone, $language, $user_id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $user_id=0) {
 		$link = Link::get_link('domoleaf');
 	
 		if(empty($user_id)) {
@@ -129,7 +129,7 @@ class Admin extends User {
 	
 		if(!empty($do->mcuser_id)) {
 			$user = new User($do->mcuser_id);
-			$user-> profileRename($lastname, $firstname, $gender, $phone, $language);
+			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language);
 		}
 	}
 	
