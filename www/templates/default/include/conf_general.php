@@ -291,7 +291,7 @@ function getEndCheck(){
 		success: function(result){
 			if (result != "") {
 				clearInterval(idIntervalCheck);
-				if (result != "'.$mastersversion.'") {
+				if (parseInt(result) >= 0 && result != "'.$mastersversion.'") {
 					$("#checkUpdateBtn").addClass("hide");
 					$("#updateBtn").removeClass("hide");
 					$("#noUpdate").hide();
@@ -321,14 +321,14 @@ function popupUpdateVersion(){
 		}
 	});
 }
-						
+
 function getEndUpdate(){
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_check_version.php",
 		data:"idVersion="+4,
 		success: function(result){
-			if (result != "'.$mastersversion.'") {
+			if (parseInt(result) >= 0 && result != "'.$mastersversion.'") {
 				clearInterval(idIntervalUpdate);
 				popup_close();
 				location.reload();
