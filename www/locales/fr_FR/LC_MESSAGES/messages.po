@@ -1288,6 +1288,18 @@ msgstr "Box"
 msgid "Users"
 msgstr "Utilisateurs"
 
+#: include/conf_profiles.php:80
+msgid "Level"
+msgstr "Rang"
+
+#: include/conf_profiles.php:87
+msgid "User"
+msgstr "Utilisateur"
+
+#: include/conf_profiles.php:88
+msgid "Admin"
+msgstr "Administrateur"
+
 #: include/configuration-menu.php:21 include/configuration-menu.php:22
 msgid "Busmonitor"
 msgstr "Moniteur de bus"
@@ -1895,3 +1907,11 @@ msgstr "Déconnexion"
 #: top_connected.php
 msgid "Toggle navigation"
 msgstr "Basculer la navigation"
+
+#: conf_profiles.php profile.php
+msgid "Email"
+msgstr "Email"
+
+#: conf_profiles.php profile.php
+msgid "Enter your email"
+msgstr "Entrez votre adresse email"

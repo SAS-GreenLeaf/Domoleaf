@@ -51,7 +51,13 @@ echo '
 					}
 				echo '
 				</div>
-						
+				
+				<label class="control-label" for="email">'._('Email').'</label>
+				<div class="input-group">
+					<label for="email" class="input-group-addon">@</label>
+					<input name="email" type="email" class="form-control" id="email" placeholder="'._('Enter your email').'" value="'.$profilInfo->mcuser_mail.'">
+				</div>
+
 				<label class="control-label" for="phone">'._('Phone').'</label>
 				<div class="input-group">
 					<label for="username" class="input-group-addon">
@@ -75,9 +81,33 @@ echo '
 						}
 					echo '
 					</select>
-				</div>
-			</div>
+				</div>';
+
+				if ($currentuser != $userid){
+					echo '<label class="control-label" for="lvl">'._('Level').'</label>
+					<div class="input-group">
+						<label class="input-group-addon" for="lvl">
+							<span aria-hidden="true" class="fa fa-graduation-cap"></span>
+						</label>
+						<select id="selectLvl" name="selectlvl" class="input-xlarge center form-control selectpicker medium-input">';
+						if ($profilInfo->mcuser_level == 1){
+							echo '<option value="1" selected="selected">'._('User').'</option>
+								  <option value="3">'._('Admin').'</option>';
+						}
+						else{
+							echo '<option value="1">'._('User').'</option>
+								  <option value="3" selected="selected">'._('Admin').'</option>';
+						}
+						echo '</select>
+					</div>';
+				}
+		echo '</div>
 		</fieldset>
+		<div class="control-group control-group-profile btn-saveProfile">
+			<div class="controls save-button">
+				<button onclick="saveProfile()" id="saveProfile" name="saveProfile" class="btn btn-greenleaf center">'._('Save').'</button>
+			</div>
+		</div>
 	</div>
 	<div class="col-lg-5 col-sm-12 col-xs-12 password">
 		<fieldset class="center">
@@ -192,6 +222,7 @@ function saveProfile() {
 	var lastname = $("#lastname").val();
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
+   	var level = $("#selectLvl").val();
 	if ($("#sexe-1").is(\':checked\'))
 	{
 		var gender = 1;
@@ -200,11 +231,12 @@ function saveProfile() {
 	{
 		var gender = 0;
 	}
+   	var email = $("#email").val();
 	var phone = $("#phone").val();
 	$.ajax({
 		type:"GET",
 		url: "/form/form_profile_save.php",
-		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&language="+language+"&id="+'.$userid.',
+		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&level="+level+"&id="+'.$userid.',
 		beforeSend: function(){
 			loadingForm();
 		},
@@ -216,6 +248,4 @@ function saveProfile() {
 
 
 </script>';
-?>
-
 ?>
