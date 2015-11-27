@@ -1,25 +1,29 @@
 <?php 
 
-function defineLocale($lang='') {
+function langToLocale($lang) {
 	switch($lang) {
 		case 'de':
-			define('LOCALE', 'de_DE');
-		break;
+			return 'de_DE';
 		case 'es':
-			define('LOCALE', 'es_ES');
-		break;
+			return 'es_ES';
 		case 'fr':
-			define('LOCALE', 'fr_FR');
-		break;
+			return 'fr_FR';
 		case 'it':
-			define('LOCALE', 'it_IT');
-		break;
+			return 'it_IT';
 		case 'en':
-			define('LOCALE', 'en_UK');
-		break;
+			return 'en_UK';
 		default:
-			 define('LOCALE', detect_language());
-		break;
+			return NULL;
+	}
+}
+
+function defineLocale($lang='') {
+	$locale = langToLocale($lang);
+	if (!empty($locale)){
+		define('LOCALE', $locale);
+	}
+	else{
+		define('LOCALE', detect_language());
 	}
 	$results = putenv("LC_ALL=".LOCALE);
 	$results = putenv("LANG=".LOCALE);
