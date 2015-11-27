@@ -37,9 +37,14 @@ echo
 
 echo
 	'<script type="text/javascript">'.
-	
-		'$("#popupTitle").html("'._("New Trigger").'");'.
-		
+
+		'$(document).ready(function(){'.
+			'$("#popupTitle").html("'._("New Trigger").'");'.
+			'setTimeout(function(){'.
+				'$("#triggerName").focus();'.
+			'}, 400);'.
+		'});'.
+
 		'function saveNewTrigger() {'.
 			'var name = "";'.
 			

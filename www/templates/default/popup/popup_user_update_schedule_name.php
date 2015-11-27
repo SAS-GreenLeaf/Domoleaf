@@ -30,8 +30,13 @@ if (!empty($_GET['schedule_id'])) {
 	
 	echo
 		'<script type="text/javascript">'.
-		
-			'$("#popupTitle").html("'._("Rename Schedule").'");'.
+
+			'$(document).ready(function(){'.
+				'$("#popupTitle").html("'._("Rename Schedule").'");'.
+				'setTimeout(function(){'.
+					'$("#scheduleName").focus();'.
+				'}, 400);'.
+			'});'.
 			
 			'function updateScheduleName() {'.
 				'var name = "";'.

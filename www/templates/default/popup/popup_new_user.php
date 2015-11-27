@@ -35,6 +35,13 @@ echo '<div class="alert alert-danger alert-hidden alert-dismissible" role="alert
 		'<input type="password" id="newpassword" placeholder="'._('Enter the Password').'" class="form-control">
 	</div>
 	<button  id="eventSave" onclick="NewUser()" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button>
-</div>';
+</div>'.
+'<script type="text/javascript">'.
+	'$(document).ready(function(){'.
+		'setTimeout(function(){'.
+			'$("#newusername").focus();'.
+		'}, 400);'.
+	'});'.
+'</script>';
 
 ?>

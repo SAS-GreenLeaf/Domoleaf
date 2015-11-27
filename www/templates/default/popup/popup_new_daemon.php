@@ -64,6 +64,13 @@ echo '	<div class="col-xs-6">
 	'<div class="controls center">		
 		<button  id="eventSave" onclick="NewDaemon()" class="btn btn-greenleaf">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button>
 	</div>'.
-	'<script type="text/javascript">setInterval(function() { ListDaemon() }, 2000);</script>';
+	'<script type="text/javascript">'.
+		'setInterval(function() { ListDaemon() }, 2000);'.
+		'$(document).ready(function(){'.
+			'setTimeout(function(){'.
+			'$("#newdaemon").focus();'.
+			'}, 400);'.
+		'});'.
+	'</script>';
 
 ?>

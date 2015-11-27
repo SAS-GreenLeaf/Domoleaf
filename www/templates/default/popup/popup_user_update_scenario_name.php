@@ -30,9 +30,14 @@ if (!empty($_GET['scenario_id'])) {
 	
 	echo
 		'<script type="text/javascript">'.
-		
-			'$("#popupTitle").html("'._("New scenario").'");'.
-			
+
+			'$(document).ready(function(){'.
+				'$("#popupTitle").html("'._("New scenario").'");'.
+				'setTimeout(function(){'.
+					'$("#scenarioName").focus();'.
+				'}, 400);'.
+			'});'.
+
 			'function updateScenarioName() {'.
 				'var name = "";'.
 				

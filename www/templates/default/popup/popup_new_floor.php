@@ -26,7 +26,14 @@ echo '
 	'<button onclick="popup_close()" class="btn btn-danger margin-left">'.
 		_('Cancel').
 		' <span class="glyphicon glyphicon-remove"></span>'.
-	'</button>
-</div>';
+	'</button>'.
+'</div>'.
+'<script type="text/javascript">'.
+	'$(document).ready(function(){'.
+		'setTimeout(function(){'.
+			'$("#newfloor").focus();'.
+		'}, 400);'.
+	'});'.
+'</script>';
 
 ?>

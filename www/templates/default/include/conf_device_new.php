@@ -148,6 +148,9 @@ echo '
 
 $(document).ready(function(){
 	activateMenuElem(\'install\');
+	setTimeout(function(){
+		$("#devicename").focus();
+	}, 400);
 });
 
 function HideAll(){

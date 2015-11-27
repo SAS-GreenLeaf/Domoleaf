@@ -33,6 +33,9 @@ echo
 		
 		'$(document).ready(function(){'.
 			'$("#popupTitle").html("'._("New Scenario").'");'.
+			'setTimeout(function(){'.
+				'$("#scenarioName").focus();'.
+			'}, 400);'.
 		'});'.
 		
 		'function saveNewScenario() {'.

@@ -29,6 +29,12 @@ echo
 
 '<script type="text/javascript">'.
 
+'$(document).ready(function(){'.
+	'setTimeout(function(){'.
+		'$("#resetKey").focus();'.
+	'}, 400);'.
+'});'.
+
 'function CheckResetKey(){'.
 	'var resetKeyval = $("#resetKey").val();'.
 
