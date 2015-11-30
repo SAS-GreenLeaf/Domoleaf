@@ -688,15 +688,15 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$listDevice[$do->room_device_id] = array(
-				'room_id' => $do->room_id,
+				'room_id'        => $do->room_id,
 				'application_id' => $do->application_id,
-				'device_id' => $do->device_id,
-				'protocol_id' => $do->protocol_id,
-				'name' => $do->name,
+				'device_id'      => $do->device_id,
+				'protocol_id'    => $do->protocol_id,
+				'name'           => $do->name,
 				'room_device_id' => $do->room_device_id,
-				'device_order' => $do->device_order,
-				'device_bgimg'  => $do->device_bgimg,
-				'device_opt' => array()
+				'device_order'   => $do->device_order,
+				'device_bgimg'   => $do->device_bgimg,
+				'device_opt'     => array()
 			);
 			if(!in_array($do->application_id, $listApps)){
 				$listApps[] = $do->application_id;
@@ -722,11 +722,14 @@ class User {
 		               optiondef.hidden_arg, room_device.device_id, 
 		               optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr, room_device_option.addr_plus, 
+		               room_device_option.addr, room_device_option.addr_plus,
+		               dpt.dpt_id,
+		               dpt.unit,
 		               room_device_option.valeur
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
+		        LEFT JOIN dpt ON room_device_option.dpt_id = dpt.dpt_id
 		        WHERE room_device_option.status = 1';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -737,11 +740,13 @@ class User {
 					'name' 		=> $do->name,
 					'addr'		=> $do->addr,
 					'addr_plus' => $do->addr_plus,
+					'dpt_id'    => $do->dpt_id,
+					'unit'      => $do->unit,
 					'valeur'	=> $do->valeur
 				);
 			}
 		}
-		
+
 		return array(
 			'ListFloor'    => $listFloor,
 			'ListRoom'     => $listRoom,
