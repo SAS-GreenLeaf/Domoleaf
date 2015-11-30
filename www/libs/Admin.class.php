@@ -482,7 +482,16 @@ class Admin extends User {
 			}
 			$this->confRoomNew($nameroom, $newfloorid);
 		}
-		
+
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleFloor($do->mcuser_id, $newfloorid, 1);
+		}
+
 		return $newfloorid;
 	}
 	
@@ -604,6 +613,15 @@ class Admin extends User {
 				$name = _('Room').' '.$newroomid;
 				$this->confRoomRename($newroomid, $name);
 			}
+		}
+		
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleRoom($do->mcuser_id, $newroomid, 1);
 		}
 	}
 	
@@ -1043,6 +1061,15 @@ class Admin extends User {
 		$socket = new Socket();
 		$socket->send('reload_camera');
 
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 	
@@ -1078,6 +1105,15 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 	
@@ -1111,7 +1147,16 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-		
+
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 
