@@ -226,25 +226,6 @@ function display_alarm($info){
 	return $display;
 }
 
-// Led
-function display_led($info){
-	$tmp = '0';
-	if (!empty($info->device_opt->{92}->valeur)){
-		$tmp = $info->device_opt->{92}->valeur;
-	}
-	if ($tmp == '0'){
-		$display = '<div>
-						<i class="glyphicon glyphicon-record led-off"></i>
-					</div>';
-	}
-	else{
-		$display = '<div>
-						<i class="glyphicon glyphicon-record led-on"></i>
-					</div>';
-	}
-	return $display;
-}
-
 // Widget fan
 function display_fan($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
@@ -802,6 +783,25 @@ function display_temperature($info){
 					<span>'.$info->device_opt->{72}->unit.'</span>
 				</div>';
 
+	return $display;
+}
+
+// Led
+function display_led($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{92}->valeur)){
+		$tmp = $info->device_opt->{92}->valeur;
+	}
+	if ($tmp == '0'){
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-off"></i>
+					</div>';
+	}
+	else{
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-on"></i>
+					</div>';
+	}
 	return $display;
 }
 
