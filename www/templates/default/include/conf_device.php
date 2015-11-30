@@ -419,7 +419,7 @@ function SaveInfo(){
 function CheckAddr(addr, addr_plus, optid){
 	var protoopt = '.$deviceconf->protocol_id.';
 
-	if (protoopt == 1){
+	if (protoopt == 1 && $("#toggle-"+optid).prop(\'checked\') == 1){
 		var tabaddr = addr.split("/");
 		var tabaddr_plus = addr_plus.split("/");
 		
@@ -513,6 +513,9 @@ function SaveOption(optid){
 	var addr_plus = $("#raddr-"+optid).val();
 	var dpt_id = $("#unity-"+optid).val();
 	
+	if (!addr){
+		addr = "";
+	}
 	if (!addr_plus){
 		addr_plus = "";
 	}
