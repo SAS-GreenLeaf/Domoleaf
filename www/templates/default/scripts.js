@@ -1053,30 +1053,32 @@ function changeSaveBtnState(id_btn, state) {
 /*** Color ***/
 
 function getElemHexaColor(selector) {
-	var rgb = $(selector).css("color").match(/\d+/g);
-	var r   = parseInt(rgb[0], 10).toString(16);
-	if (r == 0) {
-		r = "00";
+	hex = '#00000';
+	if (typeof $(selector).attr("id") !== 'undefined') {
+		var rgb = $(selector).css("color").match(/\d+/g);
+		var r   = parseInt(rgb[0], 10).toString(16);
+		if (r == 0) {
+			r = "00";
+		}
+		if (r.lenght < 2) {
+			r = "0" + r;
+		}
+		var g   = parseInt(rgb[1], 10).toString(16);
+		if (g == 0) {
+			g = "00";
+		}
+		if (g.lenght < 2) {
+			g = "0" + g;
+		}
+		var b   = parseInt(rgb[2], 10).toString(16);
+		if (b == 0) {
+			b = "00";
+		}
+		if (b.lenght < 2) {
+			b = "0" + b;
+		}
+		var hex = '#'+ r + g + b;
 	}
-	if (r.lenght < 2) {
-		r = "0" + r;
-	}
-	var g   = parseInt(rgb[1], 10).toString(16);
-	if (g == 0) {
-		g = "00";
-	}
-	if (g.lenght < 2) {
-		g = "0" + g;
-	}
-	var b   = parseInt(rgb[2], 10).toString(16);
-	if (b == 0) {
-		b = "00";
-	}
-	if (b.lenght < 2) {
-		b = "0" + b;
-	}
-	var hex = '#'+ r + g + b;
-	
 	return (hex);
 }
 
