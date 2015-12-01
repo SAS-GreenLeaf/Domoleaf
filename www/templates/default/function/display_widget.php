@@ -481,14 +481,14 @@ function display_commande($info){
 //widget lampe
 function display_lampe($info){
 	$display = '';
-	if (!empty($info->device_id) && !((!empty($info->device_opt->{409})) || $info->device_id == 78 || $info->device_id == 85)){
+	if (!empty($info->device_id) && !((!empty($info->device_opt->{153})) || $info->device_id == 78 || $info->device_id == 85)){
 		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
-	if (!empty($info->device_id) && !empty($info->device_opt->{409})){
+	if (!empty($info->device_id) && !empty($info->device_opt->{153})){
 		$display .= '<div class="info-warning">
-					<button id="widget_info-'.$info->room_device_id.'-409" title="'._('More').'"
+					<button id="widget_info-'.$info->room_device_id.'-153" title="'._('More').'"
 					onclick="HandlePopup(2, '.$info->room_device_id.')"';
-		if ($info->device_opt->{409}->valeur == 1){
+		if ($info->device_opt->{153}->valeur == 1){
 			$display .= 'class="btn btn-danger"';
 		}
 		else{

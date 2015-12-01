@@ -17,10 +17,10 @@ $device = $deviceallowed->{$_GET['iddevice']};
 
 echo '<div class="center">'.
 		'<br/>';
-if ($device->device_opt && $device->device_opt->{409} && $device->device_opt->{409}->valeur == 1){
+if ($device->device_opt && $device->device_opt->{153} && $device->device_opt->{153}->valeur == 1){
 	echo ''._('Lightning default (open circuit)').' ';
 	if ($request->getLevel() > 1){
-		echo '</button><button onclick="resetError('.$_GET['iddevice'].', 409)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>';
+		echo '</button><button onclick="resetError('.$_GET['iddevice'].', 153)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>';
 	}
 }
 else {

@@ -168,7 +168,7 @@ VALUES
 	(150, NULL, 0, 0, 0.0, 4, '', '', 'Blanc Névé', '', 0),
 	(151, NULL, 0, 0, 0.0, 4, '', '', 'Carbone', '', 0),
 	(152, NULL, 0, 0, 0.0, 4, '', '', 'Dune', '', 0),
-	(153, NULL, 0, 0, 0.0, 3, '', '', 'Détection de courant', '', 0),
+	(153, NULL, 0, 0, 0.0, 3, '', '', 'Détection de courant', '', 4),
 	(154, NULL, 0, 0, 0.0, 2, '', '', 'Commande manuelle', '', 0),
 	(155, NULL, 0, 0, 0.0, 4, '', '', 'Altira', '', 0),
 	(156, NULL, 0, 0, 0.0, 4, '', '', 'Unica', '', 0),
@@ -417,6 +417,6 @@ VALUES
 	(406, 'Ventilation 6', 0, 0, 0.0, 0, '', '', 'Ventilation 6', '', 4),
 	(407, 'Power', 1, 0, 0.0, 1, '', '', 'Puissance', '', 6),
 	(408, 'Picture', 1, 9, 0.0, 1, '', '', 'Photo', '', 4),
-	(409, NULL, 0, 0, 0.0, 1, '', '', 'Circuit ouvert', '', 4);
+	(410, NULL, 0, 0, 0.0, 0, '', '', 'Varié Blanc', '', 4);
 
 SET FOREIGN_KEY_CHECKS=1;
