@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo -e "[ \033[32mok\033[0m ] Done installing Domoleaf master daemon"
-hostname=`hostname`
 domomaster=`cat /etc/domoleaf/.domomaster.version`
 
 #Backups
@@ -9,16 +8,6 @@ mkdir -p /etc/domoleaf/mnt
 mkdir -p /etc/domoleaf/sql/backup
 
 touch /etc/domoleaf/camera.conf
-
-if [ -f /etc/nginx/sites-enabled/default ]; then
-    sed -i 's/default_server//g' /etc/nginx/sites-enabled/default
-fi
-sed -i 's/RUN=no/RUN=yes/g' /etc/default/sslh
-sed -i 's/<change-me>/0.0.0.0/g' /etc/default/sslh
-sed -i 's/127.0.0.1:443/127.0.0.1:1443/g' /etc/default/sslh
-
-sed -i 's/;opcache.enable=0/opcache.enable=0/g' /etc/php5/fpm/php.ini
-sed -i 's/opcache.enable=0/opcache.enable=1/g' /etc/php5/fpm/php.ini
 
 # Create domoleaf db if does not exist
 bash /etc/domoleaf/sql/database.sh
