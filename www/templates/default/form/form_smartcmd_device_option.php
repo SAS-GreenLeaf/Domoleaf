@@ -26,6 +26,7 @@ function showPopup($id_smartcmd, $room_id_device, $id_option, $id_exec, $modif) 
 			393 => "display_smartcmd_color_wheel",
 			394 => "display_smartcmd_color_wheel"
 	);
+	$display.='<p class="center margin-bottom">'._('Choose the option state for this device.').'</p></br>';
 	$display.='<input id="smartcmdPopupValue-'.$room_id_device.'" value="0" hidden>';
 	if (empty($tab_func[$id_option])) {
 		echo '
