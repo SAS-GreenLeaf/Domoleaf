@@ -45,7 +45,17 @@ class MasterSql:
                                       "ip_addr": host._IpAddr,
                                       "hostname": host._Hostname.split('.')[0]});
         db.personnal_query("DELETE FROM ip_monitor WHERE last_update<"+str(time.time()-7200).split('.')[0]);
+        
         db.updatedb();
+
+        query =  "UPDATE room_device ";
+        query += "JOIN ip_monitor ON plus4=mac_addr ";
+        query += "SET addr=ip_addr ";
+        query += "WHERE protocol_id=6 AND plus4 IS NOT NULL AND ip_addr != addr";
+        self.mysql_handler_personnal_query(query);
+        
+        db.updatedb();
+        
         db.close();
 
     def update_enocean_log(self, json_obj):
