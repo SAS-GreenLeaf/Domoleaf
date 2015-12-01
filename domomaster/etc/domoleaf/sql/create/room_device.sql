@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `room_device` (
   KEY `room_id` (`room_id`),
   KEY `device_id` (`device_id`),
   KEY `daemon_id` (`daemon_id`),
+  KEY `plus4` (`plus4`),
   CONSTRAINT `room_device_ibfk_1` FOREIGN KEY (`protocol_id`) REFERENCES `protocol` (`protocol_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `room_device_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `room_device_ibfk_3` FOREIGN KEY (`device_id`) REFERENCES `device` (`device_id`) ON DELETE CASCADE ON UPDATE CASCADE,
