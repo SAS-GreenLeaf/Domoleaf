@@ -313,11 +313,12 @@ class MasterDaemon:
                 r = SlaveReceiver(new_connection, hostname, self);
                 r.start();
 
-    def parse_data(self, data, connection):
+    def parse_data(self, data, connection, daemon_id):
         """
         Once data are received whether from domoleaf or slave, the function of the packet_type in data is called.
         """
         json_obj = json.JSONDecoder().decode(data);
+        json_obj['daemon_id'] = daemon_id;
         if json_obj['packet_type'] in self.data_function.keys():
             self.data_function[json_obj['packet_type']](json_obj, connection);
         else:
@@ -558,10 +559,12 @@ class MasterDaemon:
         Updates room_device_option values in the database.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-        self.logger.info(json_obj);
+        #self.logger.info(json_obj);
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
-        self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection);
-
+        #try:
+        self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
+        #except Exception as e:
+        #    self.logger.error(e);
         connection.close();
 
     def knx_write_short(self, json_obj, connection):
@@ -989,6 +992,7 @@ class MasterDaemon:
             global_state = filtered;
         else:
             global_state = '';
+        #self.logger.info('GLOBAL STATE ' + str(global_state));
         return global_state;
 
     def send_request(self, json_obj, connection):

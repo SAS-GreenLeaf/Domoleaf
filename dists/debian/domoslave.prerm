@@ -2,6 +2,8 @@
 
 echo -e "[ \033[33m..\033[0m ] Removing Domoleaf slave daemon..."
 
+service domoslave stop
+
 mv /etc/domoleaf/slave.conf /etc/domoleaf/slave.conf.save
 
 #Conf

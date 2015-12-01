@@ -19,4 +19,4 @@ class CommandReceiver(Thread):
         print(data);
         print('====================')
         print();
-        self.daemon.parse_data(data, self.connection);
+        self.daemon.parse_data(data, self.connection, 0);

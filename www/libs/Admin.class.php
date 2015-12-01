@@ -527,6 +527,8 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':floor_id', $idfloor, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$this->udpateScenariosList();
 	}
 	
 	/*** Rooms ***/
@@ -689,6 +691,8 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_id', $idroom, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$this->udpateScenariosList();
 	}
 	
 	/*** Devices ***/
@@ -771,6 +775,8 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
+		
+		$this->udpateScenariosList();
 	}
 	
 	/**
@@ -939,6 +945,8 @@ class Admin extends User {
 			$req->bindValue(':status', $status, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
+		
+		$this->udpateScenariosList();
 	}
 	
 	/**

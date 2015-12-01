@@ -2184,6 +2184,7 @@ class User {
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioTrigger($scenario_id, $trigger_id){
@@ -2199,6 +2200,7 @@ class User {
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioSchedule($scenario_id, $schedule_id){
@@ -2214,6 +2216,7 @@ class User {
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioName($scenario_id, $scenario_name){
