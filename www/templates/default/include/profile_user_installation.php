@@ -9,7 +9,7 @@ echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 	echo '
 	<div class="center">
-		<h2>'._('User Installation').'
+		<h2>'._('User Customisation').'
 		<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, 0)">
 			<span class="fa fa-pencil-square-o md colorUserInstall"></span>
 		</button>
@@ -230,6 +230,9 @@ $(document).ready(function(){
 	activateMenuElem(\'installation\');
 	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
 	$("#colorUserMenusBorderBg").css(\'background-color\', "'.$menus_color.'");
+
+	$("#accordion").find(".timeline-heading")[0].click();
+	$("#accordion").find(".timeline-heading")[1].click();
 });
 
 function swap(elem, action){

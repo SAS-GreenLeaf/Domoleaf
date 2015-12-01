@@ -5,8 +5,8 @@ echo '<div class="col-xs-2 bhoechie-tab-menu sidebar">
 				<a title="'._('Settings').'" href="/profile" id="menu-settings" class="list-group-item text-center">
 					<h4 class="fa fa-cog lg"></h4><br/><span class="hidden-xs">'._('Settings').'</span>
 				</a>
-				<a title="'._('Installation').'" href="/profile_user_installation" id="menu-installation" class="list-group-item text-center">
-					<h4 class="fa fa-server lg"></h4><br/><span class="hidden-xs">'._('Installation').'</span>
+				<a title="'._('Customisation').'" href="/profile_user_installation" id="menu-installation" class="list-group-item text-center">
+					<h4 class="fa fa-server lg"></h4><br/><span class="hidden-xs">'._('Customisation').'</span>
 				</a>
 				<a title="'._('Graphics').'" href="/profile_user_graphics" id="menu-graphics" class="list-group-item text-center">
 					<h4 class="fa fa-bar-chart lg"></h4><br/><span class="hidden-xs">'._('Graphics').'</span>

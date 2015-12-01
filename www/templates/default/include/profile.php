@@ -44,6 +44,13 @@ echo ' <title>'._('Profile').'</title>
 				</div>
 			</div>
 			<div class="control-group control-group-profile">
+				<label class="control-label" for="email">'._('Email').'</label>
+				<div class="input-group">
+					<label for="email" class="input-group-addon">@</label>
+					<input name="email" type="email" class="form-control" id="email" placeholder="'._('Enter your email').'" value="'.$profilInfo->mcuser_mail.'">
+				</div>
+			</div>
+			<div class="control-group control-group-profile">
 				<label class="control-label" for="phone">'._('Phone').'</label>		
 				<div class="input-group">
 				<label for="username" class="input-group-addon">
@@ -201,11 +208,12 @@ function saveProfile() {
 	{
 		var gender = 0;
 	}
+	var email = NULL;
 	var phone = $("#phone").val();
 	$.ajax({
 		type:"GET",
 		url: "/form/form_profile_save.php",
-		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&language="+language+"&id=0",
+		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&id=0",
 		beforeSend: function(){
 			loadingForm();
 		},

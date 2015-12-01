@@ -25,12 +25,13 @@ class SlaveReceiver(Thread):
         """
         Thread run function overload
         """
-        self.logger.error('SELECT serial, secretkey FROM daemon WHERE serial=\'' + self.connected_host + '\'')
-        res = self.sql.mysql_handler_personnal_query('SELECT serial, secretkey FROM daemon WHERE serial=\'' + self.connected_host + '\'');
+        self.logger.error('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\'' + self.connected_host + '\'')
+        res = self.sql.mysql_handler_personnal_query('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\'' + self.connected_host + '\'');
         aes_key = '';
         for r in res:
             if r[0] == self.connected_host:
                 aes_key = r[1];
+                daemon_id = r[2];
                 break;
         if aes_key == '':
             return None;
@@ -41,6 +42,6 @@ class SlaveReceiver(Thread):
             data2 = decode_obj.decrypt(data[16:]).decode();
             flag = False;
             obj = data2;
-            self.daemon.parse_data(obj, self.connection);
+            self.daemon.parse_data(obj, self.connection, daemon_id);
         except Exception as e:
             self.logger.error(e);

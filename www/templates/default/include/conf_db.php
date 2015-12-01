@@ -4,7 +4,7 @@ include('configuration-menu.php');
 
 echo '
 <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">
-	<div class="center"><h2>'._('Database configuration').'</h2></div><br/><br/>
+	<div class="center"><h2>'._('Backups configuration').'</h2></div><br/><br/>
 		<div class="col-xs-12 center">
 			<button type="button"
 			        id="popupUsb"
@@ -63,7 +63,7 @@ function PopupUsb(){
 				success: function(result){
 					$("#popupUsb").removeClass("m-progress");
 					BootstrapDialog.show({
-						title: "'._('Database USB').'",
+						title: "'._('Backup USB').'",
 						message: result
 					});
 				}
@@ -103,7 +103,7 @@ function PopupRemoveDbUsb(filename){
 		data: "filename="+filename,
 		success: function(result) {
 			BootstrapDialog.show({
-				title: "'._('Delete Database').'",
+				title: "'._('Delete backup').'",
 				message: result
 			});
 		}
@@ -117,7 +117,7 @@ function PopupRestoreDbUsb(filename){
 		data: "filename="+filename,
 		success: function(result) {
 			BootstrapDialog.show({
-				title: "'._('Delete Database').'",
+				title: "'._('Delete backup').'",
 				message: result
 			});
 		}
@@ -171,7 +171,7 @@ function PopupRemoveDbLocal(filename){
 		data: "filename="+filename,
 		success: function(result) {
 			BootstrapDialog.show({
-				title: "'._('Delete Database').'",
+				title: "'._('Delete backup').'",
 				message: result
 			});
 		}
@@ -185,7 +185,7 @@ function PopupRestoreDbLocal(filename){
 		data: "filename="+filename,
 		success: function(result) {
 			BootstrapDialog.show({
-				title: "'._('Restore Database').'",
+				title: "'._('Restore backup').'",
 				message: result
 			});
 		}

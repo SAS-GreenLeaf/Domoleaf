@@ -29,9 +29,14 @@ if (!empty($_GET['trigger_id'])) {
 	
 	echo
 		'<script type="text/javascript">'.
-		
-			'$("#popupTitle").html("'._("Rename Trigger").'");'.
-			
+
+			'$(document).ready(function(){'.
+				'$("#popupTitle").html("'._("Rename Trigger").'");'.
+				'setTimeout(function(){'.
+					'$("#triggerName").focus();'.
+				'}, 400);'.
+			'});'.
+
 			'function updateTriggerName() {'.
 				'var name = "";'.
 				

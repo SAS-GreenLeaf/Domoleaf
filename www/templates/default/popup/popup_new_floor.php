@@ -3,7 +3,6 @@
 include('header.php');
 
 $request =  new Api();
-$request -> add_request('confFloorNew');
 $result  =  $request -> send_request();
 
 echo '<div class="center"><strong>'._('Add a new floor').'</strong></div>';
@@ -27,7 +26,14 @@ echo '
 	'<button onclick="popup_close()" class="btn btn-danger margin-left">'.
 		_('Cancel').
 		' <span class="glyphicon glyphicon-remove"></span>'.
-	'</button>
-</div>';
+	'</button>'.
+'</div>'.
+'<script type="text/javascript">'.
+	'$(document).ready(function(){'.
+		'setTimeout(function(){'.
+			'$("#newfloor").focus();'.
+		'}, 400);'.
+	'});'.
+'</script>';
 
 ?>

@@ -17,7 +17,6 @@ check_package()
 check_package make
 check_package gcc
 check_package g++
-check_package libconfig-dev
 check_package autoconf
 check_package libtool
 check_package libxml2-dev

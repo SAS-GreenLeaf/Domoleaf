@@ -38,7 +38,12 @@ echo
 
 '<script type="text/javascript">'.
 
-'setTimeout(function(){ SetGoodWidth(); }, 150);'.
+'$(document).ready(function(){'.
+	'setTimeout(function(){ SetGoodWidth(); }, 150);'.
+	'setTimeout(function(){'.
+		'$("#newPassword").focus();'.
+	'}, 400);'.
+'});'.
 
 'function SetGoodWidth(){'.
 	'var widhtresetKey = $("#labresetKey").width();'.

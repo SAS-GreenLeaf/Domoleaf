@@ -34,14 +34,19 @@ echo
 	        'class="btn btn-greenleaf">'.
 		_('Save').
 		' <span class="glyphicon glyphicon-ok"></span>'.
-	'</button>'.
+	'</button> '.
 	'<button onclick="popup_close()" class="btn btn-danger">'.
 		_('Cancel').
 		' <span class="glyphicon glyphicon-remove"></span>'.
 	'</button>'.
 '</div>'.
 '<script type="text/javascript">'.
-	'$(".selectpicker").selectpicker();'.
+	'$(document).ready(function(){'.
+		'$(".selectpicker").selectpicker();'.
+		'setTimeout(function(){'.
+			'$("#newroomname").focus();'.
+		'}, 400);'.
+	'});'.
 '</script>';
 
 ?>

@@ -40,7 +40,7 @@ echo '
 						<td>';
 						if ($elem->id_smartcmd != 0) {
 							echo 
-							'<a href="/profile_user_smartcmd/'.$elem->smartcommand_id.'/'.$elem->scenario_id.'">'.
+							'<a href="/profile_user_smartcmd/'.$elem->id_smartcmd.'/'.$elem->scenario_id.'">'.
 								$elem->name_smartcmd.'
 							</a>';
 						}

@@ -41,6 +41,7 @@ mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/enocean_log.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/ip_monitor.sql
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/knx_log.sql
+mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/create/graphic_log.sql
 
 #POSTINST
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /etc/domoleaf/sql/postinst.sql

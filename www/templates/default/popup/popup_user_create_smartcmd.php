@@ -38,9 +38,14 @@ echo
 
 echo
 	'<script type="text/javascript">'.
-	
-		'$("#popupTitle").html("'._("New Smartcommand").'");'.
-		
+
+		'$(document).ready(function(){'.
+			'$("#popupTitle").html("'._("New Smartcommand").'");'.
+			'setTimeout(function(){'.
+				'$("#smartcmdName").focus();'.
+			'}, 400);'.
+		'});'.
+
 		'function saveNewSmartcommand() {'.
 			'var name = "";'.
 			

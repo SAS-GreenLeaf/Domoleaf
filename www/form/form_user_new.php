@@ -9,7 +9,7 @@ if (!empty($_GET['username']) && !empty($_GET['password']) && !empty($_GET['last
 	$new = $result->profileNew;
 	if (!empty($new)){
 		$request =  new Api();
-		$request -> add_request('profileRename', array($_GET['lastname'], $_GET['firstname'], '', '', '', $new));
+		$request -> add_request('profileRename', array($_GET['lastname'], $_GET['firstname'], '', '', '', '', $new));
 		$request -> send_request();
 		echo $new;
 	}else{

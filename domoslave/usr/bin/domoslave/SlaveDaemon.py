@@ -567,7 +567,8 @@ class SlaveDaemon:
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
-                Popen(['service', 'knxd', 'start']);
+                call(['service', 'knxd', 'start']);
+                Popen(['monitor_knx', 'ip:localhost', '--daemon']);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';

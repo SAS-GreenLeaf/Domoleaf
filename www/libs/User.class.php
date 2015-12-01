@@ -337,7 +337,7 @@ class User {
 	 * @param string : language
 	 * @param int : user id, not used
 	 */
-	function profileRename($lastname, $firstname, $gender, $phone, $language, $id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $id=0) {
 		$link = Link::get_link('domoleaf');
 	
 		if($gender != 1) {
@@ -353,6 +353,7 @@ class User {
 		        SET lastname= :lastname,
 		            firstname= :firstname,
 		            gender= :gender,
+					mcuser_mail= :email,
 		            phone= :phone,
 		            language= :language
 		        WHERE mcuser_id=:user_id';
@@ -360,6 +361,7 @@ class User {
 		$req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
 		$req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
 		$req->bindValue(':gender', $gender, PDO::PARAM_INT);
+		$req->bindValue(':email', $email, PDO::PARAM_STR);
 		$req->bindValue(':phone', $phone, PDO::PARAM_STR);
 		$req->bindValue(':language', $language, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -2177,6 +2179,7 @@ class User {
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioTrigger($scenario_id, $trigger_id){
@@ -2192,6 +2195,7 @@ class User {
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioSchedule($scenario_id, $schedule_id){
@@ -2207,6 +2211,7 @@ class User {
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$this->udpateScenariosList();
 	}
 	
 	function updateScenarioName($scenario_id, $scenario_name){

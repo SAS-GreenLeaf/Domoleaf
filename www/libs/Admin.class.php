@@ -28,7 +28,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
-		               gender, phone, language, design, activity, mcuser_level
+		               gender, phone, language, design, activity, mcuser_level,
 		               bg_color, border_color
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -112,7 +112,7 @@ class Admin extends User {
 		return $req->rowCount();
 	}
 	
-	function profileRename($lastname, $firstname, $gender, $phone, $language, $user_id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $user_id=0) {
 		$link = Link::get_link('domoleaf');
 	
 		if(empty($user_id)) {
@@ -129,7 +129,7 @@ class Admin extends User {
 	
 		if(!empty($do->mcuser_id)) {
 			$user = new User($do->mcuser_id);
-			$user-> profileRename($lastname, $firstname, $gender, $phone, $language);
+			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language);
 		}
 	}
 	
@@ -137,8 +137,8 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 		
 		//only 3 lvl for the moment
-		if($level != 2 && $level != 3) {
-			$level = 1;
+		if(($level != 1 && $level != 2 && $level != 3) || $id == $this->getId()) {
+			return;
 		}
 		
 		$sql = 'UPDATE mcuser
@@ -447,12 +447,17 @@ class Admin extends User {
 	function confFloorNew($namefloor, $nameroom = 0) {
 		$link = Link::get_link('domoleaf');
 		
+		$tmpNameFloor = $namefloor;
+		if (empty($namefloor)) {
+			$tmpNameFloor = 'floor';
+		}
+		
 		$sql = 'INSERT INTO floor
 		        (floor_name)
 		        VALUES
 		        (:name)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name', $namefloor, PDO::PARAM_STR);
+		$req->bindValue(':name', $tmpNameFloor, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newfloorid = $link->lastInsertId();
@@ -465,9 +470,17 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			
-			if (!empty($nameroom)) {
-				$this->confRoomNew($nameroom, $newfloorid);
+			if (empty($namefloor)){
+				$LOCALE = langToLocale($this->getLanguage());
+				putenv("LC_ALL=".$LOCALE);
+				setlocale(LC_ALL, $LOCALE);
+				bind_textdomain_codeset("messages", "UTF-8");
+				bindtextdomain("messages", "/etc/domoleaf/www/locales");
+				textdomain("messages");
+				$name = _('Floor').' '.$newfloorid;
+				$this->confFloorRename($newfloorid, $name);
 			}
+			$this->confRoomNew($nameroom, $newfloorid);
 		}
 		
 		return $newfloorid;
@@ -505,6 +518,8 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':floor_id', $idfloor, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$this->udpateScenariosList();
 	}
 	
 	/*** Rooms ***/
@@ -555,9 +570,12 @@ class Admin extends User {
 	function confRoomNew($name, $floor) {
 		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
-	
-		if(empty($name) or empty($floorList[$floor])) {
+		if(empty($floorList[$floor])) {
 			return null;
+		}
+		$tmpName = $name;
+		if(empty($name)) {
+			$tmpName = 'room';
 		}
 	
 		$sql = 'INSERT INTO room
@@ -565,7 +583,7 @@ class Admin extends User {
 		        VALUES
 		        (:name, :floor)';
 		$req = $link->prepare($sql);
-		$req->bindValue(':name',  $name,  PDO::PARAM_STR);
+		$req->bindValue(':name',  $tmpName,  PDO::PARAM_STR);
 		$req->bindValue(':floor', $floor, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
@@ -578,6 +596,16 @@ class Admin extends User {
 			        FROM mcuser';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
+			if (empty($name)){
+				$LOCALE = langToLocale($this->getLanguage());
+				putenv("LC_ALL=".$LOCALE);
+				setlocale(LC_ALL, $LOCALE);
+				bind_textdomain_codeset("messages", "UTF-8");
+				bindtextdomain("messages", "/etc/domoleaf/www/locales");
+				textdomain("messages");
+				$name = _('Room').' '.$newroomid;
+				$this->confRoomRename($newroomid, $name);
+			}
 		}
 	}
 	
@@ -645,6 +673,8 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_id', $idroom, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$this->udpateScenariosList();
 	}
 	
 	/*** Devices ***/
@@ -710,8 +740,6 @@ class Admin extends User {
 			$req2->execute() or die (error_log(serialize($req2->errorInfo())));
 		}
 		
-		$listSmartcmd = array_unique($listSmartcmd);
-		$listSmartcmd = implode(', ', $listSmartcmd);
 		
 		$sql = 'DELETE FROM room_device
 		        WHERE room_device_id=:room_device_id';
@@ -719,13 +747,18 @@ class Admin extends User {
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
-		$sql = 'DELETE smartcommand_list
-				FROM smartcommand_list
-				LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
-				WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
-		$req = $link->prepare($sql);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
+		if(sizeof($listSmartcmd) > 0) {
+			$listSmartcmd = array_unique($listSmartcmd);
+			$listSmartcmd = implode(', ', $listSmartcmd);
+			$sql = 'DELETE smartcommand_list
+					FROM smartcommand_list
+					LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
+					WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
+			$req = $link->prepare($sql);
+			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		}
+		
+		$this->udpateScenariosList();
 	}
 	
 	/**
@@ -894,6 +927,8 @@ class Admin extends User {
 			$req->bindValue(':status', $status, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
+		
+		$this->udpateScenariosList();
 	}
 	
 	/**
@@ -1243,10 +1278,10 @@ class Admin extends User {
 		$socket = new Socket();
 		$data = array(
 				'daemon_id' => $daemon_id,
-				'ssid'     => $ssid,
-				'password' => $password,
-				'security' => $security,
-				'mode'     => $mode
+				'ssid'      => $ssid,
+				'password'  => $password,
+				'security'  => $security,
+				'mode'      => $mode
 		);
 		$socket->send('wifi_update', $data, 1);
 

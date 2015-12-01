@@ -256,8 +256,9 @@ class Api {
 							if(empty($var[2])) { $var[2] = ''; }
 							if(empty($var[3])) { $var[3] = ''; }
 							if(empty($var[4])) { $var[4] = ''; }
-							if(empty($var[5])) { $var[5] = 0;  }
-							$res = $user->profileRename(ucfirst(trim($var[0])), ucfirst(trim($var[1])), $var[2], $var[3], $var[4], $var[5]);
+							if(empty($var[5])) { $var[5] = ''; }
+							if(empty($var[6])) { $var[6] = 0;  }
+							$res = $user->profileRename(ucfirst(trim($var[0])), ucfirst(trim($var[1])), $var[2], $var[3], $var[4], $var[5], $var[6]);
 						break;
 						
 						case 'profileLevel':
@@ -368,14 +369,12 @@ class Api {
 						break;
 						
 						case 'confFloorNew':
-							if(!empty($var[0])) {
-								if (!empty($var[1])) {
-									$res = $user->confFloorNew(ucfirst(trim($var[0])), ucfirst(trim($var[1])));
-								}
-								else {
-									$res = $user->confFloorNew(ucfirst(trim($var[0])));
-								}
+							if (!empty($var[1])) {
+								$res = $user->confFloorNew(ucfirst(trim($var[0])), ucfirst(trim($var[1])));
 							}
+							else {
+								$res = $user->confFloorNew(ucfirst(trim($var[0])));
+							}	
 						break;
 						
 						case 'confFloorRename':
@@ -403,7 +402,7 @@ class Api {
 						break;
 						
 						case 'confRoomNew':
-							if(!empty($var[0]) && !empty($var[1])) {
+							if(!empty($var[1])) {
 								$res = $user->confRoomNew(ucfirst(trim($var[0])), $var[1]);
 							}
 						break;
