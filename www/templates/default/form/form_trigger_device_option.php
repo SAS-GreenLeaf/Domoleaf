@@ -33,6 +33,7 @@ function showPopup($id_trigger, $room_id_device, $id_option, $id_condition, $mod
 			393 => "display_trigger_color_wheel",
 			394 => "display_trigger_color_wheel"
 	);
+	$display.='<p class="center margin-bottom">'._('Choose the option state for this device.').'</p></br>';
 	$display.='<input id="triggerPopupValue-'.$room_id_device.'" value="0" hidden>
 				<input id="triggerPopupOperator-'.$room_id_device.'" value="0" hidden>';
 	if (empty($tab_func[$id_option])) {
@@ -106,7 +107,6 @@ function display_trigger_varie($room_id_device) {
 }
 
 function display_trigger_up_down($room_id_device) {
-
 	$display = '
 				<input type="checkbox"
 				       data-on-color="greenleaf"
@@ -181,11 +181,7 @@ function display_trigger_with_operator($room_id_device, $id_option, $optionList,
 	);
 	
 	$display =
-			'<h4>
-				'.$optionList->{$id_option}->name.'
-			</h4>
-			<br/>
-			<select class="selectpicker" id="selectOperator-'.$room_id_device.'"
+			'<select class="selectpicker" id="selectOperator-'.$room_id_device.'"
 			        data-size="10" data-width="auto"
 			        onchange="triggerSetOperator('.$room_id_device.')">';
 				foreach ($opList as $opId => $opName) {
@@ -221,7 +217,5 @@ function display_trigger_color_wheel($room_id_device) {
 	
 	return $display;
 }
-
-
 
 ?>
