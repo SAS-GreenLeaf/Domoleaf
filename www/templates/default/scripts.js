@@ -1041,42 +1041,18 @@ function SaveSchedule(schedule_id) {
 	hours = parseInt(hours.join(''), 2);
 	mins = mins.join('');
 
-	if (!$("#saveTS_btn").hasClass("m-progress")){
-		$("#saveTS_btn").addClass("m-progress");
-		$.ajax({
-			type: "GET",
-			url: "/form/form_save_trigger_schedule.php",
-			data: "id_schedule="+schedule_id
-			      +"&months="+months
-			      +"&weekdays="+weekdays
-			      +"&days="+days
-			      +"&hours="+hours
-			      +"&mins="+mins,
-			success: function(result) {
-				$("#saveTS_btn").removeClass("m-progress");
-				changeSaveBtnState("#saveTS_btn", 1);
-			}
-		});
-	}
-}
-
-function changeSaveBtnState(id_btn, state) {
-	state = typeof state !== 'undefined' ? state : 0;
-	if (state == 0) {
-		$(id_btn).removeClass("btn-success");
-		$(id_btn).addClass("btn-primary");
-		$(id_btn).text("Save");
-	}
-	if (state == 1) {
-		$(id_btn).removeClass("btn-primary");
-		$(id_btn).addClass("btn-success");
-		$(id_btn).text("Saved !");
-	}
-	if (state == 2) {
-		$(id_btn).removeClass("btn-success");
-		$(id_btn).addClass("btn-danger");
-		$(id_btn).text("ERROR !");
-	}
+	$.ajax({
+		type: "GET",
+		url: "/form/form_save_trigger_schedule.php",
+		data: "id_schedule="+schedule_id
+		      +"&months="+months
+		      +"&weekdays="+weekdays
+		      +"&days="+days
+		      +"&hours="+hours
+		      +"&mins="+mins,
+		success: function(result) {
+		}
+	});
 }
 
 /*** Color ***/
