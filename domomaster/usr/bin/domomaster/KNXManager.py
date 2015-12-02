@@ -127,7 +127,7 @@ class KNXManager:
             for line in res:
                 if str(line[2]) == "51" and str(line[0]) == str(json_obj['data']['option_id']):
                     sock = socket.create_connection((hostname, port));
-                    val = str(line[0]).split('40')[2];
+                    val = str(line[0]).split('40')[1];
                     json_str = json.JSONEncoder().encode(
                         {
                             "packet_type": "knx_write_long",
