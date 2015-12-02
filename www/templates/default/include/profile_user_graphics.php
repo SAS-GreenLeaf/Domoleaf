@@ -19,13 +19,13 @@ echo '
 		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 			<select class="selectpicker span2" id="selectRoom-0" data-size="10"
 		        	onchange="listDeviceOfRoom()">
-				<option value="0">'._('No floor selected').'</option>
+				<option value="0">'._('No floor').'</option>
 			</select>
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 			<select class="selectpicker span2" id="selectDevice" data-size="10"
 		    	    onchange="listOptionOfDevice()">
-				<option value="0">'._('No room selected').'</option>
+				<option value="0">'._('No room').'</option>
 			</select>
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">

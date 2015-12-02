@@ -778,8 +778,11 @@ class Api {
 						break;
 						
 						case 'createNewSmartcmd' :
+							if (empty($var[1])) {
+								$var[1] = 0;
+							}
 							if (!empty($var[0])){
-								$res = $user->createNewSmartcmd(ucfirst(trim($var[0])));
+								$res = $user->createNewSmartcmd(ucfirst(trim($var[0])), $var[1]);
 							}
 						break;
 							
