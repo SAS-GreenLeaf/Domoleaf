@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `daemon` (
+CREATE TABLE `daemon` (
   `daemon_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(127) NOT NULL DEFAULT '',
   `serial` varchar(127) NOT NULL,
@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `daemon` (
   `wifi_password` varchar(128) DEFAULT NULL,
   `wifi_security` tinyint(3) unsigned DEFAULT '3',
   `wifi_mode` tinyint(3) unsigned DEFAULT '0',
+  `wifi_channel` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`daemon_id`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
