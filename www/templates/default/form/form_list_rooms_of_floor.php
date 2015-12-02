@@ -5,7 +5,7 @@ include('header.php');
 $request =  new Api();
 $result  =  $request -> send_request();
 
-$resRooms = '<option value="0">'._('No room selected').'</option>';
+$resRooms = '<option value="0">'._('No room').'</option>';
 
 if (!empty($_GET['floor_id'])) {
 
@@ -20,7 +20,7 @@ if (!empty($_GET['floor_id'])) {
 	
 	foreach ($listRoom as $room) {
 		if ($room->floor_id == $floor_id){
-			$resRooms.='<option value="'.$room->room_id.'">'.$room->room_name.'</option>';
+			$resRooms.='<option class="option_ok" value="'.$room->room_id.'">'.$room->room_name.'</option>';
 		}
 	}
 }

@@ -82,7 +82,7 @@ echo '
 		</a>
 		<select class="selectpicker span2" id="selectFloor-'.$id_smartcmd.'" data-size="10"
 		        onchange="listRoomsOfFloor('.$id_smartcmd.', 1)">
-			<option value="0">'._('No floor selected').'</option>';
+			<option value="0">'._('No floor').'</option>';
 			foreach ($installation_info as $floor) {
 				echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
 			}
@@ -90,7 +90,7 @@ echo '
 		</select>
 		<select class="selectpicker span2" id="selectRoom-'.$id_smartcmd.'" data-size="10"
 		        onchange="saveLinkedRoom('.$id_smartcmd.')">
-			<option value="0">'._('No floor selected').'</option>
+			<option value="0">'._('No floor').'</option>
 		</select>
 	</div>
 </div>
@@ -277,7 +277,7 @@ echo
 	function setLinkedRoom(floor_id, room_id) {
 		$("#selectFloor-'.$id_smartcmd.'").selectpicker(\'val\', floor_id);
 		listRoomsOfFloor('.$id_smartcmd.', 1);
-		setTimeout(function(){
+		setTimeout(function() {
 						$("#selectRoom-'.$id_smartcmd.'").selectpicker(\'val\', room_id);
 					}, 500);
 	}

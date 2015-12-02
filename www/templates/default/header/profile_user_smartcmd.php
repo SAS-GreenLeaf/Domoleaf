@@ -7,7 +7,6 @@ $result  =  $request -> send_request();
 
 $userid = $request->getId();
 $listuser = $result->profileList;
-
 $smartcmdList = $result->listSmartcmd;
 
 ?>

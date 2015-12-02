@@ -589,6 +589,12 @@ msgstr "Renommer Horaire"
 msgid "Please enter the Smartcommand name :"
 msgstr "Entrez le nom de la Smartcommand :"
 
+#: popup/popup_user_create_smartcmd.php
+msgid "Please choose the Smartcommand's Linked Room :\n"
+"\t\t\t(no Room selected = Smartcommand not visible)"
+msgstr "Choisissez la Salle Reliée à la Smartcommand :\n"
+"\t\t\t(pas de Salle sélectionnée = Smartcommand non visible)"
+
 #: popup/popup_user_create_smartcmd.php:20
 #: include/profile_user_smartcmd.php:26
 msgid "Smartcommand Name"
@@ -778,8 +784,8 @@ msgid "No device selected"
 msgstr "Pas d'appareil sélectionné"
 
 #: form/form_list_rooms_of_floor.php:5 include/profile_user_graphics.php
-msgid "No room selected"
-msgstr "Pas de salle sélectionnée"
+msgid "No room"
+msgstr "Pas de salle"
 
 #: form/form_pre_configuration_device.php:18
 msgid "Product list"
@@ -1716,8 +1722,8 @@ msgstr ""
 
 #: include/profile_user_smartcmd_edit.php:84
 #: include/profile_user_smartcmd_edit.php:92
-msgid "No floor selected"
-msgstr "Pas d'étage sélectionné"
+msgid "No floor"
+msgstr "Pas d'étage"
 
 #: include/profile_user_smartcmd_edit.php:261
 #: include/profile_user_smartcmd.php:81

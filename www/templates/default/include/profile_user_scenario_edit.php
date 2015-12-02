@@ -58,15 +58,20 @@ echo '
 				</div>
 				<div class="list-group" id="scenario-smartcmd-list">';
 				echo
-					'<a class="list-group-item" id="scenario-smartcmd-0"
+					'<a class="list-group-item cursor" id="scenario-smartcmd-0"
 					    onclick="selectScenarioElem(0, \'smartcmd\')">
 						'._('No Smartcommand').'
 					</a>';
 				foreach ($smartcmdList as $smartcmd) {
 					echo
-						'<a class="list-group-item" id="scenario-smartcmd-'.$smartcmd->smartcommand_id.'"
+						'<a class="list-group-item cursor" id="scenario-smartcmd-'.$smartcmd->smartcommand_id.'"
 						    onclick="selectScenarioElem('.$smartcmd->smartcommand_id.', \'smartcmd\')">
 							'.$smartcmd->name.'
+							<span class="btn btn-primary badge"
+							      title="'._('Edit Smartcommand').'"
+							      onclick="redirect(\'/profile_user_smartcmd/'.$smartcmd->smartcommand_id.'/'.$id_scenario.'\');">
+								<i class="glyphicon glyphicon-edit"></i>
+							</span>
 						</a>';
 				}
 				echo '
@@ -91,15 +96,20 @@ echo '
 				</div>
 				<div class="list-group" id="scenario-trigger-list">';
 				echo
-						'<a class="list-group-item" id="scenario-trigger-0"
+						'<a class="list-group-item cursor" id="scenario-trigger-0"
 						    onclick="selectScenarioElem(0, \'trigger\')">
 							'._('No Trigger').'
 						</a>';
 				foreach ($triggerList as $trigger) {
 					echo
-						'<a class="list-group-item" id="scenario-trigger-'.$trigger->trigger_id.'"
+						'<a class="list-group-item cursor" id="scenario-trigger-'.$trigger->trigger_id.'"
 						    onclick="selectScenarioElem('.$trigger->trigger_id.', \'trigger\')">
 							'.$trigger->name.'
+							<span class="btn btn-primary badge"
+							      title="'._('Edit Trigger').'"
+							      onclick="redirect(\'/profile_user_trigger_events/'.$trigger->trigger_id.'/'.$id_scenario.'\');">
+								<i class="glyphicon glyphicon-edit"></i>
+							</span>
 						</a>';
 				}
 				echo '
@@ -124,15 +134,20 @@ echo '
 				</div>
 				<div class="list-group" id="scenario-schedule-list">';
 				echo
-						'<a class="list-group-item" id="scenario-schedule-0"
+						'<a class="list-group-item cursor" id="scenario-schedule-0"
 						    onclick="selectScenarioElem(0, \'schedule\')">
 							'._('No Schedule (All time)').'
 						</a>';
 				foreach ($scheduleList as $schedule) {
 					echo
-						'<a class="list-group-item" id="scenario-schedule-'.$schedule->schedule_id.'"
+						'<a class="list-group-item cursor" id="scenario-schedule-'.$schedule->schedule_id.'"
 						    onclick="selectScenarioElem('.$schedule->schedule_id.', \'schedule\')">
 							'.$schedule->name.'
+							<span class="btn btn-primary badge"
+							      title="'._('Edit Schedule').'"
+							      onclick="redirect(\'/profile_user_trigger_schedules/'.$schedule->schedule_id.'/'.$id_scenario.'\');">
+								<i class="glyphicon glyphicon-edit"></i>
+							</span>
 						</a>';
 				}
 				echo '

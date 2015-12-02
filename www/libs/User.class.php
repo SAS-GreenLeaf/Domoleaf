@@ -1382,20 +1382,24 @@ class User {
 		return $list;
 	}
 	
-	function createNewSmartcmd($smartcmd_name){
-	
+	function createNewSmartcmd($smartcmd_name, $room_id){
+		$link = Link::get_link('domoleaf');
+
 		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
 			return -1;
 		}
-		$link = Link::get_link('domoleaf');
+		if ($room_id == 0) {
+			$room_id = NULL;
+		}
 		
 		$sql = 'INSERT INTO smartcommand_list
-		        (name, mcuser_id)
+		        (name, mcuser_id, room_id)
 				VALUES
-				(:smartcmd_name, :user_id)';
+				(:smartcmd_name, :user_id, :room_id)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->bindValue(':room_id', $room_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		return $link->lastInsertId();

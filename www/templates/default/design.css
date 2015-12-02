@@ -1744,6 +1744,14 @@ a.carousel-control-camera:hover {
 	color: #fff;
 }
 
+.list-group-item > .badge,
+.list-group-item.active > .badge,
+.nav-pills > .active > a > .badge {
+	background-color: #337ab7;
+	color: #fff;
+	font-size: 15px;
+}
+
 .wizard .nav-tabs {
 	position: relative;
 	margin: 40px auto;

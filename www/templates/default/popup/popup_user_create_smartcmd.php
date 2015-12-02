@@ -3,7 +3,10 @@
 include('header.php');
 
 $request =  new Api();
+$request -> add_request('confUserInstallation');
 $result  =  $request -> send_request();
+
+$installation_info = $result->confUserInstallation;
 
 if (empty($_GET['id_scenario'])) {
 	$id_scenario = 0;
@@ -17,14 +20,30 @@ echo
 		'<div id="popupError" class="alert alert-danger alert-dismissible center" role="alert" hidden>'.
 			'<p id="errorMsg"><p>'.
 		'</div>'.
-		'<div class ="center">'._('Please enter the Smartcommand name :').'</div>'.
+		'<div class ="center"><b>'._('Please enter the Smartcommand name :').'</b></div>'.
 		'<div class="input-group margin-top">'.
 			'<label class="input-group-addon left" for="smartcmdName">'._('Name').'</label>'.
 			'<input id="smartcmdName" name="smartcmdName" title="'._('Smartcommand Name').'" '.
 			'value="" placeholder="Smartcommand name" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
-	'<br/>'.
+	'</br>'.
+	'<p class="center"><b>'._('Please choose the Smartcommand\'s Linked Room :
+			(no Room selected = Smartcommand not visible)').'</b></p>'.
+	'<div class="center">'.
+		'<select class="selectpicker span2 margin-right" id="selectFloor-0" data-size="10"'.
+			'onchange="listRoomsOfFloor(0, 1)">'.
+			'<option value="0">'._('No floor').'</option>';
+			foreach ($installation_info as $floor) {
+				echo '<option value="'.$floor->floor_id.'">'.$floor->floor_name.'</option>';
+			}
+			echo
+		'</select>'.
+		'<select class="selectpicker span2" id="selectRoom-0" data-size="10">'.
+			'<option value="0">'._('No floor selected').'</option>'.
+		'</select>'.
+	'</div>'.
+	'</br>'.
 	'<div class="controls center">'.
 		'<button onclick="saveNewSmartcommand()" class="btn btn-success">'.
 			_('Save').
@@ -36,6 +55,8 @@ echo
 		'</button>'.
 	'</div>';
 
+$first_floor = reset($installation_info)->floor_id;
+
 echo
 	'<script type="text/javascript">'.
 
@@ -44,6 +65,8 @@ echo
 			'setTimeout(function(){'.
 				'$("#smartcmdName").focus();'.
 			'}, 400);'.
+			'$(".selectpicker").selectpicker();'.
+			'setDefaultRoom('.$first_floor.')'.
 		'});'.
 
 		'function saveNewSmartcommand() {'.
@@ -51,11 +74,13 @@ echo
 			
 			'name = $("#smartcmdName").val();'.
 			'name = name.trim();'.
+			'room_id = parseInt($("#selectRoom-0").val());'.
 			
 			'$.ajax({'.
 				'type: "GET",'.
 				'url: "/templates/default/form/form_create_new_smartcmd.php",'.
-				'data: "smartcmd_name="+encodeURIComponent(name),'.
+				'data: "smartcmd_name="+encodeURIComponent(name)'.
+						'+"&room_id="+room_id,'.
 				'success: function(result) {'.
 					'if (result && result == -1) {'.
 						'$("#popupError").show();'.
@@ -71,6 +96,15 @@ echo
 					'}'.
 				'}'.
 			'});'.
+		'}'.
+		
+		'function setDefaultRoom(floor_id) {'.
+			'$("#selectFloor-0").selectpicker(\'val\', floor_id);'.
+			'listRoomsOfFloor(0, 1);'.
+			'setTimeout(function() {'.
+						'room_id = $("#selectRoom-0 .option_ok").first().val();'.
+						'$("#selectRoom-0").selectpicker(\'val\', room_id);'.
+					'}, 200);'.
 		'}'.
 		
 	'</script>';
