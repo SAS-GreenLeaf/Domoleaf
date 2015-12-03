@@ -805,11 +805,17 @@ function openDivs(floor_id, room_id) {
 	room_id = typeof room_id !== 'undefined' ? room_id : 0;
 	if (floor_id == 0) {
 		floor_id = $(".list-group").find("div").attr("id");
+		if (typeof floor_id === 'undefined') {
+			return;
+		}
 		floor_id = floor_id.split("floor-")[1];
 	}
 	ShowRoomList(floor_id);
 	if (room_id == 0) {
 		room_id = $("#roomList-"+floor_id).find("div").attr("id");
+		if (typeof room_id === 'undefined') {
+			return;
+		}
 		room_id = room_id.split("room-")[1];
 	}
 	ShowDeviceList(room_id);
