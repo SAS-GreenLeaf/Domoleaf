@@ -20,16 +20,22 @@ echo '<div class="center">'.
 if ($device->device_opt->{409} && $device->device_opt->{409}->valeur == 1){
 	echo ''._('Lightning default (open circuit)').' ';
 	if ($request->getLevel() > 1){
-		echo '</button><button onclick="resetError('.$_GET['iddevice'].', 409)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>';
+		echo
+		'<button onclick="resetError('.$_GET['iddevice'].', 409)" class="btn btn-danger">'.
+			'<span class="glyphicon glyphicon-remove"></span>'.
+		'</button>';
 	}
 }
 else {
-	echo ''._('No default have been detected').'';
+	echo ''._('No default detected').'';
 }
 echo '<div><br/><br/>';
 
 echo '<div class="controls center">'.
-		'</button> <button onclick="popup_close()" class="btn btn-danger">'._('Close').' <span class="glyphicon glyphicon-remove"></span></button>'.
+		'<button onclick="popup_close()" class="btn btn-danger">'.
+			_('Close').
+			'<span class="glyphicon glyphicon-remove"></span>'.
+		'</button>'.
 	 '</div>';
 
 echo '<script type="text/javascript">'.

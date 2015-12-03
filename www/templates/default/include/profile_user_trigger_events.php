@@ -8,6 +8,7 @@ echo
 		<button class="btn btn-greenleaf" onclick="createTrigger(0)">
 			'._('Create New Trigger').'
 		</button>
+		<p class="margin-top">'._('Trigger is an event (KNX, ...) it can be used to launch Scenarios.').'</p>
 	</div>
 	<div class="col-xs-offset-2 margin-top col-xs-10">';
 		if (empty($triggersList)) {

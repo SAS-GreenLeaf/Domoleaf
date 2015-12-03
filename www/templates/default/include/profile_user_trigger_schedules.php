@@ -8,6 +8,7 @@ echo
 		<button class="btn btn-greenleaf" onclick="createSchedule(0)">
 			'._('Create New Schedule').'
 		</button>
+		<p class="margin-top">'._('Schedule is a time period, it can be used to launch Scenarios.').'</p>
 	</div>
 	<div class="col-xs-offset-2 margin-top col-xs-10">';
 	if (empty($schedulesList)) {

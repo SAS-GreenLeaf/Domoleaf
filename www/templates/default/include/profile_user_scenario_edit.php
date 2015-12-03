@@ -45,7 +45,7 @@ echo '
 		<div class="tab-content col-xs-offset-3" id="selectElemsScenarios">
 			<div class="tab-pane active col-xs-10" role="tabpanel" id="step1">
 				<h3>'._('Smartcommand').'</h3>
-				<p>'._('Choose the Smartcommand launched by the Scenario or Create a new one.').'</p>
+				<p>'._('Choose the Smartcommand launched by this Scenario or Create a new one.').'</p>
 				<div class="margin-bottom">
 					<button type="button" class="btn btn-greenleaf"
 					        onclick="createSmartcmd('.$id_scenario.')">
