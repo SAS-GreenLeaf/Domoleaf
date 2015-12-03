@@ -10,7 +10,7 @@ echo
 		</button>
 		<p class="margin-top">'._('Schedule is a time period, it can be used to launch Scenarios.').'</p>
 	</div>
-	<div class="col-xs-offset-2 margin-top col-xs-10">';
+	<div class="col-xs-offset-2 col-xs-10">';
 	if (empty($schedulesList)) {
 		echo
 		'<div class="alert alert-warning center col-xs-offset-2 margin-top col-xs-8" role="alert">

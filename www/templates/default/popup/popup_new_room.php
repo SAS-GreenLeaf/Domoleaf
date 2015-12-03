@@ -23,11 +23,11 @@ echo	'</select><br/><br/>'.
 		'<button id="eventSave"'.
 		        'onclick="RoomNew()"'.
 		        'class="btn btn-greenleaf margin-right">'.
-			_('Yes').
+			_('Save').
 			' <span class="glyphicon glyphicon-ok"></span>'.
 		'</button>'.
 		'<button onclick="popup_close()" class="btn btn-danger">'.
-			_('No').
+			_('Cancel').
 			' <span class="glyphicon glyphicon-remove"></span>'.
 		'</button>'.
 		'</div>'.

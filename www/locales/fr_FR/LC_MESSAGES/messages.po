@@ -174,7 +174,7 @@ msgstr "Voulez-vous supprimer %s?"
 
 #: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
 #: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
-#: popup/popup_new_room.php:26 popup/popup_reboot_d3.php:19
+#: popup/popup_reboot_d3.php:19
 #: popup/popup_remove_db_local.php:17 popup/popup_remove_db_usb.php:17
 #: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:18
 #: popup/popup_remove_schedule.php:18 popup/popup_remove_smartcmd_elem.php:18
@@ -186,7 +186,7 @@ msgstr "Oui"
 
 #: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
 #: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
-#: popup/popup_new_room.php:30 popup/popup_reboot_d3.php:19
+#: popup/popup_reboot_d3.php:19
 #: popup/popup_remove_db_local.php:18 popup/popup_remove_db_usb.php:18
 #: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:22
 #: popup/popup_remove_schedule.php:22 popup/popup_remove_smartcmd_elem.php:22
@@ -273,7 +273,7 @@ msgstr "IP"
 #: include/conf_general.php:102 include/conf_profiles.php:129
 #: include/profile.php:73 include/profile.php:126
 #: include/profile_user_trigger_schedules_edit.php:31
-#: popup/popup_wifi.php:44
+#: popup/popup_wifi.php:44 popup/popup_new_room.php
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -281,6 +281,7 @@ msgstr "Sauvegarder"
 #: popup/popup_new_floor.php:28 popup/popup_new_user.php:35
 #: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
 #: popup/popup_rename_room.php:39 include/conf_device_new.php:9
+#: popup/popup_new_room.php:26
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -785,8 +786,9 @@ msgid "No device selected"
 msgstr "Pas d'appareil sélectionné"
 
 #: form/form_list_rooms_of_floor.php:5 include/profile_user_graphics.php
+#: include/profile_user_smartcmd.php:37
 msgid "No room"
-msgstr "Pas de salle"
+msgstr "Aucune salle"
 
 #: form/form_pre_configuration_device.php:18
 msgid "Product list"
@@ -1212,7 +1214,7 @@ msgstr "Hôte SMTP"
 msgid "SMTP Secure"
 msgstr "SMTP Sécurisé"
 
-#: include/conf_general.php:66 include/profile_user_smartcmd.php:37
+#: include/conf_general.php:66
 msgid "None"
 msgstr "Aucun"
 
@@ -1385,7 +1387,7 @@ msgstr "Masculin"
 #: include/conf_profiles.php:43 include/conf_profiles.php:50
 #: include/profile.php:35 include/profile.php:41
 msgid "Female"
-msgstr "Feminin"
+msgstr "Féminin"
 
 #: include/conf_profiles.php:55 include/profile.php:47
 msgid "Phone"
@@ -1593,7 +1595,7 @@ msgid "Schedule"
 msgstr "Horaire"
 
 #: include/profile_user_scenario_edit.php:48
-msgid "Choose the Smartcommand launched by the Scenario or Create a new one."
+msgid "Choose the Smartcommand launched by this Scenario or Create a new one."
 msgstr "Sélectionnez la Smartcommand qui sera déclenchée par ce Scénario ou Créez-en une nouvelle."
 
 #: include/profile_user_scenario_edit.php:52
@@ -1722,7 +1724,7 @@ msgid ""
 "\t\t        (but you will be able to select it in Scenarios)\""
 msgstr ""
 "Vous n'avez pas sélectionné de Salle Reliée.\n"
-"\t\t        Tant que vous n'en sélectionnerez pas une, votre Smartcommand n'apparaîtra pas"
+"\t\t        Tant que vous n'en sélectionnerez pas une, votre Smartcommand n'apparaîtra pas "
 "dans la Mastercommand\n"
 "\t\t        (mais vous pourrez l'utiliser dans les Scénarios)\""
 
@@ -1739,6 +1741,10 @@ msgstr "Supprimer élément de la Smartcommand"
 #: include/profile_user_smartcmd.php:10
 msgid "Create New SmartCommand"
 msgstr "Créer une Nouvelle Smartcommand"
+
+#: include/profile_user_smartcmd.php
+msgid "Smartcommand is a grouped command. One Smartcommand will trigger multiples events. It can be launched by Scenarios."
+msgstr "Une Smartcommand est une commande groupée. Une Smartcommand peut déclencher plusieurs événements. Elle peut être lancée par des Scénarios."
 
 #: include/profile_user_smartcmd.php:44
 msgid "Edit Smartcommand"

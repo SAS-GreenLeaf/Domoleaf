@@ -339,8 +339,8 @@ class User {
 	 */
 	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $id=0) {
 		$link = Link::get_link('domoleaf');
-	
-		if($gender != 1) {
+
+		if ($gender != 1) {
 			$gender = 0;
 		}
 	
@@ -353,7 +353,7 @@ class User {
 		        SET lastname= :lastname,
 		            firstname= :firstname,
 		            gender= :gender,
-					mcuser_mail= :email,
+		            mcuser_mail= :email,
 		            phone= :phone,
 		            language= :language
 		        WHERE mcuser_id=:user_id';
