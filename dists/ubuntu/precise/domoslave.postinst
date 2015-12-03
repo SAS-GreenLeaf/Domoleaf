@@ -1,23 +1,8 @@
 #!/bin/bash
 
 echo -e "[ \033[32mOK\033[0m ] Done installing Domoleaf slave daemon"
-sed -i 's/files dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
-sed -i 's/files mdns4_minimal \[NOTFOUND=return\] dns/files mdns4_minimal \[NOTFOUND=return\] dns mdns4/g' /etc/nsswitch.conf
 
 usermod -a -G dialout knxd
-
-sed -i 's/#net.ipv4.ip_forward/net.ipv4.ip_forward/g' /etc/sysctl.conf
-sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/g' /etc/sysctl.conf
-
-if [ -f /etc/inittab ];
-then
-	sed -i 's/^T0:23:respawn:\/sbin\/getty -L ttyAMA0 115200 vt100/#T0:23:respawn:\/sbin\/getty -L ttyAMA0 115200 vt100/g' /etc/inittab
-fi
-if [ -f /boot/cmdline.txt ];
-then
-	sed -i 's/console=ttyAMA0,115200 //g' /boot/cmdline.txt
-	sed -i 's/kgdboc=ttyAMA0,115200 //g' /boot/cmdline.txt
-fi
 
 PYTHON=$(find /usr/bin/ | grep python3.[3-5]$ | sort -r | head -n1 | cut -d/ -f4)
 PIP3=$(command -v pip3)

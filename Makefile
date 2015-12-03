@@ -41,12 +41,14 @@ MASTER_NAME = domomaster_$(VERSION_MASTER)_all.deb
 SLAVE_NAME  = domoslave_$(VERSION_SLAVE)_$(ARCH).deb
 
 # Main rule to call compilation rules and generate deb packages
-all: prepare-debian master slave
-full: clean prepare-debian master slave
+all: prepare-debian package-master package-slave
+full: clean prepare-debian package-master package-slave
+master: prepare-debian package-master
+slave: prepare-debian package-slave
 
-debian : prepare-debian master slave
-ubuntu1204: prepare-debian prepare-ubuntu1204 master slave
-ubuntu1404: prepare-debian prepare-ubuntu1404 master slave
+debian : prepare-debian package-master package-slave
+ubuntu1204: prepare-debian prepare-ubuntu1204 package-master package-slave
+ubuntu1404: prepare-debian prepare-ubuntu1404 package-master package-slave
 
 prepare-debian:
 	
@@ -81,7 +83,7 @@ prepare-ubuntu1404:
 	@cp dists/ubuntu/trusty/domoslave.postinst domoslave/DEBIAN/postinst
 
 # master
-master:
+package-master:
 	@chmod 755 domomaster/DEBIAN/* gengettext
 	@rm -rf domomaster/etc/domoleaf/www
 	@mkdir -p domomaster/etc/domoleaf
@@ -92,7 +94,7 @@ master:
 	@mv domomaster.deb         ../$(MASTER_NAME)
 	
 # slave
-slave:
+package-slave:
 	@chmod 755 check_compiler domoslave/DEBIAN/*
 	@echo "[ \033[33m..\033[0m ] Compiling for $(ARCH)..."
 	@./check_compiler

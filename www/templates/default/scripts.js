@@ -300,7 +300,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	else if (idopt == 407){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	else if (idopt == 409){
+	else if (idopt == 153){
 		if (val.valeur == 0){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
 			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");

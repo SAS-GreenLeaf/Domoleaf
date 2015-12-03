@@ -482,7 +482,16 @@ class Admin extends User {
 			}
 			$this->confRoomNew($nameroom, $newfloorid);
 		}
-		
+
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleFloor($do->mcuser_id, $newfloorid, 1);
+		}
+
 		return $newfloorid;
 	}
 	
@@ -606,6 +615,15 @@ class Admin extends User {
 				$name = _('Room').' '.$newroomid;
 				$this->confRoomRename($newroomid, $name);
 			}
+		}
+		
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleRoom($do->mcuser_id, $newroomid, 1);
 		}
 	}
 	
@@ -1052,6 +1070,15 @@ class Admin extends User {
 		$socket = new Socket();
 		$socket->send('reload_camera');
 
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 	
@@ -1087,6 +1114,15 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 	
@@ -1120,7 +1156,16 @@ class Admin extends User {
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-		
+
+		$sql = 'SELECT mcuser_id
+			    FROM mcuser
+				WHERE mcuser_level>=2';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$this->confUserVisibleDevice($do->mcuser_id,  $newdeviceid, 1);
+		}
+
 		return $newdeviceid;
 	}
 
@@ -1733,7 +1778,7 @@ class Admin extends User {
 		
 		$list = array();
 	
-		$sql = 'SELECT floor.floor_id, floor_name, floor_order
+		$sql = 'SELECT floor.floor_id, floor_name, floor_allowed, floor_order
 		        FROM floor
 		        JOIN mcuser_floor ON mcuser_floor.floor_id=floor.floor_id
 		        WHERE mcuser_id=:user_id
@@ -1745,13 +1790,13 @@ class Admin extends User {
 			$list[$do->floor_id] = array(
 				'floor_id'     => $do->floor_id,
 				'floor_name'   => $do->floor_name,
-				'floor_allowed'=> 1,
+				'floor_allowed'=> $this->getLevel() >= 2 ? 1 : $do->floor_allowed,
 				'floor_order'  => $do->floor_order,
 				'room'         => array()
 			);
 		}
 		
-		$sql = 'SELECT room.room_id, room_name, floor, room_order,
+		$sql = 'SELECT room.room_id, room_name, floor, room_allowed, room_order,
 		               mcuser_room.room_bgimg
 		        FROM room
 		        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
@@ -1764,7 +1809,7 @@ class Admin extends User {
 			$list[$do->floor]['room'][$do->room_id] = array(
 				'room_id'     => $do->room_id,
 				'room_name'   => $do->room_name,
-				'room_allowed'=> 1,
+				'room_allowed'=> $this->getLevel() >= 2 ? 1 : $do->room_allowed,
 				'room_order'  => $do->room_order,
 				'room_bgimg'  => $do->room_bgimg,
 				'devices'     => array()
@@ -1772,7 +1817,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.name, 
-		               room_device.room_id, room.floor, device_order,
+		               room_device.room_id, room.floor, device_allowed, device_order,
 		               device_bgimg, device_id
 		        FROM room_device
 		        JOIN room ON room_device.room_id = room.room_id
@@ -1789,7 +1834,7 @@ class Admin extends User {
 				'device_order'  => $do->device_order,
 				'device_bgimg'  => $do->device_bgimg,
 				'device_id'     => $do->device_id,
-				'device_allowed'=> 1
+				'device_allowed'=> $this->getLevel() >= 2 ? 1 : $do->device_allowed
 			);
 		}
 		

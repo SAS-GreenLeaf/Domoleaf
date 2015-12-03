@@ -226,25 +226,6 @@ function display_alarm($info){
 	return $display;
 }
 
-// Led
-function display_led($info){
-	$tmp = '0';
-	if (!empty($info->device_opt->{92}->valeur)){
-		$tmp = $info->device_opt->{92}->valeur;
-	}
-	if ($tmp == '0'){
-		$display = '<div>
-						<i class="glyphicon glyphicon-record led-off"></i>
-					</div>';
-	}
-	else{
-		$display = '<div>
-						<i class="glyphicon glyphicon-record led-on"></i>
-					</div>';
-	}
-	return $display;
-}
-
 // Widget fan
 function display_fan($info){
 	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
@@ -500,14 +481,14 @@ function display_commande($info){
 //widget lampe
 function display_lampe($info){
 	$display = '';
-	if (!empty($info->device_id) && !((!empty($info->device_opt->{409})) || $info->device_id == 78 || $info->device_id == 85)){
+	if (!empty($info->device_id) && !((!empty($info->device_opt->{153})) || $info->device_id == 78 || $info->device_id == 85)){
 		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 	}
-	if (!empty($info->device_id) && !empty($info->device_opt->{409})){
+	if (!empty($info->device_id) && !empty($info->device_opt->{153})){
 		$display .= '<div class="info-warning">
-					<button id="widget_info-'.$info->room_device_id.'-409" title="'._('More').'"
+					<button id="widget_info-'.$info->room_device_id.'-153" title="'._('More').'"
 					onclick="HandlePopup(2, '.$info->room_device_id.')"';
-		if ($info->device_opt->{409}->valeur == 1){
+		if ($info->device_opt->{153}->valeur == 1){
 			$display .= 'class="btn btn-danger"';
 		}
 		else{
@@ -802,6 +783,25 @@ function display_temperature($info){
 					<span>'.$info->device_opt->{72}->unit.'</span>
 				</div>';
 
+	return $display;
+}
+
+// Led
+function display_led($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{92}->valeur)){
+		$tmp = $info->device_opt->{92}->valeur;
+	}
+	if ($tmp == '0'){
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-off"></i>
+					</div>';
+	}
+	else{
+		$display = '<div>
+						<i class="glyphicon glyphicon-record led-on"></i>
+					</div>';
+	}
 	return $display;
 }
 

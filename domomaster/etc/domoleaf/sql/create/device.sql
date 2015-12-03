@@ -62,7 +62,7 @@ VALUES
 	(33, 'Water heater', 1, 10, 0, '', '', 'Chauffe eau', '', 1),
 	(34, 'Global cachÃ©', 6, 5, 0, '', '', 'Passerelle Climatisation KNX', '', 1),
 	(36, 'Actuator', 1, NULL, 1, '', '', 'Actionneur', '', 0),
-	(38, 'Switch', 1, 17, 0, '', '', 'Interrupteur', '', 0),
+	(38, 'Switch', 1, 17, 0, '', '', 'Interrupteur', '', 1),
 	(40, 'Supply', 1, NULL, 1, '', '', 'Alimentation', '', 0),
 	(41, 'Coupler', 1, NULL, 1, '', '', 'Coupleur', '', 0),
 	(42, 'Pulser', 1, NULL, 0, '', '', 'Emetteur', '', 0),
@@ -103,6 +103,7 @@ VALUES
 	(81, 'Ecoute Bébé', 6, 13, 0, '', '', 'Ecoute Bébé', '', 0),
 	(82, 'Circuit Eclairage', 1, 9, 0, '', '', 'Circuit Eclairage', '', 0),
 	(83, 'Circuit Audio Vidéo', 1, 9, 0, '', '', 'Circuit Audio Vidéo', '', 0),
-	(84, 'Circuit Electromenager', 1, 9, 0, '', '', 'Circuit Electromenager', '', 0);
+	(84, 'Circuit Electromenager', 1, 9, 0, '', '', 'Circuit Electromenager', '', 0),
+	(85, 'Controleur RGBW', 1, 1, 0, '', '', 'Controleur RGBW', '', 1);
 
 SET FOREIGN_KEY_CHECKS=1;
