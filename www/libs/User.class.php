@@ -89,11 +89,11 @@ class User {
 	
 	/*** Daemon management ***/
 	
-	function confDeamonList() {
+	function confDaemonList() {
 		return null;
 	}
 	
-	function confDeamonNew($name, $serial, $skey) {
+	function confDaemonNew($name, $serial, $skey) {
 		return null;
 	}
 	
@@ -101,11 +101,11 @@ class User {
 		return null;
 	}
 	
-	function confDeamonRemove($id) {
+	function confDaemonRemove($id) {
 		return null;
 	}
 	
-	function confDeamonRename($id, $name, $serial, $skey='') {
+	function confDaemonRename($id, $name, $serial, $skey='') {
 		return null;
 	}
 	
