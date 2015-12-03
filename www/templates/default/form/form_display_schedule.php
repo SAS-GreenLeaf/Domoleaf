@@ -30,7 +30,7 @@ if (!empty($_GET['schedule_id'])) {
 	$mins = $schedule_infos->mins;
 	$mins = str_split($mins);
 	
-	echo showtimeSelect($months, $weekdays, $days, $hours, $mins);
+	echo showtimeSelect($months, $weekdays, $days, $hours, $mins, $id_schedule);
 }
 else {
 	$request =  new Api();

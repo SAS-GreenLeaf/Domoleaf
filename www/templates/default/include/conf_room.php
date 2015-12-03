@@ -20,7 +20,7 @@ echo
 				</a>
 		</div>
 		<div class="col-xs-12" id="listdevice"></div>
-		<div class="alert alert-hidden alert-warning center col-xs-6 col-xs-offset-3 col-lg-10 col-lg-offset-1" role="alert"></div>
+		<div class="alert alert-hidden alert-warning center col-xs-6 col-xs-offset-3 col-lg-10 col-lg-offset-1 margin-top" role="alert"></div>
 	</div>';
 
 echo '

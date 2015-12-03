@@ -174,7 +174,7 @@ msgstr "Voulez-vous supprimer %s?"
 
 #: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
 #: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
-#: popup/popup_new_room.php:26 popup/popup_reboot_d3.php:19
+#: popup/popup_reboot_d3.php:19
 #: popup/popup_remove_db_local.php:17 popup/popup_remove_db_usb.php:17
 #: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:18
 #: popup/popup_remove_schedule.php:18 popup/popup_remove_smartcmd_elem.php:18
@@ -186,7 +186,7 @@ msgstr "Oui"
 
 #: popup/popup_delete_daemon.php:18 popup/popup_delete_floor.php:16
 #: popup/popup_delete_room.php:13 popup/popup_delete_user.php:16
-#: popup/popup_new_room.php:30 popup/popup_reboot_d3.php:19
+#: popup/popup_reboot_d3.php:19
 #: popup/popup_remove_db_local.php:18 popup/popup_remove_db_usb.php:18
 #: popup/popup_remove_device.php:15 popup/popup_remove_scenario.php:22
 #: popup/popup_remove_schedule.php:22 popup/popup_remove_smartcmd_elem.php:22
@@ -273,6 +273,7 @@ msgstr "IP"
 #: include/conf_general.php:102 include/conf_profiles.php:129
 #: include/profile.php:73 include/profile.php:126
 #: include/profile_user_trigger_schedules_edit.php:31
+#: popup/popup_wifi.php:44 popup/popup_new_room.php
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -280,6 +281,7 @@ msgstr "Sauvegarder"
 #: popup/popup_new_floor.php:28 popup/popup_new_user.php:35
 #: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
 #: popup/popup_rename_room.php:39 include/conf_device_new.php:9
+#: popup/popup_new_room.php:26
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -784,8 +786,9 @@ msgid "No device selected"
 msgstr "Pas d'appareil sélectionné"
 
 #: form/form_list_rooms_of_floor.php:5 include/profile_user_graphics.php
+#: include/profile_user_smartcmd.php:37
 msgid "No room"
-msgstr "Pas de salle"
+msgstr "Aucune salle"
 
 #: form/form_pre_configuration_device.php:18
 msgid "Product list"
@@ -1055,7 +1058,8 @@ msgid "Login"
 msgstr "S'identifier"
 
 #: include/conf_device_new.php:113 include/conf_device.php:119
-#: include/signin.php:27
+#: include/signin.php:27 popup/popup_wifi.php:28
+#: popup/popup_wifi.php:29
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1210,7 +1214,7 @@ msgstr "Hôte SMTP"
 msgid "SMTP Secure"
 msgstr "SMTP Sécurisé"
 
-#: include/conf_general.php:66 include/profile_user_smartcmd.php:37
+#: include/conf_general.php:66
 msgid "None"
 msgstr "Aucun"
 
@@ -1378,12 +1382,12 @@ msgstr "Genre"
 #: include/conf_profiles.php:41 include/conf_profiles.php:48
 #: include/profile.php:33 include/profile.php:39
 msgid "Male"
-msgstr "Mâle"
+msgstr "Masculin"
 
 #: include/conf_profiles.php:43 include/conf_profiles.php:50
 #: include/profile.php:35 include/profile.php:41
 msgid "Female"
-msgstr "Femelle"
+msgstr "Féminin"
 
 #: include/conf_profiles.php:55 include/profile.php:47
 msgid "Phone"
@@ -1591,8 +1595,8 @@ msgid "Schedule"
 msgstr "Horaire"
 
 #: include/profile_user_scenario_edit.php:48
-msgid "Choose the Smartcommand launched by the Scenario or Create a new one."
-msgstr "Sélectionnez la Smartcommand associée à ce Scénario ou créez-en une nouvelle"
+msgid "Choose the Smartcommand launched by this Scenario or Create a new one."
+msgstr "Sélectionnez la Smartcommand qui sera déclenchée par ce Scénario ou Créez-en une nouvelle."
 
 #: include/profile_user_scenario_edit.php:52
 msgid "Create Smartcommand"
@@ -1614,7 +1618,7 @@ msgstr "Aucune Smartcommand"
 
 #: include/profile_user_scenario_edit.php:81
 msgid "Choose the Trigger which will launch the Scenario or Create a new one."
-msgstr "Sélectionnez le Déclencheur qui lancera le Scénario ou créez-en un nouveau"
+msgstr "Sélectionnez le Déclencheur qui lancera le Scénario ou Créez-en un nouveau."
 
 #: include/profile_user_scenario_edit.php:85
 msgid "Create Trigger"
@@ -1630,8 +1634,8 @@ msgid ""
 "Choose the Schedule to select the time period of the Scenario or Create a "
 "new one."
 msgstr ""
-"Sélectionnez l'Horaire pour séectionner la période durant laquelle se lancera le Scénario"
-"ou créez-en un nouveau."
+"Sélectionnez l'Horaire pour définir la période durant laquelle se lancera le Scénario "
+"ou Créez-en un nouveau."
 
 #: include/profile_user_scenario_edit.php:118
 msgid "Create Schedule"
@@ -1664,6 +1668,10 @@ msgstr "Smartcommand Reliée"
 #: include/profile_user_scenarios.php:27
 msgid "Status"
 msgstr "Statut"
+
+#: include/profile_user_scenarios.php:27
+msgid "Scenario will launch a Smartcommand depending on an Event (Trigger) and/or a Time period (Schedule)."
+msgstr "Un Scénario déclenche une Smartcommand en fonction d'un Evénement (Déclencheur) et/ou d'une période de temps (Horaire)."
 
 #: include/profile_user_scenarios.php:28 include/profile_user_smartcmd.php:28
 #: include/profile_user_trigger_events.php:26
@@ -1716,7 +1724,7 @@ msgid ""
 "\t\t        (but you will be able to select it in Scenarios)\""
 msgstr ""
 "Vous n'avez pas sélectionné de Salle Reliée.\n"
-"\t\t        Tant que vous n'en sélectionnerez pas une, votre Smartcommand n'apparaîtra pas"
+"\t\t        Tant que vous n'en sélectionnerez pas une, votre Smartcommand n'apparaîtra pas "
 "dans la Mastercommand\n"
 "\t\t        (mais vous pourrez l'utiliser dans les Scénarios)\""
 
@@ -1734,6 +1742,10 @@ msgstr "Supprimer élément de la Smartcommand"
 msgid "Create New SmartCommand"
 msgstr "Créer une Nouvelle Smartcommand"
 
+#: include/profile_user_smartcmd.php
+msgid "Smartcommand is a grouped command. One Smartcommand will trigger multiples events. It can be launched by Scenarios."
+msgstr "Une Smartcommand est une commande groupée. Une Smartcommand peut déclencher plusieurs événements. Elle peut être lancée par des Scénarios."
+
 #: include/profile_user_smartcmd.php:44
 msgid "Edit Smartcommand"
 msgstr "Editer Smartcommand"
@@ -1745,6 +1757,10 @@ msgstr "Supprimer Smartcommand"
 #: include/profile_user_trigger_events_edit.php:53
 msgid "Edit Trigger Name"
 msgstr "Editer le nom du Déclencheur"
+
+#: include/profile_user_trigger_events_edit.php
+msgid "Trigger is an event (KNX, ...) it can be used to launch Scenarios."
+msgstr "Un Déclencheur est un événement (KNX, ...) qui peut être utilisé pour lancer des Scénarios."
 
 #: include/profile_user_trigger_events.php:9
 msgid "Create New Trigger"
@@ -1762,6 +1778,10 @@ msgstr "Supprimer Déclencheur"
 #: include/profile_user_trigger_schedules_edit.php:11
 msgid "Edit schedule Name"
 msgstr "Editer le nom de l'Horaire"
+
+#: include/profile_user_trigger_schedules_edit.php:11
+msgid "Schedule is a time period, it can be used to launch Scenarios."
+msgstr "Un Horaire est une période de temps, il peut être utilisé pour lancer des Scénarios."
 
 #: include/profile_user_trigger_schedules_edit.php:27
 msgid "Save Schedule"
@@ -1913,3 +1933,80 @@ msgstr "Email"
 #: conf_profiles.php profile.php
 msgid "Enter your email"
 msgstr "Entrez votre adresse email"
+
+#: popup/popup_info_device.php
+msgid "Lightning default (open circuit)"
+msgstr "Défaut d'éclairage (circuit ouvert)"
+
+#: popup/popup_info_device.php
+msgid "No default detected"
+msgstr "Aucun défaut détecté"
+
+
+#: popup/popup_wifi.php:14
+msgid "The SSID is not valid"
+msgstr "SSID invalide"
+
+#: popup/popup_wifi.php:16
+msgid "Mode"
+msgstr "Mode"
+
+#: popup/popup_wifi.php:18
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: popup/popup_wifi.php:19
+msgid "Client"
+msgstr "Client"
+
+#: popup/popup_wifi.php:20
+msgid "Access Point"
+msgstr "Point d'accès"
+
+#: popup/popup_wifi.php:24 popup_wifi.php:25
+msgid "SSID"
+msgstr "SSID"
+
+#: popup/popup_wifi.php:32
+msgid "Security"
+msgstr "Sécurité"
+
+#: popup/popup_wifi.php:34
+msgid "WEP"
+msgstr "WEP"
+
+#: popup/popup_wifi.php:35
+msgid "WPA"
+msgstr "WPA"
+
+#: popup/popup_wifi.php:36
+msgid "WPA2"
+msgstr "WPA2"
+
+#: include/conf_daemon.php
+msgid "Wifi Configuration"
+msgstr "Configuration Wifi"
+
+#: functions.php:77
+msgid "This account does not exist"
+msgstr "Ce compte n'existe pas"
+
+#: functions.php:81
+msgid "Bad password"
+msgstr "Mot de passe invalide"
+
+#: functions.php:133
+msgid "B"
+msgstr "o"
+
+#: functions.php:134
+msgid "KB"
+msgstr "Ko"
+
+#: functions.php:135
+msgid "MB"
+msgstr "Mo"
+
+#: functions.php:136
+msgid "GB"
+msgstr "Go"

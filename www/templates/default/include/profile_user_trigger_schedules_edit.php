@@ -12,7 +12,7 @@ echo '
 		        class="btn btn-primary"
 		        onclick="popupUpdateScheduleName('.$id_schedule.')">
 			<i class="glyphicon glyphicon-edit"></i>
-		</button>';		
+		</button>';
 		if ($id_scenario != 0) {
 			echo
 				'<button type="button"
@@ -23,13 +23,6 @@ echo '
 				</button>';
 		}
 		echo '
-		<button type="button"
-		        title="'._('Save Schedule').'"
-		        class="btn btn-primary block-right"
-		        id="saveTS_btn"
-		        onclick="SaveSchedule('.$id_schedule.')">
-			'._('Save').'
-		</button>
 	</div>
 	<div id="selectSchedule-'.$id_schedule.'" class="col-xs-10 col-xs-offset-2 selectSchedule">
 	</div>';

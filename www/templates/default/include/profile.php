@@ -208,7 +208,7 @@ function saveProfile() {
 	{
 		var gender = 0;
 	}
-	var email = NULL;
+	var email = "";
 	var phone = $("#phone").val();
 	$.ajax({
 		type:"GET",

@@ -1,28 +1,25 @@
 <?php
 
-function showtimeSelect($months, $weekdays, $days, $hours, $mins) {
-	$display =display_scripts();
-	$display.= display_months($months);
+function showtimeSelect($months, $weekdays, $days, $hours, $mins, $id_schedule) {
+	$display = display_scripts($id_schedule);
+	$display.= display_months($months, $id_schedule);
 	$display.='<hr>';
-	$display.=display_weekdays($weekdays);
+	$display.=display_weekdays($weekdays, $id_schedule);
 	$display.='<hr>';
-	$display.=display_days($days);
+	$display.=display_days($days, $id_schedule);
 	$display.='<hr>';
-	$display.=display_hours($hours);
+	$display.=display_hours($hours, $id_schedule);
 	$display.='<hr>';
-	$display.=display_mins($mins);
+	$display.=display_mins($mins, $id_schedule);
 	$display.=
 				'<script type="text/javascript">
 					monthSize();
 					weekdaySize();
-					$(".resetSaveBtn").bootstrapSwitch(\'onSwitchChange\', function(){
-						changeSaveBtnState("#saveTS_btn", 0);
-					});
 				</script>';
 	return $display;
 }
 
-function display_months($months) {
+function display_months($months, $id_schedule) {
 	$all_activate = (array_sum($months) == 12) ? 1 : 0;
 	$display =
 	'<div id="months">
@@ -57,7 +54,7 @@ function display_months($months) {
 					       data-off-text="'.$day.'"
 					       id="month-'.$i.'"
 					       type="checkbox"
-					       onchange=""
+					       onchange="SaveSchedule('.$id_schedule.')"
 					       class="monthElemWidth resetSaveBtn" ';
 					       if ($months[$i] == 1) {
 					       		$display.='checked';
@@ -89,7 +86,7 @@ function display_months($months) {
 	return $display;
 }
 
-function display_weekdays($weekdays) {
+function display_weekdays($weekdays, $id_schedule) {
 	$all_activate = (array_sum($weekdays) == 7) ? 1 : 0;
 	$display =
 	'<div id="weekdays">
@@ -125,6 +122,7 @@ function display_weekdays($weekdays) {
 					       data-off-text="'.$day.'"
 					       id="weekday-'.$i.'"
 					       type="checkbox"
+					       onchange="SaveSchedule('.$id_schedule.')"
 					       class="weekdayElemWidth resetSaveBtn" ';
 					       if ($weekdays[$i] == 1) {
 					       		$display.='checked';
@@ -156,7 +154,7 @@ function display_weekdays($weekdays) {
 	return $display;
 }
 
-function display_days($days) {
+function display_days($days, $id_schedule) {
 	$all_activate = (array_sum($days) == 31) ? 1 : 0;
 	$display =
 	'<div id="days">
@@ -196,6 +194,7 @@ function display_days($days) {
 					       data-off-text="'.$j.'"
 					       id="day-'.$i.'"
 					       type="checkbox"
+					       onchange="SaveSchedule('.$id_schedule.')"
 					       class="dayElemWidth resetSaveBtn" ';
 					       if ($days[$i-1] == 1) {
 					       		$display.='checked';
@@ -227,7 +226,7 @@ function display_days($days) {
 	return $display;
 }
 
-function display_hours($hours) {
+function display_hours($hours, $id_schedule) {
 	$all_activate = (array_sum($hours) == 24) ? 1 : 0;
 	$display =
 	'<div id="hours">
@@ -267,6 +266,7 @@ function display_hours($hours) {
 					       data-off-text="'.$j.'"
 					       id="hour-'.$i.'"
 					       type="checkbox"
+					       onchange="SaveSchedule('.$id_schedule.')"
 					       class="hourElemWidth resetSaveBtn" ';
 					       if ($hours[$i] == 1) {
 					       		$display.='checked';
@@ -298,7 +298,7 @@ function display_hours($hours) {
 	return $display;
 }
 
-function display_mins($mins) {
+function display_mins($mins, $id_schedule) {
 	$all_activate = (array_sum($mins) == 60) ? 1 : 0;
 	$display =
 	'<div id="mins">
@@ -338,6 +338,7 @@ function display_mins($mins) {
 					       data-off-text="'.$j.'"
 					       id="min-'.$i.'"
 					       type="checkbox"
+					       onchange="SaveSchedule('.$id_schedule.')"
 					       class="minElemWidth resetSaveBtn" ';
 					       if ($mins[$i] == 1) {
 					       		$display.='checked';
@@ -369,27 +370,32 @@ function display_mins($mins) {
 	return $display;
 }
 
-function  display_scripts() {
+function display_scripts($id_schedule) {
 	$display=
 	'<script type="text/javascript">
 				function showMonthsList() {
 					$(".MonthsListAndBtn").toggle("slow");
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function showWeekdaysList() {
 					$(".WeekdaysListAndBtn").toggle("slow");
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function showDaysList() {
 					$(".DaysListAndBtn").toggle("slow");
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function showHoursList() {
 					$(".HoursListAndBtn").toggle("slow");
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function showMinsList() {
 					$(".MinsListAndBtn").toggle("slow");
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function monthSize(){
@@ -421,6 +427,7 @@ function  display_scripts() {
 					else {
 						$(".monthElemWidth").bootstrapSwitch(\'state\', false, true);
 					}
+					SaveSchedule('.$id_schedule.');
 				}
 
 				function toggleAllWeekdays(state) {

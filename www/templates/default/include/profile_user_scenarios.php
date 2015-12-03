@@ -8,8 +8,9 @@ echo '
 		<button class="btn btn-greenleaf" onclick="createScenario()">
 			'._('Create New Scenario').'
 		</button>
+		<p class="margin-top">'._('Scenario will launch a Smartcommand depending on an Event (Trigger) and/or a Time period (Schedule).').'</p>
 	</div>
-	<div class="col-xs-offset-2 margin-top col-xs-10">';
+	<div class="col-xs-offset-2 col-xs-10">';
 	if (empty($scenarioList)) {
 		echo
 		'<div class="alert alert-warning center col-xs-offset-2 margin-top col-xs-8" role="alert">

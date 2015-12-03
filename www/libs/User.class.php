@@ -89,11 +89,11 @@ class User {
 	
 	/*** Daemon management ***/
 	
-	function confDeamonList() {
+	function confDaemonList() {
 		return null;
 	}
 	
-	function confDeamonNew($name, $serial, $skey) {
+	function confDaemonNew($name, $serial, $skey) {
 		return null;
 	}
 	
@@ -101,11 +101,11 @@ class User {
 		return null;
 	}
 	
-	function confDeamonRemove($id) {
+	function confDaemonRemove($id) {
 		return null;
 	}
 	
-	function confDeamonRename($id, $name, $serial, $skey='') {
+	function confDaemonRename($id, $name, $serial, $skey='') {
 		return null;
 	}
 	
@@ -339,8 +339,8 @@ class User {
 	 */
 	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $id=0) {
 		$link = Link::get_link('domoleaf');
-	
-		if($gender != 1) {
+
+		if ($gender != 1) {
 			$gender = 0;
 		}
 	
@@ -353,7 +353,7 @@ class User {
 		        SET lastname= :lastname,
 		            firstname= :firstname,
 		            gender= :gender,
-					mcuser_mail= :email,
+		            mcuser_mail= :email,
 		            phone= :phone,
 		            language= :language
 		        WHERE mcuser_id=:user_id';

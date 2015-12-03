@@ -9,8 +9,9 @@ echo '
 		<button class="btn btn-greenleaf" onclick="createSmartcmd(0)">
 			'._('Create New SmartCommand').'
 		</button>
+		<p class="margin-top">'._('Smartcommand is a grouped command. One Smartcommand will trigger multiples events. It can be launched by Scenarios.').'</p>
 	</div>
-	<div class="col-xs-offset-2 margin-top col-xs-10">';
+	<div class="col-xs-offset-2 col-xs-10">';
 	if (empty($smartcmdList)) {
 		echo
 		'<div class="alert alert-warning center col-xs-offset-2 margin-top col-xs-8" role="alert">
@@ -38,7 +39,7 @@ echo '
 						</a>
 					</td>';
 					if (empty($elem->room_name)) {
-						$elem->room_name = _('None');
+						$elem->room_name = _('No room');
 					}
 					echo '
 					<td>'.$elem->room_name.'</td>
