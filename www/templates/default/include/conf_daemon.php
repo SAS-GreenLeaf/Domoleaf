@@ -169,6 +169,16 @@ function SaveWifi(){
 	var security = $("#wifiSecurity").val();
 	var mode = $("#wifiMode").val();
 
+	if ((password.length < 8 || password.length > 63) && security != 1){
+		$("#wifiPassword").addClass("border-invalid");
+		$("#LabelWifiPassword").text("'._('Password (must be between 8 and 63 characters on WPA/WPA2)').'");
+		return;
+	}
+	else{
+		$("#LabelWifiPassword").text("'._('Password').'")
+		$("#wifiPassword").removeClass("border-invalid");
+	}
+
 	$.ajax({
 		type:"GET",
 		url: "/form/form_save_wifi.php",
@@ -428,7 +438,7 @@ function CheckWifiMode(){
 		$("#div-wifiSecurity").show();
 	}
 }
-				
+
 $("#rcv").val(\'\');
 				
 </script>';
