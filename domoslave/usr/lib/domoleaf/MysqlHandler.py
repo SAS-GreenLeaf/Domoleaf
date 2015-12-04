@@ -8,7 +8,7 @@ class MysqlHandler:
     Built with 'username', 'password' and 'database' for the connection to the server.
     """
     def __init__(self, username, passwd, db):
-        self.connection = mysql.connector.connect(user = username, password=passwd, database=db);
+        self.connection = mysql.connector.connect(user = username, password=passwd, host='localhost', database=db);
 
     def get_field_names_from_table(self, table):
         """
