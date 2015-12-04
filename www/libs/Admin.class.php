@@ -1031,7 +1031,14 @@ class Admin extends User {
 		if($port < 0 || $port > 65535){
 			$port = '80';
 		}
-		
+
+		$addr = gethostbyname($addr);
+
+		if (!(filter_var($addr, FILTER_VALIDATE_IP))){
+			error_log('non valide');
+			return;
+		}
+
 		$sql = 'INSERT INTO room_device
 		        (name, protocol_id, room_id, device_id, addr, plus1, plus2, plus3, plus4)
 		        VALUES

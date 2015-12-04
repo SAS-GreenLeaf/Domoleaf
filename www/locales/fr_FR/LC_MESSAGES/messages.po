@@ -1907,3 +1907,7 @@ msgstr "Email"
 #: conf_profiles.php profile.php
 msgid "Enter your email"
 msgstr "Entrez votre adresse email"
+
+#: conf_device_new.php:286
+msgid "IP address/name is invalid"
+msgstr "L'adresse IP/nom est invalide"
