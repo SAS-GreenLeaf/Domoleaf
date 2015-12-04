@@ -1942,7 +1942,6 @@ msgstr "Défaut d'éclairage (circuit ouvert)"
 msgid "No default detected"
 msgstr "Aucun défaut détecté"
 
-
 #: popup/popup_wifi.php:14
 msgid "The SSID is not valid"
 msgstr "SSID invalide"
@@ -2010,3 +2009,7 @@ msgstr "Mo"
 #: functions.php:136
 msgid "GB"
 msgstr "Go"
+
+#: conf_device_new.php:286
+msgid "IP address/name is invalid"
+msgstr "L'adresse IP/nom est invalide"
