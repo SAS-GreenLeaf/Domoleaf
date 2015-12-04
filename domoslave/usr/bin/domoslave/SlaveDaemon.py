@@ -59,7 +59,7 @@ WIFI_MODE_ACCESS_POINT          = '2';
 WIFI_SECURITY_WPA               = '2';
 WIFI_SECURITY_WPA2              = '3';
 
-HOSTAPD_CONF_FILE               = '/etc/hostapd/hostapd.conf';
+HOSTAPD_CONF_FILE               = '/etc/domoleaf/hostapd.conf';
 DNSMASQ_CONF_FILE               = '/etc/dnsmasq.conf';
 
 LOG_FILE                        = '/var/log/domoleaf/domoslave.log';
