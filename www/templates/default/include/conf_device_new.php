@@ -282,7 +282,12 @@ function SendByAjax(data){
 			url: "/form/form_device_new.php",
 			data: data,
 			success: function(result) {
-				location.href=\'/conf_installation/\'+result;
+				if (result == "1"){
+					CatchError("'._('IP address/name is invalid').'");
+				}
+				else{
+					location.href=\'/conf_installation/\'+result;
+				}
 			},
 			error: function(result, status, error){
 				location.href=\'/conf_device_new\';
