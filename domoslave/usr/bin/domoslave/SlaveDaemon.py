@@ -52,6 +52,16 @@ RORG_TEMPERATURE                = 0xA5;
 
 PACKET_TYPE_RADIO_ERP1          = 0x01;
 
+WIFI_MODE_DISABLED              = '0';
+WIFI_MODE_CLIENT                = '1';
+WIFI_MODE_ACCESS_POINT          = '2';
+ 
+WIFI_SECURITY_WPA               = '2';
+WIFI_SECURITY_WPA2              = '3';
+
+HOSTAPD_CONF_FILE               = '/etc/hostapd/hostapd.conf';
+DNSMASQ_CONF_FILE               = '/etc/dnsmasq.conf';
+
 LOG_FILE                        = '/var/log/domoleaf/domoslave.log';
 
 KNX_READ_REQUEST        = 'knx_read_request';
@@ -103,6 +113,7 @@ class SlaveDaemon:
         self.enocean_sock = None;
         self.cron_sock = None;
         self.private_aes = hashlib.md5(self._parser.getValueFromSection('personnal_key', 'aes').encode()).hexdigest();
+        self.wifi_init(self._parser.getValueFromSection('wifi', 'ssid'), self._parser.getValueFromSection('wifi', 'password'), self._parser.getValueFromSection('wifi', 'encryption'), self._parser.getValueFromSection('wifi', 'mode'), 0);
         self.functions = {
             KNX_READ_REQUEST    : self.knx_read_request,
             KNX_WRITE_SHORT     : self.knx_write_short,
@@ -585,12 +596,91 @@ class SlaveDaemon:
     def reboot_d3(self, json_obj, connection):
         call(['reboot']);
 
+    def wifi_init(self, ssid, password, security, mode, opt):
+        try:
+            ps_process = Popen(["ps", "-x"], stdout=PIPE);
+            res = Popen(["grep", "hostapd"], stdin=ps_process.stdout, stdout=PIPE);
+            res = res.stdout.read().decode().split("\n")[0].split(' ');
+            ps_process.stdout.close();
+            if res != '':
+                while ('' in res):
+                    res.remove('');
+                call(['kill', '-9', res[0]]);
+            call(['ifconfig', 'wlan0', 'down']);
+
+            if mode == WIFI_MODE_DISABLED:
+                self.logger.info('Wifi mode = disabled');
+                call(['ifconfig', 'wlan0', 'up']);
+                if opt == 1:
+                    call(['update-rc.d', 'dnsmasq', 'defaults']);
+                    call(['update-rc.d', 'dnsmasq', 'disabled']);
+                    call(['service', 'dnsmasq', 'stop']);
+            elif mode == WIFI_MODE_CLIENT:
+                self.logger.info('Wifi mode = client');
+                call(['ifconfig', 'wlan0', 'up']);
+                if opt == 1:
+                    call(['update-rc.d', 'dnsmasq', 'defaults']);
+                    call(['update-rc.d', 'dnsmasq', 'disabled']);
+                    call(['service', 'dnsmasq', 'stop']);
+            elif mode == WIFI_MODE_ACCESS_POINT:
+                call(['ifconfig', 'wlan0', '192.168.0.254', 'netmask', '255.255.255.0', 'up']);
+                conf_file = open(HOSTAPD_CONF_FILE, 'w');
+                conf_str  = 'interface=wlan0\n\n';
+                conf_str += 'driver=nl80211\n\n';
+                conf_str += 'ssid=' + ssid + '\n\n';
+                conf_str += 'hw_mode=g\n\n';
+                conf_str += 'ieee80211n=1\n\n';
+                conf_str += 'channel=6\n\n';
+                conf_str += 'beacon_int=100\n\n';
+                conf_str += 'dtim_period=2\n\n';
+                conf_str += 'max_num_sta=255\n\n';
+                conf_str += 'rts_threshold=2347\n\n';
+                conf_str += 'fragm_threshold=2346\n\n';
+                conf_str += 'macaddr_acl=0\n\n';
+                if security == WIFI_SECURITY_WPA:
+                    conf_str += 'auth_algs=1\n\n';
+                    conf_str += 'wpa=1\n\n';
+                    conf_str += 'wpa_passphrase=' + password + '\n\n';
+                    conf_str += 'wpa_key_mgmt=WPA-PSK\n\n';
+                    conf_str += 'wpa_pairwise=TKIP\n';
+                elif security == WIFI_SECURITY_WPA2:
+                    conf_str += 'auth_algs=1\n\n';
+                    conf_str += 'wpa=2\n\n';
+                    conf_str += 'wpa_passphrase=' + password + '\n\n';
+                    conf_str += 'wpa_key_mgmt=WPA-PSK\n\n';
+                    conf_str += 'wpa_pairwise=CCMP\n\n';
+                    conf_str += 'rsn_pairwise=CCMP\n';
+                else:
+                    self.logger.error('Wifi security = Unknown');
+                conf_file.write(conf_str);
+                conf_file.close();
+
+                if opt == 1:
+                    conf_file = open(DNSMASQ_CONF_FILE, 'w');
+                    conf_str  = 'domain-needed\n';
+                    conf_str += 'interface=wlan0\n';
+                    conf_str += 'dhcp-range=192.168.0.10,192.168.0.100,12h\n';
+                    conf_file.write(conf_str);
+                    conf_file.close();
+                    call(['update-rc.d', 'dnsmasq', 'defaults']);
+                    call(['update-rc.d', 'dnsmasq', 'enable']);
+                    call(['service', 'dnsmasq', 'restart']);
+
+                call(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-j', 'MASQUERADE']);
+                call(['hostapd', HOSTAPD_CONF_FILE, '-B']);
+            else:
+                call(['ifconfig', 'wlan0', 'up']);
+                self.logger.error('Wifi mode = Unknown');
+        except Exception as e:
+            self.logger.error(e);
+ 
     def wifi_update(self, json_obj, connection):
         try:
             self._parser.writeValueFromSection('wifi', 'ssid', json_obj['ssid']);
             self._parser.writeValueFromSection('wifi', 'password', json_obj['password']);
-            self._parser.writeValueFromSection('wifi', 'security', json_obj['security']);
+            self._parser.writeValueFromSection('wifi', 'encryption', json_obj['security']);
             self._parser.writeValueFromSection('wifi', 'mode', json_obj['mode']);
+            self.wifi_init(json_obj['ssid'], json_obj['password'], json_obj['security'], json_obj['mode'], 1);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "wifi_update", "aes_pass": "' + self.private_aes + '"}';
