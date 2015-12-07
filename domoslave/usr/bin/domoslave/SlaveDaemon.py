@@ -571,7 +571,7 @@ class SlaveDaemon:
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd';
+                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd ';
                 if json_obj['interface_knx'] == 'tpuarts':
                     knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
