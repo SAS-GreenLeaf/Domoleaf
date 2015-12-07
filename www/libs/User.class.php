@@ -2591,6 +2591,10 @@ class User {
 	 * @return Ambigous <multitype:, multitype:NULL >
 	 */
 	function mcReturn(){
+		if(apc_exists('mcReturn_'.$this->getId())) {
+			return unserialize(apc_fetch('mcReturn_'.$this->getId()));
+		}
+		
 		$link = Link::get_link('domoleaf');
 		$list = Array();
 		
@@ -2608,6 +2612,7 @@ class User {
 				'valeur'        => $do->valeur
 			);
 		}
+		apc_store('mcReturn_'.$this->getId(), serialize($list), 1);
 		return $list;
 	}
 
