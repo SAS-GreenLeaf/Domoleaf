@@ -1043,7 +1043,6 @@ class Admin extends User {
 		$addr = gethostbyname($addr);
 
 		if (!(filter_var($addr, FILTER_VALIDATE_IP))){
-			error_log('non valide');
 			return;
 		}
 
