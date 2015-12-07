@@ -55,12 +55,13 @@ PACKET_TYPE_RADIO_ERP1          = 0x01;
 WIFI_MODE_DISABLED              = '0';
 WIFI_MODE_CLIENT                = '1';
 WIFI_MODE_ACCESS_POINT          = '2';
- 
+
 WIFI_SECURITY_WPA               = '2';
 WIFI_SECURITY_WPA2              = '3';
 
-HOSTAPD_CONF_FILE               = '/etc/domoleaf/hostapd.conf';
 DNSMASQ_CONF_FILE               = '/etc/dnsmasq.conf';
+HOSTAPD_CONF_FILE               = '/etc/domoleaf/hostapd.conf';
+WPA_SUPPLICANT_CONF_FILE        = '/etc/domoleaf/wpa_supplicant.conf';
 
 LOG_FILE                        = '/var/log/domoleaf/domoslave.log';
 
@@ -557,7 +558,7 @@ class SlaveDaemon:
 
     def send_interfaces(self, json_obj, connection):
         try:
-            if os.path.exists('/tmp/knxd'):
+            if os.path.exists('/var/run/eib'):
                 call(['service', 'knxd', 'stop']);
             previous_val_knx = self._parser.getValueFromSection('knx', 'interface');
             previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
@@ -570,7 +571,7 @@ class SlaveDaemon:
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd ';
+                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u ';
                 if json_obj['interface_knx'] == 'tpuarts':
                     knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
@@ -578,8 +579,7 @@ class SlaveDaemon:
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
-                call(['service', 'knxd', 'start']);
-                Popen(['monitor_knx', 'ip:localhost', '--daemon']);
+                Popen(['service', 'knxd', 'start']);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';
@@ -606,22 +606,83 @@ class SlaveDaemon:
                 while ('' in res):
                     res.remove('');
                 call(['kill', '-9', res[0]]);
+
+            ps_process = Popen(["ps", "-x"], stdout=PIPE);
+            res = Popen(["grep", "wpa_supplicant"], stdin=ps_process.stdout, stdout=PIPE);
+            res = res.stdout.read().decode().split("\n")[0].split(' ');
+            ps_process.stdout.close();
+            if res != '':
+                while ('' in res):
+                    res.remove('');
+                call(['kill', '-9', res[0]]);
+
             call(['ifconfig', 'wlan0', 'down']);
 
             if mode == WIFI_MODE_DISABLED:
-                self.logger.info('Wifi mode = disabled');
                 call(['ifconfig', 'wlan0', 'up']);
                 if opt == 1:
                     call(['update-rc.d', 'dnsmasq', 'defaults']);
                     call(['update-rc.d', 'dnsmasq', 'disabled']);
                     call(['service', 'dnsmasq', 'stop']);
             elif mode == WIFI_MODE_CLIENT:
-                self.logger.info('Wifi mode = client');
                 call(['ifconfig', 'wlan0', 'up']);
                 if opt == 1:
                     call(['update-rc.d', 'dnsmasq', 'defaults']);
                     call(['update-rc.d', 'dnsmasq', 'disabled']);
                     call(['service', 'dnsmasq', 'stop']);
+
+                conf_file = open('/etc/network/interfaces', 'w');
+                conf_str  = 'auto wlan0\n';
+                conf_str += 'iface wlan0 inet dhcp\n';
+                conf_str += '\twpa-conf ' + WPA_SUPPLICANT_CONF_FILE + '\n';
+                conf_file.write(conf_str);
+                conf_file.close();
+
+                conf_file = open(WPA_SUPPLICANT_CONF_FILE, 'w');
+                conf_str  = 'ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n';
+                conf_str += 'update_config=1\n';
+                conf_str += 'ctrl_interface_group=0\n';
+                conf_str += 'eapol_version=1\n';
+                conf_str += 'ap_scan=1\n'; # 0 if IEEE 802.1X
+                conf_str += 'fast_reauth=1\n';
+                conf_str += '\n\nnetwork={\n';
+                conf_str += '\tdisabled=0\n'; # 0 = network enable (default) | 1 = network disable
+                conf_str += '\tssid="' + ssid + '"\n';
+                conf_str += '\tscan_ssid=0\n';
+                conf_str += '\tpriority=1\n';
+                if security == WIFI_SECURITY_WPA:
+                    conf_str += '\tproto=WPA\n';
+                    conf_str += '\tkey_mgmt=WPA-PSK\n';
+                    conf_str += '\tauth_alg=OPEN\n';
+                    conf_str += '\tpairwise=TKIP CCMP\n';
+                    conf_str += '\tgroup=TKIP CCMP\n';
+                    conf_str += '\tpsk="' + password + '"\n';
+                elif security == WIFI_SECURITY_WPA2:
+                    conf_str += '\tproto=RSN\n';
+                    conf_str += '\tkey_mgmt=WPA-PSK\n';
+                    conf_str += '\tauth_alg=OPEN\n';
+                    conf_str += '\tpairwise=CCMP TKIP\n';
+                    conf_str += '\tgroup=CCMP TKIP\n';
+                    conf_str += '\tpsk="' + password + '"\n';
+                elif security == WIFI_SECURITY_WEP:
+                    conf_str += '\tkey_mgmt=NONE\n';
+                    conf_str += '\tauth_alg=SHARED\n';
+                    if len(password) == 5 or len(password) == 10:
+                        conf_str += '\tgroup=WEP40\n';
+                    elif len(password) == 13 or len(password) == 26:
+                        conf_str += '\tgroup=WEP104\n';
+                    else:
+                        conf_str += '\tgroup=WEP40 WEP104\n';
+                    conf_str += '\twep_key0="' + password + '"\n';
+                    conf_str += '\twep_tx_keyidx=0\n';
+                conf_str += '\tpriority=1\n';
+                conf_str += '}\n';
+                conf_file.write(conf_str);
+                conf_file.close();
+
+                call(['wpa_supplicant', '-Dnl80211', '-iwlan0', '-c/etc/domoleaf/wpa_supplicant.conf', '-B']);
+                call(['dhclient', 'wlan0']);
+
             elif mode == WIFI_MODE_ACCESS_POINT:
                 call(['ifconfig', 'wlan0', '192.168.0.254', 'netmask', '255.255.255.0', 'up']);
                 conf_file = open(HOSTAPD_CONF_FILE, 'w');
@@ -673,13 +734,14 @@ class SlaveDaemon:
                 self.logger.error('Wifi mode = Unknown');
         except Exception as e:
             self.logger.error(e);
- 
+
     def wifi_update(self, json_obj, connection):
         try:
             self._parser.writeValueFromSection('wifi', 'ssid', json_obj['ssid']);
             self._parser.writeValueFromSection('wifi', 'password', json_obj['password']);
             self._parser.writeValueFromSection('wifi', 'encryption', json_obj['security']);
             self._parser.writeValueFromSection('wifi', 'mode', json_obj['mode']);
+
             self.wifi_init(json_obj['ssid'], json_obj['password'], json_obj['security'], json_obj['mode'], 1);
         except Exception as e:
             self.logger.error(e);
