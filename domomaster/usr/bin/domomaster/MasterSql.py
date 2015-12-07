@@ -51,7 +51,7 @@ class MasterSql:
         query =  "UPDATE room_device ";
         query += "JOIN ip_monitor ON plus4=mac_addr ";
         query += "SET addr=ip_addr ";
-        query += "WHERE protocol_id=6 AND plus4 IS NOT NULL AND ip_addr != addr";
+        query += "WHERE protocol_id=6 AND plus4 != '' AND ip_addr != addr";
         self.mysql_handler_personnal_query(query);
         
         db.updatedb();
