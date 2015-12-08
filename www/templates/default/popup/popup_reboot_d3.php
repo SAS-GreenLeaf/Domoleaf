@@ -15,7 +15,7 @@ echo '
 printf(_('Do you want to reboot %s?'), '<strong>'.$daemon->name.'</strong>');
 echo '<br/>'._('It will take 60 seconds.').''.
 	 '<br/><br/>'.
-	 ''._('If you want to shutdown, be careful, you will have to switch off switch on the D3').''.
+	 ''._('If you want to shutdown, be careful, you will have to switch off switch on the D3.').''.
 	 '<br/><br/>'.
 	 '</div>'.
 	 '<div class="controls center">'.

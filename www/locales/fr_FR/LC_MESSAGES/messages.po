@@ -2013,3 +2013,23 @@ msgstr "Go"
 #: conf_device_new.php:286
 msgid "IP address/name is invalid"
 msgstr "L'adresse IP/nom est invalide"
+
+#: popup_reboot_d3.php:18
+msgid "If you want to shutdown, be careful, you will have to switch off switch on the D3."
+msgstr "Si vous voulez éteindre, faites attention, vous devrez débrancher puis rebrancher le D3."
+
+#: popup_reboot_d3.php:22
+msgid "Shutdown"
+msgstr "Éteindre"
+
+#: popup_shutdown_d3.php:15
+msgid "It will take few seconds to shutdown %s."
+msgstr "L'extinction de %s prendra quelques secondes."
+
+#: conf_daemon.php:67
+msgid "Reboot / Shutdown"
+msgstr "Éteindre / Redémarrer"
+
+#: conf_daemon.php:257
+msgid "Shutdown D3"
+msgstr "Éteindre D3"
