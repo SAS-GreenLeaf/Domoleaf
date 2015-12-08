@@ -207,7 +207,10 @@ class Api {
 		
 			$user -> setLevel($answer['level']);
 			$user -> setLanguage($answer['language']);
-			$user -> activity();
+			
+			if(empty($request) || (!empty($request['mcReturn']) && $_SERVER['REQUEST_TIME']%60 == 0)) {
+				$user -> activity();
+			}
 			
 			if(!defined('LOCALE')) {
 				defineLocale($answer['language']);
