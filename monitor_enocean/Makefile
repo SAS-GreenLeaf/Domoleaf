@@ -8,17 +8,15 @@ SRC = enocean_main.c \
 OBJ = $(SRC:.c=.o)
 
 NAME = monitor_enocean
-NATIVE := $(shell dpkg --print-architecture)
+
 
 CFLAGS += -W -Wall -Wextra -ansi -pedantic
 CFLAGS += $(IFLAGS)
 CFLAGS += $(LDFLAGS)
 IFLAGS += -I.
-LDFLAGS += -lpthread
+LDFLAGS += -lpthread -g
 
-ifeq ($(ARCH), $(NATIVE))
-	CC = gcc -o
-endif
+CC = gcc -o
 ifeq ($(ARCH),arm64)
 	CC = aarch64-linux-gnu-gcc -o
 endif

@@ -126,6 +126,11 @@ char *get_interface_enocean()
 						strcpy(interface, "/dev/");
 						strcpy_to_n(interface, line, 12);
 						fclose(file);
+						if (strcmp(interface, "/dev/none") == 0)
+						{
+							fprintf(stderr, "No interface has been enter\n");
+							exit(EXIT_FAILURE);
+						}
 						return (interface);
 					}
 				}
