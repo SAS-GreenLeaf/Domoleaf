@@ -13,10 +13,15 @@ $daemon = $listdaemon->$_GET['id'];
 echo '
 <div class="center">';
 printf(_('Do you want to reboot %s?'), '<strong>'.$daemon->name.'</strong>');
-echo '<br/>'._('It will take 60 seconds.').'';
-echo '</div>
-<div class="controls center">
-	<button  id="" onclick="RebootD3('.$daemon->daemon_id.')" class="btn btn-success">'._('Yes').' <span class="glyphicon glyphicon-ok"></span></button> <button onclick="popup_close()" class="btn btn-danger">'._('No').' <span class="glyphicon glyphicon-remove"></span></button>
-</div>';
+echo '<br/>'._('It will take 60 seconds.').''.
+	 '<br/><br/>'.
+	 ''._('If you want to shutdown, be careful, you will have to switch off switch on the D3').''.
+	 '<br/><br/>'.
+	 '</div>'.
+	 '<div class="controls center">'.
+	 	'<button onclick="RebootD3('.$daemon->daemon_id.', 2)" class="btn btn-danger">'._('Shutdown').' <span class="glyphicon glyphicon glyphicon-off"></span></button> '.
+	 	'<button onclick="RebootD3('.$daemon->daemon_id.', 1)" class="btn btn-warning">'._('Reboot').' <span class="glyphicon glyphicon-refresh""></span></button> '.
+	 '<button onclick="popup_close()" class="btn btn-success">'._('Cancel').' <span class="fa fa-reply"></span></button>'.
+'</div>';
 
 ?>

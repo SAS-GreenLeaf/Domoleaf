@@ -75,6 +75,7 @@ DATA_UPDATE             = 'update';
 SEND_TECH               = 'send_tech';
 SEND_ALIVE              = 'send_alive';
 SEND_INTERFACES         = 'send_interfaces';
+SHUTDOWN_D3             = 'shutdown_d3';
 REBOOT_D3               = 'reboot_d3';
 WIFI_UPDATE             = 'wifi_update';
 
@@ -126,6 +127,7 @@ class SlaveDaemon:
             SEND_TECH           : self.send_tech,
             SEND_ALIVE          : self.send_alive,
             SEND_INTERFACES     : self.send_interfaces,
+            SHUTDOWN_D3         : self.shutdown_d3,
             REBOOT_D3           : self.reboot_d3,
             WIFI_UPDATE         : self.wifi_update
         };
@@ -593,6 +595,9 @@ class SlaveDaemon:
         connection.send(bytes(encrypt_IV, 'utf-8') + data);
         if previous_val_EnOcean != str(json_obj['interface_arg_EnOcean']):
             call(['service', 'domoslave', 'restart']);
+
+    def shutdown_d3(self, json_obj, connection):
+        call(['poweroff']);
 
     def reboot_d3(self, json_obj, connection):
         call(['reboot']);

@@ -1378,12 +1378,17 @@ class Admin extends User {
 		return $list;
 	}	
 	
-	function confD3Reboot($iddaemon) {
+	function confD3Reboot($iddaemon, $opt=1) {
 		$socket = new Socket();
 		$data = array(
 				'daemon_id' => $iddaemon
 		);
-		$socket->send('reboot_d3', $data, 1);
+		if ($opt == 1){
+			$socket->send('reboot_d3', $data, 1);
+		}
+		else{
+			$socket->send('shutdown_d3', $data, 1);
+		}
 		return $socket->receive();
 	}
 	

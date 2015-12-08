@@ -64,7 +64,7 @@ echo '
 							<button type="button" title="'._('Wifi Configuration').'" class="btn btn-info" onclick="PopupWifi('.$elem->daemon_id.')">
 								<span class="fa fa-wifi" aria-hidden="true"></span>
 							</button>
-							<button type="button" title="'._('Reboot').'" class="btn btn-warning" onclick="PopupRebootD3('.$elem->daemon_id.')">
+							<button type="button" title="'._('Reboot / Shutdown').'" class="btn btn-warning" onclick="PopupRebootD3('.$elem->daemon_id.')">
 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 							</button>
 							<button type="button" title="'._('Edit').'" class="btn btn-primary" onclick="PopupRenameDaemon('.$elem->daemon_id.')">
@@ -247,6 +247,20 @@ function PopupRebootD3(id){
 	});
 }
 
+function PopupShutdownD3(id){
+		$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_shutdown_d3.php",
+		data: "id="+id,
+		success: function(msg) {
+			BootstrapDialog.show({
+				title: "'._('Shutdown D3').'",
+			message: msg
+			});
+		}
+	});
+}
+
 function PopupRenameDaemon(id){
 		$.ajax({
 		type:"GET",
@@ -275,14 +289,19 @@ function PopupDeleteDaemon(id){
 	});
 }
 
-function RebootD3(id){
+function RebootD3(id, opt){
 	$.ajax({
 			type:"GET",
 			url: "/form/form_d3_reboot.php",
-			data: "id="+id,
+			data: "id="+id+"&opt="+opt,
 			complete: function(result, status) {
-				PopupLoading();
-				setTimeout(function(){popup_close();}, 60000);
+				if (opt == 2){
+					PopupShutdownD3(id);
+				}
+				else{
+					PopupLoading();
+					setTimeout(function(){popup_close();}, 60000);
+				}
 			}
 		});
 }
