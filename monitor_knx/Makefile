@@ -4,7 +4,6 @@ SRC = knx_main.c \
       knx_print_fcts.c \
 
 NAME = monitor_knx
-NATIVE := $(shell dpkg --print-architecture)
 
 OBJ = $(SRC:.c=.o)
 
@@ -12,9 +11,7 @@ CFLAGS += -W -Wall -Wextra $(IFLAGS) $(LDFLAGS) -ggdb -g3
 IFLAGS += -I. -I/usr/local/include
 LDFLAGS += -leibclient -lpthread
 
-ifeq ($(ARCH), $(NATIVE))
-	CC = gcc -o
-endif
+CC = gcc -o
 ifeq ($(ARCH),arm64)
 	CC = aarch64-linux-gnu-gcc -o
 endif

@@ -3,15 +3,29 @@
 import sys;
 sys.path.append('/usr/lib/domoleaf');
 from MysqlHandler import *;
+from MasterSql import *;
 from DaemonConfigParser import *;
 
-LOAD_DEVICE_QUERY = "SELECT protocol_id, device_id, room_device.daemon_id, addr, plus1, plus2, plus3 FROM room_device JOIN daemon ON room_device.daemon_id=daemon.daemon_id WHERE room_device_id = ";
+LOAD_DEVICE_QUERY = ('SELECT protocol_id, device_id, room_device.daemon_id, '
+                     'addr, plus1, plus2, plus3 '
+                     'FROM room_device '
+                     'JOIN daemon ON room_device.daemon_id=daemon.daemon_id '
+                     'WHERE room_device_id = ');
 
-LOAD_DEVICE_QUERY_IP = "SELECT protocol_id, device_id, daemon_id, addr, plus1, plus2, plus3 FROM room_device WHERE room_device_id = ";
+LOAD_DEVICE_QUERY_IP = ('SELECT protocol_id, device_id, daemon_id, '
+                        'addr, plus1, plus2, plus3 FROM room_device '
+                        'WHERE room_device_id = ');
 
-CHECK_ROOM_DEVICE_OPTIONS = 'SELECT option_id, addr FROM room_device_option WHERE room_device_id = ';
+CHECK_ROOM_DEVICE_OPTIONS = ('SELECT room_device_option.option_id, addr, dpt_optiondef.dpt_id, dpt_optiondef.function_id '
+                             'FROM room_device_option '
+                             'JOIN dpt_optiondef '
+                             'ON room_device_option.dpt_id = dpt_optiondef.dpt_id '
+                             'AND room_device_option.option_id = dpt_optiondef.option_id '
+                             'AND protocol_id = ');
 
-GET_DAEMON_FROM_ID = 'SELECT daemon_id, name, serial, secretkey FROM daemon WHERE daemon_id = ';
+GET_DAEMON_FROM_ID = ('SELECT daemon_id, name, serial, secretkey '
+                      'FROM daemon '
+                      'WHERE daemon_id = ');
 
 KNX_ID = 1;
 IP_ID = 6;
@@ -56,7 +70,8 @@ class DeviceManager:
         self._db_name = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_USER_ENTRY);
         self._db_passwd = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_PASSWORD_ENTRY);
         self._db_dbname = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_DATABASE_ENTRY);
-
+        self.sql = MasterSql();
+        
     ###############################################################
     # Va surement revoir cette fonction et remettre le mode debug #
     # suivant les options qu'il va falloir check ou pas           #
@@ -74,6 +89,7 @@ class DeviceManager:
         if self._db_dbname is None:
             self.logger.error("[ DeviceManager ]: Mysql database name not found in '" + CONF_FILENAME + "'");
             return None;
+        
         db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
         res = db.personnal_query(LOAD_DEVICE_QUERY + str(self._id));
         if len(res) == 0:
@@ -97,11 +113,14 @@ class DeviceManager:
         };
         db.close();
         db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
-        res = db.personnal_query(CHECK_ROOM_DEVICE_OPTIONS + str(self._id));
+        query = CHECK_ROOM_DEVICE_OPTIONS + str(device[KEY_PROTOCOL_ID]) + ' WHERE room_device_id = ' + str(self._id);
+        res = db.personnal_query(query);
         db.close();
         if len(res) == 0:
             self.logger.error('[ DeviceManager ]: Error: No room_device_option for room_device_id \'' + str(self._id) + '\'');
             device['option_id'] = self._option_id;
+            device['function_id'] = 0;
+            device['dpt_id'] = 0;
             if device['protocol_id'] != IP_ID:
                 db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
                 res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
@@ -110,9 +129,12 @@ class DeviceManager:
             db.close();
             return device;
         device['addr_dst'] = 0;
+
         for d in res:
             if d[0] == self._option_id:
                 device['addr_dst'] = d[1];
+                device['function_id'] = d[3];
+                device['dpt_id'] = d[2];
                 break;
         device['option_id'] = self._option_id;
         if device['protocol_id'] != IP_ID:

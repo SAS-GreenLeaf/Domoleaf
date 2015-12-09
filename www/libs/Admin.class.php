@@ -880,7 +880,7 @@ class Admin extends User {
 	 * @return NULL
 	 */
 	function confDeviceSaveOption($room_device_id, $options){
-		$listdpt = $this->confOptionDptList();
+		$listdpt = $this->confOptionDptList($room_device_id);
 		$tmp = 0;
 		foreach ($listdpt[$options['id']] as $list){
 			if ($tmp == 0){
@@ -916,7 +916,7 @@ class Admin extends User {
 			$status = 1;
 		}
 		
-		if(!empty($do->room_device_id)) {
+		if (!empty($do->room_device_id)) {
 			$sql = 'UPDATE room_device_option
 			        SET option_id=:option_id, addr=:addr, addr_plus=:addr_plus, dpt_id=:dpt_id, 
 			            status=:status
@@ -2148,19 +2148,30 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confOptionDptList(){
+	function confOptionDptList($iddevice = 0){
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
 		$sql = 'SELECT dpt_optiondef.dpt_id, option_id, unit
 		        FROM dpt_optiondef
-		        JOIN dpt ON dpt.dpt_id=dpt_optiondef.dpt_id';
+		        JOIN dpt
+		        ON dpt.dpt_id=dpt_optiondef.dpt_id
+		        JOIN room_device
+		        ON room_device.protocol_id = dpt_optiondef.protocol_id
+		        WHERE room_device_id=:iddevice
+		        ORDER BY dpt_optiondef.dpt_id';
 		$req = $link->prepare($sql);
+		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->option_id][] = clone $do;
 		}
-		
+		/*
+		 * JOIN room_device
+		        ON room_device.protocol_id = dpt_optiondef.protocol_id
+		        WHERE room_device_id=:iddevice
+		        $req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
+		 */
 		return $list;
 	}
 

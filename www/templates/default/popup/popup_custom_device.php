@@ -107,7 +107,6 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 						'$("#previewImg").removeClass("aspect-square-little");'.
 						'$("#previewImg").addClass("aspect-square");';
 					}
-					error_log($_GET['type_elem']);
 					if ($_GET['type_elem'] == 1){
 						echo
 						'$("#popupTitle").html("'._("Upload Device Image").'");';

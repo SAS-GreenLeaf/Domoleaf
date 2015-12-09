@@ -19,7 +19,7 @@ Packet_function g_packet_function[] =
 /*
 ** Open, read and store configuration's information
 */
-int get_enocean_conf(int *port, char **addr)
+int get_enocean_conf(int *port)
 {
 	FILE *file;
 	char line[128];
@@ -45,7 +45,6 @@ int get_enocean_conf(int *port, char **addr)
 						strcpy_to_n(tmp, line, 7);
 						*port = atoi(tmp);
 						free(tmp);
-						*addr = "127.0.0.1";
 						fclose(file);
 						return (0);
 					}
@@ -69,7 +68,7 @@ Slave *slave_init()
 
 	addr = malloc(32);
 	memset(addr, 0, 32);
-	if(get_enocean_conf(&port, &addr) == -1)
+	if(get_enocean_conf(&port) == -1)
 	{
 		return (NULL);
 	}
@@ -92,8 +91,7 @@ Slave *slave_init()
 
 	slave->addr_in.sin_family = AF_INET;
 	slave->addr_in.sin_port = htons(port);
-	slave->addr_in.sin_addr.s_addr = inet_addr(addr);
-	free(addr);
+	slave->addr_in.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	if(connect(slave->sock_fd, (const struct sockaddr *) &slave->addr_in, sizeof(struct sockaddr)) == -1)
 	{
