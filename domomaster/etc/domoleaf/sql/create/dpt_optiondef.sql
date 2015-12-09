@@ -19,7 +19,6 @@ INSERT INTO `dpt_optiondef` (`option_id`, `dpt_id`, `protocol_id`, `function_id`
 VALUES
 	(12, 2, 1, 1),
 	(12, 468, 6, 4),
-	(12, 469, 1, 1),
 	(12, 469, 6, 5),
 	(13, 51, 1, 0),
 	(54, 2, 1, 0),
