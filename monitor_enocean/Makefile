@@ -14,7 +14,7 @@ CFLAGS += -W -Wall -Wextra -ansi -pedantic
 CFLAGS += $(IFLAGS)
 CFLAGS += $(LDFLAGS)
 IFLAGS += -I.
-LDFLAGS += -lpthread -g
+LDFLAGS += -lpthread
 
 CC = gcc -o
 ifeq ($(ARCH),arm64)
