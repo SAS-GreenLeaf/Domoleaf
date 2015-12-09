@@ -31,6 +31,7 @@ from CommandReceiver import *;
 from MasterSql import *;
 from KNXManager import *;
 from UpnpAudio import *;
+from IP_IRManager import *;
 from Smartcommand import *;
 from Trigger import *;
 from Schedule import *;
@@ -62,6 +63,10 @@ PROTOCOL_KNX            = 1;    # KNX protocol id
 PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
 PROTOCOL_IP             = 6;    # IP protocol id
 
+FUNCTION_KNX_SHORT = 1;
+FUNCTION_KNX_LONG  = 2;
+FUNCTION_IR    = 5;
+
 # IDs for UPNP protocol
 UPNP_PLAY           = 'play';               # Play command id
 UPNP_PAUSE          = 'pause';              # Pause command id
@@ -72,6 +77,9 @@ UPNP_MUTE           = 'mute';               # Mute command id
 UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
 UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
+
+# IDs for IR protocol
+IR_MUTE             = 'ir_mute';            # Mute IR command id
 
 # IDs for HttpReq protocol
 CAMERA_TOP          = 'top';                # Top command id
@@ -136,7 +144,7 @@ class MasterDaemon:
         self.logger.info('Started Domoleaf Master Daemon');
         self.d3config = {};
         self.aes_slave_keys = {};
-        self.aes_master_key = None;
+        self.aes_master_key = None
         self.connected_clients = {};
         self.sql = MasterSql();
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
@@ -156,6 +164,11 @@ class MasterDaemon:
             PROTOCOL_KNX        : KNXManager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
             PROTOCOL_IP         : self.protocol_ip
+        };
+        self.functions = {
+            FUNCTION_KNX_SHORT  : KNXManager.protocol_knx,
+            FUNCTION_KNX_LONG   : KNXManager.protocol_knx,
+            FUNCTION_IR         : IP_IRManager().send_to_gc
         };
         self.upnp_function = {
             UPNP_PLAY           : self.upnp_set_play,
@@ -559,12 +572,8 @@ class MasterDaemon:
         Updates room_device_option values in the database.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-        #self.logger.info(json_obj);
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
-        #try:
         self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
-        #except Exception as e:
-        #    self.logger.error(e);
         connection.close();
 
     def knx_write_short(self, json_obj, connection):
@@ -651,23 +660,32 @@ class MasterDaemon:
         hostname = '';
         dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
         dev = dm.load_from_db();
-        if dev['protocol_id'] == PROTOCOL_IP:
-            json_obj['addr'] = dev['addr'];
-            json_obj['port'] = dev['plus1'];
-            self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
-            return ;
-        if dev is None:
+        
+        function_id = int(dev['function_id']);
+        
+        if (function_id > 0):
+            try:
+                self.functions[function_id](json_obj, dev, hostname);
+            except Exception as e:
+                self.logger.error(e);
+        else:
+            if dev['protocol_id'] == PROTOCOL_IP:
+                json_obj['addr'] = dev['addr'];
+                json_obj['port'] = dev['plus1'];
+                self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
+                return ;
+            if dev is None:
+                connection.close();
+                return ;
+            hostname = '';
+            for host in self.hostlist:
+                if dev['daemon_name'] in host._Hostname:
+                    hostname = host._Hostname;
+                    break;
+            if hostname != '':
+                if dev['protocol_id'] == PROTOCOL_KNX:
+                    self.knx_manager.protocol_knx(json_obj, dev, hostname);
             connection.close();
-            return ;
-        hostname = '';
-        for host in self.hostlist:
-            if dev['daemon_name'] in host._Hostname:
-                hostname = host._Hostname;
-                break;
-        if hostname != '':
-            if dev['protocol_id'] == PROTOCOL_KNX:
-                self.knx_manager.protocol_knx(json_obj, dev, hostname);
-        connection.close();
 
     def protocol_enocean(self, json_obj, dev, hostname):
         """
@@ -742,11 +760,14 @@ class MasterDaemon:
         Callback called each time a protocol_ip packet is received.
         Calls the desired Upnp function.
         """
-        json_obj['data']['value'] = dev['addr_dst'];
-        if json_obj['data']['action'] in self.upnp_function.keys():
-            self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
-        elif json_obj['data']['action'] in self.http_req_function.keys():
-            self.http_req_function[json_obj['data']['action']](json_obj, dev, hostname);
+        try:
+            json_obj['data']['value'] = dev['addr_dst'];
+            if json_obj['data']['action'] in self.upnp_function.keys():
+                self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
+            elif json_obj['data']['action'] in self.http_req_function.keys():
+                self.http_req_function[json_obj['data']['action']](json_obj, dev, hostname);
+        except Exception as e:
+            self.logger.error(e);
 
     def get_ip_ifname(self, ifname):
         """
@@ -974,7 +995,6 @@ class MasterDaemon:
         self.schedule.check_all_schedules(connection);
 
     def launch_calc_logs(self, json_obj, connection):
-        self.logger.error('YOUHOU');
         try:
             self.calcLogs.sort_logs(connection);
         except Exception as e:
@@ -992,7 +1012,6 @@ class MasterDaemon:
             global_state = filtered;
         else:
             global_state = '';
-        #self.logger.info('GLOBAL STATE ' + str(global_state));
         return global_state;
 
     def send_request(self, json_obj, connection):
