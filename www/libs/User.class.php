@@ -2359,7 +2359,7 @@ class User {
 		return $list;
 	}
 	
-	function confOptionDptList(){
+	function confOptionDptList($iddevice = 0){
 		return null;
 	}
 	

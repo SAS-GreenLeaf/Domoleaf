@@ -1207,7 +1207,10 @@ class Api {
 						break;
 						
 						case 'confOptionDptList':
-							$res = $user->confOptionDptList();
+							if (empty($var[0])) {
+								$var[0] = 0;
+							}
+							$res = $user->confOptionDptList($var[0]);
 						break;
 						
 						/*** Master command ***/

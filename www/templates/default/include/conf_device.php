@@ -78,70 +78,71 @@ echo '
 		</div>';
 	echo '
 	</div>
-<br/>
+	<br/>
 </div>
 
 <div name="infopart" class="col-xs-12"><br/>';
-		if ($device->protocol_id == 6){
-		echo   '<div class="col-md-6 col-xs-12">
-					<div class="input-group">
-						<label for="ipaddress" class="input-group-addon">
-							<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" value="'.$device->addr.'" id="addr" placeholder="'._('IP address or name').'">
-					</div>
-				
-					<div class="input-group">
-						<label for="port" class="input-group-addon">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" value="'.$device->plus1.'" id="port" placeholder="'._('Port').' ('._('Default: 80').')">
-					</div>
-				<div class="input-group">
-						<label for="macaddress" class="input-group-addon">
-							<span class="fa flaticon-chip" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Address').'">
-				</div>
-				</div>
-				<div class="col-md-6 col-xs-12">
-					<div class="input-group">
-						<label for="login" class="input-group-addon">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'">
-					</div>
-				
-					<div class="input-group">
-						<label for="password" class="input-group-addon">
-							<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-						</label>
-						<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
-					</div>
-				</div><br/>';
-		}
-		else if ($device->protocol_id == 1){
-		echo	'
-				<div class="col-md-6 col-xs-12">
-					<div class="input-group">
-						<label for="knxaddress" class="input-group-addon">
-						<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('KNX address or name').'">
-					</div>
-				</div>';
-		}
-		else if ($device->protocol_id == 2){
-			echo	'
-				<div class="col-md-6 col-xs-12">
-					<div class="input-group">
-						<label for="enoceanaddress" class="input-group-addon">
-						<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-						</label>
-						<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('Enocean address or name').'">
-					</div>
-				</div>';
-		}
+if ($device->protocol_id == 6){
+	echo
+	'<div class="col-md-6 col-xs-12">
+		<div class="input-group">
+			<label for="ipaddress" class="input-group-addon">
+				<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" value="'.$device->addr.'" id="addr" placeholder="'._('IP address or name').'">
+		</div>
+	
+		<div class="input-group">
+			<label for="port" class="input-group-addon">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" value="'.$device->plus1.'" id="port" placeholder="'._('Port').' ('._('Default: 80').')">
+		</div>
+		<div class="input-group">
+			<label for="macaddress" class="input-group-addon">
+				<span class="fa flaticon-chip" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Address').'">
+		</div>
+	</div>
+	<div class="col-md-6 col-xs-12">
+		<div class="input-group">
+			<label for="login" class="input-group-addon">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'">
+		</div>
+	
+		<div class="input-group">
+			<label for="password" class="input-group-addon">
+				<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+			</label>
+			<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+		</div>
+	</div><br/>';
+}
+else if ($device->protocol_id == 1){
+	echo 
+	'<div class="col-md-6 col-xs-12">
+		<div class="input-group">
+			<label for="knxaddress" class="input-group-addon">
+			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('KNX address or name').'">
+		</div>
+	</div>';
+}
+else if ($device->protocol_id == 2){
+	echo
+	'<div class="col-md-6 col-xs-12">
+		<div class="input-group">
+			<label for="enoceanaddress" class="input-group-addon">
+			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
+			</label>
+			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('Enocean address or name').'">
+		</div>
+	</div>';
+}
 echo '
 </div>&nbsp;
 
@@ -150,24 +151,28 @@ echo '
 </div>
 
 <div class="col-xs-12" name="optionpart">
-<br/>
-<h3>
-	'._('Options').'';
-	if (sizeof($manufacturerList) > 0){ 
-		echo'<button class="btn btn-warning margin-left" onclick="PopupPreConfigurationDevice('.$_GET['device'].')" title="Pre-configuration device" type="button"><span class="fa fa-cog"></span></button>';
-	}
-	echo'	
-</h3>
-
-<br/>
-<div class="center">
-	<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
-</div>';
+	<br/>
+	<h3>
+		'._('Options').'';
+		if (sizeof($manufacturerList) > 0) { 
+			echo
+			'<button class="btn btn-warning margin-left"
+			         onclick="PopupPreConfigurationDevice('.$_GET['device'].')"
+			         title="Pre-configuration device" type="button">
+				<span class="fa fa-cog"></span>
+			</button>';
+		}
+		echo
+	'</h3>
+	<br/>
+	<div class="center">
+		<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
+	</div>';
 
 if (!empty($tabopt) && sizeof($tabopt) > 0){
 	//KNX
-	if ($device->protocol_id != 6){
-		if (!empty($device->application_id)){
+	if ($device->protocol_id != 6) {
+		if (!empty($device->application_id)) {
 			echo '
 			<table class="table" id="tabopt">
 				<thead>
@@ -181,31 +186,41 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 					</tr>
 				</thead>
 				<tbody>';
-
-				foreach ($tabopt as $i => $elem){
-					if (!empty($tabopt[$i])){
+				foreach ($tabopt as $i => $elem) {
+					if (!empty($tabopt[$i])) {
 						echo '
 						<tr>
-							<td>'.$tabopt[$i]['name'].'</td>
-							<td><input id="waddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Write address').'"></td>';
-							if (isset($exceptionaddress[$tabopt[$i]['id']])){
-								
-								echo '<td><input disabled id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>';
-							}
-							else{
-								echo '<td><input id="raddr-'.$tabopt[$i]['id'].'"  class="form-control knx" type="text" placeholder="'._('Return address').'"></td>';
-							}
-							echo '
-							<td>'; 
-							$list = $listdpt->$i;
+							<td>
+								'.$tabopt[$i]['name'].'
+							</td>
+							<td>
+								<input id="waddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Write address').'">
+							</td>';
+						if (isset($exceptionaddress[$tabopt[$i]['id']])) {
+							echo
+							'<td>
+								<input disabled id="raddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Return address').'">
+							</td>';
+						}
+						else {
+							echo
+							'<td>
+								<input id="raddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Return address').'">
+							</td>';
+						}
+						echo
+							'<td>'; 
+							if (isset($listdpt->$i)) {
+								$list = $listdpt->$i;
 								if (sizeof($listdpt->$i) == 1){
-									echo '<div hidden>';
-									echo '<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
-									echo '<option value="'.$list[0]->dpt_id.'"></option>';
-									echo '</select>';
-									echo '</div>';
+									echo
+									'<div hidden>
+										<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+											<option value="'.$list[0]->dpt_id.'"></option>
+										</select>
+									</div>';
 								}
-								else{
+								else {
 									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
 									foreach ($listdpt->$i as $list){
 										if (!empty($list->dpt_id)){
@@ -219,13 +234,14 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 									}
 									echo '</select>';
 								}
-								echo '
-							</td>
+							}
+						echo
+							'</td>
 							<td>
 								<div class="checkbox">
 									<input id="toggle-'.$tabopt[$i]['id'].'"
 									       data-on-color="greenleaf"
-						 			       data-label-width="0"
+									       data-label-width="0"
 									       data-on-text="'._('Enable').'"
 									       data-off-text="'._('Disable').'"
 									       type="checkbox">
@@ -252,30 +268,35 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 				</tbody>
 			</table>';
 		}
-		echo				'
-				<div class="center">
-				<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
-			</div>';
-		echo '<script type="text/javascript">';
-		foreach ($listoptdevice as $elem){
-			if (!empty($elem->addr)){
+		echo
+		'<div class="center">
+			<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">
+				'._('Save All').'
+			</button>
+		</div>';
+		echo
+		'<script type="text/javascript">';
+		foreach ($listoptdevice as $elem) {
+			if (!empty($elem->addr)) {
 				echo '$("#waddr-'.$elem->option_id.'").val(\''.$elem->addr.'\');';
 			}
-			if (!empty($elem->addr_plus)){
+			if (!empty($elem->addr_plus)) {
 				echo '$("#raddr-'.$elem->option_id.'").val(\''.$elem->addr_plus.'\');';
 			}
-			if (!empty($elem->dpt_id)){
+			if (!empty($elem->dpt_id)) {
 				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'refresh\');';
 				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'val\', \''.$elem->dpt_id.'\');';
 			}
-			if ($elem->status == 1){
+			if ($elem->status == 1) {
 				echo '$("#toggle-'.$elem->option_id.'").prop(\'checked\', true).change();';
 			}
 		}
-		echo '</script>';
+		echo
+		'</script>';
 	}
 	//IP
-	else if ($device->protocol_id == 6){
+	else if ($device->protocol_id == 6) {
+		//getIcon ???
 		$icons = array(
 			357 => 'glyphicon glyphicon-chevron-up',
 			358 => 'glyphicon glyphicon-chevron-down',
@@ -292,69 +313,115 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			408 => 'glyphicon glyphicon-camera'
 		);
 		
-		echo '<table class="table" id="tabopt">
-				<thead>
-					<tr>
-						<th>'._('Option').'</th>
-						<th>'._('Source').'</th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>';
-			
-				foreach ($tabopt as $i => $elem){
-					if (!empty($tabopt[$i])){
-						echo '<tr>
-									<td>';
-										if (!empty($icons[$i])){
-											echo '<span class="'.$icons[$i].'"></span>&nbsp&nbsp';
+		echo
+		'<table class="table" id="tabopt">
+			<thead>
+				<tr>
+					<th>'._('Option').'</th>
+					<th>'._('Source').'</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>';
+		foreach ($tabopt as $i => $elem){
+			if (!empty($tabopt[$i])){
+				echo
+				'<tr>
+					<td>';
+						if (!empty($icons[$i])){
+							echo '<span class="'.$icons[$i].'"></span>&nbsp&nbsp';
+						}
+						echo $tabopt[$i]['name'].'
+					</td>
+					<td><input id="waddr-'.$tabopt[$i]['id'].'" class="form-control" type="text" placeholder="'._('Source').'"></td>
+					<td>';
+					if (isset($listdpt->$i)) {
+						$list = $listdpt->$i;
+						if (sizeof($listdpt->$i) == 1){
+							echo
+							'<div hidden>
+								<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+									<option value="'.$list[0]->dpt_id.'"></option>
+								</select>
+							</div>';
+						}
+						else {
+							echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+								foreach ($listdpt->$i as $list){
+									if (!empty($list->dpt_id)){
+										if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+											echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
 										}
-										echo $tabopt[$i]['name'].'
-									</td>
-									<td><input id="waddr-'.$tabopt[$i]['id'].'" class="form-control" type="text" placeholder="'._('Source').'"></td>
-									<td class="center">
-										<div class="checkbox">
-											<label>
-												<input id="toggle-'.$tabopt[$i]['id'].'"
-												       data-on-color="greenleaf"
-						 						       data-label-width="0"
-												       data-on-text="'._('Enable').'"
-												       data-off-text="'._('Disable').'"
-												       type="checkbox">
-											 </label>
-										<div>
-										<script type="text/javascript">
-											$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
-										</script>
-									</td>
-									<td>
-										<div class="btn-group btn-group-greenleaf center">
-											<button type="button" id="saveoption-'.$tabopt[$i]['id'].'" title="'._('Save').'" class="btn btn-greenleaf save" onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">'._('Save').'</button>
-										</div>
-									</td>
-							</tr>';
+										else{
+											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+										}
+									}
+								}
+							echo
+							'</select>';
+						}
 					}
-				}
-		echo '	</tbody>
-			</table>
-			<div class="center">
-				<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">'._('Save All').'</button>
-			</div>';
+					echo
+					'</td>
+					<td class="center">
+						<div class="checkbox">
+							<label>
+								<input id="toggle-'.$tabopt[$i]['id'].'"
+								       data-on-color="greenleaf"
+		 						       data-label-width="0"
+								       data-on-text="'._('Enable').'"
+								       data-off-text="'._('Disable').'"
+								       type="checkbox">
+							 </label>
+						<div>
+						<script type="text/javascript">
+							$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
+						</script>
+					</td>
+					<td>
+						<div class="btn-group btn-group-greenleaf center">
+							<button type="button" id="saveoption-'.$tabopt[$i]['id'].'"
+							        title="'._('Save').'" class="btn btn-greenleaf save"
+							        onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">
+								'._('Save').'
+							</button>
+						</div>
+					</td>
+				</tr>';
+			}
+		}
+		echo
+			'</tbody>
+		</table>
+		<div class="center">
+			<button type="button" title="'._('Save All').'" class="btn btn-greenleaf" onclick="SaveAllOpt()">
+				'._('Save All').'
+			</button>
+		</div>';
 		
-		echo '<script type="text/javascript">';
-		foreach ($listoptdevice as $elem){
-			if (!empty($elem->addr)){
+		echo
+		'<script type="text/javascript">';
+		foreach ($listoptdevice as $elem) {
+			if (!empty($elem->addr)) {
 				echo '$("#waddr-'.$elem->option_id.'").val(\''.$elem->addr.'\');';
 			}
-			if ($elem->status == 1){
+			if (!empty($elem->dpt_id)) {
+				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'refresh\');';
+				echo '$("#unity-'.$elem->option_id.'").selectpicker(\'val\', \''.$elem->dpt_id.'\');';
+			}
+			if ($elem->status == 1) {
 				echo '$("#toggle-'.$elem->option_id.'").prop(\'checked\', true).change();';
 			}
 		}
-		echo '</script>';
+		echo
+		'</script>';
 	}
 }
-echo '<br/></div>
+echo
+'<br/></div>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
@@ -504,7 +571,7 @@ function SaveAllOpt(){
 		$(this).click();
 	});	
 }
-			
+
 function SaveOption(optid){
 	LoadingButton("saveoption-"+optid, 1);
 	var idroomdevice = '.$_GET['device'].';
@@ -519,22 +586,27 @@ function SaveOption(optid){
 	if (!addr_plus){
 		addr_plus = "";
 	}
-	if (!dpt_id){
+	if (!dpt_id) {
 		dpt_id = 1;
 	}
+			alert(dpt_id);
 	if (CheckAddr(addr, addr_plus, optid)){
 		$.ajax({
-				type:"GET",
-				url: "/form/form_device_info_opt.php",
-				data: "idroomdevice="+encodeURIComponent(idroomdevice)+"&opt="+encodeURIComponent(optid)+"&addr="+encodeURIComponent(addr)+
-					  "&addr_plus="+encodeURIComponent(addr_plus)+"&dpt_id="+encodeURIComponent(dpt_id)+"&status="+encodeURIComponent(status),
-				complete: function(result, status) {
-					LoadingButton("saveoption-"+optid, 0);
-				}
+			type:"GET",
+			url: "/form/form_device_info_opt.php",
+			data: "idroomdevice="+encodeURIComponent(idroomdevice)
+			     +"&opt="+encodeURIComponent(optid)
+			     +"&addr="+encodeURIComponent(addr)
+			     +"&addr_plus="+encodeURIComponent(addr_plus)
+			     +"&dpt_id="+encodeURIComponent(dpt_id)
+			     +"&status="+encodeURIComponent(status),
+			complete: function(result, status) {
+				LoadingButton("saveoption-"+optid, 0);
+			}
 		});
 	}
 	else {
-			LoadingButton("saveoption-"+optid, 0);
+		LoadingButton("saveoption-"+optid, 0);
 	}
 }
 		

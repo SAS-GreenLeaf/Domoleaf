@@ -368,27 +368,48 @@ function display_aspiration($info){
 // widget Audio
 function display_audio($info){
 	$display = '';
-
 	switch($info->protocol_id){
 		case 1:
 			// KNX
 			$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
 			break;
 		case 6:
-			$display = '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(1, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
-				<h3 class="title">'.$info->name.'</h3>
-				<div class="btn-group margin-bottom center">';
-			if (!empty($info->device_opt->{364})){
-				$display.='<button onclick="RemoteAudio(\'pause\', \''.$info->room_device_id.'\', \''.$info->device_opt->{364}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-pause"></span></button>';
-			}
-			if (!empty($info->device_opt->{363})){
-				$display.='<button onclick="RemoteAudio(\'play\', \''.$info->room_device_id.'\', \''.$info->device_opt->{363}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-play"></span></button>';
-			}
-			if (!empty($info->device_opt->{368})){
-				$display.=' <button onclick="RemoteAudio(\'mute\', \''.$info->room_device_id.'\', \''.$info->device_opt->{368}->option_id.'\')" class="btn btn-info">
-										<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
-									</button>';
-			}
+			$display =
+					'<div class="info-widget">
+						<button title="'._('More').'" onclick="HandlePopup(1, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
+							<span class="fa fa-plus md"></span>
+						</button>
+					</div>
+					<h3 class="title">'.$info->name.'</h3>
+					<div class="btn-group margin-bottom center">';
+				if (!empty($info->device_opt->{364})){
+					$display.=
+						'<button onclick="RemoteAudio(\'pause\', \''.$info->room_device_id.'\', \''.$info->device_opt->{364}->option_id.'\')"
+						         class="btn btn-info">
+							<span class="glyphicon glyphicon-pause"></span>
+						</button>';
+				}
+				if (!empty($info->device_opt->{363})){
+					$display.=
+						'<button onclick="RemoteAudio(\'play\', \''.$info->room_device_id.'\', \''.$info->device_opt->{363}->option_id.'\')"
+						         class="btn btn-info">
+							<span class="glyphicon glyphicon-play"></span>
+						</button>';
+				}
+				if (!empty($info->device_opt->{368})){
+					if ($info->device_opt->{368}->dpt_id == 469) {
+						$display.=
+						'<button onclick="RemoteAudio(\'ir_mute\', \''.$info->room_device_id.'\', \''.$info->device_opt->{368}->option_id.'\')" class="btn btn-info">
+							<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
+						</button>';
+					}
+					else {
+						$display.=
+						'<button onclick="RemoteAudio(\'mute\', \''.$info->room_device_id.'\', \''.$info->device_opt->{368}->option_id.'\')" class="btn btn-info">
+							<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
+						</button>';
+					}
+				}
 			$display.='</div>';
 			break;
 		default :
