@@ -48,7 +48,6 @@ slave: prepare-debian package-slave
 
 debian : prepare-debian package-master package-slave
 ubuntu1204: prepare-debian prepare-ubuntu1204 package-master package-slave
-ubuntu1404: prepare-debian prepare-ubuntu1404 package-master package-slave
 
 prepare-debian:
 	
@@ -75,12 +74,6 @@ prepare-ubuntu1204:
 	
 	@cp dists/ubuntu/precise/domoslave.control domoslave/DEBIAN/control
 	@cp dists/ubuntu/precise/domoslave.postinst domoslave/DEBIAN/postinst
-
-prepare-ubuntu1404:
-	
-	@cp dists/ubuntu/trusty/domomaster.postinst domomaster/DEBIAN/postinst
-	
-	@cp dists/ubuntu/trusty/domoslave.postinst domoslave/DEBIAN/postinst
 
 # master
 package-master:

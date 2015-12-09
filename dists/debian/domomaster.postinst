@@ -44,3 +44,4 @@ chmod +x /etc/init.d/domomaster
 update-rc.d domomaster defaults
 update-rc.d domomaster enable
 service domomaster start
+service php5-fpm restart
