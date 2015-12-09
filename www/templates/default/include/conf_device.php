@@ -589,7 +589,7 @@ function SaveOption(optid){
 	if (!dpt_id) {
 		dpt_id = 1;
 	}
-			alert(dpt_id);
+
 	if (CheckAddr(addr, addr_plus, optid)){
 		$.ajax({
 			type:"GET",
