@@ -35,7 +35,6 @@ MONITOR_ENOCEAN_OPTIONS="--daemon"
 
 start()
 {
-	sleep 10
 	if [ -f $PID_FILE_SLAVE ]; then
 		echo "$PROG_SLAVE is already running"
 	else
