@@ -5,7 +5,7 @@ include('header.php');
 $request =  new Api();
 $result  =  $request -> send_request();
 
-$resOptions ='<option value="0">'._('No Option selected').'</option>';
+$resOptions ='<option value="0">'._('No option selected').'</option>';
 
 if (!empty($_GET['room_device_id'])) {
 

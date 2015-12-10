@@ -2033,3 +2033,11 @@ msgstr "Éteindre / Redémarrer"
 #: conf_daemon.php:257
 msgid "Shutdown D3"
 msgstr "Éteindre D3"
+
+#: profile_user_graphcis.php:12
+msgid "No floor selected"
+msgstr "Pas d'étage selectionné"
+
+#: profile_user_graphcis.php:12
+msgid "No option selected"
+msgstr "Pas d'option selectionnée"
