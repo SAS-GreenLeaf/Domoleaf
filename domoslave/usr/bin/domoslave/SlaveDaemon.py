@@ -625,16 +625,11 @@ class SlaveDaemon:
             call(['ifconfig', 'wlan0', 'down']);
 
             if mode == WIFI_MODE_DISABLED:
-                call(['ifconfig', 'wlan0', 'up']);
                 if opt == 1:
-                    call(['update-rc.d', 'dnsmasq', 'defaults']);
-                    call(['update-rc.d', 'dnsmasq', 'disabled']);
                     call(['service', 'dnsmasq', 'stop']);
             elif mode == WIFI_MODE_CLIENT:
                 call(['ifconfig', 'wlan0', 'up']);
                 if opt == 1:
-                    call(['update-rc.d', 'dnsmasq', 'defaults']);
-                    call(['update-rc.d', 'dnsmasq', 'disabled']);
                     call(['service', 'dnsmasq', 'stop']);
 
                 conf_file = open('/etc/network/interfaces', 'w');
@@ -686,7 +681,7 @@ class SlaveDaemon:
                 conf_file.write(conf_str);
                 conf_file.close();
 
-                call(['wpa_supplicant', '-Dnl80211', '-iwlan0', '-c/etc/domoleaf/wpa_supplicant.conf', '-B']);
+                call(['wpa_supplicant', '-Dnl80211', '-iwlan0', '-c' + WPA_SUPPLICANT_CONF_FILE , '-B']);
                 call(['dhclient', 'wlan0']);
 
             elif mode == WIFI_MODE_ACCESS_POINT:
@@ -729,8 +724,6 @@ class SlaveDaemon:
                     conf_str += 'dhcp-range=172.16.0.2,172.16.0.254,12h\n';
                     conf_file.write(conf_str);
                     conf_file.close();
-                    call(['update-rc.d', 'dnsmasq', 'defaults']);
-                    call(['update-rc.d', 'dnsmasq', 'enable']);
                     call(['service', 'dnsmasq', 'restart']);
 
                 call(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-j', 'MASQUERADE']);
