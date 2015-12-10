@@ -763,7 +763,8 @@ class MasterDaemon:
         Calls the desired Upnp function.
         """
         try:
-            json_obj['data']['value'] = dev['addr_dst'];
+            if json_obj['data']['value'] == '':
+                json_obj['data']['value'] = dev['addr_dst'];
             if json_obj['data']['action'] in self.upnp_function.keys():
                 self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
             elif json_obj['data']['action'] in self.http_req_function.keys():
