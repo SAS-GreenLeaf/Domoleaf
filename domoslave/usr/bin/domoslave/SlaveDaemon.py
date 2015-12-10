@@ -690,7 +690,7 @@ class SlaveDaemon:
                 call(['dhclient', 'wlan0']);
 
             elif mode == WIFI_MODE_ACCESS_POINT:
-                call(['ifconfig', 'wlan0', '192.168.0.254', 'netmask', '255.255.255.0', 'up']);
+                call(['ifconfig', 'wlan0', '172.16.0.1', 'netmask', '255.255.255.0', 'up']);
                 conf_file = open(HOSTAPD_CONF_FILE, 'w');
                 conf_str  = 'interface=wlan0\n\n';
                 conf_str += 'driver=nl80211\n\n';
@@ -726,7 +726,7 @@ class SlaveDaemon:
                     conf_file = open(DNSMASQ_CONF_FILE, 'w');
                     conf_str  = 'domain-needed\n';
                     conf_str += 'interface=wlan0\n';
-                    conf_str += 'dhcp-range=192.168.0.10,192.168.0.100,12h\n';
+                    conf_str += 'dhcp-range=172.16.0.2,172.16.0.254,12h\n';
                     conf_file.write(conf_str);
                     conf_file.close();
                     call(['update-rc.d', 'dnsmasq', 'defaults']);
