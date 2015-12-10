@@ -1178,7 +1178,7 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "wifi_update", "sender_name": "' + self_hostname + '", "ssid": "' + json_obj['data']['ssid'] + '", "password": "' + json_obj['data']['password'] + '", "security": "' + json_obj['data']['security'] + '", "mode": "' + str(json_obj['data']['mode']) + '"}';
+        obj_to_send = '{"packet_type": "wifi_update", "sender_name": "' + str(self_hostname) + '", "ssid": "' + str(json_obj['data']['ssid']) + '", "password": "' + str(json_obj['data']['password']) + '", "security": "' + str(json_obj['data']['security']) + '", "mode": "' + str(json_obj['data']['mode']) + '"}';
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
