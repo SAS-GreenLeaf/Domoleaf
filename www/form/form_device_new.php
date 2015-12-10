@@ -6,7 +6,6 @@ if (!empty($_GET['ipaddr'])){
 	$addr = gethostbyname($_GET['ipaddr']);
 	
 	if (!(filter_var($addr, FILTER_VALIDATE_IP))){
-		error_log('non valide');
 		echo '1';
 		return;
 	}

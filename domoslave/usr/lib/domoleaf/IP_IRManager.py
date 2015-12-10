@@ -18,17 +18,13 @@ class IP_IRManager:
         self.sql = MasterSql();
 
     def send_to_gc(self, json_obj, dev, hostame):
-        ir_port_list = {469: '2:1', 470: '2:2', 471: '2:3', 472: '4:1',
-                        473: '4:2', 474: '4:3', 475: '5:1', 476: '5:2', 477: '5:3'};
-
-        ir_port = ir_port_list[dev['dpt_id']];
         ir_addr = dev['addr_dst'];
         tcp_ip = dev['addr'];
         tcp_port = int(dev['plus1']);
         if not tcp_port:
             tcp_port = int(TCP_PORT);
-        request = 'sendir,' + str(ir_port) + ',1,36000,1,1,';
-        request += str(ir_addr);
+
+        request = str(ir_addr);
         request += '\r';
 
         data = '';
