@@ -7,7 +7,7 @@ if (empty($_GET['floor']) || empty($_GET['room'])) {
 }
 
 echo '
-<div class="col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3 col-xs-11 col-xs-offset-1">';
+<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
 	echo '
 	<div class="col-xs-12 center"><h2>'._('New device').'</h2></div>
 	<div class="right"><a href="/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'" class="btn btn-danger"><span class="fa fa-reply"></span> '._('Cancel').'</a></div>

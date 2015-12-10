@@ -65,7 +65,7 @@ PROTOCOL_IP             = 6;    # IP protocol id
 
 FUNCTION_KNX_SHORT = 1;
 FUNCTION_KNX_LONG  = 2;
-FUNCTION_IR    = 5;
+FUNCTION_IR        = 5;
 
 # IDs for UPNP protocol
 UPNP_PLAY           = 'play';               # Play command id
@@ -77,9 +77,6 @@ UPNP_MUTE           = 'mute';               # Mute command id
 UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
 UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
-
-# IDs for IR protocol
-IR_MUTE             = 'ir_mute';            # Mute IR command id
 
 # IDs for HttpReq protocol
 CAMERA_TOP          = 'top';                # Top command id
@@ -662,11 +659,21 @@ class MasterDaemon:
         hostname = '';
         dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
         dev = dm.load_from_db();
+
+        if dev is None:
+            connection.close();
+            return ;
         
         function_id = int(dev['function_id']);
-        
         if (function_id > 0):
             try:
+                if (function_id == FUNCTION_KNX_SHORT or function_id == FUNCTION_KNX_LONG):
+                    for host in self.hostlist:
+                        if dev['daemon_name'] in host._Hostname:
+                            hostname = host._Hostname;
+                            break;
+                    if (hostname == ''):                
+                        return;
                 self.functions[function_id](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
@@ -675,10 +682,7 @@ class MasterDaemon:
                 json_obj['addr'] = dev['addr'];
                 json_obj['port'] = dev['plus1'];
                 self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
-                return ;
-            if dev is None:
-                connection.close();
-                return ;
+                return;
             hostname = '';
             for host in self.hostlist:
                 if dev['daemon_name'] in host._Hostname:
