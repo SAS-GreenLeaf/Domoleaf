@@ -17,11 +17,11 @@ echo
 				'._('Master Command').'
 			</a>
 		</div>
-		<div class="navbar-collapse collapse md">
+		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<a onclick="" href="/profile_user_smartcmd">
-						<span class="fi flaticon-playbutton17"></span>
+						<span class="fi flaticon-playbutton17 md"></span>
 						<span class="hidden-sm"> '._('Smartcommand').'</span>
 					</a>
 				</li>';
@@ -29,7 +29,7 @@ echo
 				echo
 				'<li>
 					<a href="/conf_general">
-						<span class="fa fa-cogs"></span>
+						<span class="fa fa-cogs md"></span>
 						<span class="hidden-sm"> '._('Configuration').'</span>
 					</a>
 				</li>';
@@ -37,19 +37,19 @@ echo
 			echo
 				'<li>
 					<a href="/profile">
-						<span class="glyphicon glyphicon-user"></span>
+						<span class="glyphicon glyphicon-user md"></span>
 						<span class="hidden-sm"> '._('Profile').'</span>
 					</a>
 				</li>
 				<li>
 					<a onclick="" target="_blank" href="http://greenleaf.fr/ressources">
-						<span class="glyphicon glyphicon-question-sign"></span>
+						<span class="glyphicon glyphicon-question-sign md"></span>
 						<span class="hidden-sm"> '._('Help').'<span>
 					</a>
 				</li>
 				<li>
 					<a onclick="disconnect()" href="#">
-						<span class="glyphicon glyphicon-log-out"></span>
+						<span class="glyphicon glyphicon-log-out md"></span>
 						<span class="hidden-sm"> '._('Disconnect').'</span>
 					</a>
 				</li>
