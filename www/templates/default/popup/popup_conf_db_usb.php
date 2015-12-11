@@ -7,7 +7,10 @@ $result  =  $request -> send_request();
 
 echo '
 	<div class="col-xs-12 center">'.
-		'<button type="button" id="createBackupUsb" class="btn btn-greenleaf" onclick="CreateBackupUsb()"><i class="fa fa-floppy-o"></i> '._('Create Backup').'</button>'.
+		'<button type="button" id="createBackupUsb" class="btn btn-greenleaf" onclick="CreateBackupUsb()">'.
+			'<i class="fa fa-floppy-o"></i> '.
+			_('Create Backup').
+		'</button>'.
 	'</div>'.
 	'<br/>'.
 	'<br/>'.
