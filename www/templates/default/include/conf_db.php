@@ -8,8 +8,8 @@ echo '
 		<div class="col-xs-12 center">
 			<button type="button"
 			        id="popupUsb"
-			        class="btn btn-greenleaf btn-disabled"
-			        onclick="PopupUsb()">
+			        class="btn btn-greenleaf"
+			        onclick="PopupUsb()" disabled>
 				<fa class="fa flaticon-connection81"></fa>
 				'._('USB Backup').'
 			</button>
@@ -28,14 +28,13 @@ echo '
 
 </div>
 <script type="text/javascript">
-			
-ListDbLocal();
-setInterval(function(){ ListDbLocal(); }, 10000);
-CheckUsb();
-setInterval(function(){ CheckUsb(); }, 10000);
 
 $(document).ready(function(){
 	activateMenuElem(\'database\');
+	ListDbLocal();
+	setInterval(function(){ ListDbLocal(); }, 10000);
+	CheckUsb();
+	setInterval(function(){ CheckUsb(); }, 10000);
 });
 
 function CheckUsb(){
@@ -44,10 +43,10 @@ function CheckUsb(){
 		url: "/form/form_check_usb.php",
 		success: function(result) {
 			if (result == "1") {
-				$("#popupUsb").removeClass("btn-disabled");
+				$("#popupUsb").removeAttr(\'disabled\');
 			}
-			else if (!$("#popupUsb").hasClass("btn-disabled")) {
-				$("#popupUsb").addClass("btn-disabled");
+			else {
+				$("#popupUsb").attr(\'disabled\', \'disabled\');
 			}
 		},
 	});

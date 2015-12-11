@@ -880,25 +880,27 @@ class Admin extends User {
 	 * @return NULL
 	 */
 	function confDeviceSaveOption($room_device_id, $options){
+		if (empty($room_device_id) or empty($options)){
+			return null;
+		}
+		
 		$listdpt = $this->confOptionDptList($room_device_id);
 		$tmp = 0;
-		foreach ($listdpt[$options['id']] as $list){
-			if ($tmp == 0){
-				$tmp = $list->dpt_id; 
-			}
-			if ($list->dpt_id == $options['dpt_id']){
-				$tmp = $list->dpt_id; 
-				break;
+		if (isset($listdpt[$options['id']])) {
+			foreach ($listdpt[$options['id']] as $list){
+				if ($tmp == 0){
+					$tmp = $list->dpt_id; 
+				}
+				if ($list->dpt_id == $options['dpt_id']){
+					$tmp = $list->dpt_id; 
+					break;
+				}
 			}
 		}
 		
 		$options['dpt_id'] = $tmp;
 		
 		$link = Link::get_link('domoleaf');
-		
-		if(empty($room_device_id) or empty($options)){
-			return null;
-		}
 		
 		$sql = 'SELECT room_device_id
 		        FROM room_device_option

@@ -3,7 +3,7 @@
 include('configuration-menu.php');
 
 echo '
-<div class="col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3 col-xs-11 col-xs-offset-1">
+<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2">
 	<div class="center"><h2>'._('Device configuration').'</h2></div>
 	<div>
 		<a href="/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'" class="btn btn-greenleaf">

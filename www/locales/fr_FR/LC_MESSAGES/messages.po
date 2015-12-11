@@ -938,6 +938,10 @@ msgstr "Moniteur KNX"
 msgid "Profile"
 msgstr "Profil"
 
+#: top_connected.php
+msgid "Help"
+msgstr "Aide"
+
 #: header/signin.php:3 include/signin.php:7 include/signin.php:33
 msgid "Sign in"
 msgstr "Se connecter"
