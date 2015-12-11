@@ -693,15 +693,15 @@ function listRoomsOfFloor(elem_id, opt) {
 			if (result) {
 				$("#selectRoom-"+elem_id).html(result);
 				$('.selectpicker').selectpicker('refresh');
+				if (opt == 0){
+					listDeviceOfRoom();
+				}
 			}
 		}
 	});
 	if (floor_id == 0 && opt == 1) {
 		$("#selectRoom-"+elem_id).val(0);
 		saveLinkedRoom(elem_id);
-	}
-	if (opt == 0){
-		listDeviceOfRoom();
 	}
 }
 
@@ -717,6 +717,7 @@ function listDeviceOfRoom() {
 			if (result) {
 				$("#selectDevice").html(result);
 				$('.selectpicker').selectpicker('refresh');
+				listOptionOfDevice();
 			}
 		}
 	});
