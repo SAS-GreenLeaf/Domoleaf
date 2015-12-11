@@ -3,6 +3,6 @@ Version: [version]
 Section: base
 Priority: optional
 Architecture: any
-Depends: apt-show-versions,avahi-daemon,dmidecode,dnsmasq,hdparm,hostapd,knxd,knxd-tools,libcurl4-openssl-dev,tcpdump,python3.5|python3.4|python3.3,python3.5-dev|python3.4-dev|python3.3-dev
+Depends: apt-show-versions,avahi-daemon,dmidecode,dnsmasq,hdparm,hostapd,knxd,knxd-tools,libcurl4-openssl-dev,tcpdump,python3.5|python3.4|python3.3,python3.5-dev|python3.4-dev|python3.3-dev,,wpasupplicant
 Maintainer: Greenleaf <contact@greenleaf.fr>
 Description: Domoleaf slave daemon running under python 3 for D3 boxes

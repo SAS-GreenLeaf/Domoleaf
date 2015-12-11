@@ -782,13 +782,16 @@ msgid "Lesser or Equal"
 msgstr "Inférieur ou Egal"
 
 #: form/form_list_devices_of_room.php:5
-msgid "No device selected"
-msgstr "Pas d'appareil sélectionné"
+msgid "No selectable device"
+msgstr "Pas d'appareil sélectionnable"
 
-#: form/form_list_rooms_of_floor.php:5 include/profile_user_graphics.php
-#: include/profile_user_smartcmd.php:37
+#: form/form_list_rooms_of_floor.php:5 include/profile_user_smartcmd.php:37
 msgid "No room"
 msgstr "Aucune salle"
+
+#: include/profile_user_graphics.php:28
+msgid "No selectable room"
+msgstr "Aucune salle selectionnable"
 
 #: form/form_pre_configuration_device.php:18
 msgid "Product list"
@@ -1352,7 +1355,7 @@ msgstr "Nouvelle salle"
 
 #: include/conf_profiles.php:10 include/profile.php:10
 msgid "Personal informations"
-msgstr "Informations personelles"
+msgstr "Informations personnelles"
 
 #: include/conf_profiles.php:12 include/conf_users.php:17
 #: include/signin.php:19
@@ -1395,7 +1398,7 @@ msgstr "Féminin"
 
 #: include/conf_profiles.php:55 include/profile.php:47
 msgid "Phone"
-msgstr "Télephone"
+msgstr "Téléphone"
 
 #: include/conf_profiles.php:60 include/profile.php:52
 msgid "Enter your phone number (mobile)"
@@ -2037,3 +2040,11 @@ msgstr "Éteindre / Redémarrer"
 #: conf_daemon.php:257
 msgid "Shutdown D3"
 msgstr "Éteindre D3"
+
+#: profile_user_graphcis.php:12
+msgid "No selectable floor"
+msgstr "Pas d'étage selectionnable"
+
+#: profile_user_graphcis.php:12
+msgid "No selectable option"
+msgstr "Pas d'option selectionnable"
