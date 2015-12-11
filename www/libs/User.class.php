@@ -62,7 +62,7 @@ class User {
 	function disconnect($token) {
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'DELETE mcuser_token
+		$sql = 'DELETE FROM mcuser_token
 		        WHERE token= :token';
 		$req = $link->prepare($sql);
 		$req->bindValue(':token', $token, PDO::PARAM_STR);
