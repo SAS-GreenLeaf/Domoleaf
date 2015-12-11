@@ -16,7 +16,7 @@ echo '<div id="signin-logo">
 				<label for="username" class="input-group-addon">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 				</label>
-				<input name="username" type="text" class="form-control" id="username" placeholder="'._('Username').'">
+				<input id="inputUsername" name="username" type="text" class="form-control" id="username" placeholder="'._('Username').'">
 			</div>
 		</div>
 		<div class="form-group">
@@ -57,6 +57,12 @@ if(!empty($login_error)){
 echo '
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+	setTimeout(function(){
+		$("#inputUsername").focus();
+	}, 400);
+});
 
 function PopupPasswordLost(){
 	$.ajax({
