@@ -27,65 +27,66 @@ div.bhoechie-tab-menu-right div.list-group-app > a
 	line-height: 1;
 }
 .flaticon-chip:before {
-        content: "\e000";
+	content: "\e000";
 }
 .flaticon-computer210:before {
-        content: "\e001";
+	content: "\e001";
 }
 .flaticon-computer248:before {
-        content: "\e002";
+	content: "\e002";
 }
 .flaticon-connection81:before {
-        content: "\e003";
+	content: "\e003";
 }
 .flaticon-engineering:before {
-        content: "\e004";
+	content: "\e004";
 }
 .flaticon-heating1:before {
-        content: "\e005";
+	content: "\e005";
 }
 .flaticon-logotype56:before {
-        content: "\e006";
+	content: "\e006";
 }
 .flaticon-measure20:before {
-        content: "\e007";
+	content: "\e007";
 }
 .flaticon-minisplit:before {
-        content: "\e008";
+	content: "\e008";
 }
 .flaticon-open203:before {
-        content: "\e009";
+	content: "\e009";
 }
 .flaticon-password4:before {
-        content: "\e00a";
+	content: "\e00a";
 }
 .flaticon-person199:before {
-        content: "\e00b";
+	content: "\e00b";
 }
 .flaticon-person206:before {
-        content: "\e00c";
+	content: "\e00c";
 }
 .flaticon-playbutton17:before {
-        content: "\e00d";
+	content: "\e00d";
+	font-weight: normal;
 }
 .flaticon-sign35:before {
-        content: "\e00e";
+	content: "\e00e";
 }
 .flaticon-snowflake149:before {
-        content: "\e00f";
+	content: "\e00f";
 }
 .flaticon-switches4:before {
-        content: "\e010";
+	content: "\e010";
 }
 .flaticon-thermometer2:before {
-        content: "\e011";
+	content: "\e011";
 }
 .flaticon-vintage62:before {
-        content: "\e012";
+	content: "\e012";
 }
 .flaticon-wind34:before {
-        content: "\e013";
+	content: "\e013";
 }
 .flaticon-winds4:before {
-        content: "\e014";
+	content: "\e014";
 }
