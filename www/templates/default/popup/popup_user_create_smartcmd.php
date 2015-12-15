@@ -55,7 +55,12 @@ echo
 		'</button>'.
 	'</div>';
 
-$first_floor = reset($installation_info)->floor_id;
+if (!empty($installation_info)) {
+	$first_floor = reset($installation_info)->floor_id;
+}
+else {
+	$first_floor = 0;
+}
 
 echo
 	'<script type="text/javascript">'.

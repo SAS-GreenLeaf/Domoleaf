@@ -231,8 +231,12 @@ $(document).ready(function(){
 	$("#colorUserInstallBg").css(\'background-color\', "'.$bg_color.'");
 	$("#colorUserMenusBorderBg").css(\'background-color\', "'.$menus_color.'");
 
-	$("#accordion").find(".timeline-heading")[0].click();
-	$("#accordion").find(".timeline-heading")[1].click();
+	if ($("#accordion").find(".timeline-heading")[0]) {
+		$("#accordion").find(".timeline-heading")[0].click();
+	}
+	if ($("#accordion").find(".timeline-heading")[1]) {
+		$("#accordion").find(".timeline-heading")[1].click();
+	}
 });
 
 function swap(elem, action){
