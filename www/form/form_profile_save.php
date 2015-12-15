@@ -3,7 +3,7 @@
 include('header.php');
 
 $request =  new Api();
-$request -> add_request('profileRename', array($_GET['lastname'], $_GET['firstname'], $_GET['gender'], $_GET['email'], $_GET['phone'], $_GET['language'], $_GET['id']));
+$request -> add_request('profileRename', array($_GET['lastname'], $_GET['firstname'], $_GET['gender'], $_GET['email'], $_GET['phone'], $_GET['language'], $_GET['timeZone'], $_GET['id']));
 
 if (!empty($_GET['level'])) {
 	$request -> add_request('profileLevel', array($_GET['id'], $_GET['level']));

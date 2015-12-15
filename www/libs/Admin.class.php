@@ -28,7 +28,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
-		               gender, phone, language, design, activity, mcuser_level,
+		               gender, phone, language, timezone, design, activity, mcuser_level,
 		               bg_color, border_color
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -112,7 +112,7 @@ class Admin extends User {
 		return $req->rowCount();
 	}
 	
-	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $user_id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timezone, $user_id=0) {
 		$link = Link::get_link('domoleaf');
 	
 		if(empty($user_id)) {
@@ -129,7 +129,7 @@ class Admin extends User {
 	
 		if(!empty($do->mcuser_id)) {
 			$user = new User($do->mcuser_id);
-			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language);
+			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timezone);
 		}
 	}
 	

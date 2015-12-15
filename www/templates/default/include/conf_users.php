@@ -28,7 +28,7 @@ echo '<table class="table table-bordered table-striped table-condensed">
 								if ($elem->activity == 0){
 									echo _('Never');
 								}else{
-									echo $request->date($elem->activity, 3);
+									echo $request->date($elem->activity + $time, 3);
 								}
 							echo '</td><td class="center">
 									<button type="button" title="'._('Edit').'" class="btn btn-primary" id="" onclick="GetUser('.$elem->mcuser_id.')">

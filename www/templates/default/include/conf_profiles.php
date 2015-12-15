@@ -81,6 +81,23 @@ echo '
 						}
 					echo '
 					</select>
+				</div>
+				
+				<label class="control-label" for="timeZone">'._('Time zone').'</label>
+				<div class="input-group">
+		  			<label class="input-group-addon" for="timeZone">
+							<span aria-hidden="true" class=" glyphicon glyphicon-time"></span>
+					</label>
+					<select id="selectTimeZone" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
+					foreach ($allTimeZone as $k => $timeZone){
+						if ($k == $profilInfo->timezone){
+							echo '<option value="'.$k.'" selected="selected">'.$timeZone.'</option>';
+						}
+						else
+							echo '<option value="'.$k.'">'.$timeZone.'</option>';
+					}
+					echo
+					'</select>
 				</div>';
 
 				if ($currentuser != $userid){
@@ -222,7 +239,9 @@ function saveProfile() {
 	var lastname = $("#lastname").val();
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
+   	var timeZone = $("#selectTimeZone").val();
    	var level = $("#selectLvl").val();
+
 	if ($("#sexe-1").is(\':checked\'))
 	{
 		var gender = 1;
@@ -236,7 +255,7 @@ function saveProfile() {
 	$.ajax({
 		type:"GET",
 		url: "/form/form_profile_save.php",
-		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&level="+level+"&id="+'.$userid.',
+		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&timeZone="+timeZone+"&level="+level+"&id="+'.$userid.',
 		beforeSend: function(){
 			loadingForm();
 		},
