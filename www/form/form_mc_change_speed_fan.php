@@ -4,7 +4,7 @@ include('header.php');
 
 if (!empty($_GET['iddevice']) && !empty($_GET['optionid'])){
 	if (empty($_GET['value'])){
-		$value = 0;	
+		$value = 0;
 	}
 	else {
 		$value = $_GET['value'];

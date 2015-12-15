@@ -59,7 +59,7 @@ if (!empty($_GET['id_smartcmd'])) {
 
 
 function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_id) {
-	$without_params = [363, 364, 365, 366, 367, 368];
+	$without_params = [363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
 	
 	echo '
 		<script type="text/javascript">
@@ -144,14 +144,21 @@ function display_option($exec_id, $option_id, $option_value, $room_device_id) {
 			388 => "display_option_temp",
 			392 => "display_option_color",
 			393 => "display_option_color",
-			394 => "display_option_color"
+			394 => "display_option_color",
+			400 => "display_option_fans",
+			401 => "display_option_fans",
+			402 => "display_option_fans",
+			403 => "display_option_fans",
+			404 => "display_option_fans",
+			405 => "display_option_fans",
+			406 => "display_option_fans"
 	);
 	
-	$display.=$tab_func[$option_id]($exec_id, $room_device_id, $option_value);
+	$display.=$tab_func[$option_id]($exec_id, $room_device_id, $option_value, $option_id);
 	return $display;
 }
 
-function display_option_on_off($exec_id, $room_device_id, $option_value) {
+function display_option_on_off($exec_id, $room_device_id, $option_value, $option_id) {
 	$display = '<div class="checkbox">
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
@@ -172,7 +179,7 @@ function display_option_on_off($exec_id, $room_device_id, $option_value) {
 	return $display;
 }
 
-function display_option_varie($exec_id, $room_id_device, $option_value) {
+function display_option_varie($exec_id, $room_id_device, $option_value, $option_id) {
 	$display = '
 				<div class="col-xs-6 center-div">
 					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -202,7 +209,7 @@ function display_option_varie($exec_id, $room_id_device, $option_value) {
 	return $display;
 }
 
-function display_option_up_down($exec_id, $room_device_id, $option_value) {
+function display_option_up_down($exec_id, $room_device_id, $option_value, $option_id) {
 	$display = '<div class="checkbox">
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
@@ -223,7 +230,7 @@ function display_option_up_down($exec_id, $room_device_id, $option_value) {
 	return $display;
 }
 
-function display_option_open_close($exec_id, $room_device_id, $option_value) {
+function display_option_open_close($exec_id, $room_device_id, $option_value, $option_id) {
 	$display = '<div class="checkbox">
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
@@ -244,49 +251,49 @@ function display_option_open_close($exec_id, $room_device_id, $option_value) {
 	return $display;
 }
 
-function display_option_play($exec_id, $room_device_id, $option_value) {
+function display_option_play($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-play">
 				</button>';
 	return $display;
 }
 
-function display_option_pause($exec_id, $room_device_id, $option_value) {
+function display_option_pause($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-pause">
 				</button>';
 	return $display;
 }
 
-function display_option_stop($exec_id, $room_device_id, $option_value) {
+function display_option_stop($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-stop">
 				</button>';
 	return $display;
 }
 
-function display_option_next($exec_id, $room_device_id, $option_value) {
+function display_option_next($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-forward">
 				</button>';
 	return $display;
 }
 
-function display_option_prev($exec_id, $room_device_id, $option_value) {
+function display_option_prev($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-backward">
 				</button>';
 	return $display;
 }
 
-function display_option_mute($exec_id, $room_device_id, $option_value) {
+function display_option_mute($exec_id, $room_device_id, $option_value, $option_id) {
 	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-volume-off">
 				</button>';
 	return $display;
 }
 
-function display_option_volume($exec_id, $room_id_device, $option_value) {
+function display_option_volume($exec_id, $room_id_device, $option_value, $option_id) {
 	$display = '
 				<div class="col-xs-6 center-div">
 					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -315,19 +322,40 @@ function display_option_volume($exec_id, $room_id_device, $option_value) {
 	return $display;
 }
 
-function display_option_temp($exec_id, $room_device_id, $option_value) {
-	$display ='<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+function display_option_temp($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+				'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
 					'.$option_value.'
 				</button>';
 	return $display;
 }
 
-function display_option_color($exec_id, $room_device_id, $option_value) {
+function display_option_color($exec_id, $room_device_id, $option_value, $option_id) {
 	$display =
 			'<div class="lg smartcmd-color-option" id="color-'.$room_device_id.''.$exec_id.'"></div>
 			<script type="text/javascript">
 				$("#color-'.$room_device_id.''.$exec_id.'").css("background-color", "'.$option_value.'");
 			</script>';
+	return $display;
+}
+
+function display_option_fans($exec_id, $room_device_id, $option_value, $option_id) {
+	$fans_speed = array(
+			400 => "0",
+			401 => "1",
+			402 => "2",
+			403 => "3",
+			404 => "4",
+			405 => "5",
+			406 => "6"
+	);
+	if (!isset($fans_speed[$option_id])) {
+		return '';
+	}
+	$display =
+				'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+					'._('Speed').' '.$fans_speed[$option_id].'
+				</button>';
 	return $display;
 }
 

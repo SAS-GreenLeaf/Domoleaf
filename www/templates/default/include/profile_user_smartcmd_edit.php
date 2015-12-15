@@ -107,6 +107,8 @@ echo
 		$("#alert-linked-room").popover();
 	});
 	
+	without_params = [363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
+	
 	function popupUpdateSmartcmdName(smartcmd_id) {
 		$.ajax({
 			type: "GET",
@@ -144,7 +146,6 @@ echo
 	function dropNewElem(id_smartcmd, ui, room_id_device, drop_id) {
 		var id_option;
 		var id_exec;
-		without_params = [363, 364, 365, 366, 367, 368];
 
 		id_option = parseInt($(ui.draggable).find("input").val());
 		id_exec = parseInt(drop_id) + 1;
@@ -171,7 +172,11 @@ echo
 	}
 	
 	function onclickDropNewElem(id_smartcmd, room_id_device, id_option, id_exec) {
-		$.ajax({
+		if (without_params.indexOf(id_option) > -1) {
+			saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exec)
+		}
+		else {
+			$.ajax({
 				type:"GET",
 				url: "/templates/default/popup/popup_smartcmd_device_option.php",
 				data: "id_smartcmd="+id_smartcmd
@@ -186,6 +191,7 @@ echo
 					});
 				}
 			});
+		}
 	}
 
 	function changeElemsOrder(id_smartcmd, old_id_exec, drop_id) {
