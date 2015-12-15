@@ -11,6 +11,17 @@ if (!empty($_GET['id_smartcmd']) && !empty($_GET['id_option'])
 	$result  =  $request -> send_request();
 	
 	$device_info = $result->mcDeviceInfo;
+	
+	if (empty($device_info) or empty($device_info->device_opt->{$_GET['id_option']})) {
+		echo 
+		'<div class="alert alert-danger center" role="alert">'.
+			_('Option not available').
+		'</div>'.
+		'<script type="text/javascript">'.
+			'$("#popupTitle").html("'._('Option not available').'");'.
+		'</script>';
+		return;
+	}
 	$device_name = $device_info->name;
 	$option_name = $device_info->device_opt->{$_GET['id_option']}->name;
 	if ($_GET['id_option'] == 392) {

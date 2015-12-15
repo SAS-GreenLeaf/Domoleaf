@@ -30,10 +30,7 @@ function showPopup($id_smartcmd, $room_id_device, $id_option, $id_exec, $modif) 
 	$display.='<input id="smartcmdPopupValue-'.$room_id_device.'" value="0" hidden>';
 	if (empty($tab_func[$id_option])) {
 		echo '
-			<div class="alert alert-danger alert-dismissible center" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="'._('Close').'">
-					<span aria-hidden="true">&times;</span>
-				</button>
+			<div class="alert alert-danger center" role="alert">
 				'._('Option not available').'
 			</div>';
 		return;
@@ -99,7 +96,6 @@ function display_smartcmd_varie($room_id_device) {
 }
 
 function display_smartcmd_up_down($room_id_device) {
-
 	$display = '
 				<input type="checkbox"
 				       data-on-color="greenleaf"
@@ -209,5 +205,6 @@ function display_smartcmd_color_wheel($room_id_device) {
 	
 	return $display;
 }
+
 
 ?>
