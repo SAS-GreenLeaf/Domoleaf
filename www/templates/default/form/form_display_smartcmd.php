@@ -79,7 +79,7 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 	}
 	echo '
 	<div class="delay">
-		<span class="btn btn-greenleaf disabled-with-opacity" disabled>Delay :</span>
+		<span class="btn btn-greenleaf disabled-with-opacity" disabled>'._('Delay:').'</span>
 		<div class="timePicker">
 			<select class="selectpicker" id="selectHours-'.$exec_id.'" data-width="auto" data-size="10"
 			        onchange="selectDelay('.$smartcmd_id.', '.$exec_id.')">';
