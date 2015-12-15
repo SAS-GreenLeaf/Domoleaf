@@ -38,10 +38,7 @@ function showPopup($id_trigger, $room_id_device, $id_option, $id_condition, $mod
 				<input id="triggerPopupOperator-'.$room_id_device.'" value="0" hidden>';
 	if (empty($tab_func[$id_option])) {
 		echo '
-			<div class="alert alert-danger alert-dismissible center" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="'._('Close').'">
-					<span aria-hidden="true">&times;</span>
-				</button>
+			<div class="alert alert-danger center" role="alert">
 				'._('Option not available').'
 			</div>';
 		return;
