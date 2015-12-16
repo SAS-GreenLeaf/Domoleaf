@@ -195,4 +195,22 @@ function compress_image($src, $dest , $quality)
 	//return destination file
 	return $dest;
 }
+
+function checkCurrency($currencyId) {
+	$allCurrency = array(
+			2	=>	'$',
+			1	=>	'€',
+			3	=>	'₣',
+			4	=>	'£',
+			5	=>	'¥',
+			6	=>	'Ұ',
+	);
+	if (!empty($allCurrency[$currencyId])){
+		return $allCurrency[$currencyId];
+	}
+	else{
+		return NULL;
+	}
+}
+
 ?>

@@ -2064,3 +2064,23 @@ msgstr "Pas d'option selectionnable"
 #: profile.php:80 conf_profile.php:86
 msgid "Time zone"
 msgstr "Fuseau horaire"
+
+#: conf_general.php
+msgid "Price for electricity"
+msgstr "Prix de l'électricité"
+
+#: conf_general.php
+msgid "High cost"
+msgstr "Tarif plein"
+
+#: conf_general.php
+msgid "Low cost"
+msgstr "Tarif creux"
+
+#: conf_general.php
+msgid "Low field"
+msgstr "Plage creuse"
+
+#: conf_general.php
+msgid "Currency"
+msgstr "Devise"

@@ -427,6 +427,90 @@ class Admin extends User {
 		
 	}
 
+	function confPriceElec($highCost=0, $lowCost=0, $lowField1=0, $lowField2=0, $currency=0){
+		$link = Link::get_link('domoleaf');
+
+		if (!is_numeric($highCost)){
+			$highCost = '0';
+		}
+		if (!is_numeric($lowCost)){
+			$lowCost = '0';
+		}
+		
+		if (!empty($lowField1) && !empty(explode('-', $lowField1)[0]) && !empty(explode('-', $lowField1)[1])){
+			$lowField1_1 = explode('-', $lowField1)[0];
+			$lowField1_2 = explode('-', $lowField1)[1];
+		}
+		else{
+			$lowField1_1 = 0;
+			$lowField1_2 = 0;
+		}
+		
+		if (!empty($lowField2) && !empty(explode('-', $lowField2)[0]) && !empty(explode('-', $lowField2)[1])){
+			$lowField2_1 = explode('-', $lowField2)[0];
+			$lowField2_2 = explode('-', $lowField2)[1];
+		}
+		else{
+			$lowField2_1 = 0;
+			$lowField2_2 = 0;
+		}
+		
+		if (!($lowField1_1 >= 0 && $lowField1_1 < 24) || !($lowField1_2 >= 0 && $lowField1_2 < 24)){
+			$lowField1 = '0-0';
+		}
+		if (!($lowField2_1 >= 0 && $lowField2_1 < 24) || !($lowField2_2 >= 0 && $lowField2_2 < 24)){
+			$lowField2 = '0-0';
+		}
+		
+		
+		if (!is_numeric($currency)){
+			$currency = '1';
+		}
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :highCost
+				WHERE configuration_id = 14';
+		$req = $link->prepare($sql);
+		$req->bindValue(':highCost', $highCost, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowCost
+				WHERE configuration_id = 15';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowCost', $lowCost, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowField1
+				WHERE configuration_id = 16';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowField1', $lowField1, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowField2
+				WHERE configuration_id = 17';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowField2', $lowField2, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		if (checkCurrency($currency) == NULL){
+			$currency = 1;
+		}
+		
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :currency
+				WHERE configuration_id = 18';
+		$req = $link->prepare($sql);
+		$req->bindValue(':currency', $currency, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$socket = new Socket();
+		$socket->send('reload_d3config');
+	}
+	
 	/*** Floors ***/
 	function confFloorList() {
 		$link = Link::get_link('domoleaf');

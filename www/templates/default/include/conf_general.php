@@ -42,6 +42,7 @@ echo '
 	</div>
 	<div class="clearfix"></div>
 	<div class="col-xs-12 col-md-6">
+		<br/>
 		<div class="center">
 			<h3>'
 				._('Email configuration').'
@@ -103,12 +104,63 @@ echo '
 			<button type="button" class="btn btn-greenleaf" onclick="PopupTestMail()">'._('Test').'</button>
 		</div>
 	</div>
+
+	<div class="col-xs-12 col-md-6">
+		<br/>
+		<div class="center">
+			<h3>'._('Price for electricity').'</h3>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="currency">'._('Currency').'</label>
+				<select id="currency" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
+				foreach ($allCurrency as $k => $curr){
+					if ($k == $currency){
+						echo '<option value="'.$k.'" selected="selected">'.$curr.'</option>';
+					}
+					else
+						echo '<option value="'.$k.'">'.$curr.'</option>';
+				}
+				echo
+				'</select>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="highCost">'._('High cost').'</label>
+			<input id="highCost" name="highCost" min="0" step="0.01" title="'._('High cost').'" type="number" value="'.$highCost.'" class="form-control">
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="lowCost">'._('Low cost').'</label>
+			<input id="lowCost" name="lowCost" min="0" step="0.01" title="'._('Low cost').'" type="number" value="'.$lowCost.'" class="form-control">
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="lowField1">'._('Low field').' 1</label>
+			<div style="display:inline-flex">
+				<input id="lowField1_1" name="lowField1_1" min="0" max="23" title="'._('Low field').' 1" type="number" value="'.$lowField1_1.'" class="form-control">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input id="lowField1_2" name="lowField1_2" min="0" max="23" title="'._('Low field').' 1" type="number" value="'.$lowField1_2.'" class="form-control">
+			</div>
+		</div>
+		<br/>
+		<div class="control-group" style="float:left;">
+			<label class="control-label" for="lowField2">'._('Low field').' 2</label>
+			<div style="display:inline-flex">
+				<input id="lowField2_1" name="lowField2_1" min="0" max="23" title="'._('Low field').' 2" type="number" value="'.$lowField2_1.'" class="form-control">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input id="lowField2_2" name="lowField2_2" min="0" max="23" title="'._('Low field').' 2" type="number" value="'.$lowField2_2.'" class="form-control">
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="center">
+			<br/>
+			<button type="button" class="btn btn-greenleaf" onclick="SaveChangePriceElec()">'._('Save').'</button>
+		</div>
+	</div>
+
 </div>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
 		activateMenuElem(\'general\');
+		$(".selectpicker").selectpicker();
+		$(".selectpicker").selectpicker(\'refresh\');
 	});
 
 	$("#checkboxaccess").click(function () {
@@ -152,7 +204,7 @@ echo '
 				}
 			});
 	}
-	
+
 	$("#smtpSecure-'.$smtpSecure.'").attr("checked", "checked");
 
 	function checkSmtpPort(){
@@ -234,6 +286,22 @@ function SaveChangeMail(){
 		type:"POST",
 		url: "/form/form_general_mail.php",
 		data: "fromMailval="+encodeURIComponent(fromMailval)+"&fromNameval="+encodeURIComponent(fromNameval)+"&smtpHostval="+smtpHostval+"&smtpSecureval="+smtpSecureval+"&smtpPortval="+smtpPortval+"&smtpUsernameval="+encodeURIComponent(smtpUsernameval)+"&smtpPasswordval="+encodeURIComponent(smtpPasswordval),
+		complete: function(result, status) {
+		}
+	});
+}
+
+function SaveChangePriceElec(){
+	var highCostval = $("#highCost").val();
+	var lowCostval = $("#lowCost").val();
+	var lowField1val = $("#lowField1_1").val() + \'-\' + $("#lowField1_2").val();
+	var lowField2val = $("#lowField2_1").val() + \'-\' + $("#lowField2_2").val()
+	var currencyval = $("#currency").val();
+
+	$.ajax({
+		type:"POST",
+		url: "/form/form_general_price_elec.php",
+		data: "highCostval="+encodeURIComponent(highCostval)+"&lowCostval="+encodeURIComponent(lowCostval)+"&lowField1val="+encodeURIComponent(lowField1val)+"&lowField2val="+encodeURIComponent(lowField2val)+"&currencyval="+encodeURIComponent(currencyval),
 		complete: function(result, status) {
 		}
 	});
