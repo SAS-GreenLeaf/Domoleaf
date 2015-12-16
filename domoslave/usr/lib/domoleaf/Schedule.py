@@ -58,9 +58,9 @@ class Schedule:
             return 0;
         months, weekdays, days, hours, mins = self.get_schedule_infos(id_schedule);
         now = datetime.datetime.now();
-        curr_month = int(now.month);
+        curr_month = int(now.month) - 1;
         curr_weekday = int(now.strftime('%w'));
-        curr_day = int(now.day);
+        curr_day = int(now.day) - 1;
         curr_hour = int(now.hour);
         curr_min = int(now.minute);
 

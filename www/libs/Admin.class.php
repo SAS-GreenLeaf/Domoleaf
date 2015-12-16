@@ -965,7 +965,8 @@ class Admin extends User {
 		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
 		        FROM room_device_option
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id';
+		        WHERE room_device_id=:room_device_id
+		        ORDER BY room_device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
