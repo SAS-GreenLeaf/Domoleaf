@@ -310,7 +310,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 	
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
-		               gender, phone, language, design, bg_color, border_color
+		               gender, phone, language, timezone, design, bg_color, border_color
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
@@ -334,11 +334,13 @@ class User {
 	 * @param string : lastname
 	 * @param string : firstname
 	 * @param int : gender
+	 * @param string : email
 	 * @param string : phone number
 	 * @param string : language
+	 * @param int : timeZone
 	 * @param int : user id, not used
 	 */
-	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timeZone, $id=0) {
 		$link = Link::get_link('domoleaf');
 
 		if ($gender != 1) {
@@ -349,14 +351,18 @@ class User {
 		if(empty($langList[$language])) {
 			$language = $this->getLanguage();
 		}
-	
+		if(empty($timeZone) || !($timeZone > 0 && $timeZone < 42)) {
+			$timeZone = 1;
+		}
+
 		$sql = 'UPDATE mcuser
 		        SET lastname= :lastname,
 		            firstname= :firstname,
 		            gender= :gender,
 		            mcuser_mail= :email,
 		            phone= :phone,
-		            language= :language
+		            language= :language,
+					timezone= :timezone
 		        WHERE mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
@@ -365,6 +371,7 @@ class User {
 		$req->bindValue(':email', $email, PDO::PARAM_STR);
 		$req->bindValue(':phone', $phone, PDO::PARAM_STR);
 		$req->bindValue(':language', $language, PDO::PARAM_STR);
+		$req->bindValue(':timezone', $timeZone, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
@@ -403,6 +410,64 @@ class User {
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
+	}
+	
+	function profileTime() {
+		$link = Link::get_link('domoleaf');
+
+		$sql = 'SELECT timezone
+		        FROM mcuser
+		        WHERE mcuser_id= :user_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+
+		$allTimeZone = array(
+				2	=>	-46800,
+				3	=>	-43200,
+				4	=>	-39600,
+				5	=>	-37800,
+				6	=>	-36000,
+				7	=>	-32400,
+				8	=>	-28800,
+				9	=>	-25200,
+				10	=>	-21600,
+				11	=>	-19800,
+				12	=>	-18000,
+				13	=>	-16200,
+				14	=>	-14400,
+				15	=>	-10800,
+				16	=>	-7200,
+				17	=>	-3600,
+				1	=>	0,
+				18	=>	3600,
+				19	=>	7200,
+				20	=>	9000,
+				21	=>	10800,
+				22	=>	12600,
+				23	=>	14400,
+				24	=>	16200,
+				25	=>	17100,
+				26	=>	21600,
+				27	=>	23400,
+				28	=>	25200,
+				29	=>	28800,
+				30	=>	30600,
+				31	=>	31500,
+				32	=>	32400,
+				33	=>	34200,
+				34	=>	36000,
+				35	=>	37800,
+				36	=>	39600,
+				37	=>	41400,
+				38	=>	43200,
+				39	=>	45900,
+				40	=>	46800,
+				41	=>	50400
+		);
+
+		return $allTimeZone[$do->timezone];
 	}
 	
 	/********************** Monitors **********************/
@@ -1953,7 +2018,45 @@ class User {
 	
 	function updateSchedule($idschedule, $months, $weekdays, $days, $hours, $mins){
 		$link = Link::get_link('domoleaf');
-	
+
+		$arrayHours = str_split(sprintf("%'.024s\n", decbin($hours)));
+		$arrayMins = str_split($mins);
+		$diffTime = $this->profileTime();
+
+		if ($diffTime > 0){
+			$nbHours = $diffTime / 3600;
+			$nbMins = $diffTime % 3600 / 60;
+
+			for ($i = 0 ; $i < $nbHours ; $i++){
+				array_unshift($arrayHours, array_pop($arrayHours));
+			}
+
+			for ($i = 0 ; $i < $nbMins ; $i++){
+				array_unshift($arrayMins, array_pop($arrayMins));
+			}
+
+			$hours = bindec(join($arrayHours));
+			$mins = join($arrayMins);
+
+		}
+		else if ($diffTime < 0){
+			$diffTime = $diffTime * -1;
+			$nbHours = $diffTime / 3600;
+			$nbMins = $diffTime % 3600 / 60;
+
+			for ($i = 0 ; $i < $nbHours ; $i++){
+				array_push($arrayHours, array_shift($arrayHours));
+			}
+
+			for ($i = 0 ; $i < $nbMins ; $i++){
+				array_push($arrayMins, array_shift($arrayMins));
+			}
+
+			$hours = bindec(join($arrayHours));
+			$mins = join($arrayMins);
+
+		}
+
 		$sql = 'UPDATE trigger_schedules_list
 				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
 				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
@@ -1976,7 +2079,7 @@ class User {
 		$sql = 'SELECT months, weekdays, days, hours, mins
 				FROM trigger_schedules_list
 				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
-	
+
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1984,10 +2087,45 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
+
+		$arrayHours = str_split(sprintf("%'.024s\n", decbin($do->hours)));
+		$arrayMins = str_split($do->mins);
+		$diffTime = $this->profileTime();
 		
+		if ($diffTime > 0){
+			$nbHours = $diffTime / 3600;
+			$nbMins = $diffTime % 3600 / 60;
+
+			for ($i = 0 ; $i < $nbHours - 1; $i++){
+				array_push($arrayHours, array_shift($arrayHours));
+			}
+
+			for ($i = 0 ; $i < $nbMins ; $i++){
+				array_push($arrayMins, array_shift($arrayMins));
+			}
+
+			$do->hours = bindec(join($arrayHours));
+			$do->mins = join($arrayMins);
+		}
+		else if ($diffTime < 0){
+			$diffTime = $diffTime * -1;
+			$nbHours = $diffTime / 3600;
+			$nbMins = $diffTime % 3600 / 60;
+
+			for ($i = 0 ; $i < $nbHours + 1; $i++){
+				array_unshift($arrayHours, array_pop($arrayHours));
+			}
+
+			for ($i = 0 ; $i < $nbMins ; $i++){
+				array_unshift($arrayMins, array_pop($arrayMins));
+			}
+
+			$do->hours = bindec(join($arrayHours));
+			$do->mins = join($arrayMins);
+		}
 		return $do;
 	}
-	
+
 	function updateScheduleName($schedule_id, $schedule_name){
 		if ($this->searchScheduleByName($schedule_name) != 0) {
 			return -1;

@@ -4,7 +4,9 @@ include('header.php');
 
 $request =  new Api();
 $request -> add_request('confDbListLocal');
+$request -> add_request('profileTime');
 $result  =  $request -> send_request();
+$time = $result->profileTime;
 
 if (!empty($result) && !empty($result->confDbListLocal)){
 	$listDbLocal = $result->confDbListLocal;	
@@ -24,7 +26,7 @@ if (!empty($listDbLocal) && sizeof($listDbLocal) > 0) {
 		echo '
 					<tr>
 					<td>
-						'.format_date($parse[2]).'
+						'.format_date($parse[2] + $time).'
 					</td>
 					<td class="center">
 						'.format_size($elem->size).'
