@@ -117,8 +117,8 @@ function format_date($time) {
 			strftime('%H:%M', $time);
 		break;
 		default:
-			return utf8_encode(strftime('%d/%m/%y', $time)).' à '.
-			strftime('%H:%M', $time);
+			return utf8_encode(strftime('%d/%m/%y', $time)).' at '.
+			strftime('%l:%M%P', $time);
 		break;
 	}
 	putenv("LC_ALL=".LOCALE);

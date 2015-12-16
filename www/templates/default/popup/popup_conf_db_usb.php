@@ -17,4 +17,5 @@ echo '
 '<div id="listDbUsb"><div class="center"><br/>'._('Loading in progress...').'<br/><br/></div></div>';
 
 echo '<script type="text/javascript">ListDbUsb()</script>';
+
 ?>

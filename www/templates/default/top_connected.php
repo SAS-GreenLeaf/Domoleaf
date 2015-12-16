@@ -16,6 +16,10 @@ echo
 				<span class="glyphicon glyphicon-home"></span>
 				'._('Master Command').'
 			</a>
+			<div class="navbar-brand">
+				<span class="glyphicon glyphicon-time"></span>
+				<span id="navbarTime"></span>
+			</div>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
@@ -58,5 +62,25 @@ echo
 	</div>
 </nav>';
 
-?>
+echo '
+<script type="text/javascript">
 
+$(document).ready(function(){
+	refesh_nabvar_time()
+});
+
+setInterval(function() { refesh_nabvar_time() }, 30000);
+
+function refesh_nabvar_time() {
+	$.ajax({
+		type:"GET",
+		url: "/templates/'.TEMPLATE.'/form/form_navbar_time.php",
+		success: function(resultat) {
+			$("#navbarTime").html(resultat);
+		}
+	});
+}
+
+</script>';
+
+?>

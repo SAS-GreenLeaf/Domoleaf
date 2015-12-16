@@ -2048,3 +2048,7 @@ msgstr "Pas d'étage selectionnable"
 #: profile_user_graphcis.php:12
 msgid "No selectable option"
 msgstr "Pas d'option selectionnable"
+
+#: profile.php:80 conf_profile.php:86
+msgid "Time zone"
+msgstr "Fuseau horaire"

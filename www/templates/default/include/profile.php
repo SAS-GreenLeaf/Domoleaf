@@ -53,7 +53,7 @@ echo ' <title>'._('Profile').'</title>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="phone">'._('Phone').'</label>		
 				<div class="input-group">
-				<label for="username" class="input-group-addon">
+				<label for="phone" class="input-group-addon">
 					<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 				</label>
 				<input name="phone" type="text" class="form-control" id="phone" placeholder="'._('Enter your phone number (mobile)').'" value="'.$profilInfo->phone.'">
@@ -61,15 +61,34 @@ echo ' <title>'._('Profile').'</title>
 			<div class="control-group control-group-profile">
 				<label class="control-label" for="language">'._('Language').'</label>
 				<div class="input-group">
-		  			<label class="input-group-addon" for="username">
+		  			<label class="input-group-addon" for="language">
 							<span aria-hidden="true" class="fa fa-language"></span>
 					</label>
 					<select id="selectLanguage" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
 					foreach ($language as $k => $lang){
-						if ($k == $profilInfo->language)
+						if ($k == $profilInfo->language){
 							echo '<option value="'.$k.'" selected="selected">'.$lang.'</option>';
-						else
+						}
+						else{
 							echo '<option value="'.$k.'">'.$lang.'</option>';
+						}
+					}
+					echo
+					'</select>
+			</div>
+			<div class="control-group control-group-profile">
+				<label class="control-label" for="timeZone">'._('Time zone').'</label>
+				<div class="input-group">
+		  			<label class="input-group-addon" for="timeZone">
+							<span aria-hidden="true" class=" glyphicon glyphicon-time"></span>
+					</label>
+					<select id="selectTimeZone" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
+					foreach ($allTimeZone as $k => $timeZone){
+						if ($k == $profilInfo->timezone){
+							echo '<option value="'.$k.'" selected="selected">'.$timeZone.'</option>';
+						}
+						else
+							echo '<option value="'.$k.'">'.$timeZone.'</option>';
 					}
 					echo
 					'</select>
@@ -199,6 +218,7 @@ function saveProfile() {
 	var lastname = $("#lastname").val();
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
+	var timeZone = $("#selectTimeZone").val();
 
 	if ($("#sexe-1").is(\':checked\'))
 	{
@@ -213,7 +233,7 @@ function saveProfile() {
 	$.ajax({
 		type:"GET",
 		url: "/form/form_profile_save.php",
-		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&id=0",
+		data: "lastname="+lastname+"&firstname="+firstname+"&gender="+gender+"&phone="+phone+"&email="+encodeURIComponent(email)+"&language="+language+"&timeZone="+timeZone+"&id=0",
 		beforeSend: function(){
 			loadingForm();
 		},
@@ -224,7 +244,6 @@ function saveProfile() {
    		}
 	});
 }
-
 
 </script>';
 ?>

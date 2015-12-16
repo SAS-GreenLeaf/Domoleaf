@@ -5,10 +5,12 @@ include('header.php');
 $request =  new Api();
 $request -> add_request('monitorKnx');
 $request -> add_request('confDaemonList');
+$request -> add_request('profileTime');
 $result  =  $request -> send_request();
 
 $listknx = $result->monitorKnx;
 $listDaemon = $result->confDaemonList;
+$time = $result->profileTime;
 
 if (!isset($_GET['id'])){
 	exit();
@@ -50,7 +52,7 @@ echo '
 			}
 			echo '
 					<td>'.$elem->knx_value.'</td>
-					<td>'.$request->date($elem->t_date, 3).'</td>
+					<td>'.$request->date($elem->t_date + $time, 3).'</td>
 				</tr>';
 			}
 		}
