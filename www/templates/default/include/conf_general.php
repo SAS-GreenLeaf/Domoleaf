@@ -138,7 +138,6 @@ echo '
 				<input id="lowField1_2" name="lowField1_2" min="0" max="23" title="'._('Low field').' 1" type="number" value="'.$lowField1_2.'" class="form-control">
 			</div>
 		</div>
-		<br/>
 		<div class="control-group" style="float:left;">
 			<label class="control-label" for="lowField2">'._('Low field').' 2</label>
 			<div style="display:inline-flex">
