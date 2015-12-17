@@ -159,13 +159,13 @@ class MasterDaemon:
         self.scenario = Scenario(self);
         self.calcLogs = CalcLogs(self);
         self.protocol_function = {
-            PROTOCOL_KNX        : KNXManager.protocol_knx,
+            PROTOCOL_KNX        : self.knx_manager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
             PROTOCOL_IP         : self.protocol_ip
         };
         self.functions = {
-            FUNCTION_KNX_SHORT  : KNXManager.protocol_knx,
-            FUNCTION_KNX_LONG   : KNXManager.protocol_knx,
+            FUNCTION_KNX_SHORT  : self.knx_manager.protocol_knx,
+            FUNCTION_KNX_LONG   : self.knx_manager.protocol_knx,
             FUNCTION_IR         : IP_IRManager().send_to_gc
         };
         self.upnp_function = {
@@ -663,34 +663,31 @@ class MasterDaemon:
         if dev is None:
             connection.close();
             return ;
-        
+
+        if 'daemon_name' in dev:
+            for host in self.hostlist:
+                if dev['daemon_name'] == host._Hostname:
+                    hostname = host._Hostname;
+                    break;
+        if dev['protocol_id'] == PROTOCOL_IP:
+            json_obj['addr'] = dev['addr'];
+            json_obj['port'] = dev['plus1'];
+
         function_id = int(dev['function_id']);
         if (function_id > 0):
             try:
-                if (function_id == FUNCTION_KNX_SHORT or function_id == FUNCTION_KNX_LONG):
-                    for host in self.hostlist:
-                        if dev['daemon_name'] in host._Hostname:
-                            hostname = host._Hostname;
-                            break;
-                    if (hostname == ''):                
+                if (function_id == FUNCTION_KNX_SHORT or function_id == FUNCTION_KNX_LONG):       
+                    if (hostname == ''):          
                         return;
                 self.functions[function_id](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
         else:
             if dev['protocol_id'] == PROTOCOL_IP:
-                json_obj['addr'] = dev['addr'];
-                json_obj['port'] = dev['plus1'];
                 self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
                 return;
-            hostname = '';
-            for host in self.hostlist:
-                if dev['daemon_name'] in host._Hostname:
-                    hostname = host._Hostname;
-                    break;
-            if hostname != '':
-                if dev['protocol_id'] == PROTOCOL_KNX:
-                    self.knx_manager.protocol_knx(json_obj, dev, hostname);
+            if hostname != '' and dev['protocol_id'] == PROTOCOL_KNX:
+                self.knx_manager.protocol_knx(json_obj, dev, hostname);
             connection.close();
 
     def protocol_enocean(self, json_obj, dev, hostname):
@@ -767,6 +764,8 @@ class MasterDaemon:
         Calls the desired Upnp function.
         """
         try:
+            if 'value' not in json_obj['data']:
+                json_obj['data']['value'] = '';
             if json_obj['data']['value'] == '':
                 json_obj['data']['value'] = dev['addr_dst'];
             if json_obj['data']['action'] in self.upnp_function.keys():

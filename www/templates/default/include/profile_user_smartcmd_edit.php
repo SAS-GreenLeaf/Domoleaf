@@ -107,7 +107,7 @@ echo
 		$("#alert-linked-room").popover();
 	});
 	
-	without_params = [363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
+	without_params = [357, 358, 359, 360, 361, 363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
 	
 	function popupUpdateSmartcmdName(smartcmd_id) {
 		$.ajax({
@@ -230,7 +230,7 @@ echo
 			});
 		}
 	}
-		
+	
 	function displaySmartcmd(id_smartcmd) {
 		$.ajax({
 			type: "GET",

@@ -209,7 +209,7 @@ function display_widget($info){
 // Widget alarm
 function display_alarm($info){
 	$display = '
-			<div class="info-widget">
+			<div class="info-widget foreground-widget">
 				<button title="'._('More').'"
 				        onclick="HandlePopup(2, '.$info->room_device_id.')"
 				        class="btn btn-greenleaf"
@@ -228,7 +228,7 @@ function display_alarm($info){
 
 // Widget fan
 function display_fan($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -272,7 +272,7 @@ function display_fan($info){
 
 // Widget warming
 function display_warming($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -292,7 +292,7 @@ function display_warming($info){
 
 // Widget garden
 function display_garden($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -303,7 +303,7 @@ function display_garden($info){
 
 // Widget Spa
 function display_spa($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -316,13 +316,13 @@ function display_spa($info){
 function display_clim($info){
 	$display = '';
 	$display.=
-				'<div class="info-widget">
+				'<div class="info-widget foreground-widget">
 					<button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')"
 					        class="btn btn-greenleaf" type="button">
 						<span class="fa fa-plus md"></span>
 					</button>
 				</div>
-				<h3 class="title">'.$info->name.'</h3>';
+				<h3 class="title foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -330,7 +330,7 @@ function display_clim($info){
 	
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
 		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404})){
-		$display.= '<div class="center">';
+		$display.= '<div class="center foreground-widget">';
 	}
 	
 	if (!empty($info->device_opt->{400})){
@@ -363,7 +363,7 @@ function display_clim($info){
 
 // Widget Aspiration
 function display_aspiration($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -378,11 +378,11 @@ function display_audio($info){
 	switch($info->protocol_id){
 		case 1:
 			// KNX
-			$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+			$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 			break;
 		case 6:
 			$display =
-					'<div class="info-widget">
+					'<div class="info-widget foreground-widget">
 						<button title="'._('More').'" onclick="HandlePopup(1, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
 							<span class="fa fa-plus md"></span>
 						</button>
@@ -422,13 +422,13 @@ function display_audio($info){
 		default :
 			// TODO
 			// infra rouge
-			$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+			$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 			break;
 	}
 
 	if (!empty($info->device_opt->{383})){
 		$display.='
-				<div class="col-xs-12">
+				<div class="col-xs-12 foreground-widget">
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
 					     onclick="Volume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\', -1)">
 						<i class="glyphicon glyphicon-volume-down"></i>
@@ -454,7 +454,7 @@ function display_audio($info){
 
 //widget portail
 function display_portal($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12}) or !empty($info->device_opt->{96})){
 		$display.=display_OpenClose($info);
@@ -465,7 +465,7 @@ function display_portal($info){
 
 //widget store
 function display_shutter($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -482,7 +482,7 @@ function display_shutter($info){
 
 //widget commande
 function display_commande($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
@@ -510,28 +510,30 @@ function display_commande($info){
 function display_lampe($info){
 	$display = '';
 	if (!empty($info->device_id) && !((!empty($info->device_opt->{153})) || $info->device_id == 78 || $info->device_id == 85)){
-		$display = '<h3 class="title margin-top">'.$info->name.'</h3>';
+		$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	}
 	if (!empty($info->device_id) && !empty($info->device_opt->{153})){
-		$display .= '<div class="info-warning">
-					<button id="widget_info-'.$info->room_device_id.'-153" title="'._('More').'"
-					onclick="HandlePopup(2, '.$info->room_device_id.')"';
+		$display .=
+					'<div class="info-warning foreground-widget">
+						<button id="widget_info-'.$info->room_device_id.'-153" title="'._('More').'"
+						        onclick="HandlePopup(2, '.$info->room_device_id.')"';
 		if ($info->device_opt->{153}->valeur == 1){
-			$display .= 'class="btn btn-danger"';
+			$display .= '       class="btn btn-danger"';
 		}
 		else{
-			$display .= 'class="btn btn-greenleaf"';
+			$display .= '       class="btn btn-greenleaf"';
 		}
-		$display .= 'type="button">
-					<span class="fa fa-info-circle md"></span>
-					</button>
+		$display .=
+					           'type="button">
+						<span class="fa fa-info-circle md"></span>
+						</button>
 					</div>';
 		if ($info->device_id != 78 && $info->device_id != 85){
-			$display .= '<h3 class="title margin-top">'.$info->name.'</h3>';
+			$display .= '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 		}
 	}
 	if (!empty($info->device_id) && ($info->device_id == 78 || $info->device_id == 85)){
-		$display .= '<div class="info-widget">';
+		$display .= '<div class="info-widget foreground-widget">';
 		
 		if ($info->device_id == 85){
 			$display .=	'<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 1)" class="btn btn-greenleaf" type="button">';
@@ -557,8 +559,8 @@ function display_lampe($info){
 
 //widget camera
 function display_cam($info){
-	$display = '<h3 class="title margin-top">'.$info->name.'</h3>
-				<div>
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>
+				<div class="foreground-widget">
 					<button type="button" class="btn btn-info" onclick="HandlePopup(0, \''.$info->room_device_id.'\')">'._('View').'</button>
 				</div>';
 
@@ -567,7 +569,7 @@ function display_cam($info){
 
 //widget chaudière
 function display_furnace($info){
-	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display= '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
@@ -578,7 +580,7 @@ function display_furnace($info){
 
 //widget electric consumption
 function display_consumption($info){
-	$display= '<h3 class="title margin-top">'.$info->name.'</h3>';
+	$display= '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
 	//consumption option
 	if (!empty($info->device_opt->{399})){
@@ -598,7 +600,7 @@ function display_consumption($info){
 //Open Close
 function display_OpenClose($info){
 	$display ='
-			<div class="margin-bottom btn-group btn-group-greenleaf">
+			<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">
 				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, 96)">'._('Open').'</button>
 				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, 96)">'._('Close').'</button>
 			</div>';
@@ -619,7 +621,7 @@ function display_UpDown($info){
 		$icon_down = "fa fa-angle-double-down lg";
 	}
 	$display ='
-			<div class="margin-bottom btn-group btn-group-greenleaf">
+			<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">
 				<button type="button" class="btn btn-warning"
 				        onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{54}->option_id.'\')">
 					<span class="'.$icon_up.'"></span>
@@ -646,7 +648,7 @@ function display_OnOff($info, $popup = 0){
 		// KNX
 		case 1:
 			if (!empty($info->device_opt->{12}->addr_plus)){
-				$display .= '<div class="checkbox">';
+				$display .= '<div class="checkbox foreground-widget">';
 						if (!empty($info->device_opt->{12}->valeur)){
 						 	$display.='<input data-on-color="greenleaf"
 						 				      data-label-width="0"
@@ -658,7 +660,7 @@ function display_OnOff($info, $popup = 0){
 						 						}
 						 				      	else{ 
 						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
-						 				      	}	      			
+						 				      	}
 						 		   $display.='class="onoff-switch"
 						 				      type="checkbox"
 						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', \''.$info->device_opt->{12}->option_id.'\', '.$popup.')"
@@ -683,7 +685,7 @@ function display_OnOff($info, $popup = 0){
 				$display.='</div>';
 			}
 			else {
-				$display .= '<div class="margin-bottom btn-group btn-group-greenleaf">
+				$display .= '<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">
 								<button type="button" class="btn btn-onoff-widget btn-greenleaf" onclick="onOff(\''.$info->room_device_id.'\', 1, \''.$info->device_opt->{12}->option_id.'\')">'._('On').'</button>
 								<button type="button" class="btn btn-onoff-widget btn-danger" onclick="onOff(\''.$info->room_device_id.'\', 0, \''.$info->device_opt->{12}->option_id.'\')" >'._('Off').'</button>
 							</div>';
@@ -691,7 +693,7 @@ function display_OnOff($info, $popup = 0){
 		break;
 		// EnOcean
 		case 2:
-			$display .= '<div class="btn-group">
+			$display .= '<div class="btn-group foreground-widget">
 							<button type="button" class="btn btn-greenleaf">'._('On').'</button>
 							<button type="button" class="btn btn-danger">'._('Off').'</button>
 						</div>';
@@ -722,7 +724,7 @@ function display_varie($info, $var_icon = 1){
 		// KNX
 		case 1:
 				$display .= 
-							'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+							'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 								<i class="fa '.$left_icon.'"></i>
 							</div>';
 							if ($info->device_opt->{13}->valeur > 0){
@@ -737,7 +739,7 @@ function display_varie($info, $var_icon = 1){
 							}
 							else {
 								$display.=
-										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 foreground-widget">
 											<output id="range-'.$info->room_device_id.'"
 											        for="slider-value-'.$info->room_device_id.'">
 												50%
@@ -745,12 +747,12 @@ function display_varie($info, $var_icon = 1){
 										</div>';
 							}
 							$display.=
-										'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+										'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 											<i class="fa '.$right_icon.'"></i>
 										</div>';
 							if (!empty($info->device_opt->{13}->valeur)){
 								$display.=
-										'<div class="row">
+										'<div class="row foreground-widget">
 											<input value="'.$info->device_opt->{13}->valeur.'" min="0" step="1" max="255"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
 											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
@@ -759,7 +761,7 @@ function display_varie($info, $var_icon = 1){
 							}
 							else {
 								$display.=
-										'<div class="row">
+										'<div class="row foreground-widget">
 											<input value="128" min="0" step="1" max="255"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
 											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
@@ -785,7 +787,7 @@ function display_minusplus($info, $popup = 0){
 	if (empty($temp)){
 		$temp = '0.0';
 	}
-	$display = '<div class="input-group">
+	$display = '<div class="input-group foreground-widget">
 					<span onclick="UpdateTemp(\''.$info->room_device_id.'\', 388, -1)" class="btn btn-warning input-group-addon"><i class="fa fa-minus md"></i></span> ';
 					if ($popup == 0){
 						$display.='<output class="margin-top-4" id="output-mp-'.$info->room_device_id.'">'.$temp.'</output> ';
@@ -805,7 +807,7 @@ function display_temperature($info){
 	if (!empty($info->device_opt->{72}->valeur)){
 		$tmp = $info->device_opt->{72}->valeur;
 	}
-	$display = '<div>
+	$display = '<div class="foreground-widget">
 					<i class="fi flaticon-thermometer2"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{72}->unit.'</span>
@@ -821,12 +823,12 @@ function display_led($info){
 		$tmp = $info->device_opt->{92}->valeur;
 	}
 	if ($tmp == '0'){
-		$display = '<div>
+		$display = '<div class="foreground-widget">
 						<i class="glyphicon glyphicon-record led-off"></i>
 					</div>';
 	}
 	else{
-		$display = '<div>
+		$display = '<div class="foreground-widget">
 						<i class="glyphicon glyphicon-record led-on"></i>
 					</div>';
 	}
@@ -839,7 +841,7 @@ function display_consumption_option($info){
 	if (!empty($info->device_opt->{399}->valeur)){
 		$tmp = $info->device_opt->{399}->valeur;
 	}
-	$display = '<div>
+	$display = '<div class="foreground-widget">
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{399}->unit.'</span>
@@ -854,7 +856,7 @@ function display_power_option($info){
 	if (!empty($info->device_opt->{407}->valeur)){
 		$tmp = $info->device_opt->{407}->valeur;
 	}
-	$display = '<div>
+	$display = '<div class="foreground-widget">
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{407}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{407}->unit.'</span>
@@ -869,7 +871,7 @@ function display_hygrometry($info){
 	if (!empty($info->device_opt->{6}->valeur)){
 		$hygro = $info->device_opt->{6}->valeur;
 	}
-	$display = '<div>
+	$display = '<div class="foreground-widget">
 					<i class="fa fa-tint"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{6}->option_id.'">'.$hygro.'</span> %
 				</div>';
@@ -884,7 +886,7 @@ function display_luminosity($info){
 	if (!empty($info->device_opt->{$current_id}->valeur)){
 		$lum = $info->device_opt->{$current_id}->valeur;
 	}
-	$display = '<div>
+	$display = '<div class="foreground-widget">
 					<i class="fa fa-sun-o"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$current_id.'">'.$lum.'</span>
 					<span>'.$info->device_opt->{$current_id}->unit.'</span>

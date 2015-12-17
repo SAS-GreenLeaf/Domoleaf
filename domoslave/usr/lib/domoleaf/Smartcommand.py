@@ -23,7 +23,7 @@ class Smartcommand:
         if (self.smartcmd_id == 0):
             self.logger.error('Invalid Smartcommand');
             return;
-
+        tab_except_http = [356, 357, 358, 359, 360, 361];
         query = ('SELECT room_device_id, option_id, option_value, time_lapse '
                  'FROM smartcommand_elems '
                  'WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" '
@@ -37,6 +37,9 @@ class Smartcommand:
             data['room_device_id'] = r[0];
             data['option_id'] = r[1];
             data['value'] = r[2];
+            data['action'] = r[2];
+            if r[1] in tab_except_http:
+                data['value'] = '';
             obj['data'] = data;
             obj['packet_type'] = 'smartcmd_launch';
             delay = r[3];
@@ -46,5 +49,4 @@ class Smartcommand:
                 time.sleep(delay);
             if (delay_color >= 3):
                 delay_color = 0;
-            self.logger.info(obj);
             self.daemon.send_to_device(obj, connection);
