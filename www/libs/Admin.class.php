@@ -1678,7 +1678,9 @@ class Admin extends User {
 		$listDevice= array();
 		$listSmartcmd = array();
 		$listApps  = array();
-		
+
+		$res = $this->conf_load();
+
 		$sql = 'SELECT floor_name, mcuser_floor.floor_id, mcuser_floor.floor_order
 		        FROM mcuser_floor
 		        JOIN floor ON mcuser_floor.floor_id=floor.floor_id
@@ -1769,15 +1771,38 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
-				$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
-					'option_id' => $do->option_id,
-					'name'      => $do->name,
-					'addr'      => $do->addr,
-					'addr_plus' => $do->addr_plus,
-					'dpt_id'    => $do->dpt_id,
-					'unit'      => $do->unit,
-					'valeur'    => $do->valeur
-				);
+				if ($do->option_id == 399){
+					$highCost = $res[14]->configuration_value;
+					$lowCost = $res[15]->configuration_value;
+					$lowField1 = $res[16]->configuration_value;
+					$lowField2 = $res[17]->configuration_value;
+					$currency = checkCurrency($res[18]->configuration_value);
+					$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
+						'option_id' => $do->option_id,
+						'name'      => $do->name,
+						'addr'      => $do->addr,
+						'addr_plus' => $do->addr_plus,
+						'dpt_id'    => $do->dpt_id,
+						'unit'      => $do->unit,
+						'valeur'    => $do->valeur,
+						'highCost'  => $highCost,
+						'lowCost'   => $lowCost,
+						'lowField1' => $lowField1,
+						'lowField2' => $lowField2,
+						'currency'  => $currency
+					);
+				}
+				else{
+					$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
+						'option_id' => $do->option_id,
+						'name'      => $do->name,
+						'addr'      => $do->addr,
+						'addr_plus' => $do->addr_plus,
+						'dpt_id'    => $do->dpt_id,
+						'unit'      => $do->unit,
+						'valeur'    => $do->valeur
+					);
+				}
 			}
 		}
 		

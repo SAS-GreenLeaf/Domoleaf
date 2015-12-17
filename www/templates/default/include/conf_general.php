@@ -108,7 +108,7 @@ echo '
 	<div class="col-xs-12 col-md-6">
 		<br/>
 		<div class="center">
-			<h3>'._('Price for electricity').'</h3>
+			<h3>'._('Price for kilowatt per hour').'</h3>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="currency">'._('Currency').'</label>

@@ -843,6 +843,9 @@ function display_consumption_option($info){
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{399}->unit.'</span>
+					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'-cost">&nbsp;-&nbsp;'.
+					($tmp * $info->device_opt->{399}->highCost).$info->device_opt->{399}->currency
+					.'</span>
 				</div>';
 
 	return $display;

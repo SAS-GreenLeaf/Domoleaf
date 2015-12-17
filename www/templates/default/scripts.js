@@ -234,7 +234,7 @@ function resetError(room_device_id, device_opt){
 
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	var lamp_device = ["3", "4", "6", "55", "56", "57"];
-	
+
 	if (idopt == 12){
 		if (val.valeur > 0){
 			$("#onoff-"+roomdeviceid).removeAttr("onchange");
@@ -296,6 +296,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	}
 	else if (idopt == 399){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+		$("#widget-"+roomdeviceid+"-"+idopt+"-cost").html("&nbsp;-&nbsp;" + (val.valeur * val.highCost).replace(".", ",") + val.currency);
 	}
 	else if (idopt == 407){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);

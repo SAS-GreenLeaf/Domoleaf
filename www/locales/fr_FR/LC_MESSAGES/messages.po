@@ -2066,8 +2066,8 @@ msgid "Time zone"
 msgstr "Fuseau horaire"
 
 #: conf_general.php
-msgid "Price for electricity"
-msgstr "Prix de l'électricité"
+msgid "Price for kilowatt per hour"
+msgstr "Prix du kilowatt par heure"
 
 #: conf_general.php
 msgid "High cost"
