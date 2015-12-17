@@ -4,9 +4,11 @@ include('header.php');
 
 $request =  new Api();
 $request -> add_request('monitorEnocean');
+$request -> add_request('profileTime');
 $result  =  $request -> send_request();
 
 $listEnocean = $result->monitorEnocean;
+$time = $result->profileTime;
 
 if (!empty($listEnocean)){
 echo '
@@ -24,7 +26,7 @@ echo '
 			<tr>
 				<td>'.$elem->type.'</td>
 				<td>'.$elem->addr_src.'</td>
-				<td>'.$request->date($elem->t_date, 3).'</td>
+				<td>'.$request->date($elem->t_date + $time, 3).'</td>
 			</tr>';
 		}
 	echo '

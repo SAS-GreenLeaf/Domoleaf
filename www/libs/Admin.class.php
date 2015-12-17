@@ -28,7 +28,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
-		               gender, phone, language, design, activity, mcuser_level,
+		               gender, phone, language, timezone, design, activity, mcuser_level,
 		               bg_color, border_color
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -112,7 +112,7 @@ class Admin extends User {
 		return $req->rowCount();
 	}
 	
-	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $user_id=0) {
+	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timezone, $user_id=0) {
 		$link = Link::get_link('domoleaf');
 	
 		if(empty($user_id)) {
@@ -129,7 +129,7 @@ class Admin extends User {
 	
 		if(!empty($do->mcuser_id)) {
 			$user = new User($do->mcuser_id);
-			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language);
+			$user-> profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timezone);
 		}
 	}
 	
@@ -965,7 +965,8 @@ class Admin extends User {
 		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
 		        FROM room_device_option
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id';
+		        WHERE room_device_id=:room_device_id
+		        ORDER BY room_device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));

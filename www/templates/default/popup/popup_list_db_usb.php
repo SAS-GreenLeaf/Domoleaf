@@ -4,9 +4,11 @@ include('header.php');
 
 $request =  new Api();
 $request -> add_request('confDbListUsb');
+$request -> add_request('profileTime');
 $result  =  $request -> send_request();
 
 $listBackupUsb = $result->confDbListUsb;
+$time = $result->profileTime;
 
 if (!empty($listBackupUsb && sizeof($listBackupUsb > 0))){
 	echo
@@ -24,7 +26,7 @@ if (!empty($listBackupUsb && sizeof($listBackupUsb > 0))){
 			'<tr>'.
 				'<td>';
 					if (!empty($parse[2]) && $parse[2] > 0){
-						echo format_date($parse[2]);
+						echo format_date($parse[2] + $time);
 					}
 					else{
 						echo _('Unknown');
@@ -46,7 +48,7 @@ if (!empty($listBackupUsb && sizeof($listBackupUsb > 0))){
 
 		echo
 		'</tbody>'.
-	'</table>.';
+	'</table>';
 }
 else {
 	echo '

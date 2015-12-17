@@ -9,8 +9,30 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 	
 	$result  =  $request -> send_request();
 	$listoptdevice = $result->confDeviceRoomOpt;
-	$available_opt = array ("12", "13", "54", "96", "363", "364", "365", "366",
-							"367", "368", "383", "388", "392", "393", "394", "410");
+	$available_opt = array(
+			12  => "12",
+			13  => "13",
+			54  => "54",
+			96  => "96",
+			363 => "363",
+			364 => "364",
+			365 => "365",
+			366 => "366",
+			367 => "367",
+			368 => "368",
+			383 => "383",
+			388 => "388",
+			392 => "392",
+			393 => "393",
+			394 => "394",
+			400 => "400",
+			401 => "401",
+			402 => "402",
+			403 => "403",
+			404 => "404",
+			405 => "405",
+			406 => "406",
+			410 => "410");
 	
 	$idexec = $result->countElemSmartcmd + 1;
 	if (empty($listoptdevice)) {
@@ -18,13 +40,13 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 	}
 	$display_rgb = '';
 	foreach ($listoptdevice as $option) {
+		$option_id = $option->option_id;
 		
-		if (in_array($option->option_id, $available_opt)) {
-			if (($option->option_id == 392 || $option->option_id == 393
-				|| $option->option_id == 394 || $option->option_id == 410)) {
-				if ($option->option_id == 410) {
-					$display_rgb = '
-					<li class="list-item">
+		if (!empty($available_opt[$option_id])) {
+			if (($option_id == 392 || $option_id == 393 || $option_id == 394 || $option_id == 410)) { //RGBW
+				if ($option_id == 410) {
+					$display_rgb =
+					'<li class="list-item">
 						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
 						     onclick="onclickDropNewElem('.$_GET['id_smartcmd'].', '.$_GET['room_id_device'].', 410, '.$idexec.')">
 							<input type="text" value="410" hidden>
@@ -32,9 +54,9 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 						</div>
 					</li>';
 				}
-				else if (empty($display_rgb)) {
-					$display_rgb = '
-					<li class="list-item">
+				else if (empty($display_rgb)) { //RGB
+					$display_rgb =
+					'<li class="list-item">
 						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
 						     onclick="onclickDropNewElem('.$_GET['id_smartcmd'].', '.$_GET['room_id_device'].', 392, '.$idexec.')">
 							<input type="text" value="392" hidden>
@@ -43,12 +65,12 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 					</li>';
 				}
 			}
-			else if(($option->option_id != 392 && $option->option_id != 393 && $option->option_id != 394 && $option->option_id != 410)){
+			else if (($option_id != 392 && $option_id != 393 && $option_id != 394 && $option_id != 410)){ //OTHER
 				echo '
 					<li class="list-item">
 						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
-						     onclick="onclickDropNewElem('.$_GET['id_smartcmd'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
-							<input type="text" value="'.$option->option_id.'" hidden>
+						     onclick="onclickDropNewElem('.$_GET['id_smartcmd'].', '.$_GET['room_id_device'].', '.$option_id.', '.$idexec.')">
+							<input type="text" value="'.$option_id.'" hidden>
 							'.$option->name.'
 						</div>
 					</li>';

@@ -570,8 +570,8 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 }
 
 .box > .icon { 
-	text-align: center; 
-	position: relative; 
+	text-align: center;
+	position: relative;
 }
 
 .box > .icon > .image { 
@@ -602,6 +602,10 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	border: 1px solid #e0e0e0; 
 	box-shadow: 0 1px 5px;
 	z-index: 1;
+}
+
+#bhoechie-tab .display-widget .box .icon .info {
+	position: static;
 }
 
 .box > .icon > .info > h3.title { 

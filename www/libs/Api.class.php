@@ -208,7 +208,7 @@ class Api {
 			$user -> setLevel($answer['level']);
 			$user -> setLanguage($answer['language']);
 			
-			if(empty($request) || (!empty($request['mcReturn']) && $_SERVER['REQUEST_TIME']%60 == 0)) {
+			if(empty($request)) {
 				$user -> activity();
 			}
 			
@@ -260,8 +260,9 @@ class Api {
 							if(empty($var[3])) { $var[3] = ''; }
 							if(empty($var[4])) { $var[4] = ''; }
 							if(empty($var[5])) { $var[5] = ''; }
-							if(empty($var[6])) { $var[6] = 0;  }
-							$res = $user->profileRename(ucfirst(trim($var[0])), ucfirst(trim($var[1])), $var[2], $var[3], $var[4], $var[5], $var[6]);
+							if(empty($var[6])) { $var[6] = ''; }
+							if(empty($var[7])) { $var[7] = 0;  }
+							$res = $user->profileRename(ucfirst(trim($var[0])), ucfirst(trim($var[1])), $var[2], $var[3], $var[4], $var[5], $var[6], $var[7]);
 						break;
 						
 						case 'profileLevel':
@@ -283,6 +284,10 @@ class Api {
 								}
 								$res = $user->profilePassword($var[0], $var[1], $var[2]);
 							}
+						break;
+
+						case 'profileTime':
+							$res = $user->profileTime();
 						break;
 						
 						/*** Language ***/

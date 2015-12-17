@@ -601,23 +601,24 @@ function saveSmartcmdOption(id_smartcmd, room_id_device, id_option, id_exec, mod
 function saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exec) {
 	var val;
 
-	if (id_option == 363) {
-		val = 'play';
-	}
-	if (id_option == 364) {
-		val = 'pause';
-	}
-	if (id_option == 365) {
-		val = 0;
-	}
-	if (id_option == 366) {
-		val = 'next';
-	}
-	if (id_option == 367) {
-		val = 'prev';
-	}
-	if (id_option == 368) {
-		val = 'mute';
+	var option_vals = {
+		363 : 'play',
+		364 : 'pause',
+		365 : 0,
+		366 : 'next',
+		367 : 'prev',
+		368 : 'mute',
+		400 : 1,
+		401 : 1,
+		402 : 1,
+		403 : 1,
+		404 : 1,
+		405 : 1,
+		406 : 1
+	};
+	
+	if (id_option in option_vals) {
+		val = option_vals[id_option];
 	}
 	$.ajax({
 			type: "GET",

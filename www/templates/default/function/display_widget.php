@@ -236,7 +236,8 @@ function display_fan($info){
 
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
 	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
-		$display.= '<select class="form-control center" onchange="changeSpeedFan('.$info->room_device_id.', 1, 0)" id="speed-fan">';
+		$display.=
+			'<select class="form-control center selectpicker" onchange="changeSpeedFan('.$info->room_device_id.', 1, 0)" id="speed-fan">';
 	}
 
 	if (!empty($info->device_opt->{400})){
@@ -262,10 +263,10 @@ function display_fan($info){
 	}
 	
 	if (!empty($info->device_opt->{400}) || !empty($info->device_opt->{401}) || !empty($info->device_opt->{402}) ||
-	    !empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
-		$display.= '</select>';
+		!empty($info->device_opt->{403}) || !empty($info->device_opt->{404}) || !empty($info->device_opt->{405}) || !empty($info->device_opt->{406})){
+			$display.=
+	 		'</select>';
 	}
-
 	return $display;
 }
 
@@ -314,7 +315,13 @@ function display_spa($info){
 // Widget Clim
 function display_clim($info){
 	$display = '';
-	$display.= '<div class="info-widget"><button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button"><span class="fa fa-plus md"></span></button></div>
+	$display.=
+				'<div class="info-widget">
+					<button title="'._('More').'" onclick="HandlePopup(4, '.$info->room_device_id.')"
+					        class="btn btn-greenleaf" type="button">
+						<span class="fa fa-plus md"></span>
+					</button>
+				</div>
 				<h3 class="title">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
