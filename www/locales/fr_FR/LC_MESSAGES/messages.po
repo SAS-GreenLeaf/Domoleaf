@@ -2084,3 +2084,7 @@ msgstr "Plage horaire creuse"
 #: conf_general.php
 msgid "Currency"
 msgstr "Devise"
+
+#: popup_pre_configuration_mail.php:18
+msgid "Type your email"
+msgstr "Saisissez votre email"
