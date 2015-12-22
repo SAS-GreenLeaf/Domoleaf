@@ -839,12 +839,50 @@ function display_consumption_option($info){
 	if (!empty($info->device_opt->{399}->valeur)){
 		$tmp = $info->device_opt->{399}->valeur;
 	}
+	
+	$cost = $info->device_opt->{399}->highCost;
+	
+	$h1 = explode("-", $info->device_opt->{399}->lowField1)[0];
+	$h2 = explode("-", $info->device_opt->{399}->lowField1)[1];
+	
+	if ($h1 < $h2){
+		if ($info->device_opt->{399}->time >= $h1 && $info->device_opt->{399}->time < $h2){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+	}
+	else if ($h1 > $h2){
+		if ($info->device_opt->{399}->time >= $h1 && $info->device_opt->{399}->time < 24){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+		else if ($info->device_opt->{399}->time >= 0 && $info->device_opt->{399}->time < $h2){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+	}
+	
+	
+	$h1 = explode("-", $info->device_opt->{399}->lowField2)[0];
+	$h2 = explode("-", $info->device_opt->{399}->lowField2)[1];
+	
+	if ($h1 < $h2){
+		if ($info->device_opt->{399}->time >= $h1 && $info->device_opt->{399}->time < $h2){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+	}
+	else if ($h1 > $h2){
+		if ($info->device_opt->{399}->time >= $h1 && $info->device_opt->{399}->time < 24){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+		else if ($info->device_opt->{399}->time >= 0 && $info->device_opt->{399}->time < $h2){
+			$cost = $info->device_opt->{399}->lowCost;;
+		}
+	}
+	
 	$display = '<div>
 					<i class="fa fa-bolt"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{399}->unit.'</span>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{399}->option_id.'-cost">&nbsp;-&nbsp;'.
-					($tmp * $info->device_opt->{399}->highCost).$info->device_opt->{399}->currency
+					($tmp * $cost).$info->device_opt->{399}->currency
 					.'</span>
 				</div>';
 

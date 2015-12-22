@@ -466,8 +466,7 @@ class User {
 				40	=>	46800,
 				41	=>	50400
 		);
-
-		return $allTimeZone[$do->timezone];
+	return $allTimeZone[$do->timezone];
 	}
 	
 	/********************** Monitors **********************/
@@ -809,6 +808,8 @@ class User {
 					$lowField1 = $res[16]->configuration_value;
 					$lowField2 = $res[17]->configuration_value;
 					$currency = checkCurrency($res[18]->configuration_value);
+					$diffTime = $this->profileTime();
+					$time = date('H', $_SERVER['REQUEST_TIME'] + $diffTime);
 					$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
 							'option_id' => $do->option_id,
 							'name' 		=> $do->name,
@@ -821,7 +822,8 @@ class User {
 							'lowCost'   => $lowCost,
 							'lowField1' => $lowField1,
 							'lowField2' => $lowField2,
-							'currency'  => $currency
+							'currency'  => $currency,
+							'time'      => $time
 					);
 				}
 				else{
@@ -2775,6 +2777,8 @@ class User {
 				$lowField1 = $res[16]->configuration_value;
 				$lowField2 = $res[17]->configuration_value;
 				$currency = checkCurrency($res[18]->configuration_value);
+				$diffTime = $this->profileTime();
+				$time = date('H', $_SERVER['REQUEST_TIME'] + $diffTime);
 				$list[$do->device_id][$do->room_device_id][$do->option_id] = array(
 						'device_id'     => $do->device_id,
 						'addr_plus'     => $do->addr_plus,
@@ -2785,7 +2789,8 @@ class User {
 						'lowCost'       => $lowCost,
 						'lowField1'     => $lowField1,
 						'lowField2'     => $lowField2,
-						'currency'      => $currency
+						'currency'      => $currency,
+						'time'          => $time
 				);
 			}
 			else{
