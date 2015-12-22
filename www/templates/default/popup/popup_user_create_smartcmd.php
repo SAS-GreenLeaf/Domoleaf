@@ -24,7 +24,7 @@ echo
 		'<div class="input-group margin-top">'.
 			'<label class="input-group-addon left" for="smartcmdName">'._('Name').'</label>'.
 			'<input id="smartcmdName" name="smartcmdName" title="'._('Smartcommand Name').'" '.
-			'value="" placeholder="Smartcommand name" type="text" class="form-control">'.
+			'value="" placeholder="'._('Smartcommand Name').'" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
 	'</br>'.

@@ -2079,7 +2079,7 @@ msgstr "Tarif creux"
 
 #: conf_general.php
 msgid "Low field"
-msgstr "Plage creuse"
+msgstr "Plage horaire creuse"
 
 #: conf_general.php
 msgid "Currency"

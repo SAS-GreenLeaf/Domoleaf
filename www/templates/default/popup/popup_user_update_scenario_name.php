@@ -13,7 +13,7 @@ if (!empty($_GET['scenario_id'])) {
 			'<div class="input-group margin-top">'.
 				'<label class="input-group-addon left" for="scenarioName">'._('Name').'</label>'.
 				'<input id="scenarioName" name="scenarioName" title="'._('Scenario Name').'" '.
-				'value="" placeholder="Scenario name" type="text" class="form-control">'.
+				'value="" placeholder="'._('Scenario Name').'" type="text" class="form-control">'.
 			'</div>'.
 		'</div>'.
 		'<br/>'.
