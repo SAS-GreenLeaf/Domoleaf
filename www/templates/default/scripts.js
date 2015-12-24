@@ -645,6 +645,11 @@ function saveSmartcmdWithoutParam(id_smartcmd, room_id_device, id_option, id_exe
 	var val;
 
 	var option_vals = {
+		357 : 'top',
+		358 : 'bottom',
+		359 : 'left',
+		360 : 'right',
+		361 : 'home',
 		363 : 'play',
 		364 : 'pause',
 		365 : 0,

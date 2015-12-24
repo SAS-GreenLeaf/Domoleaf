@@ -41,8 +41,13 @@ if (empty($smartcmd_infos->floor_id) || empty($smartcmd_infos->room_id)) {
 if(!empty($installation_info) && !empty($name_smartcmd) ||
 	!empty($floorallowed) && !empty($roomallowed) && !empty($deviceallowed)) {
 	
-	$available_opt = array ("12", "13", "54", "96", "363", "364", "365", "366",
-							"367", "368", "383", "388", "392", "393", "394");
+	$available_opt = array (
+		"12", "13", "54", "96", 
+		"357", "358", "359", "360", "361",
+		"363", "364", "365", "366",
+		"367", "368", "383", "388", "392", "393", "394",
+		"400", "401", "402", "403", "404", "405", "406"
+	);
 	
 	foreach ($deviceallowed as $dev) {
 		foreach ($dev->device_opt as $dev_opt) {

@@ -59,7 +59,7 @@ if (!empty($_GET['id_smartcmd'])) {
 
 
 function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_id) {
-	$without_params = [363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
+	$without_params = [357, 358, 359, 360, 361, 363, 364, 365, 366, 367, 368, 400, 401, 402, 403, 404, 405, 406];
 	
 	echo '
 		<script type="text/javascript">
@@ -130,10 +130,15 @@ function display_option($exec_id, $option_id, $option_value, $room_device_id) {
 		return $display;
 	}
 	$tab_func = array(
-			12 => "display_option_on_off",
-			13 => "display_option_varie",
-			54 => "display_option_up_down",
-			96 => "display_option_open_close",
+			12  => "display_option_on_off",
+			13  => "display_option_varie",
+			54  => "display_option_up_down",
+			96  => "display_option_open_close",
+			357 => "display_option_cam_up",
+			358 => "display_option_cam_down",
+			359 => "display_option_cam_left",
+			360 => "display_option_cam_right",
+			361 => "display_option_cam_home",
 			363 => "display_option_play",
 			364 => "display_option_pause",
 			365 => "display_option_stop",
@@ -251,43 +256,89 @@ function display_option_open_close($exec_id, $room_device_id, $option_value, $op
 	return $display;
 }
 
+function display_option_cam_up($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-arrow-up">
+				</button>';
+	return $display;
+}
+
+function display_option_cam_down($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-arrow-down">
+				</button>';
+	return $display;
+}
+
+function display_option_cam_left($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-arrow-left">
+				</button>';
+	return $display;
+}
+
+function display_option_cam_right($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-arrow-right">
+				</button>';
+	return $display;
+}
+
+function display_option_cam_home($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-home">
+				</button>';
+	return $display;
+}
+
 function display_option_play($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-play">
 				</button>';
 	return $display;
 }
 
 function display_option_pause($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-pause">
 				</button>';
 	return $display;
 }
 
 function display_option_stop($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-stop">
 				</button>';
 	return $display;
 }
 
 function display_option_next($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-forward">
 				</button>';
 	return $display;
 }
 
 function display_option_prev($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-backward">
 				</button>';
 	return $display;
 }
 
 function display_option_mute($exec_id, $room_device_id, $option_value, $option_id) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display =
+				'<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-volume-off">
 				</button>';
 	return $display;

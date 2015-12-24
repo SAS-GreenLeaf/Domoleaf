@@ -4,7 +4,7 @@ from requests.auth import HTTPDigestAuth;
 sys.path.append("/usr/lib/domoleaf");
 from Logger import *;
 
-LOG_FILE        = '/var/log/domoleaf/domoslave.log';
+LOG_FILE        = '/var/log/domoleaf/domomaster.log';
 LOG_FLAG        = True;
 
 class HttpReq:
