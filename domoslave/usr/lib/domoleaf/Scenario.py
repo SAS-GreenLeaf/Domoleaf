@@ -22,7 +22,7 @@ class Scenario:
 
     def get_scenarios_tab(self, devices, scenarios):
         scenarios_tab = {};
-        
+        self.logger.info('\n\nGETTING SCENARIOS TAB\n');
         for d in devices:
             daemon_id = d[0];
             addr_plus = d[1];
@@ -38,17 +38,20 @@ class Scenario:
                         if (device_id == room_device_id):
                             s = s[:4];
                             scenarios_tab[daemon_id][addr_plus].append(s);
-            else:
+            elif (addr):
                 if (daemon_id in scenarios_tab and addr not in scenarios_tab[daemon_id]):
                     scenarios_tab[daemon_id][addr] = [];
                     for s in scenarios:
+                        self.logger.info('S = ' + str(s));
                         room_device_id = s[4];
                         if (device_id == room_device_id):
                             s = s[:4];
-                            scenarios_tab[daemon_id][addr_plus].append(s);
+                            scenarios_tab[daemon_id][addr].append(s);
         return scenarios_tab;
     
     def update_scenarios_list(self):
+        self.logger.info('UPDATING SCENARIOS');
+        
         query = ('SELECT room_device.daemon_id, room_device_option.addr_plus, room_device_option.addr, '
                  'room_device.room_device_id, room_device.name '
                  'FROM room_device '
@@ -69,24 +72,37 @@ class Scenario:
         res = self.sql.mysql_handler_personnal_query(query);
         scenarios_list = res;
 
+        self.logger.info('S LIST = ' + str(scenarios_list) + '\n');
         scenarios_tab = self.get_scenarios_tab(devices_list, scenarios_list);
+        self.logger.info('S TAB = ' + str(scenarios_tab) + '\n\n\n');
         self.scenarios_list = scenarios_tab;
         
     def check_all_scenarios(self, global_state, trigger, schedule, connection, json_obj):
         daemon_id = json_obj['daemon_id'];
         dst_addr = json_obj['dst_addr'];
 
+        self.logger.info('CHECKING ALL SCENARIOS');
+        self.logger.info('SCENARIOS LIST = ');
+        self.logger.info(self.scenarios_list);
+        self.logger.info('\n');
+
         if self.scenarios_list[daemon_id][dst_addr]:
             slist = self.scenarios_list[daemon_id][dst_addr];
         else:
             return;
+        self.logger.info('SLIST = ');
+        self.logger.info(slist);
         for scenario in slist:
+            self.logger.error(scenario);
+            self.logger.info('Scenario : ' + str(scenario) + '\n\n');
             if trigger.test_trigger(scenario[1], global_state) == 1:
+                self.logger.info('Trigger OK');
                 if (scenario[2] is None or
                     scenario[2] is not None and schedule.test_schedule(scenario[2]) ==  1):
                     self.launch_scenario(scenario[3], connection);
     
     def launch_scenario(self, id_smartcmd, connection):
+        self.logger.info('LAUNCH !!!');
         jsonString = json.JSONEncoder().encode({
             "data": id_smartcmd
         });

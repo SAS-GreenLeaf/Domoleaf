@@ -9,16 +9,27 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_trigger'])) {
 	
 	$result  =  $request -> send_request();
 	$listoptdevice = $result->confDeviceRoomOpt;
-	$available_opt = array ("12", "388");
 	
 	$idexec = $result->countTriggerConditions + 1;
+	$available_opt = array(
+			12  => "12",
+			54  => "54",
+			96  => "96",
+			365 => "365",
+			388 => "388");
+	
+	if (empty($listoptdevice)) {
+		return;
+	}
 	$display_rgb = '';
 	
 	foreach ($listoptdevice as $option) {
-		if (in_array($option->option_id, $available_opt)) {
-			if (($option->option_id == 392 || $option->option_id == 393
-				|| $option->option_id == 394 || $option->option_id == 410)) {
-				if ($option->option_id == 410) {
+		$option_id = $option->option_id;
+		
+		if (!empty($available_opt[$option_id])) {
+			if (($option_id == 392 || $option_id == 393
+				|| $option_id == 394 || $option_id == 410)) {
+				if ($option_id == 410) {
 					$display_rgb = '
 					<li class="list-item">
 						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
@@ -39,12 +50,12 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_trigger'])) {
 					</li>';
 				}
 			}
-			else if(($option->option_id != 392 && $option->option_id != 393 && $option->option_id != 394)){
+			else if(($option_id != 392 && $option_id != 393 && $option_id != 394)){
 				echo '
 					<li class="list-item">
 						<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"
-						     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option->option_id.', '.$idexec.')">
-							<input type="text" value="'.$option->option_id.'" hidden>
+						     onclick="onclickDropNewElem('.$_GET['id_trigger'].', '.$_GET['room_id_device'].', '.$option_id.', '.$idexec.')">
+							<input type="text" value="'.$option_id.'" hidden>
 							'.$option->name.'
 						</div>
 					</li>';

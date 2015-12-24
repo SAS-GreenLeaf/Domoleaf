@@ -33,7 +33,7 @@ $name_trigger = $trigger_info->trigger_name;
 
 if(!empty($installation_info) || !empty($floorallowed) || !empty($roomallowed) || !empty($deviceallowed)) {
 
-			$available_opt = array ("12","388");
+			$available_opt = array ("12", "54", "96", "365", "388");
 
 			foreach ($deviceallowed as $dev) {
 				foreach ($dev->device_opt as $dev_opt) {

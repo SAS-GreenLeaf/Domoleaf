@@ -785,6 +785,16 @@ msgstr "Supérieur ou Egal"
 msgid "Lesser or Equal"
 msgstr "Inférieur ou Egal"
 
+#: form/form_display_smartcmd.php
+#: form/form_display_trigger.php
+msgid "Up"
+msgstr "Monter"
+
+#: form/form_display_smartcmd.php
+#: form/form_display_trigger.php
+msgid "Down"
+msgstr "Descendre"
+
 #: form/form_list_devices_of_room.php:5
 msgid "No selectable device"
 msgstr "Pas d'appareil sélectionnable"
