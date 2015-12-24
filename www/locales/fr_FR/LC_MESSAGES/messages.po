@@ -595,6 +595,14 @@ msgstr "Renommer Horaire"
 msgid "Please enter the Smartcommand name :"
 msgstr "Entrez le nom de la Smartcommand :"
 
+#: form/form_smartcmd_device_option
+msgid "Choose the option state for this device."
+msgstr "Choisissez l'état de cette option pour cet appareil."
+
+#: form/form_trigger_device_option
+msgid "Choose the option state for this device."
+msgstr "Choisissez l'état de cette option pour cet appareil."
+
 #: popup/popup_user_create_smartcmd.php
 msgid "Please choose the Smartcommand's Linked Room :\n"
 "\t\t\t(no Room selected = Smartcommand not visible)"
