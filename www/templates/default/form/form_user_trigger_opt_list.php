@@ -14,6 +14,7 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_trigger'])) {
 	$available_opt = array(
 			12  => "12",
 			54  => "54",
+			72  => "72",
 			96  => "96",
 			365 => "365",
 			388 => "388");

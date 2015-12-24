@@ -103,6 +103,7 @@ function display_option($condition_id, $option_id, $option_value, $room_device_i
 			12 => "display_option_on_off",
 			13 => "display_option_varie",
 			54 => "display_option_up_down",
+			72 => "display_option_temp",
 			96 => "display_option_open_close",
 			363 => "display_option_play",
 			364 => "display_option_pause",
