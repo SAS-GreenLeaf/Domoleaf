@@ -19,4 +19,9 @@ VALUES
 	(10, '', 'SMTP Username'),
 	(11, '', 'SMTP Password'),
 	(12, '', 'Password reset key'),
-	(13, '', 'Last Available Version');
+	(13, '', 'Last Available Version'),
+	(14, '0', 'High cost'),
+	(15, '0', 'Low cost'),
+	(16, '0-0', 'Low field 1'),
+	(17, '0-0', 'Low field 2'),
+	(18, '1', 'Currency');
