@@ -901,6 +901,56 @@ function createTrigger(id_scenario) {
 	});
 }
 
+function saveTriggerWithoutParam(id_trigger, room_id_device, id_option, id_condition) {
+	var val;
+
+	var option_vals = {
+		365 : 0
+	};
+	
+	if (id_option in option_vals) {
+		val = option_vals[id_option];
+	}
+	$.ajax({
+		type: "GET",
+		url: "/form/form_save_trigger_elem.php",
+		data: "id_trigger="+id_trigger
+				+"&room_id_device="+room_id_device
+				+"&id_option="+id_option
+				+"&option_value="+val
+				+"&id_condition="+id_condition
+				+"&operator="+0
+				+"&modif="+1,
+		success: function(result) {
+			popup_close();
+			displayTrigger(id_trigger);
+		}
+	});
+}
+
+function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, modif) {
+	var val = 0;
+	var op = 0;
+
+	val = $("#triggerPopupValue-"+room_id_device).val();
+	op = $("#triggerPopupOperator-"+room_id_device).val();
+	$.ajax({
+		type: "GET",
+		url: "/form/form_save_trigger_elem.php",
+		data: "id_trigger="+id_trigger
+				+"&room_id_device="+room_id_device
+				+"&id_option="+id_option
+				+"&option_value="+val
+				+"&id_condition="+id_condition
+				+"&operator="+op
+				+"&modif="+modif,
+		success: function(result) {
+			popup_close();
+			displayTrigger(id_trigger);
+		}
+	});
+}
+
 function triggerOnOff(room_id_device) {
 	var val;
 	
@@ -953,29 +1003,6 @@ function triggerUpdateTemp(room_id_device, modif) {
 
 function triggerUpdateRGBColor(room_id_device, val) {
 	$("#triggerPopupValue-"+room_id_device).val(encodeURIComponent(val));
-}
-
-function saveTriggerOption(id_trigger, room_id_device, id_option, id_condition, modif) {
-	var val = 0;
-	var op = 0;
-
-	val = $("#triggerPopupValue-"+room_id_device).val();
-	op = $("#triggerPopupOperator-"+room_id_device).val();
-	$.ajax({
-		type: "GET",
-		url: "/form/form_save_trigger_elem.php",
-		data: "id_trigger="+id_trigger
-				+"&room_id_device="+room_id_device
-				+"&id_option="+id_option
-				+"&option_value="+val
-				+"&id_condition="+id_condition
-				+"&operator="+op
-				+"&modif="+modif,
-		success: function(result) {
-			popup_close();
-			displayTrigger(id_trigger);
-		}
-	});
 }
 
 /*** Schedules ***/

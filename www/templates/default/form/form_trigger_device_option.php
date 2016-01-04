@@ -26,6 +26,7 @@ function showPopup($id_trigger, $room_id_device, $id_option, $id_condition, $mod
 			12 => "display_trigger_on_off",
 			13 => "display_trigger_varie",
 			54 => "display_trigger_up_down",
+			72 => "display_trigger_with_operator",
 			96 => "display_trigger_open_close",
 			383 => "display_trigger_set_volume",
 			388 => "display_trigger_with_operator",

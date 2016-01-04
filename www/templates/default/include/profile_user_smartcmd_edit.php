@@ -208,7 +208,6 @@ echo
 					+"&old_id_exec="+old_id_exec
 					+"&new_id_exec="+new_id_exec,
 			beforeSend:function(result, status){
-				PopupLoading();
 			},
 			success: function(result) {
 				displaySmartcmd(id_smartcmd);
@@ -237,7 +236,6 @@ echo
 			url: "/templates/default/form/form_display_smartcmd.php",
 			data: "id_smartcmd="+id_smartcmd,
 			beforeSend:function(result, status){
-				PopupLoading();
 			},
 			success: function(result) {
 				$("#drop-smartcmd").html(result);

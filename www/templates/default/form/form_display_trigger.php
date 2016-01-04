@@ -103,6 +103,7 @@ function display_option($condition_id, $option_id, $option_value, $room_device_i
 			12 => "display_option_on_off",
 			13 => "display_option_varie",
 			54 => "display_option_up_down",
+			72 => "display_option_temp",
 			96 => "display_option_open_close",
 			363 => "display_option_play",
 			364 => "display_option_pause",
@@ -126,8 +127,8 @@ function display_option_on_off($condition_id, $room_device_id, $option_value) {
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
 					       data-off-color="disabled-with-opacity"
-					       data-on-text="On"
-					       data-off-text="Off"
+					       data-on-text="'._('On').'"
+					       data-off-text="'._('Off').'"
 					       id="triggerOnOff-'.$room_device_id.''.$condition_id.'" ';
 					       if ($option_value == 1) {
 					        	$display.= ' checked ';
@@ -177,8 +178,8 @@ function display_option_up_down($condition_id, $room_device_id, $option_value) {
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
 					       data-off-color="disabled-with-opacity"
-					       data-on-text="Up"
-					       data-off-text="Down"
+					       data-on-text="'._('Up').'"
+					       data-off-text="'._('Down').'"
 					       id="triggerUpDown-'.$room_device_id.''.$condition_id.'" ';
 					       if ($option_value == 1) {
 					        	$display.= ' checked ';
@@ -199,8 +200,8 @@ function display_option_open_close($condition_id, $room_device_id, $option_value
 					<input data-label-width="0"
 					       data-on-color="greenleaf disabled-with-opacity"
 					       data-off-color="disabled-with-opacity"
-					       data-on-text="Open"
-					       data-off-text="Close"
+					       data-on-text="'._('Open').'"
+					       data-off-text="'._('Close').'"
 					       id="triggerOpenClose-'.$room_device_id.''.$condition_id.'" ';
 					       if ($option_value == 1) {
 					        	$display.= ' checked ';
@@ -223,16 +224,16 @@ function display_option_play($condition_id, $room_device_id, $option_value) {
 }
 
 function display_option_pause($condition_id, $room_device_id, $option_value) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
+	$display ='<button type="button" class="btn btn-warning disabled-with-opacity" disabled>
 					<span class="glyphicon glyphicon-pause">
 				</button>';
 	return $display;
 }
 
 function display_option_stop($condition_id, $room_device_id, $option_value) {
-	$display ='<button type="button" class="btn btn-primary disabled-with-opacity" disabled>
-					<span class="glyphicon glyphicon-stop">
-				</button>';
+	$display ='</br><button type="button" class="btn btn-warning disabled-with-opacity" disabled>
+					<span class="glyphicon glyphicon-pause">
+				</button></br></br>';
 	return $display;
 }
 

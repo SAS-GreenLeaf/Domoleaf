@@ -25,9 +25,9 @@ if (!empty($_GET['id_trigger']) && !empty($_GET['id_option'])
 	'<script type="text/javascript">'.
 		'$("#popupTitle").html("'.$device_name.' : '.$option_name.'");'.
 		
-		'setTimeout(function(){ popuptriggerContent(); }, 150);'.
+		'setTimeout(function(){ popupTriggerContent(); }, 150);'.
 		
-		'function popuptriggerContent() {'. 
+		'function popupTriggerContent() {'. 
 			'$.ajax({'.
 				'type: "GET",'.
 				'url: "/templates/default/form/form_trigger_device_option.php",'.

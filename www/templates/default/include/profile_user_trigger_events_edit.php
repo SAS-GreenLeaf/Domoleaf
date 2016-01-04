@@ -79,6 +79,8 @@ echo
 		activateMenuElem(\'triggers\');
 	});
 	
+	without_params = [365];
+	
 	function popupUpdateTriggerName(trigger_id) {
 		$.ajax({
 			type: "GET",
@@ -116,7 +118,6 @@ echo
 	function dropNewElem(id_trigger, ui, room_id_device, drop_id) {
 		var id_option;
 		var id_condition;
-		without_params = [363, 364, 365, 366, 367, 368];
 
 		id_option = parseInt($(ui.draggable).find("input").val());
 		id_condition = parseInt(drop_id) + 1;
@@ -143,7 +144,11 @@ echo
 	}
 	
 	function onclickDropNewElem(id_trigger, room_id_device, id_option, id_condition) {
-		$.ajax({
+		if (without_params.indexOf(id_option) > -1) {
+			saveTriggerWithoutParam(id_trigger, room_id_device, id_option, id_condition)
+		}
+		else {
+			$.ajax({
 				type:"GET",
 				url: "/templates/default/popup/popup_trigger_device_option.php",
 				data: "id_trigger="+id_trigger
@@ -158,6 +163,7 @@ echo
 					});
 				}
 			});
+		}
 	}
 
 	function changeElemsOrder(id_trigger, old_id_condition, drop_id) {
@@ -174,7 +180,6 @@ echo
 					+"&old_id_condition="+old_id_condition
 					+"&new_id_condition="+new_id_condition,
 			beforeSend:function(result, status){
-				PopupLoading();
 			},
 			success: function(result) {
 				displayTrigger(id_trigger);
@@ -203,7 +208,6 @@ echo
 			url: "/templates/default/form/form_display_trigger.php",
 			data: "id_trigger="+id_trigger,
 			beforeSend:function(result, status){
-				PopupLoading();
 			},
 			success: function(result) {
 				$("#drop-conditions").html(result);

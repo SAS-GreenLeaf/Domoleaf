@@ -59,8 +59,10 @@ class CalcLogs:
 
     def get_only_good_logs(self, res):
         tab = [];
+        self.logger.info(self.devices_list);
         for r in res:
             if (r[1] in self.devices_list[r[0]]):
+                self.logger.info(r);
                 log = [];
                 log.append(r[2]);
                 log.append(r[3]);
@@ -254,21 +256,37 @@ class CalcLogs:
         res = self.sql.mysql_handler_personnal_query(query);
         
     def sort_logs(self, connection):
-        self.logger.info('Sorting Logs');
+        self.logger.info('\n\nSorting Logs : \n');
 
         try:
-            logs = self.get_logs(1);
-            
-            tablogs = self.get_only_good_logs(logs);
-            tablogs = self.get_good_time_range(tablogs);
+            logs = self.get_logs(0);
+            #self.logger.info('LOGS :\n' + str(logs) + '\n');
 
+            if not logs:
+                return;
+            tablogs = self.get_only_good_logs(logs);
+            self.logger.info('TABLOGS 1 :\n' + str(tablogs) + '\n');
+            tablogs = self.get_good_time_range(tablogs);
+            if not tablogs:
+                return;
+            self.logger.info('TABLOGS 2 :\n' + str(tablogs) + '\n');
+            
             dictlogs = self.cut_tab(tablogs);
+            if not dictlogs:
+                return;
+            self.logger.info('DICTLOGS :\n' + str(dictlogs) + '\n');
+            
             dictlogstime = self.cut_dict_time(dictlogs);
             dictlogstime = self.calc_average_values(dictlogstime);
-        
+            if not dictlogstime:
+                return;
+            self.logger.info('DICTLOGSTIME :\n' + str(dictlogstime) + '\n');
+
+            self.logger.info('Save Graph Logs\n');
             self.save_graph_logs(dictlogstime);
+            self.logger.info('Delete Logs\n');
             self.delete_knx_logs(dictlogs);
-            self.logger.info('\n\n');
+            self.logger.info('OK\n\n');
             
         except Exception as e:
             self.logger.error(e);

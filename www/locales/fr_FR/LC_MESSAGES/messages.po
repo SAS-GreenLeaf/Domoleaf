@@ -595,6 +595,14 @@ msgstr "Renommer Horaire"
 msgid "Please enter the Smartcommand name :"
 msgstr "Entrez le nom de la Smartcommand :"
 
+#: form/form_smartcmd_device_option
+msgid "Choose the option state for this device."
+msgstr "Choisissez l'état de cette option pour cet appareil."
+
+#: form/form_trigger_device_option
+msgid "Choose the option state for this device."
+msgstr "Choisissez l'état de cette option pour cet appareil."
+
 #: popup/popup_user_create_smartcmd.php
 msgid "Please choose the Smartcommand's Linked Room :\n"
 "\t\t\t(no Room selected = Smartcommand not visible)"
@@ -784,6 +792,16 @@ msgstr "Supérieur ou Egal"
 #: form/form_display_trigger.php:292 form/form_trigger_device_option.php:180
 msgid "Lesser or Equal"
 msgstr "Inférieur ou Egal"
+
+#: form/form_display_smartcmd.php
+#: form/form_display_trigger.php
+msgid "Up"
+msgstr "Monter"
+
+#: form/form_display_smartcmd.php
+#: form/form_display_trigger.php
+msgid "Down"
+msgstr "Descendre"
 
 #: form/form_list_devices_of_room.php:5
 msgid "No selectable device"

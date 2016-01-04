@@ -568,7 +568,7 @@ class MasterDaemon:
     def monitor_knx(self, json_obj, connection):
         """
         Callback called each time a monitor_knx packet is received.
-        Updates room_device_option values in the database.
+        Updates room_device_option values in the database and check scenarios.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
         self.knx_manager.update_room_device_option(daemon_id, json_obj);
@@ -688,7 +688,11 @@ class MasterDaemon:
                 return;
             if hostname != '' and dev['protocol_id'] == PROTOCOL_KNX:
                 self.knx_manager.protocol_knx(json_obj, dev, hostname);
-            connection.close();
+        
+        #add scenario check here to allow trigger on write ???
+        #self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
+
+        connection.close();
 
     def protocol_enocean(self, json_obj, dev, hostname):
         """
