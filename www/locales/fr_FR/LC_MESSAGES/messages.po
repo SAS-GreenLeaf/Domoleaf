@@ -596,9 +596,6 @@ msgid "Please enter the Smartcommand name :"
 msgstr "Entrez le nom de la Smartcommand :"
 
 #: form/form_smartcmd_device_option
-msgid "Choose the option state for this device."
-msgstr "Choisissez l'état de cette option pour cet appareil."
-
 #: form/form_trigger_device_option
 msgid "Choose the option state for this device."
 msgstr "Choisissez l'état de cette option pour cet appareil."
