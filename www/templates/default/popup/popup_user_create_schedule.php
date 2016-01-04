@@ -21,7 +21,7 @@ echo
 		'<div class="input-group margin-top">'.
 			'<label class="input-group-addon left" for="scheduleName">'._('Name').'</label>'.
 			'<input id="scheduleName" name="scheduleName" title="'._('Schedule Name').'" '.
-			'value="" placeholder="Schedule name" type="text" class="form-control">'.
+			'value="" placeholder="'._('Schedule Name').'" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
 	'<div class="controls center margin-top">'.

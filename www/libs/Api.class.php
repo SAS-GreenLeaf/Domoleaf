@@ -370,6 +370,25 @@ class Api {
 							$res = $user->confSendMail($var[0], $var[1], $var[2]);
 						break;
 
+						case 'confPriceElec':
+							if (empty($var[0])){
+								$var[0] = '';
+							}
+							if (empty($var[1])){
+								$var[1] = '';
+							}
+							if (empty($var[2])){
+								$var[2] = '';
+							}
+							if (empty($var[3])){
+								$var[3] = '';
+							}
+							if (empty($var[4])){
+								$var[4] = '';
+							}
+							$res = $user->confPriceElec($var[0], $var[1], $var[2], $var[3], $var[4]);
+						break;
+
 						/*** Floor ***/
 						
 						case 'confFloorList':

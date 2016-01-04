@@ -1202,7 +1202,7 @@ msgstr "Forcer le mode sécurisé"
 
 #: include/conf_general.php:47
 msgid "Email configuration"
-msgstr "Configuration Email"
+msgstr "Configuration d'email"
 
 #: include/conf_general.php:48 include/conf_general.php:211
 msgid "Pre-configuration email"
@@ -1211,11 +1211,11 @@ msgstr "Pré-configuration email"
 #: include/conf_general.php:52 include/conf_general.php:53
 #: popup/popup_pre_configuration_mail.php:18
 msgid "From Mail"
-msgstr "Adresse mail de l'Expéditeur"
+msgstr "Adresse mail de l'expéditeur"
 
 #: include/conf_general.php:56 include/conf_general.php:57
 msgid "From Name"
-msgstr "Nom de l'Expéditeur"
+msgstr "Nom de l'expéditeur"
 
 #: include/conf_general.php:60 include/conf_general.php:61
 msgid "SMTP Host"
@@ -1223,7 +1223,7 @@ msgstr "Hôte SMTP"
 
 #: include/conf_general.php:63
 msgid "SMTP Secure"
-msgstr "SMTP Sécurisé"
+msgstr "SMTP sécurisé"
 
 #: include/conf_general.php:66
 msgid "None"
@@ -2064,3 +2064,27 @@ msgstr "Pas d'option selectionnable"
 #: profile.php:80 conf_profile.php:86
 msgid "Time zone"
 msgstr "Fuseau horaire"
+
+#: conf_general.php
+msgid "Price for kilowatt per hour"
+msgstr "Prix du kilowatt par heure"
+
+#: conf_general.php
+msgid "High cost"
+msgstr "Tarif plein"
+
+#: conf_general.php
+msgid "Low cost"
+msgstr "Tarif creux"
+
+#: conf_general.php
+msgid "Low field"
+msgstr "Plage horaire creuse"
+
+#: conf_general.php
+msgid "Currency"
+msgstr "Devise"
+
+#: popup_pre_configuration_mail.php:18
+msgid "Type your email"
+msgstr "Saisissez votre email"

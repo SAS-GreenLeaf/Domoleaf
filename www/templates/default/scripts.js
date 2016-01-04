@@ -234,7 +234,7 @@ function resetError(room_device_id, device_opt){
 
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	var lamp_device = ["3", "4", "6", "55", "56", "57"];
-	
+
 	if (idopt == 12){
 		if (val.valeur > 0){
 			$("#onoff-"+roomdeviceid).removeAttr("onchange");
@@ -295,7 +295,50 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
 	else if (idopt == 399){
+		var h1;
+		var h2;
+		var cost = val.highCost;
+
+		h1 = val.lowField1.split("-")[0];
+		h2 = val.lowField1.split("-")[1];
+		
+		if (h1 < h2){
+			if (val.time >= h1 && val.time < h2){
+				cost = val.lowCost;
+			}
+		}
+		else if (h1 > h2){
+			if (val.time >= h1 && val.time < 24){
+				cost = val.lowCost;
+			}
+			else if (val.time >= 0 && val.time < h2){
+				cost = val.lowCost;
+			}
+		}
+
+
+		h1 = val.lowField2.split("-")[0];
+		h2 = val.lowField2.split("-")[1];
+		
+		if (h1 < h2){
+			if (val.time >= h1 && val.time < h2){
+				cost = val.lowCost;
+			}
+		}
+		else if (h1 > h2){
+			if (val.time >= h1 && val.time < 24){
+				cost = val.lowCost;
+			}
+			else if (val.time >= 0 && val.time < h2){
+				cost = val.lowCost;
+			}
+		}
+		
+		//alert(val.valeur + " * " + cost + " = ");
+		
+		//va.lowField2
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+		$("#widget-"+roomdeviceid+"-"+idopt+"-cost").html("&nbsp;-&nbsp;" + String((val.valeur * cost).toFixed(2)).replace(".", ",") + val.currency);
 	}
 	else if (idopt == 407){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);

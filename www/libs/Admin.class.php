@@ -427,6 +427,90 @@ class Admin extends User {
 		
 	}
 
+	function confPriceElec($highCost=0, $lowCost=0, $lowField1=0, $lowField2=0, $currency=0){
+		$link = Link::get_link('domoleaf');
+
+		if (!is_numeric($highCost)){
+			$highCost = '0';
+		}
+		if (!is_numeric($lowCost)){
+			$lowCost = '0';
+		}
+		
+		if (!empty($lowField1) && !empty(explode('-', $lowField1)[0]) && !empty(explode('-', $lowField1)[1])){
+			$lowField1_1 = explode('-', $lowField1)[0];
+			$lowField1_2 = explode('-', $lowField1)[1];
+		}
+		else{
+			$lowField1_1 = 0;
+			$lowField1_2 = 0;
+		}
+		
+		if (!empty($lowField2) && !empty(explode('-', $lowField2)[0]) && !empty(explode('-', $lowField2)[1])){
+			$lowField2_1 = explode('-', $lowField2)[0];
+			$lowField2_2 = explode('-', $lowField2)[1];
+		}
+		else{
+			$lowField2_1 = 0;
+			$lowField2_2 = 0;
+		}
+		
+		if (!($lowField1_1 >= 0 && $lowField1_1 < 24) || !($lowField1_2 >= 0 && $lowField1_2 < 24)){
+			$lowField1 = '0-0';
+		}
+		if (!($lowField2_1 >= 0 && $lowField2_1 < 24) || !($lowField2_2 >= 0 && $lowField2_2 < 24)){
+			$lowField2 = '0-0';
+		}
+		
+		
+		if (!is_numeric($currency)){
+			$currency = '1';
+		}
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :highCost
+				WHERE configuration_id = 14';
+		$req = $link->prepare($sql);
+		$req->bindValue(':highCost', $highCost, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowCost
+				WHERE configuration_id = 15';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowCost', $lowCost, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowField1
+				WHERE configuration_id = 16';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowField1', $lowField1, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :lowField2
+				WHERE configuration_id = 17';
+		$req = $link->prepare($sql);
+		$req->bindValue(':lowField2', $lowField2, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		if (checkCurrency($currency) == NULL){
+			$currency = 1;
+		}
+		
+		
+		$sql = 'UPDATE configuration
+				SET configuration_value = :currency
+				WHERE configuration_id = 18';
+		$req = $link->prepare($sql);
+		$req->bindValue(':currency', $currency, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$socket = new Socket();
+		$socket->send('reload_d3config');
+	}
+	
 	/*** Floors ***/
 	function confFloorList() {
 		$link = Link::get_link('domoleaf');
@@ -1594,7 +1678,9 @@ class Admin extends User {
 		$listDevice= array();
 		$listSmartcmd = array();
 		$listApps  = array();
-		
+
+		$res = $this->conf_load();
+
 		$sql = 'SELECT floor_name, mcuser_floor.floor_id, mcuser_floor.floor_order
 		        FROM mcuser_floor
 		        JOIN floor ON mcuser_floor.floor_id=floor.floor_id
@@ -1685,15 +1771,41 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
-				$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
-					'option_id' => $do->option_id,
-					'name'      => $do->name,
-					'addr'      => $do->addr,
-					'addr_plus' => $do->addr_plus,
-					'dpt_id'    => $do->dpt_id,
-					'unit'      => $do->unit,
-					'valeur'    => $do->valeur
-				);
+				if ($do->option_id == 399){
+					$highCost = $res[14]->configuration_value;
+					$lowCost = $res[15]->configuration_value;
+					$lowField1 = $res[16]->configuration_value;
+					$lowField2 = $res[17]->configuration_value;
+					$currency = checkCurrency($res[18]->configuration_value);
+					$diffTime = $this->profileTime();
+					$time = date('H', $_SERVER['REQUEST_TIME'] + $diffTime);
+					$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
+						'option_id' => $do->option_id,
+						'name'      => $do->name,
+						'addr'      => $do->addr,
+						'addr_plus' => $do->addr_plus,
+						'dpt_id'    => $do->dpt_id,
+						'unit'      => $do->unit,
+						'valeur'    => $do->valeur,
+						'highCost'  => $highCost,
+						'lowCost'   => $lowCost,
+						'lowField1' => $lowField1,
+						'lowField2' => $lowField2,
+						'currency'  => $currency,
+						'time'      => $time
+					);
+				}
+				else{
+					$listDevice[$do->room_device_id]['device_opt'][$do->option_id] = array(
+						'option_id' => $do->option_id,
+						'name'      => $do->name,
+						'addr'      => $do->addr,
+						'addr_plus' => $do->addr_plus,
+						'dpt_id'    => $do->dpt_id,
+						'unit'      => $do->unit,
+						'valeur'    => $do->valeur
+					);
+				}
 			}
 		}
 		

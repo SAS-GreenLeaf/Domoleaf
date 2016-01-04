@@ -21,7 +21,7 @@ echo
 		'<div class="input-group margin-top">'.
 			'<label class="input-group-addon left" for="triggerName">'._('Name').'</label>'.
 			'<input id="triggerName" name="triggerName" title="'._('Trigger Name').'" '.
-			'value="" placeholder="Trigger name" type="text" class="form-control">'.
+			'value="" placeholder="'._('Trigger Name').'" type="text" class="form-control">'.
 		'</div>'.
 	'</div>'.
 	'<div class="controls center margin-top">'.

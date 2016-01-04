@@ -17,7 +17,7 @@ $device = $deviceallowed->{$_GET['iddevice']};
 
 echo '<div class="center">'.
 		'<br/>';
-if ($device->device_opt && $device->device_opt->{153} && $device->device_opt->{153}->valeur == 1){
+if (!empty($device->device_opt) && !empty($device->device_opt->{153}) && $device->device_opt->{153}->valeur == 1){
 	echo ''._('Lightning default (open circuit)').' ';
 	if ($request->getLevel() > 1){
 		echo

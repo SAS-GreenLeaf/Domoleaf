@@ -15,7 +15,7 @@ echo '<div id="errorPreConfigurationMail"></div>';
 
 echo '
 	<div class="input-group margin-top">'.
-		'<input id="fromMailpopup" name="fromMailpopup" title="'._('From Mail').'" value="'.$_GET['fromMailval'].'" placeholder="Type your email" type="email" class="form-control">'.
+		'<input id="fromMailpopup" name="fromMailpopup" title="'._('From Mail').'" value="'.$_GET['fromMailval'].'" placeholder="'._('Type your email').'" type="email" class="form-control">'.
 	'</div>'.
 	'<div class="clearfix"></div>'.
 	'<br/><br/><div class="controls center">'.
