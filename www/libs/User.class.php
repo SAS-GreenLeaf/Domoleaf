@@ -817,7 +817,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> $do->valeur,
+							'valeur'	=> valueToDPTValue($do->dpt_id, $do->valeur),
 							'highCost'  => $highCost,
 							'lowCost'   => $lowCost,
 							'lowField1' => $lowField1,
@@ -834,7 +834,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> $do->valeur
+							'valeur'	=> valueToDPTValue($do->dpt_id, $do->valeur)
 					);
 				}
 			}
@@ -2765,13 +2765,13 @@ class User {
 		$res = $this->conf_load();
 		$list = Array();
 		
-		$sql = 'SELECT room_device_option.room_device_id, option_id, valeur, addr_plus, room_device.device_id
+		$sql = 'SELECT room_device_option.room_device_id, option_id, valeur, addr_plus, room_device.device_id, dpt_id
 		        FROM   room_device_option
 		        JOIN   room_device ON room_device_option.room_device_id=room_device.room_device_id';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if ($do->option_id == 399){
+			if ($do->option_id == 399) {
 				$highCost = $res[14]->configuration_value;
 				$lowCost = $res[15]->configuration_value;
 				$lowField1 = $res[16]->configuration_value;
@@ -2784,7 +2784,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => $do->valeur,
+						'valeur'        => valueToDPTValue($do->dpt_id, $do->valeur),
 						'highCost'      => $highCost,
 						'lowCost'       => $lowCost,
 						'lowField1'     => $lowField1,
@@ -2799,7 +2799,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => $do->valeur
+						'valeur'        => valueToDPTValue($do->dpt_id, $do->valeur)
 				);
 			}
 		}
