@@ -30,6 +30,7 @@ class GLManager:
     def TechInfo():
         json_str = {
             "ip_private":  InfoSys.ipPrivate(),
+            "ip_vpn":      InfoSys.ipVPN(),
             "mb_serial":   InfoSys.motherboardSerial(),
             "ssd_serial":  InfoSys.diskSerial(),
             "soft_master": InfoSys.softMaster(),

@@ -44,6 +44,10 @@ def slave_conf_copy():
     #personnal_key
     var = file_from.getValueFromSection('personnal_key', 'aes');
     file_to.writeValueFromSection('personnal_key', 'aes', var);
+    
+    #openvpn
+    var = file_from.getValueFromSection('openvpn', 'openvpnserver');
+    file_to.writeValueFromSection('openvpn', 'openvpnserver', var);
 
 def slave_conf_init():
     file = DaemonConfigParser(SLAVE_CONF_FILE_TO);
