@@ -134,11 +134,13 @@ function onOffToggle(iddevice, optionid, popup){
 	popup = typeof popup !== 'undefined' ? popup : 0;
 	var value;
 	if (popup == 0){
+		$("#onoff-"+iddevice).addClass('unlockwidget');
 		value = $("#onoff-"+iddevice).prop("checked") ? 1 : 0;
 	}
 	else{
 		value = $("#onoff-popup-"+iddevice).prop("checked") ? 1 : 0;
 	}
+	
 	onOff(iddevice, value, optionid);
 }
 		
@@ -236,6 +238,10 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	var lamp_device = ["3", "4", "6", "55", "56", "57"];
 
 	if (idopt == 12){
+		if($("#onoff-"+roomdeviceid).hasClass('unlockwidget')) {
+			$("#onoff-"+roomdeviceid).removeClass('unlockwidget');
+			return;
+		}
 		if (val.valeur > 0){
 			$("#onoff-"+roomdeviceid).removeAttr("onchange");
 			$("#onoff-"+roomdeviceid).prop("checked", true).change();
@@ -254,6 +260,13 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 		}
 	}
 	else if (idopt == 13){
+		if($("#slider-value-"+roomdeviceid).hasClass('lockwidget')) {
+			return;
+		}
+		if($("#slider-value-"+roomdeviceid).hasClass('unlockwidget')) {
+			$("#slider-value-"+roomdeviceid).removeClass('unlockwidget');
+			return;
+		}
 		if (val.valeur >= 0 && val.valeur < 256){
 			$("#slider-value-"+roomdeviceid).removeAttr("onchange");
 			outputUpdate(roomdeviceid, val.valeur);
@@ -353,6 +366,19 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
 		}
 	}
+}
+
+function LockWidget(roomdeviceid, option_id) {
+	$("#widget-container .lockwidget").removeClass('lockwidget');
+	
+	if(option_id == 13) {
+		$("#slider-value-"+roomdeviceid).addClass('lockwidget');
+	}
+}
+
+function UnlockWidget(roomdeviceid, option_id) {
+	$("#slider-value-"+roomdeviceid).removeClass('lockwidget');
+	$("#slider-value-"+roomdeviceid).addClass('unlockwidget');
 }
 
 /*** Custom Configuration ***/

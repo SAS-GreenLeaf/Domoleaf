@@ -754,6 +754,10 @@ function display_varie($info, $var_icon = 1){
 								$display.=
 										'<div class="row foreground-widget">
 											<input value="'.$info->device_opt->{13}->valeur.'" min="0" step="1" max="255"
+											       onMouseDown="LockWidget('.$info->room_device_id.', 13)"
+											       onMouseUp="UnlockWidget('.$info->room_device_id.', 13)"
+											       ontouchstart="LockWidget('.$info->room_device_id.', 13)"
+											       ontouchend="UnlockWidget('.$info->room_device_id.', 13)"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
 											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
@@ -763,6 +767,10 @@ function display_varie($info, $var_icon = 1){
 								$display.=
 										'<div class="row foreground-widget">
 											<input value="128" min="0" step="1" max="255"
+											       onMouseDown="LockWidget('.$info->room_device_id.', 13)"
+											       onMouseUp="UnlockWidget('.$info->room_device_id.', 13)"
+											       ontouchstart="LockWidget('.$info->room_device_id.', 13)"
+											       ontouchend="UnlockWidget('.$info->room_device_id.', 13)"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
 											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
