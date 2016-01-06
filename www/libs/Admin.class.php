@@ -437,21 +437,29 @@ class Admin extends User {
 			$lowCost = '0';
 		}
 		
-		if (!empty($lowField1) && !empty(explode('-', $lowField1)[0]) && !empty(explode('-', $lowField1)[1])){
+		if (!empty($lowField1) && !empty(explode('-', $lowField1)[0])) {
 			$lowField1_1 = explode('-', $lowField1)[0];
-			$lowField1_2 = explode('-', $lowField1)[1];
 		}
-		else{
+		else {
 			$lowField1_1 = 0;
+		}
+		if (!empty($lowField1) && !empty(explode('-', $lowField1)[0])) {
+			$lowField1_2 = explode('-', $lowField1)[0];
+		}
+		else {
 			$lowField1_2 = 0;
 		}
 		
-		if (!empty($lowField2) && !empty(explode('-', $lowField2)[0]) && !empty(explode('-', $lowField2)[1])){
+		if (!empty($lowField2) && !empty(explode('-', $lowField2)[0])) {
 			$lowField2_1 = explode('-', $lowField2)[0];
-			$lowField2_2 = explode('-', $lowField2)[1];
 		}
-		else{
+		else {
 			$lowField2_1 = 0;
+		}
+		if (!empty($lowField2) && !empty(explode('-', $lowField2)[0])) {
+			$lowField2_2 = explode('-', $lowField2)[0];
+		}
+		else {
 			$lowField2_2 = 0;
 		}
 		
