@@ -9,7 +9,11 @@ class Link {
 			case 'domoleaf':
 				$dns = 'mysql:host=localhost;dbname=domoleaf';
 				$option = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
-				$this->db = new PDO($dns, DB_USER, DB_PASSWORD, $option);
+				try {
+					$this->db = new PDO($dns, DB_USER, DB_PASSWORD, $option);
+				} catch (PDOException $e) {
+					die();
+				}
 			break;
 		}
 	}
