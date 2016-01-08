@@ -104,6 +104,7 @@ VALUES
 	(82, 'Circuit Eclairage', 1, 9, 0, '', '', 'Circuit Eclairage', '', 0),
 	(83, 'Circuit Audio Vidéo', 1, 9, 0, '', '', 'Circuit Audio Vidéo', '', 0),
 	(84, 'Circuit Electromenager', 1, 9, 0, '', '', 'Circuit Electromenager', '', 0),
-	(85, 'Controleur RGBW', 1, 1, 0, '', '', 'Controleur RGBW', '', 1);
+	(85, 'Controleur RGBW', 1, 1, 0, '', '', 'Controleur RGBW', '', 1),
+	(86, 'Generic', 1, 17, 0, '', '', 'Generique', '', 1);
 
 SET FOREIGN_KEY_CHECKS=1;

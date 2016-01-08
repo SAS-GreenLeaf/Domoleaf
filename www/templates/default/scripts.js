@@ -221,6 +221,16 @@ function changeSpeedFan(iddevice, value, optionid){
 	});
 }
 
+function launchGeneric(iddevice, optionid){
+	$.ajax({
+		type:"GET",
+		url: "/form/form_mc_launchgeneric.php",
+		data: "iddevice="+iddevice+"&optionid="+optionid,
+		complete: function(result) {
+		}
+	});
+}
+
 function resetError(room_device_id, device_opt){
 	$.ajax({
 		type:"GET",
@@ -231,6 +241,7 @@ function resetError(room_device_id, device_opt){
 		}
 	});
 }
+
 
 /*** Widget return ***/
 

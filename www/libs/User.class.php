@@ -2700,9 +2700,11 @@ class User {
 	function mcAction($iddevice, $value, $optionid){
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'SELECT device_allowed, room_device_option.addr_plus
+		$sql = 'SELECT device_allowed, room_device_option.addr_plus, 
+		               room_device.device_id
 		        FROM mcuser_device
 		        JOIN room_device_option ON mcuser_device.room_device_id=room_device_option.room_device_id
+		        JOIN room_device ON room_device.room_device_id=room_device_option.room_device_id
 		        WHERE mcuser_id=:user_id AND 
 		              mcuser_device.room_device_id=:room_device_id AND 
 		              option_id=:option_id';
@@ -2714,6 +2716,11 @@ class User {
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		if(!empty($do->device_allowed) || $this->getlevel() > 1){
+			//Generic
+			if($do->device_id == 86) {
+				$value = $do->addr_plus;
+			}
+			
 			$sql ='UPDATE room_device_option
 			       SET valeur=:valeur
 			       WHERE room_device_id=:room_device_id AND 

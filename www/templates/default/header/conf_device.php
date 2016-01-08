@@ -65,6 +65,51 @@ else {
 
 /*** Modify options name ***/
 $option_overload = array(
+	181 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	182 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	189 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	191 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	195 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	196 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	197 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	198 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
+	199 => array(
+		2  => _('1 bit'),
+		51 => _('8 bits'),
+		73 => _('2 bytes °C')
+	),
 	400 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits')

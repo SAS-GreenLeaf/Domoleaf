@@ -22,6 +22,15 @@ OPTION_UP_DOWN          = 54;   # Indice pour une action de type monter/descendr
 OPTION_STOP_UP_DOWN     = 365;
 OPTION_OPEN_CLOSE       = 96;   # Indice pour une action de type ouvrir/fermer
 OPTION_TEMPERATURE      = 72;   # Indice pour le traitement d'une temperature
+OPTION_OPTION_1         = 181;
+OPTION_OPTION_2         = 182;
+OPTION_OPTION_3         = 189;
+OPTION_OPTION_4         = 191;
+OPTION_OPTION_5         = 195;
+OPTION_OPTION_6         = 196;
+OPTION_OPTION_7         = 197;
+OPTION_OPTION_8         = 198;
+OPTION_OPTION_9         = 199;
 OPTION_TEMPERATURE_W    = 388;  # Indice pour l'ecriture d'une temperature
 OPTION_SPEED_FAN_0      = 400;  # Indice pour le traitement de la vitesse 0 d'un ventilateur
 OPTION_SPEED_FAN_1      = 401;  # Indice pour le traitement de la vitesse 1 d'un ventilateur
@@ -61,7 +70,16 @@ class KNXManager:
             OPTION_COLOR_R      : self.send_knx_write_long_to_slave,
             OPTION_COLOR_G      : self.send_knx_write_long_to_slave,
             OPTION_COLOR_B      : self.send_knx_write_long_to_slave,
-            OPTION_COLOR_W      : self.send_knx_write_long_to_slave
+            OPTION_COLOR_W      : self.send_knx_write_long_to_slave,
+            OPTION_OPTION_1     : self.send_knx_write_button,
+            OPTION_OPTION_2     : self.send_knx_write_button,
+            OPTION_OPTION_3     : self.send_knx_write_button,
+            OPTION_OPTION_4     : self.send_knx_write_button,
+            OPTION_OPTION_5     : self.send_knx_write_button,
+            OPTION_OPTION_6     : self.send_knx_write_button,
+            OPTION_OPTION_7     : self.send_knx_write_button,
+            OPTION_OPTION_8     : self.send_knx_write_button,
+            OPTION_OPTION_9     : self.send_knx_write_button
         };
         self.logger = Logger(True, LOG_FILE);
         self.sql = MasterSql();
@@ -160,6 +178,47 @@ class KNXManager:
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
 
+    def send_knx_write_button(self, hostname, json_obj):
+        """
+        Ask to close all the speed fan before open another
+        """
+        port = self._parser.getValueFromSection('connect', 'port');
+        if not port:
+            sys.exit(4);
+        
+        query =  'SELECT option_id, addr, dpt_id ';
+        query += 'FROM room_device_option ';
+        query += 'WHERE room_device_id=' + str(json_obj['data']['room_device_id']) + ' AND ';
+        query += 'option_id ='+str(json_obj['data']['option_id'])+' AND status=1';
+        res = self.sql.mysql_handler_personnal_query(query);
+        for line in res:
+            if str(line[2]) == "2":
+                sock = socket.create_connection((hostname, port));
+                json_str = json.JSONEncoder().encode(
+                    {
+                        "packet_type": "knx_write_short",
+                        "addr_to_send": line[1],
+                        "value": json_obj['data']['value']
+                    }
+                );
+                self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+                sock.close();
+                return;
+            if str(line[2]) == "51":
+                sock = socket.create_connection((hostname, port));
+                json_str = json.JSONEncoder().encode(
+                    {
+                        "packet_type": "knx_write_long",
+                        "addr_to_send": line[1],
+                        "value": hex(int(json_obj['data']['value']))
+                    }
+                );
+                self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+                sock.close();
+                return;
+            if str(line[2]) == "73":
+                self.send_knx_write_temp(hostname, json_obj)
+
     def send_knx_write_temp(self, hostname, json_obj):
         """
         Converts absolute value of temperature (Celsius) in 2 hexadecimal values for
@@ -170,9 +229,9 @@ class KNXManager:
             sys.exit(4);
         sock = socket.create_connection((hostname, port));
         val_str = json_obj['data']['value'];
-        if '.' in val_str:
-            val_str = val_str.split('.')[0];
-        value = utils.convert_temperature_reverse(int(val_str));
+        if ',' in val_str:
+            val_str = val_str.replace(',', '.')
+        value = utils.convert_temperature_reverse(float(val_str));
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_temp",

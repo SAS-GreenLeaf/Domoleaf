@@ -86,7 +86,8 @@ function getIcon($iddevice = 1){
 			82 => 'fa fa-question',
 			83 => 'fa fa-question',
 			84 => 'fa fa-question',
-			85 => 'fa fa-lightbulb-o'
+			85 => 'fa fa-lightbulb-o',
+			86 => 'fi flaticon-switches4'
 	);
 	
 	return $icons[$iddevice];
@@ -166,7 +167,8 @@ function display_widget($info){
 			82 => "display_commande",
 			83 => "display_commande",
 			84 => "display_commande",
-			85 => "display_lampe"
+			85 => "display_lampe",
+			86 => 'display_generic'
 	);
 	
 	
@@ -940,6 +942,46 @@ function display_luminosity($info){
 					<span>'.$info->device_opt->{$current_id}->unit.'</span>
 				</div>';
 
+	return $display;
+}
+
+// Generic
+function display_generic($info){
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>
+				<div class="foreground-widget">';
+	
+	if (!empty($info->device_opt->{181})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 181)" class="btn btn-info">'._('1').'</button> ';
+	}
+	if (!empty($info->device_opt->{182})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 182)" class="btn btn-info">'._('2').'</button> ';
+	}
+	if (!empty($info->device_opt->{189})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 189)" class="btn btn-info">'._('3').'</button> ';
+	}
+	$display.= '<br/>';
+	if (!empty($info->device_opt->{191})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 191)" class="btn btn-info">'._('4').'</button> ';
+	}
+	if (!empty($info->device_opt->{195})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 195)" class="btn btn-info">'._('5').'</button> ';
+	}
+	if (!empty($info->device_opt->{196})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 196)" class="btn btn-info">'._('6').'</button> ';
+	}
+	$display.= '<br/>';
+	if (!empty($info->device_opt->{197})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 197)" class="btn btn-info">'._('7').'</button> ';
+	}
+	if (!empty($info->device_opt->{198})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 198)" class="btn btn-info">'._('8').'</button> ';
+	}
+	if (!empty($info->device_opt->{199})){
+		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 199)" class="btn btn-info">'._('9').'</button> ';
+	}
+	
+	$display .= '</div>';
+	
 	return $display;
 }
 

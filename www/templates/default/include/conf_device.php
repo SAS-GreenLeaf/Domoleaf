@@ -170,9 +170,107 @@ echo '
 	</div>';
 
 if (!empty($tabopt) && sizeof($tabopt) > 0){
+	
 	//KNX
 	if ($device->protocol_id != 6) {
-		if (!empty($device->application_id)) {
+		//Generic
+		if($device->device_id == 86) {
+			echo '
+			<table class="table" id="tabopt">
+				<thead>
+					<tr>
+						<th>'._('Option').'</th>
+						<th>'._('Write address').'</th>
+						<th>'._('Value').'</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>';
+			foreach ($tabopt as $i => $elem) {
+				if (!empty($tabopt[$i])) {
+					echo '
+						<tr>
+							<td>
+								'.$tabopt[$i]['name'].'
+							</td>
+							<td>
+								<input id="waddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Write address').'">
+							</td>';
+					if (isset($exceptionaddress[$tabopt[$i]['id']])) {
+						echo
+						'<td>
+								<input disabled id="raddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Value').'">
+							</td>';
+					}
+					else {
+						echo
+						'<td>
+								<input id="raddr-'.$tabopt[$i]['id'].'" class="form-control knx" type="text" placeholder="'._('Value').'">
+							</td>';
+					}
+					echo
+					'<td>';
+					if (isset($listdpt->$i)) {
+						$list = $listdpt->$i;
+						if (sizeof($listdpt->$i) == 1){
+							echo
+							'<div hidden>
+										<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+											<option value="'.$list[0]->dpt_id.'"></option>
+										</select>
+									</div>';
+						}
+						else {
+							echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+							foreach ($listdpt->$i as $list){
+								if (!empty($list->dpt_id)){
+									if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+										echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+									}
+									else{
+										echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
+									}
+								}
+							}
+							echo '</select>';
+						}
+					}
+					echo
+					'</td>
+							<td>
+								<div class="checkbox">
+									<input id="toggle-'.$tabopt[$i]['id'].'"
+									       data-on-color="greenleaf"
+									       data-label-width="0"
+									       data-on-text="'._('Enable').'"
+									       data-off-text="'._('Disable').'"
+									       type="checkbox">
+								</div>
+								<script type="text/javascript">
+									$("#toggle-'.$tabopt[$i]['id'].'").bootstrapSwitch();
+								</script>
+							</td>
+							<td>
+								 <div class="btn-group btn-group-greenleaf center">
+									<button data-loading-text="Loading..."
+									        type="button"
+									        id="saveoption-'.$tabopt[$i]['id'].'"
+									        title="'._('Save').'"
+									        class="btn btn-greenleaf save"
+									        onclick="SaveOption(\''.$tabopt[$i]['id'].'\')">'._('Save').'
+									</button>
+								</div>
+							</td>
+						</tr>';
+				}
+			}
+			echo '
+				</tbody>
+			</table>';
+		}
+		elseif (!empty($device->application_id)) {
 			echo '
 			<table class="table" id="tabopt">
 				<thead>
@@ -589,8 +687,16 @@ function SaveOption(optid){
 	if (!dpt_id) {
 		dpt_id = 1;
 	}
-
-	if (CheckAddr(addr, addr_plus, optid)){
+	';
+	if($device->device_id == 86) {
+		echo '
+		if (CheckAddr(addr, "", optid)){';
+	}
+	else {
+		echo '
+		if (CheckAddr(addr, addr_plus, optid)){';
+	}
+	echo '
 		$.ajax({
 			type:"GET",
 			url: "/form/form_device_info_opt.php",
