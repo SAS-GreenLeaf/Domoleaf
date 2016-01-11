@@ -274,7 +274,15 @@ function display_fan($info){
 
 // Widget warming
 function display_warming($info){
-	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
+	$display = '';
+	$display.=
+	'<div class="info-widget foreground-widget">
+					<button title="'._('More').'" onclick="HandlePopup(5, '.$info->room_device_id.')"
+					        class="btn btn-greenleaf" type="button">
+						<span class="fa fa-plus md"></span>
+					</button>
+				</div>
+				<h3 class="title foreground-widget">'.$info->name.'</h3>';
 	
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);

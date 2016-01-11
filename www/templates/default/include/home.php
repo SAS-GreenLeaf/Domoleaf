@@ -166,7 +166,7 @@ function displayUpdate(){
 function HandlePopup(type, iddevice){
 	
 	if (type == 0){
-		var data = new Array("popup_camera_view.php", "'._('Camera view').' <i id=\"icon-image-widget-6\" class=\"fa fa-video-camera\"></i>");	
+		var data = new Array("popup_camera_view.php", "'._('Camera view').' <i class=\"fa fa-video-camera\"></i>");	
 	}
 	else if (type == 1){
 		var data = new Array("popup_audio_view.php", "'._('Audio view').' <i class=\'fa fa-volume-up\'></i>");
@@ -175,10 +175,13 @@ function HandlePopup(type, iddevice){
 		var data = new Array("popup_info_device.php", "'._('Information').'");
 	}
 	else if (type == 3){
-		var data = new Array("popup_ChromaWheel.php", "'._('ChromaWheel').' <i id=\"icon-image-widget-1\" class=\"fa fa-lightbulb-o\"></i>");
+		var data = new Array("popup_ChromaWheel.php", "'._('ChromaWheel').' <i class=\"fa fa-lightbulb-o\"></i>");
 	}
 	else if (type == 4){
-		var data = new Array("popup_clim.php", "'._('Air conditioner').' <i id=\"icon-image-widget-5\" class=\"fi flaticon-snowflake149\"></i>");
+		var data = new Array("popup_clim.php", "'._('Air conditioner').' <i class=\"fi flaticon-snowflake149\"></i>");
+	}
+	else if (type == 5){
+		var data = new Array("popup_clim.php", "'._('Thermostat').' <i class=\"fi flaticon-thermometer2\"></i>");
 	}
 	
 	if (data){

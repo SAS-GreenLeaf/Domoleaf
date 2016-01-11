@@ -66,6 +66,8 @@ PROTOCOL_IP             = 6;    # IP protocol id
 FUNCTION_KNX_SHORT = 1;
 FUNCTION_KNX_LONG  = 2;
 FUNCTION_IR        = 5;
+FUNCTION_ON        = 6;
+FUNCTION_THERMOSTAT= 7;
 
 # IDs for UPNP protocol
 UPNP_PLAY           = 'play';               # Play command id
@@ -166,7 +168,9 @@ class MasterDaemon:
         self.functions = {
             FUNCTION_KNX_SHORT  : self.knx_manager.protocol_knx,
             FUNCTION_KNX_LONG   : self.knx_manager.protocol_knx,
-            FUNCTION_IR         : IP_IRManager().send_to_gc
+            FUNCTION_IR         : IP_IRManager().send_to_gc,
+            FUNCTION_ON         : self.knx_manager.send_on,
+            FUNCTION_THERMOSTAT : self.knx_manager.send_to_thermostat
         };
         self.upnp_function = {
             UPNP_PLAY           : self.upnp_set_play,

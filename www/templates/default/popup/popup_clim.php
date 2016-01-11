@@ -69,11 +69,19 @@ if (!empty($_GET['iddevice'])){
 	
 	echo $display;
 	
-	//if option 'type' actived
-	echo '<button onclick="" class="btn btn-info">'._('Comfort').'</button> ';
-	echo '<button onclick="" class="btn btn-info">'._('Night').'</button> ';
-	echo '<button onclick="" class="btn btn-info">'._('Eco').'</button> ';
-	echo '<button onclick="" class="btn btn-info">'._('Frost free').'</button> ';
+	if (!empty($device->device_opt->{412})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 412)" class="btn btn-info">'._('Comfort').'</button> ';
+	}
+	if (!empty($device->device_opt->{413})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 413)" class="btn btn-info">'._('Night').'</button> ';
+	}
+	if (!empty($device->device_opt->{414})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 414)" class="btn btn-info">'._('Eco').'</button> ';
+	}
+	if (!empty($device->device_opt->{415})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 415)" class="btn btn-info">'._('Frost free').'</button> ';
+	}
+	
 	echo '<div class="clearfix"></div><br/>';
 	echo '<button onclick="popup_close()" class="btn btn-danger">'._('Close').' <span class="glyphicon glyphicon-remove"></span></button>'.
 		'</div>';

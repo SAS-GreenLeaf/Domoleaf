@@ -2103,3 +2103,7 @@ msgstr "Devise"
 #: popup_pre_configuration_mail.php:18
 msgid "Type your email"
 msgstr "Saisissez votre email"
+
+#: home.php
+msgid "Thermostat"
+msgstr "Thermostat"

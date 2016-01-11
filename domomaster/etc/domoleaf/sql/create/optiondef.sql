@@ -417,6 +417,13 @@ VALUES
 	(406, 'Ventilation 6', 0, 0, 0.0, 0, '', '', 'Ventilation 6', '', 4),
 	(407, 'Power', 1, 0, 0.0, 1, '', '', 'Puissance', '', 6),
 	(408, 'Picture', 1, 9, 0.0, 1, '', '', 'Photo', '', 4),
-	(410, NULL, 0, 0, 0.0, 0, '', '', 'Varié Blanc', '', 4);
+	(410, NULL, 0, 0, 0.0, 0, '', '', 'Varié Blanc', '', 4),
+	(412, 'Comfort', 0, 0, 0.0, 0, '', '', 'Confort', '', 4),
+	(413, 'Night', 0, 0, 0.0, 0, '', '', 'Nuit', '', 4),
+	(414, 'Eco', 0, 0, 0.0, 0, '', '', 'Eco', '', 4),
+	(415, 'Frost free', 0, 0, 0.0, 0, '', '', 'Hors gel', '', 4),
+	(416, 'Comfort -1°C', 0, 0, 0.0, 0, '', '', 'Confort -1°C', '', 4),
+	(417, 'Comfort -2°C', 0, 0, 0.0, 0, '', '', 'Confort -2°C', '', 4);
+
 
 SET FOREIGN_KEY_CHECKS=1;

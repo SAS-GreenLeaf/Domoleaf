@@ -290,3 +290,55 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+    
+    def send_on(self, json_obj, dev, hostname):
+        """
+        Ask to close all the speed fan before open another
+        """
+        port = self._parser.getValueFromSection('connect', 'port');
+        if not port:
+            sys.exit(4);
+        sock = socket.create_connection((hostname, port));
+        json_str = json.JSONEncoder().encode(
+            {
+                "packet_type": "knx_write_short",
+                "addr_to_send": str(dev['addr_dst']),
+                "value": "1"
+            }
+        );
+        self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
+        return;
+    
+    def send_to_thermostat(self, json_obj_2, dev, hostname):
+        port = self._parser.getValueFromSection('connect', 'port');
+        if not port:
+            sys.exit(4);
+        
+        if json_obj_2['data']['option_id'] == '412':
+            val = 1;
+        elif json_obj_2['data']['option_id'] == '413':
+            val = 2;
+        elif json_obj_2['data']['option_id'] == '414':
+            val = 4;
+        elif json_obj_2['data']['option_id'] == '415':
+            val = 8;
+        elif json_obj_2['data']['option_id'] == '416':
+            val = 16;
+        elif json_obj_2['data']['option_id'] == '417':
+            val = 32;
+        else:
+            val = 0
+        
+        if val > 0:
+            json_str = json.JSONEncoder().encode(
+                {
+                    "packet_type": "knx_write_long",
+                    "addr_to_send": str(dev['addr_dst']),
+                    "value": val
+                }
+            );
+            sock = socket.create_connection((hostname, port));
+            self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+            sock.close();
+            return;
