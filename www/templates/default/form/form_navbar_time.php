@@ -6,7 +6,12 @@ $request =  new Api();
 $request -> add_request('profileTime');
 $result  =  $request -> send_request();
 
-$time = $result->profileTime;
+if(!empty($result->profileTime)) {
+	$time = $result->profileTime;
+}
+else {
+	$time = 0;
+}
 
 switch(LOCALE) {
 	case 'fr_FR':
