@@ -39,7 +39,7 @@ start()
 		echo "$PROG_SLAVE is already running"
 	else
 		echo "Starting $PROG_SLAVE"
-		$DAEMON --log > $LOG_FILE_SLAVE 2>&1
+		$DAEMON > $LOG_FILE_SLAVE 2>&1
 	fi
 	
 	if [ -f $PID_FILE_MONITOR_KNX ]; then

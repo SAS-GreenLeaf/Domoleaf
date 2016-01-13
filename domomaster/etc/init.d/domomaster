@@ -24,7 +24,7 @@ start()
 		echo "$PROG is already running"
 	else
 		echo "Starting $PROG"
-		$DAEMON --log > $LOG_FILE 2>&1
+		$DAEMON > $LOG_FILE 2>&1
 		return 0
 	fi
 }
