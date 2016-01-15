@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `mcuser` (
   `activity` int(10) unsigned DEFAULT '0',
   `mcuser_sauth` varchar(256) DEFAULT NULL,
   `timezone` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `mcuser_unity` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`mcuser_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
