@@ -59,15 +59,8 @@ MASTER_CONF_CONNECT_SECTION             = 'connection';
 MASTER_CONF_CONNECT_PORT_ENTRY          = 'port';
 MASTER_CONF_PKEY_SIZE_ENTRY             = 'size';
 
-PROTOCOL_KNX            = 1;    # KNX protocol id
 PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
 PROTOCOL_IP             = 6;    # IP protocol id
-
-FUNCTION_KNX_SHORT = 1;
-FUNCTION_KNX_LONG  = 2;
-FUNCTION_IR        = 5;
-FUNCTION_ON        = 6;
-FUNCTION_THERMOSTAT= 7;
 
 # IDs for UPNP protocol
 UPNP_PLAY           = 'play';               # Play command id
@@ -161,16 +154,17 @@ class MasterDaemon:
         self.scenario = Scenario(self);
         self.calcLogs = CalcLogs(self);
         self.protocol_function = {
-            PROTOCOL_KNX        : self.knx_manager.protocol_knx,
             PROTOCOL_ENOCEAN    : self.protocol_enocean,
             PROTOCOL_IP         : self.protocol_ip
         };
         self.functions = {
-            FUNCTION_KNX_SHORT  : self.knx_manager.protocol_knx,
-            FUNCTION_KNX_LONG   : self.knx_manager.protocol_knx,
-            FUNCTION_IR         : IP_IRManager().send_to_gc,
-            FUNCTION_ON         : self.knx_manager.send_on,
-            FUNCTION_THERMOSTAT : self.knx_manager.send_to_thermostat
+              1 : self.knx_manager.send_knx_write_short_to_slave,
+              2 : self.knx_manager.send_knx_write_long_to_slave,
+              3 : self.knx_manager.send_knx_write_speed_fan,
+              4 : self.knx_manager.send_knx_write_temp,
+              5 : IP_IRManager().send_to_gc,
+              6 : self.knx_manager.send_on,
+              7 : self.knx_manager.send_to_thermostat
         };
         self.upnp_function = {
             UPNP_PLAY           : self.upnp_set_play,
@@ -680,9 +674,6 @@ class MasterDaemon:
         function_id = int(dev['function_id']);
         if (function_id > 0):
             try:
-                if (function_id == FUNCTION_KNX_SHORT or function_id == FUNCTION_KNX_LONG):       
-                    if (hostname == ''):          
-                        return;
                 self.functions[function_id](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
@@ -690,8 +681,6 @@ class MasterDaemon:
             if dev['protocol_id'] == PROTOCOL_IP:
                 self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
                 return;
-            if hostname != '' and dev['protocol_id'] == PROTOCOL_KNX:
-                self.knx_manager.protocol_knx(json_obj, dev, hostname);
         
         #add scenario check here to allow trigger on write ???
         #self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
