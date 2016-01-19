@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS application;
 CREATE TABLE `application` (
   `application_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL DEFAULT '',
-  `vignette` varchar(255) NOT NULL DEFAULT '',
   `namede` varchar(31) NOT NULL DEFAULT '',
   `namees` varchar(31) NOT NULL DEFAULT '',
   `namefr` varchar(31) NOT NULL DEFAULT '',
@@ -28,7 +27,6 @@ VALUES
 	(6, 'Audio', '', '', '', 'Audio/Vidéo', ''),
 	(7, 'Smartcommands', '', '', '', 'Smartcommands', ''),
 	(8, 'Garden', '', '', '', 'Jardin', ''),
-	(9, 'Aspiration', '', '', '', 'Aspiration', ''),
 	(10, 'Furnace', '', '', '', 'Chaudière', ''),
 	(11, 'Ventilation', '', '', '', 'Ventilation', ''),
 	(12, 'Spa', '', '', '', 'Spa', ''),
