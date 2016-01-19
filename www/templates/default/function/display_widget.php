@@ -4,88 +4,36 @@
 
 function getIcon($iddevice = 1){
 	$icons = array(
-			1  => 'fi flaticon-chip',
 			2  => 'fa fa-video-camera',
-			3  => 'fa fa-lightbulb-o',
 			4  => 'fa fa-lightbulb-o',
 			5  => 'fa fa-tachometer',
-			6  => 'fa fa-lightbulb-o',
 			7  => 'fi flaticon-heating1',
-			8  => 'fi flaticon-heating1',
 			9  => 'fa fa-question',
 			10 => 'fa fa-bars',
 			11 => 'fa fa-bars',
-			12 => 'fi flaticon-snowflake149',
-			13 => 'fi flaticon-snowflake149',
-			14 => 'fa fa-volume-up',
 			15 => 'fa fa-volume-up',
 			17 => 'fa fa-volume-up',
 			18 => 'fa fa-tree',
-			19 => 'fi flaticon-winds4',
 			20 => 'fa fa-fire',
-			21 => 'fa fa-question',
 			22 => 'fi flaticon-engineering',
 			23 => 'fi flaticon-person199',
 			24 => 'fi flaticon-heating1',
 			25 => 'fi flaticon-wind34',
-			26 => 'fi flaticon-wind34',
-			27 => 'fi flaticon-person206',
 			28 => 'fi flaticon-person206',
-			29 => 'fa fa-video-camera',
 			30 => 'fi flaticon-sign35',
 			31 => 'fa fa-sort-amount-asc rotate--90',
-			32 => 'fi flaticon-password4',
 			33 => 'fa fa-fire',
-			34 => 'fi flaticon-snowflake149',
-			35 => 'fa fa-question',
-			36 => 'fa fa-question',
-			37 => 'fa fa-question',
 			38 => 'fi flaticon-switches4',
-			39 => 'fa fa-question',
-			40 => 'fa fa-question',
-			41 => 'fa fa-question',
-			42 => 'fa fa-question',
 			43 => 'fa fa-question',
-			44 => 'fa fa-question',
-			45 => 'fa fa-question',
-			46 => 'fa fa-question',
 			47 => 'fa fa-bolt',
-			48 => 'fa fa-question',
 			49 => 'fi flaticon-thermometer2',
 			50 => 'fa fa-volume-up',
 			51 => 'fa fa-question',
 			52 => 'fa fa-sort-amount-asc rotate--90',
-			53 => 'fa fa-wifi',
 			54 => 'fi flaticon-open203',
-			55 => 'fa fa-lightbulb-o',
-			56 => 'fa fa-lightbulb-o',
-			57 => 'fa fa-lightbulb-o',
-			58 => 'fa fa-question',
-			59 => 'fa fa-question',
 			60 => 'fa fa-question',
 			61 => 'fi flaticon-measure20',
-			62 => 'fi flaticon-minisplit',
-			63 => 'fi flaticon-minisplit',
-			65 => 'fi flaticon-minisplit',
-			66 => 'fi flaticon-minisplit',
-			67 => 'fi flaticon-minisplit',
 			68 => 'fi flaticon-minisplit',
-			69 => 'fi flaticon-minisplit',
-			70 => 'fi flaticon-minisplit',
-			71 => 'fi flaticon-minisplit',
-			72 => 'fi flaticon-minisplit',
-			73 => 'fi flaticon-minisplit',
-			74 => 'fi flaticon-minisplit',
-			75 => 'fi flaticon-minisplit',
-			76 => 'fi flaticon-minisplit',
-			77 => 'fi flaticon-minisplit',
-			78 => 'fa fa-lightbulb-o',
-			79 => 'fa fa-question',
-			80 => 'fa fa-volume-up',
-			81 => 'fa fa-question',
-			82 => 'fa fa-question',
-			83 => 'fa fa-question',
-			84 => 'fa fa-question',
 			85 => 'fa fa-lightbulb-o',
 			86 => 'fi flaticon-switches4'
 	);
@@ -97,76 +45,35 @@ function display_widget($info){
 	
 	$widget = array(
 			2  => "display_cam",
-			3  => "display_lampe",
 			4  => "display_lampe",
 			5  => "display_commande",
-			6  => "display_lampe",
 			7  => "display_warming",
-			8  => "display_warming",
 			9  => "display_warming",
 			10 => "display_shutter",
 			11 => "display_shutter",
-			12 => "display_clim",
-			13 => "display_clim",
-			14 => "display_audio",
 			15 => "display_audio",
 			17 => "display_audio",
 			18 => "display_garden",
-			19 => "display_aspiration",
 			20 => "display_furnace",
-			21 => "display_furnace",
 			22 => "display_garden",
 			23 => "display_garden",
 			24 => "display_warming",
 			25 => "display_fan",
-			26 => "display_fan",
-			27 => "display_spa",
 			28 => "display_spa",
-			29 => "display_cam",
 			30 => "display_alarm",
 			31 => "display_portal",
-			32 => "display_portal",
 			33 => "display_furnace",
-			34 => "display_clim",
 			38 => "display_commande",
 			43 => "display_commande",
 			47 => "display_consumption",
-			48 => "display_commande",
 			49 => "display_warming",
 			50 => "display_audio",
 			51 => "display_commande",
 			52 => "display_portal",
-			53 => "display_audio",
 			54 => "display_portal",
-			55 => "display_lampe",
-			56 => "display_lampe",
-			57 => "display_lampe",
-			58 => "display_warming",
-			59 => "display_warming",
 			60 => "display_commande",
 			61 => "display_commande",
-			62 => "display_clim",
-			63 => "display_clim",
-			64 => "display_clim",
-			65 => "display_clim",
-			66 => "display_clim",
-			67 => "display_clim",
 			68 => "display_clim",
-			69 => "display_clim",
-			70 => "display_clim",
-			71 => "display_clim",
-			72 => "display_clim",
-			73 => "display_clim",
-			74 => "display_clim",
-			75 => "display_clim",
-			76 => "display_clim",
-			77 => "display_clim",
-			78 => "display_lampe",
-			80 => "display_audio",
-			81 => "display_cam",
-			82 => "display_commande",
-			83 => "display_commande",
-			84 => "display_commande",
 			85 => "display_lampe",
 			86 => 'display_generic'
 	);
@@ -371,17 +278,6 @@ function display_clim($info){
 	return $display;
 }
 
-// Widget Aspiration
-function display_aspiration($info){
-	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
-	
-	if (!empty($info->device_opt->{12})){
-		$display.=display_OnOff($info);
-	}
-	
-	return $display;
-}
-
 // widget Audio
 function display_audio($info){
 	$display = '';
@@ -519,7 +415,7 @@ function display_commande($info){
 //widget lampe
 function display_lampe($info){
 	$display = '';
-	if (!empty($info->device_id) && !((!empty($info->device_opt->{153})) || $info->device_id == 78 || $info->device_id == 85)){
+	if (!empty($info->device_id) && !((!empty($info->device_opt->{153})) || $info->device_id == 85)){
 		$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	}
 	if (!empty($info->device_id) && !empty($info->device_opt->{153})){
@@ -538,21 +434,16 @@ function display_lampe($info){
 						<span class="fa fa-info-circle md"></span>
 						</button>
 					</div>';
-		if ($info->device_id != 78 && $info->device_id != 85){
+		if ($info->device_id != 85){
 			$display .= '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 		}
 	}
-	if (!empty($info->device_id) && ($info->device_id == 78 || $info->device_id == 85)){
+	if (!empty($info->device_id) && $info->device_id == 85){
 		$display .= '<div class="info-widget foreground-widget">';
 		
-		if ($info->device_id == 85){
-			$display .=	'<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 1)" class="btn btn-greenleaf" type="button">';
-		}
-		else{
-			$display .=	'<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 0)" class="btn btn-greenleaf" type="button">';
-		}
-		$display .=			'<span class="fa fa-plus md"></span>
-						</button>
+		$display .= '<button title="'._('More').'" onclick="popupChromaWheel('.$info->room_device_id.', 0, 0, 1)" class="btn btn-greenleaf" type="button">';
+		$display .= '<span class="fa fa-plus md"></span>';
+		$display .= '</button>
 					</div>
 					<h3 class="title">'.$info->name.'</h3>';
 	}

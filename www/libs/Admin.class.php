@@ -1763,8 +1763,7 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
-		               optiondef.option_id,
+		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
@@ -1778,7 +1777,7 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
+			if(!empty($listDevice[$do->room_device_id])) {
 				if ($do->option_id == 399){
 					$highCost = $res[14]->configuration_value;
 					$lowCost = $res[15]->configuration_value;

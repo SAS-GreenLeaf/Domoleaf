@@ -266,7 +266,6 @@ class User {
 		$sql = 'SELECT device_id, protocol_id, application_id,
 		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name
 		        FROM device
-		        WHERE mc_element=1
 		        ORDER BY name ASC';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -281,16 +280,14 @@ class User {
 		}
 		
 		$sql = 'SELECT device_option. device_id, device_option.option_id,
-		               if(protocol_id IS NULL,0,protocol_id) as protocol_id,
-		               hidden_arg, groupe, bydefault,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM device_option
 		        JOIN optiondef ON optiondef.option_id=device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if(!empty($list[$do->device_id]) and $do->hidden_arg & 0x04) {
-				$list[$do->device_id]['protocol_option'][$do->protocol_id][$do->option_id] = clone $do;
+			if(!empty($list[$do->device_id])) {
+				$list[$do->device_id]['protocol_option'][$do->option_id] = clone $do;
 			}
 		}
 		
@@ -786,8 +783,7 @@ class User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
-		               optiondef.option_id,
+		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
@@ -801,7 +797,7 @@ class User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
+			if(!empty($listDevice[$do->room_device_id])) {
 				if ($do->option_id == 399){
 					$highCost = $res[14]->configuration_value;
 					$lowCost = $res[15]->configuration_value;
@@ -2577,7 +2573,7 @@ class User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
+		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr_plus, room_device_option.valeur
@@ -2588,15 +2584,13 @@ class User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4) {
-				$list[$do->room_device_id]['device_opt'][$do->option_id] = array(
-					'option_id'=> $do->option_id,
-					'name'     => $do->name,
-					'addr'     => $do->addr,
-					'addr_plus'=> $do->addr_plus,
-					'valeur'   => $do->valeur
-				);
-			}
+			$list[$do->room_device_id]['device_opt'][$do->option_id] = array(
+				'option_id'=> $do->option_id,
+				'name'     => $do->name,
+				'addr'     => $do->addr,
+				'addr_plus'=> $do->addr_plus,
+				'valeur'   => $do->valeur
+			);
 		}
 		return $list;
 	}
@@ -2641,7 +2635,7 @@ class User {
 				'device_opt'    => array()
 		);
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
+		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr_plus, room_device_option.valeur
@@ -2654,15 +2648,13 @@ class User {
 		$req->bindValue(':room_device_id', $roomdeviceid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4) {
-				$info['device_opt'][$do->option_id] = array(
-					'option_id' => $do->option_id,
-					'name'      => $do->name,
-					'addr'      => $do->addr,
-					'addr_plus' => $do->addr_plus,
-					'valeur'    => $do->valeur
-				);
-			}
+			$info['device_opt'][$do->option_id] = array(
+				'option_id' => $do->option_id,
+				'name'      => $do->name,
+				'addr'      => $do->addr,
+				'addr_plus' => $do->addr_plus,
+				'valeur'    => $do->valeur
+			);
 		}
 		return $info;
 	}
