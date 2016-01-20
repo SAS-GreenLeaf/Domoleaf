@@ -1021,7 +1021,7 @@ a.carousel-control-camera:hover {
 	background-color: #76af1a;
 }
 
-.navbar-inverse .navbar-brand,
+≈,
 .navbar-inverse .navbar-nav > li > a {
 	color : white;
 }
@@ -1031,6 +1031,12 @@ a.carousel-control-camera:hover {
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
 	color : #EEEEEE;
+}
+
+@media screen and (max-width : 768px){
+	.navbar-inverse .navbar-brand.navbar-xshide {
+		display:none
+	}
 }
 
 .btn-hide {
