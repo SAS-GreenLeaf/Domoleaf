@@ -67,20 +67,20 @@ class InfoSys:
         ip = ([(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
         return ip
     
-def ipVPN():
-    private = InfoSys.ipPrivate();
-    parser = DaemonConfigParser(SLAVE_CONF_FILE);
-    server = parser.getValueFromSection('openvpn', 'openvpnserver').encode()
-    
-    if server.decode() == 'none':
+    def ipVPN():
+        private = InfoSys.ipPrivate();
+        parser = DaemonConfigParser(SLAVE_CONF_FILE);
+        server = parser.getValueFromSection('openvpn', 'openvpnserver').encode()
+        
+        if server.decode() == 'none':
+            return '';
+        
+        vpn = ([(s.connect((server, 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+        
+        if private != vpn:
+            return vpn;
+        
         return '';
-    
-    vpn = ([(s.connect((server, 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
-    
-    if private != vpn:
-        return vpn;
-    
-    return '';
     
     def temperature():
         p = Popen(['cat', '/sys/class/thermal/thermal_zone0/temp'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
