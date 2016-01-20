@@ -79,6 +79,18 @@ VALUES
 	(414, 'Eco', '', '', 'Eco', ''),
 	(415, 'Frost free', '', '', 'Hors gel', ''),
 	(416, 'Comfort -1°C', '', '', 'Confort -1°C', ''),
-	(417, 'Comfort -2°C', '', '', 'Confort -2°C', '');
+	(417, 'Comfort -2°C', '', '', 'Confort -2°C', ''),
+	(425, 'Auto', '', '', 'Auto', ''),
+	(426, 'Heat', '', '', 'Chauffage', ''),
+	(427, 'Morning Warmup', '', '', 'Préchauffage', ''),
+	(428, 'Cool', '', '', 'Froid', ''),
+	(429, 'Night Purge', '', '', 'Nettoyage', ''),
+	(430, 'Precool', '', '', 'Pré-refroidissement', ''),
+	(431, 'Off', '', '', 'Off', ''),
+	(432, 'Test', '', '', 'Test', ''),
+	(433, 'Emergency Heat', '', '', 'Chauffage rapide', ''),
+	(434, 'Fan only', '', '', 'Ventilateur seulement', ''),
+	(435, 'Free Cool', '', '', 'Restitution de froid', ''),
+	(436, 'Ice', '', '', 'Froid intense', '');
 
 SET FOREIGN_KEY_CHECKS=1;

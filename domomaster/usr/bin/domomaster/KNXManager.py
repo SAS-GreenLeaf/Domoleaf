@@ -198,22 +198,22 @@ class KNXManager:
         sock.close();
         return;
     
-    def send_to_thermostat(self, json_obj_2, dev, hostname):
+    def send_to_thermostat(self, json_obj, dev, hostname):
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
         
-        if json_obj_2['data']['option_id'] == '412':
+        if json_obj['data']['option_id'] == '412':
             val = 1;
-        elif json_obj_2['data']['option_id'] == '413':
+        elif json_obj['data']['option_id'] == '413':
             val = 2;
-        elif json_obj_2['data']['option_id'] == '414':
+        elif json_obj['data']['option_id'] == '414':
             val = 4;
-        elif json_obj_2['data']['option_id'] == '415':
+        elif json_obj['data']['option_id'] == '415':
             val = 8;
-        elif json_obj_2['data']['option_id'] == '416':
+        elif json_obj['data']['option_id'] == '416':
             val = 16;
-        elif json_obj_2['data']['option_id'] == '417':
+        elif json_obj['data']['option_id'] == '417':
             val = 32;
         else:
             val = 0
@@ -230,3 +230,45 @@ class KNXManager:
             self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
             sock.close();
             return;
+    
+    def send_clim_mode(self, json_obj, dev, hostname):
+        if json_obj['data']['option_id'] == '425': #Auto
+            val = 0
+        elif json_obj['data']['option_id'] == '426': #Heat
+            val = 1
+        elif json_obj['data']['option_id'] == '427': #Morning Warmup
+            val = 2
+        elif json_obj['data']['option_id'] == '428': #Cool
+            val = 3
+        elif json_obj['data']['option_id'] == '429': #Night Purge
+            val = 4
+        elif json_obj['data']['option_id'] == '430': #Precool
+            val = 5
+        elif json_obj['data']['option_id'] == '431': #Off
+            val = 6
+        elif json_obj['data']['option_id'] == '432': #Test
+            val = 7
+        elif json_obj['data']['option_id'] == '433': #Emergency Heat
+            val = 8
+        elif json_obj['data']['option_id'] == '434': #Fan only
+            val = 9
+        elif json_obj['data']['option_id'] == '435': #Free Cool
+            val = 10
+        elif json_obj['data']['option_id'] == '436': #Ice
+            val = 11
+        else:
+            val = -1
+        
+        if val >= 0:
+            json_str = json.JSONEncoder().encode(
+                {
+                    "packet_type": "knx_write_long",
+                    "addr_to_send": str(dev['addr_dst']),
+                    "value": val
+                }
+            );
+            sock = socket.create_connection((hostname, port));
+            self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+            sock.close();
+            return;
+

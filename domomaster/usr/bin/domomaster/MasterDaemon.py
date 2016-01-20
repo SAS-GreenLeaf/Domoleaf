@@ -164,7 +164,8 @@ class MasterDaemon:
               4 : self.knx_manager.send_knx_write_temp,
               5 : IP_IRManager().send_to_gc,
               6 : self.knx_manager.send_on,
-              7 : self.knx_manager.send_to_thermostat
+              7 : self.knx_manager.send_to_thermostat,
+              8 : self.knx_manager.send_clim_mode
         };
         self.upnp_function = {
             UPNP_PLAY           : self.upnp_set_play,
