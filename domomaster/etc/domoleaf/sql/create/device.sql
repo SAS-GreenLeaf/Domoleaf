@@ -48,7 +48,7 @@ VALUES
 	(43, 'Motion sensor', 1, 17, '', '', 'Détecteur de mouvements', ''),
 	(47, 'Electricity meter', 1, 4, '', '', 'Compteur électrique', ''),
 	(49, 'Thermostat', 1, 2, '', '', 'Thermostat', ''),
-	(50, 'Lecteur réseau', 6, 6, '', '', 'Network drive', ''),
+	(50, 'Network drive', 6, 6, '', '', 'Lecteur réseau', ''),
 	(51, 'Binary input', 1, 17, '', '', 'Entrée Binaire', ''),
 	(52, 'Sliding door', 1, 15, '', '', 'Baie Coulissante', ''),
 	(54, 'Porte', 1, 15, '', '', 'Porte', ''),
