@@ -59,7 +59,7 @@ VALUES
 	(368, NULL, '', '', 'Muet', ''),
 	(371, NULL, '', '', 'Sirène', ''),
 	(383, NULL, '', '', 'Volume', ''),
-	(388, NULL, '', '', 'Température de consigne', ''),
+	(388, 'Setpoint temperature', '', '', 'Température de consigne', ''),
 	(392, NULL, '', '', 'Varié Rouge', ''),
 	(393, NULL, '', '', 'Varié Vert', ''),
 	(394, NULL, '', '', 'Varié Bleu', ''),
