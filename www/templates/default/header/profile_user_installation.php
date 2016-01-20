@@ -6,7 +6,7 @@ $request -> add_request('profileList');
 $request -> add_request('profileInfo');
 $result  =  $request -> send_request();
 
-echo '<title>'._('Profile').'</title>';
+echo '<title>'._('User Customisation').'</title>';
 
 $userid = $request->getId();
 $listuser = $result->profileList;
