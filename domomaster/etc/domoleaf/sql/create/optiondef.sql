@@ -31,7 +31,7 @@ VALUES
 	(97, NULL, '', '', 'Détection de mouvements', ''),
 	(112, NULL, '', '', 'Détection InfraRouge', ''),
 	(113, NULL, '', '', 'Détection UltraSonic', ''),
-	(153, NULL, '', '', 'Détection de courant', ''),
+	(153, 'Current detection', '', '', 'Détection de courant', ''),
 	(173, NULL, '', '', 'Pluie', ''),
 	(174, NULL, '', '', 'Vent', ''),
 	(176, NULL, '', '', 'Diagnostic Bus', ''),
