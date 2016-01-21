@@ -146,7 +146,7 @@ else if ($device->protocol_id == 2){
 echo '
 </div>&nbsp;
 
-<div class="col-xs-12 col-xs-offset-5 btn-group btn-group-greenleaf center">
+<div class="col-xs-12 center">
 	<button type="button" id="saveinfo" title="'._('Save').'" class="btn btn-greenleaf" onclick="SaveInfo()">'._('Save').'</button>
 </div>
 
