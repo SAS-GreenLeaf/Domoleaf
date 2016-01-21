@@ -82,6 +82,43 @@ if (!empty($_GET['iddevice'])){
 		echo '<button onclick="launchGeneric('.$device->room_device_id.', 415)" class="btn btn-info">'._('Frost free').'</button> ';
 	}
 	
+	if (!empty($device->device_opt->{425})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 425)" class="btn btn-info">'._('Auto').'</button> ';
+	}
+	if (!empty($device->device_opt->{426})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 426)" class="btn btn-info">'._('Heat').'</button> ';
+	}
+	if (!empty($device->device_opt->{427})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 427)" class="btn btn-info">'._('Morning Warmup').'</button> ';
+	}
+	if (!empty($device->device_opt->{428})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 428)" class="btn btn-info">'._('Cool').'</button> ';
+	}
+	if (!empty($device->device_opt->{429})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 429)" class="btn btn-info">'._('Night Purge').'</button> ';
+	}
+	if (!empty($device->device_opt->{430})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 430)" class="btn btn-info">'._('Precool').'</button> ';
+	}
+	if (!empty($device->device_opt->{431})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 431)" class="btn btn-info">'._('Off').'</button> ';
+	}
+	if (!empty($device->device_opt->{432})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 432)" class="btn btn-info">'._('Test').'</button> ';
+	}
+	if (!empty($device->device_opt->{433})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 433)" class="btn btn-info">'._('Chauffage rapide').'</button> ';
+	}
+	if (!empty($device->device_opt->{434})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 434)" class="btn btn-info">'._('Ventilateur seulement').'</button> ';
+	}
+	if (!empty($device->device_opt->{435})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 435)" class="btn btn-info">'._('Restitution de froid').'</button> ';
+	}
+	if (!empty($device->device_opt->{436})){
+		echo '<button onclick="launchGeneric('.$device->room_device_id.', 436)" class="btn btn-info">'._('Froid intense').'</button> ';
+	}
+	
 	echo '<div class="clearfix"></div><br/>';
 	echo '<button onclick="popup_close()" class="btn btn-danger">'._('Close').' <span class="glyphicon glyphicon-remove"></span></button>'.
 		'</div>';

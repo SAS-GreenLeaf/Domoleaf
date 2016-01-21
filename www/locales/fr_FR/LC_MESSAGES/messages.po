@@ -1284,7 +1284,7 @@ msgstr "Nom d'utilisateur SMTP"
 msgid "SMTP Password"
 msgstr "Mot de passe SMTP"
 
-#: include/conf_general.php:103
+#: include/conf_general.php:103 popup/popup_clim.php
 msgid "Test"
 msgstr "Tester"
 
@@ -1717,7 +1717,7 @@ msgstr "On"
 
 #: include/profile_user_scenarios.php:61 function/display_widget.php:608
 #: function/display_widget.php:625 function/display_widget.php:642
-#: function/display_widget.php:650
+#: function/display_widget.php:650 popup/popup_clim.php
 msgid "Off"
 msgstr "Off"
 
@@ -2107,3 +2107,43 @@ msgstr "Saisissez votre email"
 #: home.php
 msgid "Thermostat"
 msgstr "Thermostat"
+
+#: popup/popup_clim.php
+msgid "Auto"
+msgstr "Auto"
+
+#: popup/popup_clim.php
+msgid "Heat"
+msgstr "Chauffage"
+
+#: popup/popup_clim.php
+msgid "Morning Warmup"
+msgstr "Préchauffage"
+
+#: popup/popup_clim.php
+msgid "Cool"
+msgstr "Froid"
+
+#: popup/popup_clim.php
+msgid "Night Purge"
+msgstr "Nettoyage"
+
+#: popup/popup_clim.php
+msgid "Precool"
+msgstr "Pré-refroidissement"
+
+#: popup/popup_clim.php
+msgid "Emergency Heat"
+msgstr "Chauffage rapide"
+
+#: popup/popup_clim.php
+msgid "Fan only"
+msgstr "Ventilateur seulement"
+
+#: popup/popup_clim.php
+msgid "Free Cool"
+msgstr "Restitution de froid"
+
+#: popup/popup_clim.php
+msgid "Ice"
+msgstr "Froid intense"
