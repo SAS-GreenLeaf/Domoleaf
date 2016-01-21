@@ -411,6 +411,9 @@ function display_commande($info){
 	if (!empty($info->device_opt->{72})){
 		$display.= display_temperature($info);
 	}
+	if (!empty($info->device_opt->{174})){
+		$display.= display_wind($info);
+	}
 	
 	if (!empty($info->device_opt->{437})){
 		if (!empty($info->device_opt->{438})){
@@ -750,6 +753,21 @@ function display_temperature($info){
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{72}->option_id.'">'.$tmp.'</span>
 					<span>'.$info->device_opt->{72}->unit.'</span>
 				</div>';
+
+	return $display;
+}
+
+function display_wind($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{174}->valeur)){
+		$tmp = $info->device_opt->{174}->valeur;
+	}
+	$display = '
+	<div class="foreground-widget">
+		<i class="fa fa-flag-o "></i>
+		<span id="widget-'.$info->room_device_id.'-174">'.$tmp.'</span>
+		<span>'.$info->device_opt->{174}->unit.'</span>
+	</div>';
 
 	return $display;
 }
