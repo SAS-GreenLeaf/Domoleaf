@@ -17,6 +17,7 @@ CREATE TABLE `dpt_optiondef` (
 
 INSERT INTO `dpt_optiondef` (`option_id`, `dpt_id`, `protocol_id`, `function_id`)
 VALUES
+	(6, 79, 1, 0),
 	(12, 2, 1, 1),
 	(12, 468, 6, 4),
 	(12, 469, 6, 5),
@@ -30,6 +31,7 @@ VALUES
 	(79, 153, 1, 0),
 	(92, 2, 1, 0),
 	(96, 2, 1, 1),
+	(173, 89, 1, 0),
 	(174, 77, 1, 0),
 	(153, 3, 1, 0),
 	(181, 2, 1, 1),

@@ -393,6 +393,9 @@ function display_commande($info){
 	if (!empty($info->device_opt->{6})){
 		$display.=display_hygrometry($info);
 	}
+	if (!empty($info->device_opt->{173})){
+		$display.=display_rain($info);
+	}
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
@@ -853,6 +856,19 @@ function display_hygrometry($info){
 	$display = '<div class="foreground-widget">
 					<i class="fa fa-tint"></i>
 					<span id="widget-'.$info->room_device_id.'-'.$info->device_opt->{6}->option_id.'">'.$hygro.'</span> %
+				</div>';
+
+	return $display;
+}
+function display_rain($info){
+	$rain = '0';
+	if (!empty($info->device_opt->{173}->valeur)){
+		$rain = $info->device_opt->{173}->valeur;
+	}
+	$display = '<div class="foreground-widget">
+					<i class="fa fa-umbrella"></i>
+					<span id="widget-'.$info->room_device_id.'-173">'.($rain).'</span>
+					<span>'.$info->device_opt->{173}->unit.'</span>
 				</div>';
 
 	return $display;
