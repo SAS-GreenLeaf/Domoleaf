@@ -91,6 +91,10 @@ VALUES
 	(433, 'Emergency Heat', '', '', 'Chauffage rapide', ''),
 	(434, 'Fan only', '', '', 'Ventilateur seulement', ''),
 	(435, 'Free Cool', '', '', 'Restitution de froid', ''),
-	(436, 'Ice', '', '', 'Froid intense', '');
+	(436, 'Ice', '', '', 'Froid intense', ''),
+	(437, 'Channel 1', '', '', 'Canal 1', ''),
+	(438, 'Channel 2', '', '', 'Canal 2', ''),
+	(439, 'Channel 3', '', '', 'Canal 3', ''),
+	(440, 'Channel 4', '', '', 'Canal 4', '');
 
 SET FOREIGN_KEY_CHECKS=1;

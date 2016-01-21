@@ -248,7 +248,10 @@ function resetError(room_device_id, device_opt){
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	var lamp_device = ["3", "4", "6", "55", "56", "57"];
 
-	if (idopt == 12){
+	if (idopt == 6){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	}
+	else if (idopt == 12){
 		if($("#onoff-"+roomdeviceid).hasClass('unlockwidget')) {
 			$("#onoff-"+roomdeviceid).removeClass('unlockwidget');
 			return;
@@ -291,8 +294,25 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	else if (idopt == 79){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	else if (idopt == 6){
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	else if (idopt == 92){
+		if (val.valeur == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
+		}
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
+		}
+	}
+	else if (idopt == 153){
+		if (val.valeur == 0){
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");
+		}
+		else{
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
+		}
 	}
 	else if (idopt == 388){
 		$("#output-mp-"+roomdeviceid).html(val.valeur);
@@ -339,8 +359,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 				cost = val.lowCost;
 			}
 		}
-
-
+		
 		h1 = val.lowField2.split("-")[0];
 		h2 = val.lowField2.split("-")[1];
 		
@@ -367,14 +386,14 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	else if (idopt == 407){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
-	else if (idopt == 153){
-		if (val.valeur == 0){
-			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
-			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");
+	else if (idopt == 437 || idopt == 438 || idopt == 439 || idopt == 440){
+		if (val.valeur == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
 		}
-		else{
-			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
-			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
 		}
 	}
 }

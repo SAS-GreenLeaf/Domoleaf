@@ -28,7 +28,7 @@ function getIcon($iddevice = 1){
 			47 => 'fa fa-bolt',
 			49 => 'fi flaticon-thermometer2',
 			50 => 'fa fa-volume-up',
-			51 => 'fa fa-question',
+			51 => 'fa fa-chain-broken',
 			52 => 'fa fa-sort-amount-asc rotate--90',
 			54 => 'fi flaticon-open203',
 			60 => 'fa fa-question',
@@ -127,9 +127,9 @@ function display_alarm($info){
 				</button>
 			</div>
 			<h3 class="title">'.$info->name.'</h3>';
-
+	
 	if (!empty($info->device_opt->{92})){
-		$display.= display_led($info, 92);
+		$display.= display_led($info, 92, 5);
 	}
 	
 	return $display;
@@ -408,7 +408,33 @@ function display_commande($info){
 	if (!empty($info->device_opt->{72})){
 		$display.= display_temperature($info);
 	}
-
+	
+	if (!empty($info->device_opt->{437})){
+		if (!empty($info->device_opt->{438})){
+			$display.= '<div class="col-xs-6">';
+		}
+		else {
+			$display.= '<div class="col-xs-12">';
+		}
+		$display.= display_led($info, 437, 4);
+		$display.= '</div>';
+	}
+	if (!empty($info->device_opt->{438})){
+		$display.= '<div class="col-xs-6">';
+		$display.= display_led($info, 438, 4);
+		$display.= '</div>';
+	}
+	if (!empty($info->device_opt->{439})){
+		$display.= '<div class="col-xs-6">';
+		$display.= display_led($info, 439, 4);
+		$display.= '</div>';
+	}
+	if (!empty($info->device_opt->{440})){
+		$display.= '<div class="col-xs-6">';
+		$display.= display_led($info, 440, 4);
+		$display.= '</div>';
+	}
+	
 	return $display;
 }
 
@@ -726,20 +752,24 @@ function display_temperature($info){
 }
 
 // Led
-function display_led($info, $option_id){
+function display_led($info, $option_id, $size=5){
 	$tmp = '0';
 	if (!empty($info->device_opt->{$option_id}->valeur)){
 		$tmp = $info->device_opt->{$option_id}->valeur;
 	}
 	if ($tmp == '0'){
-		$display = '<div class="foreground-widget">
-						<i class="glyphicon glyphicon-record led-off"></i>
-					</div>';
+		$display = '
+		<div class="foreground-widget">
+			<i id="command-'.$info->room_device_id.'-'.$option_id.'" 
+			   class="glyphicon glyphicon-record led-off glyphicon-'.$size.'"></i>
+		</div>';
 	}
 	else{
-		$display = '<div class="foreground-widget">
-						<i class="glyphicon glyphicon-record led-on"></i>
-					</div>';
+		$display = '
+		<div class="foreground-widget">
+			<i id="command-'.$info->room_device_id.'-'.$option_id.'" 
+			   class="glyphicon glyphicon-record led-on glyphicon-'.$size.'"></i>
+		</div>';
 	}
 	return $display;
 }

@@ -740,17 +740,20 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 }
 
 .glyphicon.led-on {
-    font-size: 5em;
-    color: green;
+	color: green;
+}
+.glyphicon.led-off {
+	color: red;
 }
 
-.glyphicon.led-off {
-    font-size: 5em;
-    color: red;
+.glyphicon-4 {
+	font-size: 4em;
+}
+.glyphicon-5 {
+	font-size: 5em;
 }
 
 /* java apps */
-
 img {
   border: 0px;
 }
