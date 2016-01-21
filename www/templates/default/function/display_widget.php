@@ -129,7 +129,7 @@ function display_alarm($info){
 			<h3 class="title">'.$info->name.'</h3>';
 
 	if (!empty($info->device_opt->{92})){
-		$display.= display_led($info);
+		$display.= display_led($info, 92);
 	}
 	
 	return $display;
@@ -726,10 +726,10 @@ function display_temperature($info){
 }
 
 // Led
-function display_led($info){
+function display_led($info, $option_id){
 	$tmp = '0';
-	if (!empty($info->device_opt->{92}->valeur)){
-		$tmp = $info->device_opt->{92}->valeur;
+	if (!empty($info->device_opt->{$option_id}->valeur)){
+		$tmp = $info->device_opt->{$option_id}->valeur;
 	}
 	if ($tmp == '0'){
 		$display = '<div class="foreground-widget">
