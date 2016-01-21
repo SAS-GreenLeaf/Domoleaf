@@ -63,7 +63,7 @@ VALUES
 	(392, NULL, '', '', 'Varié Rouge', ''),
 	(393, NULL, '', '', 'Varié Vert', ''),
 	(394, NULL, '', '', 'Varié Bleu', ''),
-	(399, 'Consumption', '', '', 'Consommation', ''),
+	(399, 'Energy', '', '', 'Énergie', ''),
 	(400, 'Ventilation 0', '', '', 'Ventilation 0', ''),
 	(401, 'Ventilation 1', '', '', 'Ventilation 1', ''),
 	(402, 'Ventilation 2', '', '', 'Ventilation 2', ''),
