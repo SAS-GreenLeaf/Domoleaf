@@ -414,6 +414,9 @@ function display_commande($info){
 	if (!empty($info->device_opt->{174})){
 		$display.= display_wind($info);
 	}
+	if (!empty($info->device_opt->{73})){
+		$display.= display_co2($info);
+	}
 	
 	if (!empty($info->device_opt->{437})){
 		if (!empty($info->device_opt->{438})){
@@ -767,6 +770,21 @@ function display_wind($info){
 		<i class="fa fa-flag-o "></i>
 		<span id="widget-'.$info->room_device_id.'-174">'.$tmp.'</span>
 		<span>'.$info->device_opt->{174}->unit.'</span>
+	</div>';
+
+	return $display;
+}
+
+function display_co2($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{73}->valeur)){
+		$tmp = $info->device_opt->{73}->valeur;
+	}
+	$display = '
+	<div class="foreground-widget">
+		'._('CO2').'
+		<span id="widget-'.$info->room_device_id.'-73">'.$tmp.'</span>
+		<span>'.$info->device_opt->{73}->unit.'</span>
 	</div>';
 
 	return $display;

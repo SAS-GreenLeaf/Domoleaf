@@ -24,7 +24,7 @@ VALUES
 	(13, 'Varié', '', '', 'Varié', ''),
 	(54, 'Montée/Descente', '', '', 'Montée/Descente', ''),
 	(72, NULL, '', '', 'Température', ''),
-	(73, NULL, '', '', 'CO2', ''),
+	(73, 'CO2', 'CO2', 'CO2', 'CO2', 'CO2'),
 	(79, NULL, '', '', 'Luminosité', ''),
 	(92, NULL, '', '', 'Lumineuse', ''),
 	(96, NULL, '', '', 'Ouverture/Fermeture', ''),
