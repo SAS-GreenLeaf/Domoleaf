@@ -390,12 +390,6 @@ function display_shutter($info){
 function display_commande($info){
 	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
 	
-	if (!empty($info->device_opt->{6})){
-		$display.=display_hygrometry($info);
-	}
-	if (!empty($info->device_opt->{173})){
-		$display.=display_rain($info);
-	}
 	if (!empty($info->device_opt->{12})){
 		$display.=display_OnOff($info);
 	}
@@ -405,17 +399,40 @@ function display_commande($info){
 	if (!empty($info->device_opt->{54})){
 		$display.=display_UpDown($info);
 	}
+	
+	$tab = array();
+	if (!empty($info->device_opt->{6})){
+		$tab[] = display_hygrometry($info);
+	}
+	if (!empty($info->device_opt->{173})){
+		$tab[] = display_rain($info);
+	}
 	if (!empty($info->device_opt->{79})){
-		$display.=display_luminosity($info);
+		$tab[] = display_luminosity($info);
 	}
 	if (!empty($info->device_opt->{72})){
-		$display.= display_temperature($info);
+		$tab[] = display_temperature($info);
 	}
 	if (!empty($info->device_opt->{174})){
-		$display.= display_wind($info);
+		$tab[] = display_wind($info);
 	}
 	if (!empty($info->device_opt->{73})){
-		$display.= display_co2($info);
+		$tab[] = display_co2($info);
+	}
+	
+	$size = sizeof($tab);
+	if($size == 1) {
+		$display.= $tab[0];
+	}
+	elseif($size > 1) {
+		for($i=0;$i<$size;$i++) {
+			if($i > 0 && $i%2 == 0) {
+				$display.= '<div class="clearfix"></div>';
+			}
+			$display.= '<div class="col-xs-6">';
+			$display.= $tab[i];
+			$display.= '</div>';
+		}
 	}
 	
 	if (!empty($info->device_opt->{437})){
@@ -785,6 +802,21 @@ function display_co2($info){
 		'._('CO2').'
 		<span id="widget-'.$info->room_device_id.'-73">'.$tmp.'</span>
 		<span>'.$info->device_opt->{73}->unit.'</span>
+	</div>';
+
+	return $display;
+}
+
+function display_voc($info){
+	$tmp = '0';
+	if (!empty($info->device_opt->{441}->valeur)){
+		$tmp = $info->device_opt->{441}->valeur;
+	}
+	$display = '
+	<div class="foreground-widget">
+		'._('VOC').'
+		<span id="widget-'.$info->room_device_id.'-441">'.$tmp.'</span>
+		<span>'.$info->device_opt->{441}->unit.'</span>
 	</div>';
 
 	return $display;

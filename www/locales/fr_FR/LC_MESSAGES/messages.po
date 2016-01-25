@@ -2147,3 +2147,7 @@ msgstr "Restitution de froid"
 #: popup/popup_clim.php
 msgid "Ice"
 msgstr "Froid intense"
+
+#: function/display_widget.php
+msgid "VOC"
+msgstr "COV"
