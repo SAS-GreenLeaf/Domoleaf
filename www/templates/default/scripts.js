@@ -304,6 +304,16 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
 		}
 	}
+	else if(idopt == 97 || idopt == 112 || idopt == 113) {
+		if (val.valeur == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
+		}
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
+		}
+	}
 	else if (idopt == 153){
 		if (val.valeur == 0){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");

@@ -24,7 +24,7 @@ function getIcon($iddevice = 1){
 			31 => 'fa fa-sort-amount-asc rotate--90',
 			33 => 'fa fa-fire',
 			38 => 'fi flaticon-switches4',
-			43 => 'fa fa-question',
+			43 => 'fa fa-hand-paper-o',
 			47 => 'fa fa-bolt',
 			49 => 'fi flaticon-thermometer2',
 			50 => 'fa fa-volume-up',
@@ -430,7 +430,7 @@ function display_commande($info){
 				$display.= '<div class="clearfix"></div>';
 			}
 			$display.= '<div class="col-xs-6">';
-			$display.= $tab[i];
+			$display.= $tab[$i];
 			$display.= '</div>';
 		}
 	}
@@ -461,6 +461,36 @@ function display_commande($info){
 		$display.= '</div>';
 	}
 	
+	$tab = array();
+	if (!empty($info->device_opt->{97})){
+		$tab[] = 97;
+	}
+	if (!empty($info->device_opt->{112})){
+		$tab[] = 112;
+	}
+	if (!empty($info->device_opt->{113})){
+		$tab[] = 113;
+	}
+	$size = sizeof($tab);
+	
+	if($size == 1) {
+		$display.= display_led($info, $tab[0], 5);
+	}
+	elseif($size >= 2) {
+		$display.= '<div class="col-xs-6">';
+		$display.= display_led($info, $tab[0], 4);
+		$display.= '</div>';
+		$display.= '<div class="col-xs-6">';
+		$display.= display_led($info, $tab[1], 4);
+		$display.= '</div>';
+		
+		if($size == 3) {
+			$display.= '<div class="col-xs-12">';
+			$display.= display_led($info, $tab[2], 4);
+			$display.= '</div>';
+		}
+	}
+	
 	return $display;
 }
 
@@ -482,7 +512,7 @@ function display_lampe($info){
 			$display .= '       class="btn btn-greenleaf"';
 		}
 		$display .=
-					           'type="button">
+					           ' type="button">
 						<span class="fa fa-info-circle md"></span>
 						</button>
 					</div>';
