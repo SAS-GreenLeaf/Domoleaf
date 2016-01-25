@@ -382,7 +382,7 @@ function display_shutter($info){
 	if (!empty($info->device_opt->{54})){
 		$display.=display_UpDown($info);
 	}
-
+	
 	return $display;
 }
 
@@ -693,7 +693,7 @@ function display_OnOff($info, $popup = 0){
 }
 
 //Varie
-function display_varie($info, $var_icon = 1){
+function display_varie($info, $var_icon = 1, $option_id=13){
 	$display = '<div class="col-xs-12">';
 	if ($var_icon == 1) {
 		$left_icon = "fa-certificate";
@@ -707,11 +707,11 @@ function display_varie($info, $var_icon = 1){
 		// KNX
 		case 1:
 				$display .= 
-							'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
+							'<div onclick="Variation(\''.$info->room_device_id.'\', '.$option_id.', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 								<i class="fa '.$left_icon.'"></i>
 							</div>';
-							if ($info->device_opt->{13}->valeur > 0){
-								$val = ceil(($info->device_opt->{13}->valeur * 100) / 255);
+							if ($info->device_opt->{$option_id}->valeur > 0){
+								$val = ceil(($info->device_opt->{$option_id}->valeur * 100) / 255);
 								$display.=
 										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 											<output id="range-'.$info->room_device_id.'"
@@ -730,19 +730,19 @@ function display_varie($info, $var_icon = 1){
 										</div>';
 							}
 							$display.=
-										'<div onclick="Variation(\''.$info->room_device_id.'\', \'13\', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
+										'<div onclick="Variation(\''.$info->room_device_id.'\', '.$option_id.', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 											<i class="fa '.$right_icon.'"></i>
 										</div>';
-							if (!empty($info->device_opt->{13}->valeur)){
+							if (!empty($info->device_opt->{$option_id}->valeur)){
 								$display.=
 										'<div class="row foreground-widget">
-											<input value="'.$info->device_opt->{13}->valeur.'" min="0" step="1" max="255"
-											       onMouseDown="LockWidget('.$info->room_device_id.', 13)"
-											       onMouseUp="UnlockWidget('.$info->room_device_id.', 13)"
-											       ontouchstart="LockWidget('.$info->room_device_id.', 13)"
-											       ontouchend="UnlockWidget('.$info->room_device_id.', 13)"
+											<input value="'.$info->device_opt->{$option_id}->valeur.'" min="0" step="1" max="255"
+											       onMouseDown="LockWidget('.$info->room_device_id.', '.$option_id.')"
+											       onMouseUp="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
+											       ontouchstart="LockWidget('.$info->room_device_id.', '.$option_id.')"
+											       ontouchend="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
-											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
+											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{$option_id}->option_id.'\')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
 										</div>';
 							}
@@ -750,12 +750,12 @@ function display_varie($info, $var_icon = 1){
 								$display.=
 										'<div class="row foreground-widget">
 											<input value="128" min="0" step="1" max="255"
-											       onMouseDown="LockWidget('.$info->room_device_id.', 13)"
-											       onMouseUp="UnlockWidget('.$info->room_device_id.', 13)"
-											       ontouchstart="LockWidget('.$info->room_device_id.', 13)"
-											       ontouchend="UnlockWidget('.$info->room_device_id.', 13)"
+											       onMouseDown="LockWidget('.$info->room_device_id.', '.$option_id.')"
+											       onMouseUp="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
+											       ontouchstart="LockWidget('.$info->room_device_id.', '.$option_id.')"
+											       ontouchend="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
-											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{13}->option_id.'\')"
+											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{$option_id}->option_id.'\')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
 										</div>';
 							}

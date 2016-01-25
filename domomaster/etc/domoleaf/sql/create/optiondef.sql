@@ -96,6 +96,7 @@ VALUES
 	(438, 'Channel 2', '', '', 'Canal 2', ''),
 	(439, 'Channel 3', '', '', 'Canal 3', ''),
 	(440, 'Channel 4', '', '', 'Canal 4', ''),
-	(441, 'VOC', '', '', 'COV', '');
+	(441, 'VOC', '', '', 'COV', ''),
+	(442, 'Tilt', '', '', 'Inclinaison', '');
 
 SET FOREIGN_KEY_CHECKS=1;
