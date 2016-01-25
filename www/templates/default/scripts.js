@@ -458,12 +458,11 @@ function CustomPopup(type_elem, id_elem, userid){
 	});
 }
 
-function popupChromaWheel(iddevice, bg_color, userid, white){
-	white = typeof white !== 'undefined' ? white : 0;
+function popupChromaWheel(iddevice, bg_color, userid){
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/popup/popup_chroma_wheel.php",
-		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid+"&white="+white,
+		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',

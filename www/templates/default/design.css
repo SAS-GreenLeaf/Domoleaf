@@ -1089,6 +1089,13 @@ a.carousel-control-camera:hover {
 	display: inline;
 }
 
+/*** Fontawesome ***/
+.fa-flip-vertical-rotate-270 {
+	-webkit-transform: rotate(270deg) scale(1, -1);
+	-ms-transform: rotate(270deg) scale(1, -1);
+	transform: rotate(270deg) scale(1, -1);
+}
+
 /*** Partie deco ***/
 
 /* Sign in */

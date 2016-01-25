@@ -2151,3 +2151,7 @@ msgstr "Froid intense"
 #: function/display_widget.php
 msgid "VOC"
 msgstr "COV"
+
+#: include/home.php
+msgid "Blind"
+msgstr "Store"

@@ -33,7 +33,7 @@ VALUES
 	(10, 'Rolling shutter', 1, 3, '', '', 'Volet roulant', ''),
 	(11, 'Store banne', 1, 3, '', '', 'Store banne', ''),
 	(15, 'CD player', 6, 6, '', '', 'Lecteur CD', ''),
-	(17, 'Amplifier', 7, 6, '', '', 'Ampli', ''),
+	(17, 'Amplifier', 6, 6, '', '', 'Ampli', ''),
 	(18, 'Watering pump', 1, 8, '', '', 'Pompe d\'arrosage', ''),
 	(20, 'Boiler', 1, 10, '', '', 'Chaudière', ''),
 	(22, 'Pool motor', 1, 8, '', '', 'Moteur de piscine', ''),

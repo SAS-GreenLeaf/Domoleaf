@@ -183,6 +183,9 @@ function HandlePopup(type, iddevice){
 	else if (type == 5){
 		var data = new Array("popup_clim.php", "'._('Thermostat').' <i class=\"fi flaticon-thermometer2\"></i>");
 	}
+	else if (type == 6){
+		var data = new Array("popup_blind.php", "'._('Blind').' <i class=\"fa fa-bars\"></i>");
+	}
 	
 	if (data){
 		$.ajax({

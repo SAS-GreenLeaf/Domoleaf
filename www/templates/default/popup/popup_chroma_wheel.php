@@ -34,7 +34,7 @@ if (!empty($_GET['iddevice'])) {
 				'</button>';
 			}
 		}
-	if (!empty($_GET['white']) && $_GET['white'] == 1) {
+	if (!empty($device_opt->{410}->valeur)) {
 		
 		echo '<br/>'.
 			 '<div onclick="Variation(\''.$_GET['iddevice'].'\', \'410\', -1, 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">'.
