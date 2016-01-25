@@ -73,15 +73,6 @@ UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
 UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
 UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
 
-# IDs for HttpReq protocol
-CAMERA_TOP          = 'top';                # Top command id
-CAMERA_BOTTOM       = 'bottom';             # Bottom command id
-CAMERA_LEFT         = 'left';               # Left command id
-CAMERA_RIGHT        = 'right';              # Right command id
-CAMERA_HOME         = 'home';               # Home command id
-CAMERA_PICTURE      = 'picture';            # Picture command id
-
-
 #################################################
 # Packet types that can be received and treated #
 #################################################
@@ -165,7 +156,8 @@ class MasterDaemon:
               5 : IP_IRManager().send_to_gc,
               6 : self.knx_manager.send_on,
               7 : self.knx_manager.send_to_thermostat,
-              8 : self.knx_manager.send_clim_mode
+              8 : self.knx_manager.send_clim_mode,
+              9 : self.camera_action
         };
         self.upnp_function = {
             UPNP_PLAY           : self.upnp_set_play,
@@ -177,14 +169,6 @@ class MasterDaemon:
             UPNP_VOLUME_UP      : self.upnp_set_volume_up,
             UPNP_VOLUME_DOWN    : self.upnp_set_volume_down,
             UPNP_SET_VOLUME     : self.upnp_set_volume
-        };
-        self.http_req_function = {
-            CAMERA_TOP          : self.camera_action,
-            CAMERA_BOTTOM       : self.camera_action,
-            CAMERA_LEFT         : self.camera_action,
-            CAMERA_RIGHT        : self.camera_action,
-            CAMERA_HOME         : self.camera_action,
-            CAMERA_PICTURE      : self.camera_action
         };
         self.enocean_function = {};
         self.data_function = {

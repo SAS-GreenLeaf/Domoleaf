@@ -288,7 +288,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#slider-value-"+roomdeviceid).attr("onchange", "getVariation(\'"+roomdeviceid+"\', \'"+idopt+"\')");
 		}
 	}
-	else if (idopt == 72){
+	else if (idopt == 72 || idopt == 73){
 		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
 	else if (idopt == 79){
@@ -323,6 +323,9 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
 			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
 		}
+	}
+	else if (idopt == 173 || idopt == 174){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
 	else if (idopt == 388){
 		$("#output-mp-"+roomdeviceid).html(val.valeur);
@@ -405,6 +408,9 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
 			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
 		}
+	}
+	else if (idopt == 441){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
 	}
 }
 
