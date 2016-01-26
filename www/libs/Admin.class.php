@@ -883,7 +883,7 @@ class Admin extends User {
 	 * @param string : password
 	 * @return NULL
 	 */
-	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr=''){
+	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
 		$link = Link::get_link('domoleaf');
 		
 		if(empty($idroom) or empty($name) or empty($devaddr) or empty($iddevice)) {
@@ -927,7 +927,8 @@ class Admin extends User {
 		if(empty($pass)){
 			$sql = 'UPDATE room_device
 			        SET name=:name, daemon_id=:daemon_id, addr=:addr, 
-			            room_id=:room_id, plus1=:plus1, plus2=:plus2, plus4=:plus4 
+			            room_id=:room_id, plus1=:plus1, plus2=:plus2, 
+			            plus4=:plus4, password=:password
 			        WHERE room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
@@ -938,13 +939,13 @@ class Admin extends User {
 			$req->bindValue(':plus1', $port, PDO::PARAM_STR);
 			$req->bindValue(':plus2', $login, PDO::PARAM_STR);
 			$req->bindValue(':plus4', $macaddr, PDO::PARAM_STR);
-			
+			$req->bindValue(':password', $password, PDO::PARAM_STR);
 		}
 		else {
 			$sql = 'UPDATE room_device
 			        SET name=:name, daemon_id=:daemon_id, addr=:addr, 
 			            room_id=:room_id, plus1=:plus1, plus2=:plus2, 
-			            plus3=:plus3, plus4=:plus4 
+			            plus3=:plus3, plus4=:plus4, password=:password
 			        WHERE room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
@@ -956,6 +957,7 @@ class Admin extends User {
 			$req->bindValue(':plus2', $login, PDO::PARAM_STR);
 			$req->bindValue(':plus3', $pass, PDO::PARAM_STR);
 			$req->bindValue(':plus4', $macaddr, PDO::PARAM_STR);
+			$req->bindValue(':password', $password, PDO::PARAM_STR);
 		}
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
@@ -1076,7 +1078,8 @@ class Admin extends User {
 			$sql = 'SELECT room_device_id, room_device.name, 
 			               room_device.protocol_id, room_id, 
 			               if(device.name'.$this->getLanguage().' = "", device.name, device.name'.$this->getLanguage().') as device_name, 
-			               room_device.device_id, daemon_id, addr, device.application_id
+			               room_device.device_id, daemon_id, addr, 
+			               device.application_id, password
 			        FROM room_device
 			        JOIN device ON room_device.device_id = device.device_id
 			        WHERE room_id=:room_id
@@ -1088,7 +1091,8 @@ class Admin extends User {
 			$sql = 'SELECT room_device_id, room_device.name, 
 			               room_device.protocol_id, room_id, 
 			               if(device.name'.$this->getLanguage().' = "", device.name, device.name'.$this->getLanguage().') as device_name, 
-			               room_device.device_id, daemon_id, addr, plus1, plus2, plus4, device.application_id
+			               room_device.device_id, daemon_id, addr, plus1, plus2, plus4, 
+			               device.application_id, password
 			        FROM room_device
 			        JOIN device ON room_device.device_id = device.device_id
 			        ORDER BY name ASC';

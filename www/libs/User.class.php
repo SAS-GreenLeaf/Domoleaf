@@ -164,7 +164,7 @@ class User {
 		return null;
 	}
 	
-	function confDeviceSaveInfo($idroom, $name, $daemon='', $devaddr, $iddevice){
+	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
 		return null;
 	}
 	
@@ -904,6 +904,24 @@ class User {
 		return null;
 	}
 
+	function popupPassword($room_device_id, $password) {
+		$link = Link::get_link('domoleaf');
+		$sql = 'SELECT room_device_id, password
+		        FROM room_device
+		        WHERE room_device_id=:device_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device_id', $room_device_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		if(empty($do->room_device_id) || $do->password != $password) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param unknown $userid

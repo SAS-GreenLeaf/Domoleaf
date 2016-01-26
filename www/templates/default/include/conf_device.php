@@ -86,7 +86,7 @@ if ($device->protocol_id == 6){
 	echo
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="ipaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 				<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" value="'.$device->addr.'" id="addr" placeholder="'._('IP address or name').'">
@@ -99,7 +99,7 @@ if ($device->protocol_id == 6){
 			<input type="text" class="form-control" value="'.$device->plus1.'" id="port" placeholder="'._('Port').' ('._('Default: 80').')">
 		</div>
 		<div class="input-group">
-			<label for="macaddress" class="input-group-addon">
+			<label for="macaddr" class="input-group-addon">
 				<span class="fa flaticon-chip" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Address').'">
@@ -114,7 +114,7 @@ if ($device->protocol_id == 6){
 		</div>
 	
 		<div class="input-group">
-			<label for="password" class="input-group-addon">
+			<label for="pass" class="input-group-addon">
 				<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 			</label>
 			<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
@@ -125,18 +125,29 @@ else if ($device->protocol_id == 1){
 	echo 
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="knxaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('KNX address or name').'">
 		</div>
 	</div>';
+	if($device->device_id == 30) {
+		echo
+		'<div class="col-md-6 col-xs-12">
+			<div class="input-group">
+				<label for="widgetpassword" class="input-group-addon">
+				<span class="fa fa-key" aria-hidden="true"></span>
+				</label>
+				<input type="text" class="form-control" id="widgetpassword" value="'.$device->password.'" placeholder="'._('Widget\'s password').'">
+			</div>
+		</div>';
+	}
 }
 else if ($device->protocol_id == 2){
 	echo
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="enoceanaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('Enocean address or name').'">
@@ -549,6 +560,7 @@ function SaveInfo(){
 	var pass = $("#pass").val();
 	var port = $("#port").val();
 	var macaddr = $("#macaddr").val();
+	var widgetpassword = $("#widgetpassword").val();
 	
 	if (!daemon){
 		daemon = 0;
@@ -568,11 +580,18 @@ function SaveInfo(){
 	if (!macaddr){
 		macaddr = "";
 	}
+	if (!widgetpassword){
+		widgetpassword = "";
+	}
 	if (devname != \'\' && addr != \'\'){
 		$.ajax({
 			type:"GET",
 			url: "/form/form_device_info_opt.php",
-			data: "idroomdevice="+idroomdevice+"&devname="+encodeURIComponent(devname)+"&daemon="+daemon+"&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+"&login="+login+"&pass="+pass+"&macaddr="+macaddr,
+			data: "idroomdevice="+idroomdevice+
+			      "&devname="+encodeURIComponent(devname)+"&daemon="+daemon+
+			      "&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+
+			      "&login="+login+"&pass="+pass+"&macaddr="+macaddr+
+			      "&widgetpassword="+widgetpassword,
 			complete: function(result, status) {
 				LoadingButton("saveinfo", 0);
 			}

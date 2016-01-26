@@ -465,7 +465,7 @@ class Api {
 						/*** Devices ***/
 						case 'confDeviceSaveInfo':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8]);
+								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8], $var[9]);
 							}
 						break;
 						
@@ -1328,7 +1328,12 @@ class Api {
 								$res = $user->mcResetError($var[0], $var[1]);
 							}
 						break;
-
+					
+						case 'popupPassword':
+							if (!empty($var[0])){
+								$res = $user->popupPassword($var[0], $var[1]);
+							}
+						break;
 					}
 					$answer['request'][$action] = $res;
 				}

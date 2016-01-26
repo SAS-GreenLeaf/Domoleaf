@@ -348,7 +348,7 @@ msgstr "Entrez le Nom de famille"
 msgid "Enter the Firstname"
 msgstr "Entrez le Prénom"
 
-#: popup/popup_new_user.php:33
+#: popup/popup_new_user.php:33 popup/popup_alarm.php
 msgid "Enter the Password"
 msgstr "Entrez le Mot de passe"
 
@@ -2020,7 +2020,7 @@ msgstr "Configuration Wifi"
 msgid "This account does not exist"
 msgstr "Ce compte n'existe pas"
 
-#: functions.php:81
+#: functions.php:81 popup/popup_alarm.php
 msgid "Bad password"
 msgstr "Mot de passe invalide"
 
@@ -2155,3 +2155,19 @@ msgstr "Store"
 #: popup/popup_password_lost.php popup/popup_password_reset.php
 msgid "Enter your key"
 msgstr "Entrez votre clé"
+
+#: include/conf_device.php
+msgid "Widget's password"
+msgstr "Mot de passe du widget"
+
+#: include/home.php
+msgid "Alarm"
+msgstr "Alarme"
+
+#: popup/popup_alarm.php
+msgid "Validate"
+msgstr "Valider"
+
+#: popup/popup_alarm.php
+msgid "Lock"
+msgstr "Vérouiller"

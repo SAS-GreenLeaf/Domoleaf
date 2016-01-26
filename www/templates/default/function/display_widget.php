@@ -120,9 +120,10 @@ function display_alarm($info){
 	$display = '
 			<div class="info-widget foreground-widget">
 				<button title="'._('More').'"
-				        onclick="HandlePopup(2, '.$info->room_device_id.')"
+				        onclick="HandlePopup(7, '.$info->room_device_id.')"
 				        class="btn btn-greenleaf"
-				        type="button">
+				        type="button"
+				        id="btn-'.$info->room_device_id.'">
 				        <span class="fa fa-key md"></span>
 				</button>
 			</div>

@@ -186,6 +186,9 @@ function HandlePopup(type, iddevice){
 	else if (type == 6){
 		var data = new Array("popup_blind.php", "'._('Blind').' <i class=\"fa fa-bars\"></i>");
 	}
+	else if (type == 7){
+		var data = new Array("popup_alarm.php", "'._('Alarm').' <i class=\"fa fa-bars\"></i>");
+	}
 	
 	if (data){
 		$.ajax({
@@ -210,12 +213,11 @@ function HandlePopup(type, iddevice){
 setInterval(function() { GetReturn() }, 1000);
 
 function GetReturn(){
-	var token = document.cookie.split("=");
-
+	var token = $.cookie(\'token\');
 	$.ajax({
 		type:"GET",
 		url: "/api.php",
-		data: "token="+token[1]+"&request[mcReturn]=0",
+		data: "token="+token+"&request[mcReturn]=0",
 		dataType: "json",
 		timeout: 999,
 		success: function(msg) {

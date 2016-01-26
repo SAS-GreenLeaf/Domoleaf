@@ -50,6 +50,32 @@ function PopupLoading(){
 	});
 }
 
+function popupPassword(iddevice) {
+	$("#popup-error").hide();
+	var password = $("#popup-password").val();
+	$.ajax({
+		url: "/form/form_check_popuppassword.php",
+		data: "iddevice="+iddevice+"&password="+password,
+		success: function(result){
+			if(result == '1') {
+				popup_close();
+				$("#btn-"+iddevice).click();
+			}
+			else {
+				$("#popup-error").show();
+			}
+		}
+	});
+}
+function popupLock(iddevice) {
+	$.ajax({
+		url: "/form/form_popup_lock.php",
+		data: "iddevice="+iddevice,
+		success: function(result){
+			popup_close();
+		}
+	});
+}
 /*** Widget Audio ***/
 
 function Volume(iddevice, optionid, step){
