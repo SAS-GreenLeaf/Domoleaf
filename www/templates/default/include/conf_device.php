@@ -409,7 +409,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			367 => 'glyphicon glyphicon-backward',
 			368 => 'glyphicon glyphicon-volume-off',
 			383 => 'fa fa-volume-up',
-			408 => 'glyphicon glyphicon-camera'
+			408 => 'glyphicon glyphicon-camera',
+			443 => 'glyphicon glyphicon-eject'
 		);
 		
 		echo

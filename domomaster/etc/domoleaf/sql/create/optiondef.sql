@@ -51,9 +51,9 @@ VALUES
 	(359, NULL, '', '', 'Gauche', ''),
 	(360, NULL, '', '', 'Droite', ''),
 	(361, NULL, '', '', 'Home', ''),
-	(363, NULL, '', '', 'Lecture', ''),
-	(364, NULL, '', '', 'Pause', ''),
-	(365, NULL, '', '', 'Stop', ''),
+	(363, 'Play', '', '', 'Lecture', ''),
+	(364, 'Pause', '', '', 'Pause', ''),
+	(365, 'Stop', '', '', 'Stop', ''),
 	(366, NULL, '', '', 'Suivant', ''),
 	(367, NULL, '', '', 'Précédent', ''),
 	(368, NULL, '', '', 'Muet', ''),
@@ -97,6 +97,7 @@ VALUES
 	(439, 'Channel 3', '', '', 'Canal 3', ''),
 	(440, 'Channel 4', '', '', 'Canal 4', ''),
 	(441, 'VOC', '', '', 'COV', ''),
-	(442, 'Tilt', '', '', 'Inclinaison', '');
+	(442, 'Tilt', '', '', 'Inclinaison', ''),
+	(443, 'Eject', '', '', 'Ejection', '');
 
 SET FOREIGN_KEY_CHECKS=1;

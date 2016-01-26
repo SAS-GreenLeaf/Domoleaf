@@ -67,6 +67,12 @@ if (!empty($_GET['iddevice'])){
 				'<span class="glyphicon glyphicon-forward"></span>'.
 			'</button>';
 		}
+		if (!empty($device->device_opt->{443})){
+			echo
+			'<button onclick="launchGeneric('.$device->room_device_id.', 443)" class="btn btn-info">'.
+			'<span class="glyphicon glyphicon-eject"></span>'.
+			'</button>';
+		}
 	 echo '</div>'.
 		'</div>
 		<div class="center">'.
