@@ -7,7 +7,6 @@ include('../function/display_widget.php');
 if (!empty($_GET['iddevice'])){
 	
 	$request =  new Api();
-	$request -> send_request();
 	$request -> add_request('mcVisible');
 	$result  =  $request -> send_request();
 	
