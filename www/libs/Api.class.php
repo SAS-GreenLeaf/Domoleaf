@@ -1307,15 +1307,9 @@ class Api {
 							}
 						break;
 						
-						case 'mcAudio':
-							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
-								$res = $user->mcAudio($var[0], $var[1], $var[2]);
-							}
-						break;
-						
 						case 'mcSetVolume':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
-								$res = $user->mcAudio($var[0], 'set_volume', $var[2], $var[1]);
+								$res = $user->mcAction($var[0], $var[1], $var[2]);
 							}
 						break;
 						

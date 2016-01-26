@@ -83,18 +83,6 @@ function SetVolume(iddevice, optionid){
 	});
 }
 
-function RemoteAudio(action, iddevice, optionid){
-	if (iddevice != ""){
-		$.ajax({
-			type:"GET",
-			url: "form/form_mc_audio.php",
-			data: "iddevice="+iddevice+"&action="+action+"&optionid="+optionid,
-			complete: function(result, status) {
-			}
-		});
-	}
-}
-
 /*** Widget on/off varie ***/
 
 function Variation(iddevice, optionid, step, popup){

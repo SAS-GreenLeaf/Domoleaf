@@ -25,23 +25,47 @@ if (!empty($_GET['iddevice'])){
 		}
 		echo	'<div class="center">'.
 			 '<div class="btn-group">';
+		if (!empty($device->device_opt->{12})){
+			echo
+			'<button onclick="launchGeneric('.$device->room_device_id.', 12)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-off"></span>'.
+			'</button>';
+		}
 		if (!empty($device->device_opt->{367})){
-			echo '<button onclick="RemoteAudio(\'prev\', \''.$device->room_device_id.'\', \''.$device->device_opt->{367}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-backward"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 367)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-backward"></span>'.
+			'</button>';
 		}
 		if (!empty($device->device_opt->{364})){
-			echo '<button onclick="RemoteAudio(\'pause\', \''.$device->room_device_id.'\', \''.$device->device_opt->{364}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-pause"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 364)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-pause"></span>'.
+			'</button>';
 		}
 		if (!empty($device->device_opt->{363})){
-		 echo '<button onclick="RemoteAudio(\'play\', \''.$device->room_device_id.'\', \''.$device->device_opt->{363}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-play"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 363)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-play"></span>'.
+			'</button>';
 		}
 		if (!empty($device->device_opt->{365})){
-			echo '<button onclick="RemoteAudio(\'stop\', \''.$device->room_device_id.'\', \''.$device->device_opt->{365}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-stop"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 365)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-stop"></span>'.
+			'</button>';
 		}
 		if (!empty($device->device_opt->{368})){
-			echo '<button onclick="RemoteAudio(\'mute\', \''.$device->room_device_id.'\', \''.$device->device_opt->{368}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-volume-off"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 368)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-volume-off"></span>'.
+			'</button>';
 		}
 		if (!empty($device->device_opt->{366})){
-			echo '<button onclick="RemoteAudio(\'next\', \''.$device->room_device_id.'\', \''.$device->device_opt->{366}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-forward"></span></button>';
+			echo 
+			'<button onclick="launchGeneric('.$device->room_device_id.', 366)" class="btn btn-info">'.
+				'<span class="glyphicon glyphicon-forward"></span>'.
+			'</button>';
 		}
 	 echo '</div>'.
 		'</div>

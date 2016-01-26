@@ -396,6 +396,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 	else if ($device->protocol_id == 6) {
 		//getIcon ???
 		$icons = array(
+			 12 => 'glyphicon glyphicon-off',
 			357 => 'glyphicon glyphicon-chevron-up',
 			358 => 'glyphicon glyphicon-chevron-down',
 			359 => 'glyphicon glyphicon-chevron-left',

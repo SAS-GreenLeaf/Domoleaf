@@ -45,12 +45,6 @@ if (!empty($_GET['iddevice'])){
 				'</a>';
 			}
 			
-			/*
-			if (!empty($info->device_opt->{363})){
-				$display.='<button onclick="RemoteAudio(\'play\', \''.$info->room_device_id.'\', \''.$info->device_opt->{363}->option_id.'\')" class="btn btn-info"><span class="glyphicon glyphicon-play"></span></button>';
-			}
-			*/
-			
 			if (!empty($deviceinfo->device_opt->{'358'})){
 			echo '<a id="cmd-camera-bottom" class="down carousel-control-camera cursor">'.
 						'<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'bottom\', \''.$deviceinfo->device_opt->{'358'}->option_id.'\')"></span>'.

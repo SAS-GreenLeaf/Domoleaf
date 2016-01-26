@@ -2731,25 +2731,6 @@ class User {
 			$socket->send('send_to_device', $data);
 		}
 	}
-
-	/**
-	 * 
-	 * @param unknown $iddevice
-	 * @param unknown $val
-	 * @param unknown $optionid
-	 */
-	function mcAudio($iddevice, $val, $optionid, $optionval=0){
-		if($this->checkDevice($iddevice)){
-			$socket = new Socket();
-			$data = array(
-				'room_device_id' => $iddevice,
-				'option_id'      => $optionid,
-				'action'         => $val,
-				'value'          => $optionval
-			);
-			$socket->send('send_to_device', $data);
-		}
-	}
 	
 	/**
 	 * 
