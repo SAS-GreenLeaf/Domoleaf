@@ -2155,3 +2155,7 @@ msgstr "COV"
 #: include/home.php
 msgid "Blind"
 msgstr "Store"
+
+#: popup/popup_password_lost.php popup/popup_password_reset.php
+msgid "Enter your key"
+msgstr "Entrez votre clé"

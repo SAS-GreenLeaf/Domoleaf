@@ -10,7 +10,7 @@ echo '
 echo '
 	<br/><div class="input-group margin-top">'.
 		'<label class="input-group-addon left" for="resetKey">'._('Reset Key').'</label>'.
-		'<input id="resetKey" name="resetKey" title="'._('Reset Key').'" value="" placeholder="Type your key" type="text" class="form-control">'.
+		'<input id="resetKey" name="resetKey" title="'._('Reset Key').'" value="" placeholder="'._('Enter your key').'" type="text" class="form-control">'.
 	'</div>'.
 	'<div id="wrongKey" class="hide">'.
 		'<br/>'.
