@@ -10,7 +10,25 @@ class UpnpAudio(Upnp):
     """
     def __init__(self, ip_addr = UPNP_IP_ADDR, port = UPNP_PORT):
         Upnp.__init__(self, ip_addr, port);
-
+    
+    def action(self, json_obj):
+        if json_obj['data']['option_id'] == 363:
+            self.set_play()
+        elif json_obj['data']['option_id'] == 364:
+            self.set_pause();
+        elif json_obj['data']['option_id'] == 365:
+            self.set_stop();
+        elif json_obj['data']['option_id'] == 366:
+            self.set_next();
+        elif json_obj['data']['option_id'] == 367:
+            self.set_previous();
+        elif json_obj['data']['option_id'] == 368:
+            mute = self.get_mute();
+            mute = (int(mute)+1)%2;
+            self.set_mute(mute = mute);
+        elif json_obj['data']['option_id'] == 383:
+            self.set_volume(desired_volume = int(json_obj['data']['value']));
+    
     def set_play(self, speed = 1, instance_id = 0):
         """
         Start a song. 'speed' is the playing speed.

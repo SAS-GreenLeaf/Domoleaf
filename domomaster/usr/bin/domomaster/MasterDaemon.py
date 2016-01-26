@@ -62,17 +62,6 @@ MASTER_CONF_PKEY_SIZE_ENTRY             = 'size';
 PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
 PROTOCOL_IP             = 6;    # IP protocol id
 
-# IDs for UPNP protocol
-UPNP_PLAY           = 'play';               # Play command id
-UPNP_PAUSE          = 'pause';              # Pause command id
-UPNP_NEXT           = 'next';               # Next command id
-UPNP_PREVIOUS       = 'prev';               # Prev command id
-UPNP_STOP           = 'stop';               # Stop command id
-UPNP_MUTE           = 'mute';               # Mute command id
-UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
-UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
-UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
-
 #################################################
 # Packet types that can be received and treated #
 #################################################
@@ -157,20 +146,9 @@ class MasterDaemon:
               6 : self.knx_manager.send_on,
               7 : self.knx_manager.send_to_thermostat,
               8 : self.knx_manager.send_clim_mode,
-              9 : self.camera_action
+              9 : self.camera_action,
+             10 : self.upnp_audio
         };
-        self.upnp_function = {
-            UPNP_PLAY           : self.upnp_set_play,
-            UPNP_PAUSE          : self.upnp_set_pause,
-            UPNP_NEXT           : self.upnp_set_next,
-            UPNP_PREVIOUS       : self.upnp_set_prev,
-            UPNP_STOP           : self.upnp_set_stop,
-            UPNP_MUTE           : self.upnp_set_mute,
-            UPNP_VOLUME_UP      : self.upnp_set_volume_up,
-            UPNP_VOLUME_DOWN    : self.upnp_set_volume_down,
-            UPNP_SET_VOLUME     : self.upnp_set_volume
-        };
-        self.enocean_function = {};
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
             DATA_MONITOR_IP                   : self.monitor_ip,
@@ -672,90 +650,12 @@ class MasterDaemon:
 
         connection.close();
 
-    def protocol_enocean(self, json_obj, dev, hostname):
-        """
-        TODO
-        """
-        print("PROTOCOL ENOCEAN:");
-        print(str(json_obj));
-        print(hostname);
-        print('=======');
-
-    def upnp_set_play(self, json_obj, dev, hostname):
-        """
-        Send "play" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_play();
-
-    def upnp_set_pause(self, json_obj, dev, hostname):
-        """
-        Send "pause" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_pause();
-
-    def upnp_set_stop(self, json_obj, dev, hostname):
-        """
-        Send "stop" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_stop();
-
-    def upnp_set_mute(self, json_obj, dev, hostname):
-        """
-        Send "mute" command to the Upnp device described in dev
-        """
-        mute = UpnpAudio(json_obj['addr'], int(json_obj['port'])).get_mute();
-        mute = (int(mute)+1)%2;
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute(mute = mute);
-
-    def upnp_set_next(self, json_obj, dev, hostname):
-        """
-        Send "next" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_next();
-
-    def upnp_set_prev(self, json_obj, dev, hostname):
-        """
-        Send "prev" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_previous();
-
-    def upnp_set_volume_up(self, json_obj, dev, hostname):
-        """
-        Send "volume_up" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume_inc();
-
-    def upnp_set_volume_down(self, json_obj, dev, hostname):
-        """
-        Send "volume_down" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume_dec();
-
-    def upnp_set_volume(self, json_obj, dev, hostname):
-        """
-        Send "set_volume" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume(desired_volume = int(json_obj['data']['value']));
-
+    def upnp_audio(self, json_obj, dev, hostname):
+        cmd = UpnpAudio(json_obj['addr'], int(json_obj['port']));
+        cmd.action(json_obj);
+    
     def camera_action(self, json_obj, dev, hostname):
         HttpReq.camera_action(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
-
-    def protocol_ip(self, json_obj, dev, hostname):
-        """
-        Callback called each time a protocol_ip packet is received.
-        Calls the desired Upnp function.
-        """
-        try:
-            if 'value' not in json_obj['data']:
-                json_obj['data']['value'] = '';
-            if json_obj['data']['value'] == '':
-                json_obj['data']['value'] = dev['addr_dst'];
-            if json_obj['data']['action'] in self.upnp_function.keys():
-                self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
-            elif json_obj['data']['action'] in self.http_req_function.keys():
-                self.http_req_function[json_obj['data']['action']](json_obj, dev, hostname);
-        except Exception as e:
-            self.logger.error(e);
 
     def get_ip_ifname(self, ifname):
         """
