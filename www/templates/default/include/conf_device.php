@@ -63,7 +63,7 @@ echo '
 		</div>
 		<br/>
 		<div id="selectRoom" class="control-group">
-			<label for="listroom" class="control-label">Room</label>
+			<label for="listroom" class="control-label">'._('Room').'</label>
 			<select class="selectpicker form-control" onchange="" id="listroom" selected="">';
 				foreach ($roomlist as $elem){
 					if ($_GET['room'] == $elem->room_id){
