@@ -268,7 +268,7 @@ function PopupRenameDaemon(id){
 		data: "id="+id,
 		success: function(msg) {
 			BootstrapDialog.show({
-				title: "'._('Rename Daemon').'",
+				title: "'._('Rename Box').'",
 			message: msg
 			});
 		}
@@ -282,7 +282,7 @@ function PopupDeleteDaemon(id){
 		data: "id="+id,
 		success: function(msg) {
 			BootstrapDialog.show({
-				title: "'._('Delete Daemon').'",
+				title: "'._('Delete Box').'",
 				message: msg
 			});
 		}

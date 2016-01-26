@@ -26,7 +26,7 @@ echo '
 		if (!empty($device->daemon_id)){
 			echo '
 			<div class="control-group" >
-				<label class="control-label" for="listdaemon">'._('Daemon').'</label>
+				<label class="control-label" for="listdaemon">'._('Box').'</label>
 				<select class="selectpicker form-control" id="listdaemon">';
 					foreach ($daemonlist as $elem){
 						if (!empty($elem->protocol->{1})) {

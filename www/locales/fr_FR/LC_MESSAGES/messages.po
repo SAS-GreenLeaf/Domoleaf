@@ -240,7 +240,7 @@ msgstr "Chargement en cours"
 msgid "New Box"
 msgstr "Nouvelle Box"
 
-#: popup/popup_new_daemon.php
+#: popup/popup_new_daemon.php popup/popup_rename_daemon.php
 msgid "Enter the Box name"
 msgstr "Entrez le nom de la Box"
 
@@ -292,10 +292,6 @@ msgstr "Annuler"
 #: popup/popup_new_daemon.php:13
 msgid "Create a new box"
 msgstr "Créer une nouvelle box"
-
-#: popup/popup_new_daemon.php:19 popup/popup_rename_daemon.php:23
-msgid "Enter daemon name"
-msgstr "Entrez le nom du Daemon"
 
 #: popup/popup_new_daemon.php:31 popup/popup_rename_daemon.php:35
 msgid "Enter the secret key"
@@ -999,12 +995,12 @@ msgid "Reboot D3"
 msgstr "Redémarrer D3"
 
 #: include/conf_daemon.php:183
-msgid "Rename Daemon"
-msgstr "Renommer Daemon"
+msgid "Rename Box"
+msgstr "Renommer la Box"
 
 #: include/conf_daemon.php:197
-msgid "Delete Daemon"
-msgstr "Supprimer Daemon"
+msgid "Delete Box"
+msgstr "Supprimer la Box"
 
 #: include/conf_db.php:14
 msgid "USB Backup"
@@ -1102,8 +1098,8 @@ msgid "Empty knx address"
 msgstr "Adresse KNX vide"
 
 #: include/conf_device_new.php:231
-msgid "No daemon associate"
-msgstr "Aucun Daemon associé"
+msgid "No Box associate"
+msgstr "Aucune Box associée"
 
 #: include/conf_device_new.php:241
 msgid "Empty enocean address"

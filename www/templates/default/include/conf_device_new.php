@@ -67,7 +67,7 @@ echo '
 			</div><br/>
 			<div class="control-group" id="selectDae">
 				<label class="control-label" for="listdaemon">'.
-					_('Daemon').'
+					_('Box').'
 				</label>
 				<select class="selectpicker form-control" id="listdaemon">	
 				</select>
@@ -238,7 +238,7 @@ function AddNewDevice(){
 						}
 					}
 					else {
-							CatchError("'._('No daemon associate').'");
+						CatchError("'._('No Box associate').'");
 					}
 				}
 				else {
