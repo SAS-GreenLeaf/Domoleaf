@@ -21,6 +21,7 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `name`, `manufacturer_id`, `protocol_id`, `device_id`)
 VALUES
 	(1, 'DCS-930L', 1, 6, 2),
+	(2, 'FreeBox Player', 15, 6, 16),
 	(6, 'DCS-942L', 1, 6, 2),
 	(629, 'TV-IP662PI', 2, 6, 2);
 

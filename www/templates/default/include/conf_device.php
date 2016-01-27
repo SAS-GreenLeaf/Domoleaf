@@ -117,7 +117,7 @@ if ($device->protocol_id == 6){
 			<label for="pass" class="input-group-addon">
 				<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 			</label>
-			<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+			<input type="password" class="form-control" value="'.$device->plus3.'" id="pass" placeholder="'._('Password').'">
 		</div>
 	</div><br/>';
 }
@@ -421,7 +421,34 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			368 => 'glyphicon glyphicon-volume-off',
 			383 => 'fa fa-volume-up',
 			408 => 'glyphicon glyphicon-camera',
-			443 => 'glyphicon glyphicon-eject'
+			443 => 'glyphicon glyphicon-eject',
+			444 => 'fa fa-plus-square-o',
+			445 => 'fa fa-plus-square-o',
+			446 => 'fa fa-plus-square-o',
+			447 => 'fa fa-plus-square-o',
+			448 => 'fa fa-plus-square-o',
+			449 => 'fa fa-plus-square-o',
+			450 => 'fa fa-plus-square-o',
+			451 => 'fa fa-plus-square-o',
+			452 => 'fa fa-plus-square-o',
+			453 => 'fa fa-plus-square-o',
+			454 => 'glyphicon glyphicon-unchecked',
+			455 => 'fa fa-plus-square-o red',
+			456 => 'fa fa-plus-square-o green',
+			457 => 'fa fa-plus-square-o blue',
+			458 => 'fa fa-plus-square-o yellow',
+			459 => 'fa fa-caret-up',
+			460 => 'fa fa-caret-down',
+			461 => 'fa fa-caret-left',
+			462 => 'fa fa-caret-right',
+			463 => 'glyphicon glyphicon-plus',
+			464 => 'glyphicon glyphicon-minus',
+			465 => 'glyphicon glyphicon-plus',
+			466 => 'glyphicon glyphicon-minus',
+			467 => 'glyphicon glyphicon-record',
+			468 => 'fa fa-backward',
+			469 => 'fa fa-forward',
+			470 => 'glyphicon glyphicon-unchecked'
 		);
 		
 		echo
@@ -667,11 +694,12 @@ function ProductList(device_id, protocol_id){
 
 function PreConfigurationDevice(){
 	var product_id = $("#productList").val();
+	var password   = $("#pass").val();
 	if (product_id > 0){
 		$.ajax({
 			type: "GET",
 			url: "/form/form_pre_configuration_device_option.php",
-			data: "product_id="+product_id,
+			data: "product_id="+product_id+"&password="+password,
 			dataType: "json",
 			success: function(result) {
 				for (var i = 0 ; i < result.length ; i++){

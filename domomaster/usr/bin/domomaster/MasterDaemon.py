@@ -59,9 +59,6 @@ MASTER_CONF_CONNECT_SECTION             = 'connection';
 MASTER_CONF_CONNECT_PORT_ENTRY          = 'port';
 MASTER_CONF_PKEY_SIZE_ENTRY             = 'size';
 
-PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
-PROTOCOL_IP             = 6;    # IP protocol id
-
 #################################################
 # Packet types that can be received and treated #
 #################################################
@@ -133,10 +130,6 @@ class MasterDaemon:
         self.schedule = Schedule(self);
         self.scenario = Scenario(self);
         self.calcLogs = CalcLogs(self);
-        self.protocol_function = {
-            PROTOCOL_ENOCEAN    : self.protocol_enocean,
-            PROTOCOL_IP         : self.protocol_ip
-        };
         self.functions = {
               1 : self.knx_manager.send_knx_write_short_to_slave,
               2 : self.knx_manager.send_knx_write_long_to_slave,
@@ -146,7 +139,7 @@ class MasterDaemon:
               6 : self.knx_manager.send_on,
               7 : self.knx_manager.send_to_thermostat,
               8 : self.knx_manager.send_clim_mode,
-              9 : self.camera_action,
+              9 : HttpReq().http_action,
              10 : self.upnp_audio
         };
         self.data_function = {
@@ -630,21 +623,12 @@ class MasterDaemon:
                 if dev['daemon_name'] == host._Hostname:
                     hostname = host._Hostname;
                     break;
-        if dev['protocol_id'] == PROTOCOL_IP:
-            json_obj['addr'] = dev['addr'];
-            json_obj['port'] = dev['plus1'];
-
         function_id = int(dev['function_id']);
         if (function_id > 0):
             try:
                 self.functions[function_id](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
-        else:
-            if dev['protocol_id'] == PROTOCOL_IP:
-                self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
-                return;
-        
         #add scenario check here to allow trigger on write ???
         #self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
 
@@ -653,9 +637,6 @@ class MasterDaemon:
     def upnp_audio(self, json_obj, dev, hostname):
         cmd = UpnpAudio(json_obj['addr'], int(json_obj['port']));
         cmd.action(json_obj);
-    
-    def camera_action(self, json_obj, dev, hostname):
-        HttpReq.camera_action(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
 
     def get_ip_ifname(self, ifname):
         """

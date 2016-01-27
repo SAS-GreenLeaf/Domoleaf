@@ -15,7 +15,7 @@ CREATE TABLE `optiondef` (
   KEY `namees` (`namees`),
   KEY `namefr` (`namefr`),
   KEY `nameit` (`nameit`)
-) ENGINE=InnoDB AUTO_INCREMENT=418 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `optiondef` (`option_id`, `name`, `namede`, `namees`, `namefr`, `nameit`)
 VALUES
@@ -54,7 +54,7 @@ VALUES
 	(363, 'Play', '', '', 'Lecture', ''),
 	(364, 'Pause', '', '', 'Pause', ''),
 	(365, 'Stop', '', '', 'Stop', ''),
-	(366, NULL, '', '', 'Suivant', ''),
+	(366, 'Next', '', '', 'Suivant', ''),
 	(367, NULL, '', '', 'Précédent', ''),
 	(368, NULL, '', '', 'Muet', ''),
 	(371, NULL, '', '', 'Sirène', ''),
@@ -98,6 +98,33 @@ VALUES
 	(440, 'Channel 4', '', '', 'Canal 4', ''),
 	(441, 'VOC', '', '', 'COV', ''),
 	(442, 'Tilt', '', '', 'Inclinaison', ''),
-	(443, 'Eject', '', '', 'Ejection', '');
+	(443, 'Eject', '', '', 'Ejection', ''),
+	(444, 'Button 0', '', '', 'Bouton 0', ''),
+	(445, 'Button 1', '', '', 'Bouton 1', ''),
+	(446, 'Button 2', '', '', 'Bouton 2', ''),
+	(447, 'Button 3', '', '', 'Bouton 3', ''),
+	(448, 'Button 4', '', '', 'Bouton 4', ''),
+	(449, 'Button 5', '', '', 'Bouton 5', ''),
+	(450, 'Button 6', '', '', 'Bouton 6', ''),
+	(451, 'Button 7', '', '', 'Bouton 7', ''),
+	(452, 'Button 8', '', '', 'Bouton 8', ''),
+	(453, 'Button 9', '', '', 'Bouton 9', ''),
+	(454, NULL, '', '', 'Bouton AV/TV', ''),
+	(455, NULL, '', '', 'Bouton rouge', ''),
+	(456, NULL, '', '', 'Bouton vert', ''),
+	(457, NULL, '', '', 'Bouton bleu', ''),
+	(458, NULL, '', '', 'Bouton jaune', ''),
+	(459, NULL, '', '', 'Flèche haut', ''),
+	(460, NULL, '', '', 'Flèche bas', ''),
+	(461, NULL, '', '', 'Flèche gauche', ''),
+	(462, NULL, '', '', 'Flèche droite', ''),
+	(463, NULL, '', '', 'Volume +', ''),
+	(464, NULL, '', '', 'Volume -', ''),
+	(465, NULL, '', '', 'Programme +', ''),
+	(466, NULL, '', '', 'Programme -', ''),
+	(467, NULL, '', '', 'Enregistrer', ''),
+	(468, NULL, '', '', 'Retour arrière', ''),
+	(469, NULL, '', '', 'Avance rapide', ''),
+	(470, NULL, '', '', 'Bouton OK', '');
 
 SET FOREIGN_KEY_CHECKS=1;

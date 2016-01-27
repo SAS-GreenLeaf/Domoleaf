@@ -1091,8 +1091,8 @@ class Admin extends User {
 			$sql = 'SELECT room_device_id, room_device.name, 
 			               room_device.protocol_id, room_id, 
 			               if(device.name'.$this->getLanguage().' = "", device.name, device.name'.$this->getLanguage().') as device_name, 
-			               room_device.device_id, daemon_id, addr, plus1, plus2, plus4, 
-			               device.application_id, password
+			               room_device.device_id, daemon_id, addr, plus1, plus2,
+			               plus3, plus4, device.application_id, password
 			        FROM room_device
 			        JOIN device ON room_device.device_id = device.device_id
 			        ORDER BY name ASC';

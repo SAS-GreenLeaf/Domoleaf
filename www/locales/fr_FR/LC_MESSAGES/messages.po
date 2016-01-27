@@ -2171,3 +2171,7 @@ msgstr "Valider"
 #: popup/popup_alarm.php
 msgid "Lock"
 msgstr "Vérouiller"
+
+#: include/home.php
+msgid "Television"
+msgstr "Télévision"

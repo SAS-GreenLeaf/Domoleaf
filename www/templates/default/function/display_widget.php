@@ -12,6 +12,7 @@ function getIcon($iddevice = 1){
 			10 => 'fa fa-bars',
 			11 => 'fa fa-bars',
 			15 => 'fa fa-volume-up',
+			16 => 'fa fa-television',
 			17 => 'fa fa-volume-up',
 			18 => 'fa fa-tree',
 			20 => 'fa fa-fire',
@@ -52,6 +53,7 @@ function display_widget($info){
 			10 => "display_shutter",
 			11 => "display_shutter",
 			15 => "display_audio",
+			16 => 'display_television',
 			17 => "display_audio",
 			18 => "display_garden",
 			20 => "display_furnace",
@@ -353,6 +355,85 @@ function display_audio($info){
 						<input onchange="SetVolume(\''.$info->room_device_id.'\', \''.$info->device_opt->{383}->option_id.'\')"
 						       value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'"
 						       oninput="UpdateVol(\''.$info->room_device_id.'\', value)" type="range">
+					</div>
+				</div>';
+	}
+	return $display;
+}
+
+function display_television($info){
+	$display = '';
+	switch($info->protocol_id){
+		case 1:
+			// KNX
+			$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
+			break;
+		case 6:
+			$display =
+			'<div class="info-widget foreground-widget">
+						<button title="'._('More').'" onclick="HandlePopup(8, '.$info->room_device_id.')" class="btn btn-greenleaf" type="button">
+							<span class="fa fa-plus md"></span>
+						</button>
+					</div>
+					<h3 class="title">'.$info->name.'</h3>
+					<div class="btn-group margin-bottom center">';
+	
+			if (!empty($info->device_opt->{12})){
+				$display.=
+				'<button onclick="launchGeneric('.$info->room_device_id.', 12)"
+							         class="btn btn-info">
+								<span class="glyphicon glyphicon-off"></span>
+							</button>';
+			}
+	
+			if (!empty($info->device_opt->{364})){
+				$display.=
+				'<button onclick="launchGeneric('.$info->room_device_id.', 364)"
+						         class="btn btn-info">
+							<span class="glyphicon glyphicon-pause"></span>
+						</button>';
+			}
+			if (!empty($info->device_opt->{363})){
+				$display.=
+				'<button onclick="launchGeneric('.$info->room_device_id.', 363)"
+						         class="btn btn-info">
+							<span class="glyphicon glyphicon-play"></span>
+						</button>';
+			}
+			if (!empty($info->device_opt->{368})){
+				$display.=
+				'<button onclick="launchGeneric('.$info->room_device_id.', 368)" class="btn btn-info">
+						<span id="icon-mute" class="glyphicon glyphicon-volume-off"></span>
+					</button>';
+			}
+			$display.='</div>';
+			break;
+		default :
+			// TODO
+			$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>';
+			break;
+	}
+	
+	if (!empty($info->device_opt->{383})){
+		$display.='
+				<div class="col-xs-12 foreground-widget">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume('.$info->room_device_id.', 383, -1)">
+						<i class="glyphicon glyphicon-volume-down"></i>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<output id="vol-'.$info->room_device_id.'" for="volume-'.$info->room_device_id.'">
+							50%
+						</output>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursor"
+					     onclick="Volume('.$info->room_device_id.', 383, 1)">
+						<i class="glyphicon glyphicon-volume-up"></i>
+					</div>
+					<div class="row">
+						<input onchange="SetVolume('.$info->room_device_id.', 383)"
+						       value="50" min="0" step="1" max="100" id="volume-'.$info->room_device_id.'"
+						       oninput="UpdateVol('.$info->room_device_id.', value)" type="range">
 					</div>
 				</div>';
 	}

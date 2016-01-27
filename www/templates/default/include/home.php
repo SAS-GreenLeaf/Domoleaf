@@ -189,6 +189,9 @@ function HandlePopup(type, iddevice){
 	else if (type == 7){
 		var data = new Array("popup_alarm.php", "'._('Alarm').' <i class=\"fa fa-bars\"></i>");
 	}
+	else if (type == 8){
+		var data = new Array("popup_television.php", "'._('Television').' <i class=\"fa fa-bars\"></i>");
+	}
 	
 	if (data){
 		$.ajax({
