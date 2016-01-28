@@ -30,6 +30,7 @@ from SlaveReceiver import *;
 from CommandReceiver import *;
 from MasterSql import *;
 from KNXManager import *;
+from EnOceanManager import *;
 from UpnpAudio import *;
 from IP_IRManager import *;
 from Smartcommand import *;
@@ -125,6 +126,7 @@ class MasterDaemon:
         self.hostlist = self.scanner._HostList;
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.knx_manager = KNXManager(self.aes_slave_keys);
+        self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
         self.trigger = Trigger(self);
         self.schedule = Schedule(self);
@@ -600,10 +602,7 @@ class MasterDaemon:
         daemon_id = self.sql.update_enocean_log(json_obj);
         print('[ ok ] Done update')
         connection.close();
-        ###########################################################################################
-        # A VOIR SI CETTE FONCTION EST UTILE (VOIR QUAND LES DEVICES ENOCEAN SERONT DANS LA BASE) #
-        # self.enocean_manager.update_room_device_option(daemon_id, json_obj);                    #
-        ###########################################################################################
+        self.enocean_manager.update_room_device_option(daemon_id, json_obj);
         return None;
 
     def send_to_device(self, json_obj, connection):
