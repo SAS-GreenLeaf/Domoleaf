@@ -296,7 +296,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 				</thead>
 				<tbody>';
 				foreach ($tabopt as $i => $elem) {
-					if (!empty($tabopt[$i])) {
+					if (!empty($tabopt[$i]) && isset($listdpt->$i)) {
+						$list = $listdpt->$i;
 						echo '
 						<tr>
 							<td>
@@ -319,30 +320,28 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 						}
 						echo
 							'<td>'; 
-							if (isset($listdpt->$i)) {
-								$list = $listdpt->$i;
-								if (sizeof($listdpt->$i) == 1){
-									echo
-									'<div hidden>
-										<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
-											<option value="'.$list[0]->dpt_id.'"></option>
-										</select>
-									</div>';
-								}
-								else {
-									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
-									foreach ($listdpt->$i as $list){
-										if (!empty($list->dpt_id)){
-											if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
-												echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
-											}
-											else{
-												echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
-											}
+							
+							if (sizeof($list) == 1){
+								echo
+								'<div hidden>
+									<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+										<option value="'.$list[0]->dpt_id.'"></option>
+									</select>
+								</div>';
+							}
+							else {
+								echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+								foreach ($list as $list){
+									if (!empty($list->dpt_id)){
+										if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+											echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+										}
+										else{
+											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
 										}
 									}
-									echo '</select>';
 								}
+								echo '</select>';
 							}
 						echo
 							'</td>
@@ -630,7 +629,7 @@ function SaveInfo(){
 }
 
 function CheckAddr(addr, addr_plus, optid){
-	var protoopt = '.$deviceconf->protocol_id.';
+	var protoopt = '.$device->protocol_id.';
 
 	if (protoopt == 1 && $("#toggle-"+optid).prop(\'checked\') == 1){
 		var tabaddr = addr.split("/");
