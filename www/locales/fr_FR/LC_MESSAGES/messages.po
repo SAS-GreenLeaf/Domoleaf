@@ -2173,5 +2173,5 @@ msgid "Lock"
 msgstr "Vérouiller"
 
 #: include/home.php
-msgid "Television"
-msgstr "Télévision"
+msgid "Video player"
+msgstr "Lecteur vidéo"

@@ -53,7 +53,7 @@ function display_widget($info){
 			10 => "display_shutter",
 			11 => "display_shutter",
 			15 => "display_audio",
-			16 => 'display_television',
+			16 => 'display_videoplayer',
 			17 => "display_audio",
 			18 => "display_garden",
 			20 => "display_furnace",
@@ -361,7 +361,7 @@ function display_audio($info){
 	return $display;
 }
 
-function display_television($info){
+function display_videoplayer($info){
 	$display = '';
 	switch($info->protocol_id){
 		case 1:
