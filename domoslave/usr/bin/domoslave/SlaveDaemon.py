@@ -573,11 +573,11 @@ class SlaveDaemon:
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd ';
+                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -b ';
                 if json_obj['interface_knx'] == 'tpuarts':
                     knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
-                    knx_edit = knx_edit + '-b ' + json_obj['interface_knx']  + ':' + new_val + '"';
+                    knx_edit = knx_edit + json_obj['interface_knx']  + ':' + new_val + '"';
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
