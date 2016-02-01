@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `room_device` (
   `plus2` varchar(255) DEFAULT NULL,
   `plus3` varchar(255) DEFAULT NULL,
   `plus4` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`room_device_id`),
   KEY `protocol_id` (`protocol_id`),
   KEY `room_id` (`room_id`),
