@@ -982,6 +982,10 @@ msgstr "Redémarrer"
 msgid "Edit"
 msgstr "Editer"
 
+#: include/conf_users.php
+msgid "Permissions"
+msgstr "Permissions"
+
 #: include/conf_daemon.php:70 include/conf_users.php:48
 msgid "Delete"
 msgstr "Supprimer"
