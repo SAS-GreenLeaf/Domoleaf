@@ -1045,31 +1045,6 @@ class Admin extends User {
 		$this->udpateScenariosList();
 	}
 	
-	/**
-	 * Return all options from a device
-	 * @param id : device id
-	 * @return all options
-	 */
-	
-	function confDeviceRoomOpt($deviceroomid) { 
-		$link = Link::get_link('domoleaf');
-		$list = array();
-		
-		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
-		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
-		        FROM room_device_option
-		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id
-		        ORDER BY room_device_option.option_id';
-		$req = $link->prepare($sql);
-		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->option_id] = clone $do;
-		}
-		return $list;
-	}
-	
 	function confRoomDeviceList($room){
 		$link = Link::get_link('domoleaf');
 		$list = array();

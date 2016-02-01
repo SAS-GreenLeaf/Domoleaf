@@ -171,16 +171,25 @@ class User {
 	function confDeviceSaveOption($idroom, $options) {
 		return null;
 	}
-	
+
+	/**
+	 * Return all options from a device
+	 * @param id : device id
+	 * @return all options
+	 */
 	function confDeviceRoomOpt($deviceroomid) {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
-		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
-		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
+		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
+		               addr_plus, room_device_option.dpt_id, status, valeur, 
+		               function_id,
+		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM room_device_option
+		        JOIN room_device ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id
+		        JOIN dpt_optiondef ON dpt_optiondef.option_id=optiondef.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id
+		        WHERE room_device_option.room_device_id=:room_device_id
 		        ORDER BY room_device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);

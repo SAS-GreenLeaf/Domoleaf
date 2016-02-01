@@ -25,7 +25,7 @@ if (!empty($_GET['id_smartcmd'])) {
 								'.$elem->device_name.'
 							</div>
 							<div id="smartcmdElemOption-'.$elem->exec_id.'" class="col-xs-6 left">';
-								echo display_option($elem->exec_id, $elem->option_id, $elem->option_value, $elem->room_device_id);
+								echo display_option($elem);
 								echo '
 							</div>
 						</div>
@@ -123,10 +123,9 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 				
 }
 
-function display_option($exec_id, $option_id, $option_value, $room_device_id) {
-	
+function display_option($elem) {
 	$display = '';
-	if (empty($option_id)) {
+	if (empty($elem->option_id)) {
 		return $display;
 	}
 	$tab_func = array(
@@ -150,16 +149,20 @@ function display_option($exec_id, $option_id, $option_value, $room_device_id) {
 			392 => "display_option_color",
 			393 => "display_option_color",
 			394 => "display_option_color",
-			400 => "display_option_fans",
-			401 => "display_option_fans",
-			402 => "display_option_fans",
-			403 => "display_option_fans",
-			404 => "display_option_fans",
-			405 => "display_option_fans",
-			406 => "display_option_fans"
+			400 => 'display_option_fans',
+			401 => 'display_option_fans',
+			402 => 'display_option_fans',
+			403 => 'display_option_fans',
+			404 => 'display_option_fans',
+			405 => 'display_option_fans',
+			406 => 'display_option_fans'
 	);
-	
-	$display.=$tab_func[$option_id]($exec_id, $room_device_id, $option_value, $option_id);
+	if(!empty($tab_func[$elem->option_id])) {
+		$display .= $tab_func[$elem->option_id]($elem->exec_id, $elem->room_device_id, $elem->option_value, $elem->option_id);
+	}
+	else {
+		$display .= display_option_button($elem);
+	}
 	return $display;
 }
 
@@ -407,6 +410,14 @@ function display_option_fans($exec_id, $room_device_id, $option_value, $option_i
 				'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
 					'._('Speed').' '.$fans_speed[$option_id].'
 				</button>';
+	return $display;
+}
+
+function display_option_button($elem) {
+	$display =
+	'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+			'.$elem->option_name.'
+		</button>';
 	return $display;
 }
 
