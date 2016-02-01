@@ -6,6 +6,8 @@ if (!empty($_GET['floor'])){
 	$request -> add_request('confRoomList', array($_GET['floor']));
 	$result  =  $request -> send_request();
 	
+	echo '<title>'._('Salle').'</title>';
+	
 	$floorlistroom = $result->confFloorList;
 	$roomlist = $result->confRoomList;
 	
