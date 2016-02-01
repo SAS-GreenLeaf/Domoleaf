@@ -189,7 +189,7 @@ class User {
 		        JOIN room_device ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
 		        JOIN dpt_optiondef ON dpt_optiondef.option_id=optiondef.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id
-		        WHERE room_device_option.room_device_id=:room_device_id
+		        WHERE room_device_option.room_device_id=:room_device_id AND status=1
 		        ORDER BY room_device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
