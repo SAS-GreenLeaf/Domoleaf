@@ -165,14 +165,40 @@ function convertHexaToRGB($color) {
 	return array($red, $green, $blue);
 }
 
+function convertHexaToRGBW($color) {
+	if ($color[0] == '#') {
+		$color = substr($color, 1);
+	}
+	
+	$red = substr($color, 0, 2);
+	$green = substr($color, 2, 2);
+	$blue = substr($color, 4, 2);
+	$white = substr($color, 6, 2);
+	
+	$red   = hexdec($red);
+	$green = hexdec($green);
+	$blue  = hexdec($blue);
+	$white = hexdec($white);
+	
+	return array($red, $green, $blue, $white);
+}
+
 function convertRGBToHexa($red, $green, $blue) {
-		
 	$red = dechex($red);
 	$green = dechex($green);
 	$blue = dechex($blue);
+	$hexa_color = '#'.$red.$green.$blue;
 	
-	$hexa_color = "#".$red.$green.$blue;
+	return $hexa_color;
+}
 
+function convertRGBWToHexa($red, $green, $blue, $white) {
+	$red   = dechex($red);
+	$green = dechex($green);
+	$blue  = dechex($blue);
+	$white = dechex($white);
+	$hexa_color = '#'.$red.$green.$blue.$white;
+	
 	return $hexa_color;
 }
 

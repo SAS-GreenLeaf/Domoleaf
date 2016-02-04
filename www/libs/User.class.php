@@ -1485,15 +1485,26 @@ class User {
 				$blue = $do->option_value;
 				$exec_id = $do->exec_id;
 			}
+			if ($do->option_id == 410 && empty($white)) {
+				$white = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
 			
-			if (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
+				$white = 0;
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			elseif (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue);
 				$red = 0;
 				$green = 0;
 				$blue = 0;
 				$list[$exec_id]['option_value'] = $hexa_color;
 			}
-			
 		}
 		return $list;
 	}
@@ -1820,14 +1831,26 @@ class User {
 				$blue = $do->option_value;
 				$id_condition = $do->id_condition;
 			}
-			if (!empty($red) && !empty($green) && !empty($blue) && !empty($id_condition)) {
+			if ($do->option_id == 410 && empty($white)) {
+				$white = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			
+			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
+				$white = 0;
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			elseif (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue);
 				$red = 0;
 				$green = 0;
 				$blue = 0;
-				$list[$id_condition]['value'] = $hexa_color;
+				$list[$exec_id]['option_value'] = $hexa_color;
 			}
-				
 		}
 		return $list;
 	}

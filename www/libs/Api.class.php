@@ -838,6 +838,13 @@ class Api {
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
 									}
+									elseif($var[3] == 410) {
+										list($red, $green, $blue, $white) = convertHexaToRGBW($var[4]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 410, $blue, $var[5]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 392, $red, $var[5], 1);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
+									}
 									else {
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
 									}
