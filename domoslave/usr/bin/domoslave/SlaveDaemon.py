@@ -164,6 +164,11 @@ class SlaveDaemon:
         self.enocean_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cron_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
+        self.knx_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        
         port = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_PORT_ENTRY);
         if not port:
             sys.exit(2);

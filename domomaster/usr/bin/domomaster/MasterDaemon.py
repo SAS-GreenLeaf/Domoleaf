@@ -218,6 +218,8 @@ class MasterDaemon:
         """
         self.slave_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cmd_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.slave_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.cmd_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         self.slave_connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         self.cmd_connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         s_port = self._parser.getValueFromSection(MASTER_CONF_LISTEN_SECTION, MASTER_CONF_LISTEN_PORT_SLAVE_ENTRY);
@@ -642,6 +644,7 @@ class MasterDaemon:
         Retrieves network interface name from IP address.
         """
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         try:
             res = socket.inet_ntoa(fcntl.ioctl(s.fileno(),
                                                0x8915,
