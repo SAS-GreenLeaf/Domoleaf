@@ -34,7 +34,6 @@ VALUES
 	(153, 'Current detection', '', '', 'Détection de courant', ''),
 	(173, 'Rain', '', '', 'Pluie', ''),
 	(174, 'Wind', '', '', 'Vent', ''),
-	(176, NULL, '', '', 'Diagnostic Bus', ''),
 	(181, NULL, '', '', 'Option 1', ''),
 	(182, NULL, '', '', 'Option 2', ''),
 	(189, NULL, '', '', 'Option 3', ''),
