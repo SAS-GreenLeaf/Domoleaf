@@ -624,10 +624,10 @@ class MasterDaemon:
                 if dev['daemon_name'] == host._Hostname:
                     hostname = host._Hostname;
                     break;
-        function_id = int(dev['function_id']);
-        if (function_id > 0):
+        function_writing = int(dev['function_writing']);
+        if (function_writing > 0):
             try:
-                self.functions[function_id](json_obj, dev, hostname);
+                self.functions[function_writing](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
         #add scenario check here to allow trigger on write ???

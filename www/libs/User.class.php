@@ -183,7 +183,7 @@ class User {
 		
 		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
 		               addr_plus, room_device_option.dpt_id, status, valeur, 
-		               function_id,
+		               function_writing,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM room_device_option
 		        JOIN room_device ON room_device_option.room_device_id = room_device.room_device_id

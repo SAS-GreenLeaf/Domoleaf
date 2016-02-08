@@ -16,7 +16,7 @@ LOAD_DEVICE_QUERY_IP = ('SELECT protocol_id, device_id, daemon_id, '
                         'addr, plus1, plus2, plus3 FROM room_device '
                         'WHERE room_device_id = ');
 
-CHECK_ROOM_DEVICE_OPTIONS = ('SELECT room_device_option.option_id, addr, dpt_optiondef.dpt_id, dpt_optiondef.function_id '
+CHECK_ROOM_DEVICE_OPTIONS = ('SELECT room_device_option.option_id, addr, dpt_optiondef.dpt_id, dpt_optiondef.function_writing '
                              'FROM room_device_option '
                              'JOIN dpt_optiondef '
                              'ON room_device_option.dpt_id = dpt_optiondef.dpt_id '
@@ -119,7 +119,7 @@ class DeviceManager:
         if len(res) == 0:
             self.logger.error('[ DeviceManager ]: Error: No room_device_option for room_device_id \'' + str(self._id) + '\'');
             device['option_id'] = self._option_id;
-            device['function_id'] = 0;
+            device['function_writing'] = 0;
             device['dpt_id'] = 0;
             if device['protocol_id'] != IP_ID:
                 db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
@@ -133,7 +133,7 @@ class DeviceManager:
         for d in res:
             if d[0] == self._option_id:
                 device['addr_dst'] = d[1];
-                device['function_id'] = d[3];
+                device['function_writing'] = d[3];
                 device['dpt_id'] = d[2];
                 break;
         device['option_id'] = self._option_id;

@@ -39,7 +39,7 @@ if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 				</li>';
 			}
 		}
-		elseif($option->function_id > 0) {
+		elseif($option->function_writing > 0) {
 			echo '
 				<li class="list-item">
 					<div id="btn-option-'.$_GET['room_id_device'].'" class="box-scenar-devices cursor btn-draggable"

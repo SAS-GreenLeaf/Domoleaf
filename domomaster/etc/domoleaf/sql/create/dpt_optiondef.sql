@@ -6,7 +6,8 @@ CREATE TABLE `dpt_optiondef` (
   `option_id` int(10) unsigned NOT NULL,
   `dpt_id` int(11) unsigned NOT NULL,
   `protocol_id` int(10) unsigned NOT NULL,
-  `function_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `function_writing` int(10) unsigned NOT NULL DEFAULT '0',
+  `function_answer` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `dpt_id` (`dpt_id`),
   KEY `option_id` (`option_id`),
   KEY `protocol_id` (`protocol_id`),
@@ -15,7 +16,7 @@ CREATE TABLE `dpt_optiondef` (
   CONSTRAINT `dpt_optiondef_ibfk_3` FOREIGN KEY (`protocol_id`) REFERENCES `protocol` (`protocol_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `dpt_optiondef` (`option_id`, `dpt_id`, `protocol_id`, `function_id`)
+INSERT INTO `dpt_optiondef` (`option_id`, `dpt_id`, `protocol_id`, `function_writing`)
 VALUES
 	(6, 79, 1, 0),
 	(12, 2, 1, 1),
