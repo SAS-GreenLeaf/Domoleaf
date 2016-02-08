@@ -4,7 +4,7 @@ import sys;
 import os;
 import random;
 import string;
-from hashlib import sha1
+from hashlib import md5
 sys.path.append("/usr/lib/domoleaf");
 from DaemonConfigParser import *;
 
@@ -54,8 +54,8 @@ def slave_conf_init():
     
     #KEY
     KEY = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(128))
-    KEY = sha1(KEY.encode('utf-8'))
-    file.writeValueFromSection('personnal_key', 'aes', KEY.hexdigest());
+    KEY = md5(KEY.encode('utf-8')).hexdigest()
+    file.writeValueFromSection('personnal_key', 'aes', KEY);
     
     #KNX Interface
     knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -b '
