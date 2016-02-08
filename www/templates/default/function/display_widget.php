@@ -847,7 +847,7 @@ function display_varie($info, $var_icon = 1, $option_id=13){
 											       ontouchstart="LockWidget('.$info->room_device_id.', '.$option_id.')"
 											       ontouchend="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
-											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{$option_id}->option_id.'\')"
+											       onchange="getVariation(\''.$info->room_device_id.'\', '.$option_id.')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
 										</div>';
 							}
@@ -860,7 +860,7 @@ function display_varie($info, $var_icon = 1, $option_id=13){
 											       ontouchstart="LockWidget('.$info->room_device_id.', '.$option_id.')"
 											       ontouchend="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
 											       oninput="outputUpdate(\''.$info->room_device_id.'\', value)"
-											       onchange="getVariation(\''.$info->room_device_id.'\', \''.$info->device_opt->{$option_id}->option_id.'\')"
+											       onchange="getVariation(\''.$info->room_device_id.'\', '.$option_id.')"
 											       id="slider-value-'.$info->room_device_id.'" type="range">
 										</div>';
 							}
