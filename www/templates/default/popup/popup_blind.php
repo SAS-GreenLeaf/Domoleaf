@@ -26,23 +26,23 @@ if(!empty($_GET['iddevice'])){
 		$display.='<div class="clearfix"></div>';
 	}
 	
-	if (!empty($device->device_opt->{13})){
+	if (!empty($device->device_opt->{442})){
 		$display.='<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-12">';
-		$display.=display_varie($device, 2);
+		$display.=display_varie($device, 3, 442);
 		$display.='</div>';
-		$display.='<div class="clearfix"></div><br/>';
+		$display.='<div class="clearfix"></div>';
 	}
 	
 	if (!empty($device->device_opt->{54})){
 		$display.=display_UpDown($device);
 		$display.='<div class="clearfix"></div>';
 	}
-	
-	if (!empty($device->device_opt->{442})){
+
+	if (!empty($device->device_opt->{13})){
 		$display.='<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-12">';
-		$display.=display_varie($device, 3, 442);
+		$display.=display_varie($device, 2);
 		$display.='</div>';
-		$display.='<div class="clearfix"></div>';
+		$display.='<div class="clearfix"></div><br/>';
 	}
 	
 	$display = str_replace("\n", '', $display);
