@@ -1,6 +1,12 @@
 from math import *;
 from decimal import Decimal;
 
+def convert_none(val):
+    return val;
+
+def convert_hundred(val):
+    return val/100;
+
 def convert_temperature(val):
     """
     Conversion from val to the real value
@@ -32,3 +38,12 @@ def convert_temperature_reverse(val):
     res = hex(int(res_str, 2))[2:];
     res = ('0' * (4 - len(res))) + res;
     return [res[:2], res[2:]];
+
+def convert_float32(val):
+    factor = 0.01;
+    exp = (val & 0x7F800000) >> 23;
+    sign = val >> 31;
+    mant = val & 0x007FFFFF;
+    if sign:
+        mant = mant | 0xFFFFFFFFFF800000;
+    return Decimal(str(round(mant * pow(2, exp) * factor, 2)));

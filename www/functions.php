@@ -239,16 +239,4 @@ function checkCurrency($currencyId) {
 	}
 }
 
-function valueToDPTValue($dpt, $value=0) {
-	switch ($dpt) {
-		case 87:
-			return $value/100;
-		break;
-		
-		default:
-			return $value;
-		break;
-	}
-}
-
 ?>

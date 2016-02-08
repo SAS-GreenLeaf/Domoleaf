@@ -1772,7 +1772,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => valueToDPTValue($do->dpt_id, $do->valeur),
+						'valeur'    => $do->valeur,
 						'highCost'  => $highCost,
 						'lowCost'   => $lowCost,
 						'lowField1' => $lowField1,
@@ -1789,7 +1789,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => valueToDPTValue($do->dpt_id, $do->valeur)
+						'valeur'    => $do->valeur
 					);
 				}
 			}
