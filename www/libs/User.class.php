@@ -1919,6 +1919,20 @@ class User {
 		$this->udpateTriggersList();
 	}
 	
+	function triggerElemOption($idtrigger, $idcondition) {
+		$link = Link::get_link('domoleaf');
+		$sql = 'SELECT value, operator
+		        FROM trigger_events_conditions
+		        WHERE id_trigger=:trigger_id AND id_condition=:condition_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $idtrigger, PDO::PARAM_INT);
+		$req->bindValue(':condition_id', $idcondition, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do;
+	}
+	
 	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
 		$link = Link::get_link('domoleaf');
 	

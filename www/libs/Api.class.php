@@ -974,6 +974,12 @@ class Api {
 							}
 						break;
 						
+						case 'triggerElemOption':
+							if (!empty($var[0]) && !empty($var[1])) {
+								$res = $user->triggerElemOption($var[0], $var[1]);
+							}
+						break;
+						
 						case 'updateTriggerElemOptionValue' :
 							if (empty($var[4])) {
 								$var[4] = 0;
