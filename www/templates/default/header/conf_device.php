@@ -46,6 +46,8 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 			);
 		}
 	}
+	
+	echo '<title>'._('Device configuration').'</title>';
 }
 else {
 	$request =  new Api();
