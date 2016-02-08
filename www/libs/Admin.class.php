@@ -1402,7 +1402,7 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':name', mb_strtoupper($name),  PDO::PARAM_STR);
 		$req->bindValue(':serial', mb_strtoupper($serial), PDO::PARAM_STR);
-		$req->bindValue(':skey', md5($skey), PDO::PARAM_STR);
+		$req->bindValue(':skey', $skey, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		return $link->lastInsertId();
@@ -1527,7 +1527,7 @@ class Admin extends User {
 				        SET secretkey=:skey, validation=0
 				        WHERE daemon_id=:daemon_id';
 				$req = $link->prepare($sql);
-				$req->bindValue(':skey', md5($skey), PDO::PARAM_STR);
+				$req->bindValue(':skey', $skey, PDO::PARAM_STR);
 				$req->bindValue(':daemon_id', $id, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 			}
