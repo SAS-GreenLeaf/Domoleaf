@@ -114,7 +114,7 @@ class SlaveDaemon:
         self.master_sock = None;
         self.enocean_sock = None;
         self.cron_sock = None;
-        self.private_aes = self._parser.getValueFromSection('personnal_key', 'aes').encode();
+        self.private_aes = self._parser.getValueFromSection('personnal_key', 'aes');
         self.wifi_init(self._parser.getValueFromSection('wifi', 'ssid'), self._parser.getValueFromSection('wifi', 'password'), self._parser.getValueFromSection('wifi', 'encryption'), self._parser.getValueFromSection('wifi', 'mode'), 0);
         self.functions = {
             KNX_READ_REQUEST    : self.knx_read_request,
