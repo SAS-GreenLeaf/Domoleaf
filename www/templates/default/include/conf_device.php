@@ -463,7 +463,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			</thead>
 			<tbody>';
 		foreach ($tabopt as $i => $elem){
-			if (!empty($tabopt[$i])){
+			if (!empty($tabopt[$i]) && !empty($listdpt->$i)) {
+				$list = $listdpt->$i;
 				echo
 				'<tr>
 					<td>';
@@ -474,31 +475,28 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 					</td>
 					<td><input id="waddr-'.$tabopt[$i]['id'].'" class="form-control" type="text" placeholder="'._('Source').'"></td>
 					<td>';
-					if (isset($listdpt->$i)) {
-						$list = $listdpt->$i;
-						if (sizeof($listdpt->$i) == 1){
-							echo
-							'<div hidden>
-								<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
-									<option value="'.$list[0]->dpt_id.'"></option>
-								</select>
-							</div>';
-						}
-						else {
-							echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
-								foreach ($listdpt->$i as $list){
-									if (!empty($list->dpt_id)){
-										if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
-											echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
-										}
-										else{
-											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
-										}
+					if (sizeof($listdpt->$i) == 1){
+						echo
+						'<div hidden>
+							<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+								<option value="'.$list[0]->dpt_id.'"></option>
+							</select>
+						</div>';
+					}
+					else {
+						echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+							foreach ($listdpt->$i as $list){
+								if (!empty($list->dpt_id)){
+									if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+										echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+									}
+									else{
+										echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
 									}
 								}
-							echo
-							'</select>';
-						}
+							}
+						echo
+						'</select>';
 					}
 					echo
 					'</td>
