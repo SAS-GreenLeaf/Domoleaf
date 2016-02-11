@@ -20,6 +20,8 @@ $request = new Api();
 $request -> add_request('searchScheduleById', array($id_schedule));
 $result  =  $request->send_request();
 
+echo '<title>'._('Schedules edition').'</title>';
+
 $name_schedule = $result->searchScheduleById->schedule_name;
 
 ?>

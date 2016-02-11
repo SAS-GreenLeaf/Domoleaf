@@ -2179,3 +2179,16 @@ msgstr "Vérouiller"
 #: include/home.php
 msgid "Video player"
 msgstr "Lecteur vidéo"
+
+#: header/profile_user_trigger_events_edit.php
+msgid "Triggers edition"
+msgstr "Edition des déclencheurs"
+
+#: header/profile_user_trigger_schedules_edit.php
+msgid "Schedules edition"
+msgstr "Edition des horaires"
+
+#: header/profile_user_smartcmd_edit.php
+msgid "Smartcommands edition"
+msgstr "Edition des Smartcommands"
+

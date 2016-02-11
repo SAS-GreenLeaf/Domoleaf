@@ -93,4 +93,6 @@ if(!empty($installation_info) && !empty($name_smartcmd) ||
 	}
 }
 
+echo '<title>'._('Smartcommands edition').'</title>';
+
 ?>

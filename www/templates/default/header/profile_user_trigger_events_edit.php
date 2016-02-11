@@ -21,6 +21,8 @@ $request -> add_request('mcVisible');
 $request -> add_request('searchTriggerById', array($id_trigger));
 $result  =  $request -> send_request();
 
+echo '<title>'._('Trigger edit').'</title>';
+
 $listAllVisible = $result->mcVisible;
 
 $floorallowed = $listAllVisible->ListFloor;
