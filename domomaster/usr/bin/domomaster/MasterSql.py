@@ -155,6 +155,7 @@ class MasterSql:
                 up += "\" WHERE room_device_id=" + str(r[1]) + " AND option_id=\"" + str(r[0]) + "\"";
                 self.logger.info('update_room_device_option write_long: up = ' + up)
                 self.mysql_handler_personnal_query(up);
+        return res
 
     def update_room_device_option_resp(self, json_obj, daemon_id):
         """
@@ -179,6 +180,7 @@ class MasterSql:
             
             self.logger.info("update_room_device_option resp query = " + query);
             self.mysql_handler_personnal_query(query);
+        return res
 
     def update_room_device_option_write_short(self, json_obj, daemon_id):
         """
@@ -215,6 +217,7 @@ class MasterSql:
             up += " WHERE room_device_id=" + str(r[1]) + " AND option_id=" + str(r[0]) + "";
             self.logger.info("update_room_device_option write_short up2: " + up)
             self.mysql_handler_personnal_query(up);
+        return res
 
     def mysql_handler_personnal_query(self, query):
         """

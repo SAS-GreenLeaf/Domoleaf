@@ -529,8 +529,9 @@ class MasterDaemon:
         Updates room_device_option values in the database and check scenarios.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-        self.knx_manager.update_room_device_option(daemon_id, json_obj);
-        self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
+        doList = self.knx_manager.update_room_device_option(daemon_id, json_obj);
+        if len(doList) > 0:
+            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
         connection.close();
 
     def knx_write_short(self, json_obj, connection):

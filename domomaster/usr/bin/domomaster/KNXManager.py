@@ -35,11 +35,11 @@ class KNXManager:
         Update room_device_option table in database to set new values of the device described by 'json_obj'
         """
         if int(json_obj['type']) == KNX_RESPONSE:
-            self.sql.update_room_device_option_resp(json_obj, daemon_id);
+            return self.sql.update_room_device_option_resp(json_obj, daemon_id);
         elif int(json_obj['type']) == KNX_WRITE_SHORT:
-            self.sql.update_room_device_option_write_short(json_obj, daemon_id);
+            return self.sql.update_room_device_option_write_short(json_obj, daemon_id);
         elif int(json_obj['type']) == KNX_WRITE_LONG:
-            self.sql.update_room_device_option_write_long(json_obj, daemon_id);
+            return self.sql.update_room_device_option_write_long(json_obj, daemon_id);
 
     def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key, close_flag = True):
         """
