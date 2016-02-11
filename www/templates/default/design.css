@@ -1787,7 +1787,7 @@ a.carousel-control-camera:hover {
 .list-group-item.active:focus {
 	background-color: #76af1a;
 	color: #fff;
-	border-color:transparent;
+	border: 1px solid #ddd;
 }
 
 .list-group-item > .badge,
