@@ -925,10 +925,8 @@ class MasterDaemon:
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 300);
         re = '';
-        for s in rlist:
-            data = sock.recv(4096);
-            if not data:
-                continue;
+        data = sock.recv(4096);
+        if data:
             decrypt_IV = data[:16].decode();
             host = None;
             for h in self.hostlist:
