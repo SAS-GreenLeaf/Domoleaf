@@ -1655,6 +1655,21 @@ class Admin extends User {
 		return $socket->receive();
 	}
 	
+	function confMenuProtocol() {
+		$link = Link::get_link('domoleaf');
+		$list = array();
+		
+		$sql = 'SELECT count(protocol_id) as nb, protocol_id
+		        FROM daemon_protocol
+		        GROUP BY protocol_id';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->protocol_id] = $do->nb;
+		}
+		
+		return $list;
+	}
 	
 	/*** User permission ***/
 	function mcAllowed(){

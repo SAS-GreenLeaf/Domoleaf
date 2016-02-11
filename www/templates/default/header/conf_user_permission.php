@@ -6,6 +6,7 @@ if (!empty($_GET['userid'])){
 	$request -> add_request('confUserInstallation', array($_GET['userid']));
 	$request -> add_request('profileList');
 	$request -> add_request('profileInfo');
+	$request -> add_request('confMenuProtocol');
 	$result  =  $request -> send_request();
 	
 	$userid = $_GET['userid'];
@@ -28,8 +29,11 @@ if (!empty($_GET['userid'])){
 }
 else {
 	$request =  new Api();
+	$request -> add_request('confMenuProtocol');
 	$result  =  $request -> send_request();
 }
+
+$menuProtocol = $result->confMenuProtocol;
 
 echo '<title>'._('Users permission').'</title>';
 

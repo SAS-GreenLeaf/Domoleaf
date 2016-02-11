@@ -21,16 +21,26 @@ echo
 		<a title="'._('Busmonitor').'" href="#" onclick="ShowBusmonitor()" class="list-group-item text-center change">
 			<h4 class="fa fa-wrench lg"></h4><br/><span class="hidden-xs">'._('Busmonitor').'</span>
 		</a>
-		<ul id="dropdown" class="nav nav-sidebar" hidden role="menu">
+		<ul id="dropdown" class="nav nav-sidebar" hidden role="menu">';
+		
+		if(!empty($menuProtocol) && !empty($menuProtocol->{2})) {
+			echo '
 			<li>
 				<a id="menu-enocean" class="list-group-item text-center" href="/monitor_enocean">'._('Enocean').'</a>
-			</li>
+			</li>';
+		}
+	echo '
 			<li>
 				<a id="menu-ip" class="list-group-item text-center" href="/monitor_ip">'._('Ip').'</a>
-			</li>
+			</li>';
+		
+		if(!empty($menuProtocol) && !empty($menuProtocol->{1})) {
+			echo '
 			<li>
 				<a id="menu-knx" class="list-group-item text-center" href="/monitor_knx">'._('KNX').'</a>
-			</li>
+			</li>';
+		}
+	echo '
 		</ul>
 	</div>
 </div>';

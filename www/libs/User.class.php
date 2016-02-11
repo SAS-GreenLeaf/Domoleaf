@@ -117,6 +117,10 @@ class User {
 		return null;
 	}
 	
+	function confMenuProtocol() {
+		return null;
+	}
+	
 	/*** Floors ***/
 	function confFloorList() {
 		return null;

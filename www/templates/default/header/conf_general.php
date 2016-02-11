@@ -2,11 +2,13 @@
 
 $request =  new Api();
 $request -> add_request('conf_load');
+$request -> add_request('confMenuProtocol');
 $result  =  $request -> send_request();
 
 echo '<title>'._('General Configuration').'</title>';
 
 $generalinfo = $result->conf_load;
+$menuProtocol = $result->confMenuProtocol;
 
 $httpport  = $generalinfo->{'1'}->configuration_value;
 $httpsport = $generalinfo->{'2'}->configuration_value;

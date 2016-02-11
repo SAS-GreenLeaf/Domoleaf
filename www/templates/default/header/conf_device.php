@@ -12,6 +12,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$request -> add_request('confOptionList');
 	$request -> add_request('confOptionDptList', array($_GET['device']));
 	$request -> add_request('confManufacturerList', array($_GET['device']));
+	$request -> add_request('confMenuProtocol');
 	$result  =  $request -> send_request();
 	
 	$floorlistroom = $result->confFloorList;
@@ -23,6 +24,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$listdpt = $result->confOptionDptList;
 	$listoptdevice = $result->confDeviceRoomOpt;
 	$manufacturerList = $result->confManufacturerList;
+	$menuProtocol = $result->confMenuProtocol;
 	
 	$device = $roomdevice->$_GET['device'];
 	$deviceconf = $deviceall->{$device->device_id};

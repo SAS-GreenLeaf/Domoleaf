@@ -637,6 +637,10 @@ class Api {
 								$res = $user->confDaemonRcvValidation();
 						break;
 						
+						case 'confMenuProtocol':
+								$res = $user->confMenuProtocol();
+						break;
+						
 						/*** User permission ***/
 						
 						case 'SetFloorOrder':
