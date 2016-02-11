@@ -433,7 +433,7 @@ function display_option_button($elem) {
 	return $display;
 }
 
-function display_option_varie($exec_id, $room_id_device, $option_value, $option_id) {
+function display_option_tilt($exec_id, $room_id_device, $option_value, $option_id) {
 	$display = '
 	<div class="col-xs-6 center-div">
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
