@@ -601,11 +601,11 @@ class MasterDaemon:
         Callback called each time a monitor_enocean packet is received.
         Stores the data in enocean_log table.
         """
-        print('updating enocean log with ' + str(json_obj));
         daemon_id = self.sql.update_enocean_log(json_obj);
-        print('[ ok ] Done update')
+        doList = self.enocean_manager.update_room_device_option(daemon_id, json_obj);
         connection.close();
-        self.enocean_manager.update_room_device_option(daemon_id, json_obj);
+        if len(doList) > 0:
+            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
         return None;
 
     def send_to_device(self, json_obj, connection):

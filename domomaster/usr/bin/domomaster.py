@@ -8,7 +8,8 @@ import os;
 
 LOG_FILE = '/var/log/domoleaf/domomaster.log'
 
-log_flag = False;
+log_flag = True;
+MasterDaemon.MasterDaemon(log_flag).run();
 
 """
 Master daemon main function
