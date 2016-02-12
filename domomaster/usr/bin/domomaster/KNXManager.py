@@ -141,7 +141,7 @@ class KNXManager:
             {
                 "packet_type": "knx_write_long",
                 "addr_to_send": str(dev['addr_dst']),
-                "value": json_obj['data']['value']
+                "value": hex(int(json_obj['data']['value']))
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
@@ -222,7 +222,7 @@ class KNXManager:
             json_str = json.JSONEncoder().encode(
                 {
                     "packet_type": "knx_write_long",
-                    "addr_to_send": str(dev['addr_dst']),
+                    "addr_to_send": hex(int(dev['addr_dst'])),
                     "value": val
                 }
             );
@@ -264,7 +264,7 @@ class KNXManager:
                 {
                     "packet_type": "knx_write_long",
                     "addr_to_send": str(dev['addr_dst']),
-                    "value": val
+                    "value":  hex(int(val))
                 }
             );
             sock = socket.create_connection((hostname, port));
