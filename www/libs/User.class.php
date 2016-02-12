@@ -216,7 +216,7 @@ class User {
 		return null;
 	}
 	
-	function confDeviceNewKnx($name, $proto, $room, $device, $daemon, $addr, $daemon){
+	function confDeviceNewKnx($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
 	
