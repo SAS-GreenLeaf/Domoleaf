@@ -21,6 +21,7 @@ uint8_t get_data_len(uint8_t byte)
 int connect_to_slave()
 {
 	int    sock;
+	int    on = 1;
 	struct protoent *proto;
 	struct sockaddr_in addr_in;
 
@@ -37,6 +38,7 @@ int connect_to_slave()
 		return (-1);
 	}
 	printf("Done creating socket\n");
+	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
 	addr_in.sin_family = AF_INET;
 	addr_in.sin_port = htons(4244);
 	addr_in.sin_addr.s_addr = inet_addr("127.0.0.1");

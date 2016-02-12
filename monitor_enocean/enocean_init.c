@@ -44,6 +44,7 @@ int init(const char *dev_name, struct termios *options, struct termios *backup)
 int init_listen_slave_socket(const char *ip, uint16_t port)
 {
 	int    sock;
+	int    on = 1;
 	struct protoent *proto;
 	struct sockaddr_in addr_in;
 
@@ -57,6 +58,7 @@ int init_listen_slave_socket(const char *ip, uint16_t port)
 		perror("socket");
 		return (-1);
 	}
+	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
 	addr_in.sin_family = AF_INET;
 	addr_in.sin_port = htons(port);
 	addr_in.sin_addr.s_addr = inet_addr(ip);
