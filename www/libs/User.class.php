@@ -186,7 +186,7 @@ class User {
 		$list = array();
 		
 		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
-		               addr_plus, room_device_option.dpt_id, status, valeur, 
+		               addr_plus, room_device_option.dpt_id, status, opt_value, 
 		               function_writing,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM room_device_option
@@ -661,7 +661,7 @@ class User {
 	function mcValueDef($iddevice, $idoption, $action){
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'SELECT  valeur
+		$sql = 'SELECT  opt_value
 				FROM    room_device_option
 				WHERE   room_device_id=:iddevice
 				AND     option_id=:option_id';
@@ -672,20 +672,20 @@ class User {
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		$val = '0';
-		if (!empty($do->valeur)){
-			$val = $do->valeur + $action;
+		if (!empty($do->opt_value)){
+			$val = $do->opt_value + $action;
 		}
 		if ((int)$val == $val){
 			$val = $val.'.0';
 		}
 		$sql = 'UPDATE  room_device_option
-				SET     valeur =  :valeur
+				SET     opt_value =  :opt_value
 				WHERE   room_device_id=:iddevice
 				AND     option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->bindValue(':option_id', $idoption, PDO::PARAM_INT);
-		$req->bindValue(':valeur', $val, PDO::PARAM_STR);
+		$req->bindValue(':opt_value', $val, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$this->mcTemperature($iddevice, $idoption, $val);
@@ -801,7 +801,7 @@ class User {
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
 		               dpt.unit,
-		               room_device_option.valeur
+		               room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -826,7 +826,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> $do->valeur,
+							'opt_value'	=> $do->opt_value,
 							'highCost'  => $highCost,
 							'lowCost'   => $lowCost,
 							'lowField1' => $lowField1,
@@ -843,7 +843,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> $do->valeur
+							'opt_value'	=> $do->opt_value
 					);
 				}
 			}
@@ -2644,7 +2644,7 @@ class User {
 		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr_plus, room_device_option.valeur
+		               room_device_option.addr_plus, room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -2657,7 +2657,7 @@ class User {
 				'name'     => $do->name,
 				'addr'     => $do->addr,
 				'addr_plus'=> $do->addr_plus,
-				'valeur'   => $do->valeur
+				'opt_value'   => $do->opt_value
 			);
 		}
 		return $list;
@@ -2706,7 +2706,7 @@ class User {
 		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr_plus, room_device_option.valeur
+		               room_device_option.addr_plus, room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -2721,7 +2721,7 @@ class User {
 				'name'      => $do->name,
 				'addr'      => $do->addr,
 				'addr_plus' => $do->addr_plus,
-				'valeur'    => $do->valeur
+				'opt_value'    => $do->opt_value
 			);
 		}
 		return $info;
@@ -2782,12 +2782,12 @@ class User {
 			}
 			
 			$sql ='UPDATE room_device_option
-			       SET valeur=:valeur
+			       SET opt_value=:opt_value
 			       WHERE room_device_id=:room_device_id AND 
 			             option_id=:option_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
-			$req->bindValue(':valeur', $value, PDO::PARAM_INT);
+			$req->bindValue(':opt_value', $value, PDO::PARAM_INT);
 			$req->bindValue(':option_id', $optionid, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$socket = new Socket();
@@ -2813,7 +2813,7 @@ class User {
 		$res = $this->conf_load();
 		$list = Array();
 		
-		$sql = 'SELECT room_device_option.room_device_id, option_id, valeur, addr_plus, room_device.device_id, dpt_id
+		$sql = 'SELECT room_device_option.room_device_id, option_id, opt_value, addr_plus, room_device.device_id, dpt_id
 		        FROM   room_device_option
 		        JOIN   room_device ON room_device_option.room_device_id=room_device.room_device_id';
 		$req = $link->prepare($sql);
@@ -2832,7 +2832,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => $do->valeur,
+						'opt_value'        => $do->opt_value,
 						'highCost'      => $highCost,
 						'lowCost'       => $lowCost,
 						'lowField1'     => $lowField1,
@@ -2847,7 +2847,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => $do->valeur
+						'opt_value'     => $do->opt_value
 				);
 			}
 		}

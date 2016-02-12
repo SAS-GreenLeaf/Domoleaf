@@ -227,7 +227,7 @@ function GetReturn(){
 				$.each(msg.request.mcReturn, function(device_id, value){
 					$.each(value, function(room_device_id, val){
 						$.each(val, function(idopt, val2){
-							if (val2.valeur){
+							if (val2.opt_value){
 								WidgetReturn(device_id, room_device_id, idopt, val2);
 							}
 						});

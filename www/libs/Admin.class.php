@@ -1762,7 +1762,7 @@ class Admin extends User {
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
 		               dpt.unit,
-		               room_device_option.valeur
+		               room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -1787,7 +1787,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => $do->valeur,
+						'opt_value'    => $do->opt_value,
 						'highCost'  => $highCost,
 						'lowCost'   => $lowCost,
 						'lowField1' => $lowField1,
@@ -1804,7 +1804,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => $do->valeur
+						'opt_value'    => $do->opt_value
 					);
 				}
 			}
@@ -1888,7 +1888,7 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 
 		$sql = 'UPDATE room_device_option
-		        SET valeur = "0"
+		        SET opt_value = "0"
 		        WHERE room_device_id=:room_device_id AND option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);

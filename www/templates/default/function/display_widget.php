@@ -610,7 +610,7 @@ function display_lampe($info){
 					'<div class="info-warning foreground-widget">
 						<button id="widget_info-'.$info->room_device_id.'-153" title="'._('More').'"
 						        onclick="HandlePopup(2, '.$info->room_device_id.')"';
-		if ($info->device_opt->{153}->valeur == 1){
+		if ($info->device_opt->{153}->opt_value == 1){
 			$display .= '       class="btn btn-danger"';
 		}
 		else{
@@ -732,7 +732,7 @@ function display_OnOff($info, $popup = 0){
 		case 1:
 			if (!empty($info->device_opt->{12}->addr_plus)){
 				$display .= '<div class="checkbox foreground-widget">';
-						if (!empty($info->device_opt->{12}->valeur)){
+						if (!empty($info->device_opt->{12}->opt_value)){
 						 	$display.='<input data-on-color="greenleaf"
 						 				      data-label-width="0"
 										      data-on-text="'._('On').'"
@@ -815,8 +815,8 @@ function display_varie($info, $var_icon = 1, $option_id=13){
 							'<div onclick="Variation(\''.$info->room_device_id.'\', '.$option_id.', -1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 								<i class="fa '.$left_icon.'"></i>
 							</div>';
-							if ($info->device_opt->{$option_id}->valeur > 0){
-								$val = ceil(($info->device_opt->{$option_id}->valeur * 100) / 255);
+							if ($info->device_opt->{$option_id}->opt_value > 0){
+								$val = ceil(($info->device_opt->{$option_id}->opt_value * 100) / 255);
 								$display.=
 										'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 											<output id="range-'.$info->room_device_id.'"
@@ -838,10 +838,10 @@ function display_varie($info, $var_icon = 1, $option_id=13){
 										'<div onclick="Variation(\''.$info->room_device_id.'\', '.$option_id.', 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor foreground-widget">
 											<i class="fa '.$right_icon.'"></i>
 										</div>';
-							if (!empty($info->device_opt->{$option_id}->valeur)){
+							if (!empty($info->device_opt->{$option_id}->opt_value)){
 								$display.=
 										'<div class="row foreground-widget">
-											<input value="'.$info->device_opt->{$option_id}->valeur.'" min="0" step="1" max="255"
+											<input value="'.$info->device_opt->{$option_id}->opt_value.'" min="0" step="1" max="255"
 											       onMouseDown="LockWidget('.$info->room_device_id.', '.$option_id.')"
 											       onMouseUp="UnlockWidget('.$info->room_device_id.', '.$option_id.')"
 											       ontouchstart="LockWidget('.$info->room_device_id.', '.$option_id.')"
@@ -879,7 +879,7 @@ function display_varie($info, $var_icon = 1, $option_id=13){
 // Minus plus
 
 function display_minusplus($info, $popup = 0){
-	$temp = $info->device_opt->{388}->valeur;
+	$temp = $info->device_opt->{388}->opt_value;
 	if (empty($temp)){
 		$temp = '0.0';
 	}
@@ -900,8 +900,8 @@ function display_minusplus($info, $popup = 0){
 //Temperature
 function display_temperature($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{72}->valeur)){
-		$tmp = $info->device_opt->{72}->valeur;
+	if (!empty($info->device_opt->{72}->opt_value)){
+		$tmp = $info->device_opt->{72}->opt_value;
 	}
 	$display = '<div class="foreground-widget">
 					<i class="fi flaticon-thermometer2"></i>
@@ -914,8 +914,8 @@ function display_temperature($info){
 
 function display_wind($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{174}->valeur)){
-		$tmp = $info->device_opt->{174}->valeur;
+	if (!empty($info->device_opt->{174}->opt_value)){
+		$tmp = $info->device_opt->{174}->opt_value;
 	}
 	$display = '
 	<div class="foreground-widget">
@@ -929,8 +929,8 @@ function display_wind($info){
 
 function display_co2($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{73}->valeur)){
-		$tmp = $info->device_opt->{73}->valeur;
+	if (!empty($info->device_opt->{73}->opt_value)){
+		$tmp = $info->device_opt->{73}->opt_value;
 	}
 	$display = '
 	<div class="foreground-widget">
@@ -944,8 +944,8 @@ function display_co2($info){
 
 function display_voc($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{441}->valeur)){
-		$tmp = $info->device_opt->{441}->valeur;
+	if (!empty($info->device_opt->{441}->opt_value)){
+		$tmp = $info->device_opt->{441}->opt_value;
 	}
 	$display = '
 	<div class="foreground-widget">
@@ -960,8 +960,8 @@ function display_voc($info){
 // Led
 function display_led($info, $option_id, $size=5){
 	$tmp = '0';
-	if (!empty($info->device_opt->{$option_id}->valeur)){
-		$tmp = $info->device_opt->{$option_id}->valeur;
+	if (!empty($info->device_opt->{$option_id}->opt_value)){
+		$tmp = $info->device_opt->{$option_id}->opt_value;
 	}
 	if ($tmp == '0'){
 		$display = '
@@ -983,8 +983,8 @@ function display_led($info, $option_id, $size=5){
 //Consumption 
 function display_consumption_option($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{399}->valeur)){
-		$tmp = $info->device_opt->{399}->valeur;
+	if (!empty($info->device_opt->{399}->opt_value)){
+		$tmp = $info->device_opt->{399}->opt_value;
 	}
 	
 	$cost = $info->device_opt->{399}->highCost;
@@ -1038,8 +1038,8 @@ function display_consumption_option($info){
 //Power
 function display_power_option($info){
 	$tmp = '0';
-	if (!empty($info->device_opt->{407}->valeur)){
-		$tmp = $info->device_opt->{407}->valeur;
+	if (!empty($info->device_opt->{407}->opt_value)){
+		$tmp = $info->device_opt->{407}->opt_value;
 	}
 	$display = '<div class="foreground-widget">
 					<i class="fa fa-bolt"></i>
@@ -1053,8 +1053,8 @@ function display_power_option($info){
 //Hygrometry
 function display_hygrometry($info){
 	$hygro = '0';
-	if (!empty($info->device_opt->{6}->valeur)){
-		$hygro = $info->device_opt->{6}->valeur;
+	if (!empty($info->device_opt->{6}->opt_value)){
+		$hygro = $info->device_opt->{6}->opt_value;
 	}
 	$display = '<div class="foreground-widget">
 					<i class="fa fa-tint"></i>
@@ -1065,8 +1065,8 @@ function display_hygrometry($info){
 }
 function display_rain($info){
 	$rain = '0';
-	if (!empty($info->device_opt->{173}->valeur)){
-		$rain = $info->device_opt->{173}->valeur;
+	if (!empty($info->device_opt->{173}->opt_value)){
+		$rain = $info->device_opt->{173}->opt_value;
 	}
 	$display = '<div class="foreground-widget">
 					<i class="fa fa-umbrella"></i>
@@ -1081,8 +1081,8 @@ function display_rain($info){
 function display_luminosity($info){
 	$current_id = 79;
 	$lum = '0';
-	if (!empty($info->device_opt->{$current_id}->valeur)){
-		$lum = $info->device_opt->{$current_id}->valeur;
+	if (!empty($info->device_opt->{$current_id}->opt_value)){
+		$lum = $info->device_opt->{$current_id}->opt_value;
 	}
 	$display = '<div class="foreground-widget">
 					<i class="fa fa-sun-o"></i>

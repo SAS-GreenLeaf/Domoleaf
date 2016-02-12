@@ -873,7 +873,7 @@ class MasterDaemon:
             self.logger.error(e);
 
     def get_global_state(self):
-        query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
+        query = ('SELECT room_device_id, option_id, opt_value FROM room_device_option');
         res = self.sql.mysql_handler_personnal_query(query);
         filtered = [];
         for elem in res:

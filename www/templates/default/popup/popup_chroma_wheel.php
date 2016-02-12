@@ -11,8 +11,8 @@ if (!empty($_GET['iddevice'])) {
 	
 	echo '<div class="center">'.
 		 '<form class="btn center padding-bottom">';
-	if (!empty($device_opt->{392}->valeur) && !empty($device_opt->{393}->valeur) && !empty($device_opt->{394}->valeur)){
-		echo '<input type="text" id="color" name="color" value="'.convertRGBToHexa($device_opt->{392}->valeur, $device_opt->{393}->valeur, $device_opt->{394}->valeur).'" disabled="disabled"/>';
+	if (!empty($device_opt->{392}->opt_value) && !empty($device_opt->{393}->opt_value) && !empty($device_opt->{394}->opt_value)){
+		echo '<input type="text" id="color" name="color" value="'.convertRGBToHexa($device_opt->{392}->opt_value, $device_opt->{393}->opt_value, $device_opt->{394}->opt_value).'" disabled="disabled"/>';
 	}
 	else{
 		echo '<input type="text" id="color" name="color" value="#000" disabled="disabled"/>';
@@ -40,8 +40,8 @@ if (!empty($_GET['iddevice'])) {
 			 '<div onclick="Variation(\''.$_GET['iddevice'].'\', \'410\', -1, 1)" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">'.
 								'<i class="fa fa-certificate"></i>'.
 							'</div>';
-		if ($device_opt->{410}->valeur > 0){
-			$val = ceil(($device_opt->{410}->valeur * 100) / 255);
+		if ($device_opt->{410}->opt_value > 0){
+			$val = ceil(($device_opt->{410}->opt_value * 100) / 255);
 			echo '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">'.
 					'<output id="range-'.$_GET['iddevice'].'-popup" for="slider-value-'.$_GET['iddevice'].'-popup">'.$val.'%</output>'.
 				 '</div>';
@@ -57,8 +57,8 @@ if (!empty($_GET['iddevice'])) {
 
 
 		echo '<div class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-2">';
-		if (!empty($device_opt->{410}->valeur)){
-			echo '<input value="'.$device_opt->{410}->valeur.'" min="0" step="1" max="255"';
+		if (!empty($device_opt->{410}->opt_value)){
+			echo '<input value="'.$device_opt->{410}->opt_value.'" min="0" step="1" max="255"';
 		}
 		else{
 			echo '<input value="128" min="0" step="1" max="255"';

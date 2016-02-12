@@ -50,7 +50,7 @@ class EnOceanManager:
             val = self.functions_transform[r[3]](int(json_obj['value']), r[4]);
             if val is not None:
                 result.append(r)
-                up = "UPDATE room_device_option SET valeur=\"" + str(val)
+                up = "UPDATE room_device_option SET opt_value=\"" + str(val)
                 up += "\" WHERE room_device_id=" + str(r[1]) + " AND option_id=\"" + str(r[0]) + "\"";
                 self.sql.mysql_handler_personnal_query(up);
         return result
