@@ -37,7 +37,7 @@ else if (!empty($_GET['enoceanaddr'])){
 	$request ->add_request('confRoomList');
 	$request -> add_request('confDeviceNewEnocean', array($_GET['name'], $_GET['proto'], 
 	                                                      $_GET['room'], $_GET['device'], 
-	                                                      $_GET['enoceanaddr']));
+	                                                      $_GET['enoceanaddr'], $_GET['daemon']));
 	$result  =  $request -> send_request();
 	$listroom = $result->confRoomList;
 	$room_device_id = $result->confDeviceNewEnocean;

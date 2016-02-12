@@ -216,11 +216,11 @@ class User {
 		return null;
 	}
 	
-	function confDeviceNewKnx($name, $proto, $room, $device, $daemon, $addr) {
+	function confDeviceNewKnx($name, $proto, $room, $device, $daemon, $addr, $daemon){
 		return null;
 	}
 	
-	function confDeviceNewEnocean($name, $proto, $room, $device, $addr) {
+	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
 	

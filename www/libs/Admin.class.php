@@ -1206,24 +1206,25 @@ class Admin extends User {
 		return $newdeviceid;
 	}
 	
-	function confDeviceNewEnocean($name, $proto, $room, $device, $addr){
+	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		$link = Link::get_link('domoleaf');
 		
-		if(empty($name) or empty($proto) or 
-		   empty($room) or empty($device) or empty($addr)) {
+		if(empty($name) or empty($proto) or empty($room) or 
+		   empty($device) or empty($addr) or empty($daemon)) {
 			return 0;
 		}
 		
 		$sql = 'INSERT INTO room_device
-		        (name, protocol_id, room_id, device_id, addr)
+		        (name, protocol_id, room_id, device_id, addr, daemon_id)
 		        VALUES
-		        (:name, :proto, :room, :device, :addr)';
+		        (:name, :proto, :room, :device, :addr, :dae)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
 		$req->bindValue(':proto', $proto, PDO::PARAM_INT);
 		$req->bindValue(':room', $room, PDO::PARAM_INT);
 		$req->bindValue(':device', $device, PDO::PARAM_INT);
 		$req->bindValue(':addr', $addr, PDO::PARAM_STR);
+		$req->bindValue(':dae', $daemon, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newdeviceid = $link->lastInsertId();

@@ -520,8 +520,8 @@ class Api {
 						break;
 
 						case 'confDeviceNewEnocean':
-							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceNewEnocean($var[0], $var[1], $var[2], $var[3], $var[4]);
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3]) && !empty($var[4]) && !empty($var[5])){
+								$res = $user->confDeviceNewEnocean($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
 							}
 						break;
 

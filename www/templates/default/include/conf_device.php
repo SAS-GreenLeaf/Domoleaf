@@ -150,7 +150,7 @@ else if ($device->protocol_id == 2){
 			<label for="addr" class="input-group-addon">
 			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
-			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('Enocean address or name').'">
+			<input type="hidden" class="form-control" id="addr" value="EnOcean" placeholder="'._('Enocean address or name').'">
 		</div>
 	</div>';
 }
