@@ -10,6 +10,10 @@ $request =  new Api();
 $request -> add_request('mcVisible');
 $result  =  $request -> send_request();
 
+if(empty($listAllVisible) || empty($result->mcVisible)) {
+	redirect();
+}
+
 $listAllVisible = $result->mcVisible;
 $deviceallowed = $listAllVisible->ListDevice;
 
