@@ -637,7 +637,7 @@ class MasterDaemon:
         connection.close();
 
     def upnp_audio(self, json_obj, dev, hostname):
-        cmd = UpnpAudio(json_obj['addr'], int(json_obj['port']));
+        cmd = UpnpAudio(dev['addr'], int(dev['plus1']));
         cmd.action(json_obj);
 
     def get_ip_ifname(self, ifname):
