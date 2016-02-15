@@ -19,7 +19,8 @@ if len(sys.argv) > 1:
 
 pid = os.fork();
 if pid == 0:
-    logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG);
+    if log_flag:
+        logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG);
     try:
         MasterDaemon.MasterDaemon(log_flag).run();
     except Exception as e:
