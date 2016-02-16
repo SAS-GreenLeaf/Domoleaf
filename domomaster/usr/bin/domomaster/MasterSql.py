@@ -20,7 +20,7 @@ class MasterSql:
     Master daemon SQL management class.
     """
     def __init__(self, log_flag = True):
-        self.logger = Logger(log_flag, '/var/log/domomaster.log');
+        self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
                                                             MASTER_CONF_MYSQL_USER_ENTRY);
