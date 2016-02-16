@@ -465,7 +465,7 @@ class Api {
 						/*** Devices ***/
 						case 'confDeviceSaveInfo':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8]);
+								$res = $user->confDeviceSaveInfo($var[0], $var[1], $var[2], $var[3], $var[4], $var[5], $var[6], $var[7], $var[8], $var[9]);
 							}
 						break;
 						
@@ -520,8 +520,8 @@ class Api {
 						break;
 
 						case 'confDeviceNewEnocean':
-							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3]) && !empty($var[4])){
-								$res = $user->confDeviceNewEnocean($var[0], $var[1], $var[2], $var[3], $var[4]);
+							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2]) && !empty($var[3]) && !empty($var[4]) && !empty($var[5])){
+								$res = $user->confDeviceNewEnocean($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
 							}
 						break;
 
@@ -635,6 +635,10 @@ class Api {
 						
 						case 'confDaemonRcvValidation':
 								$res = $user->confDaemonRcvValidation();
+						break;
+						
+						case 'confMenuProtocol':
+								$res = $user->confMenuProtocol();
 						break;
 						
 						/*** User permission ***/
@@ -838,6 +842,13 @@ class Api {
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
 									}
+									elseif($var[3] == 410) {
+										list($red, $green, $blue, $white) = convertHexaToRGBW($var[4]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 410, $blue, $var[5]);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 392, $red, $var[5], 1);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 393, $green, $var[5], 1);
+										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], 394, $blue, $var[5], 1);
+									}
 									else {
 										$res = $user->saveNewElemSmartcmd($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
 									}
@@ -964,6 +975,12 @@ class Api {
 										$res = $user->saveNewElemTrigger($var[0], $var[1], $var[2], $var[3], $var[4], $var[5]);
 									}
 								}
+							}
+						break;
+						
+						case 'triggerElemOption':
+							if (!empty($var[0]) && !empty($var[1])) {
+								$res = $user->triggerElemOption($var[0], $var[1]);
 							}
 						break;
 						
@@ -1307,15 +1324,9 @@ class Api {
 							}
 						break;
 						
-						case 'mcAudio':
-							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
-								$res = $user->mcAudio($var[0], $var[1], $var[2]);
-							}
-						break;
-						
 						case 'mcSetVolume':
 							if (!empty($var[0]) && !empty($var[1]) && !empty($var[2])){
-								$res = $user->mcAudio($var[0], 'set_volume', $var[2], $var[1]);
+								$res = $user->mcAction($var[0], $var[1], $var[2]);
 							}
 						break;
 						
@@ -1334,7 +1345,12 @@ class Api {
 								$res = $user->mcResetError($var[0], $var[1]);
 							}
 						break;
-
+					
+						case 'popupPassword':
+							if (!empty($var[0])){
+								$res = $user->popupPassword($var[0], $var[1]);
+							}
+						break;
 					}
 					$answer['request'][$action] = $res;
 				}

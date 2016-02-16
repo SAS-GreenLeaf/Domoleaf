@@ -16,6 +16,7 @@
 # include <arpa/inet.h>
 # include <stdint.h>
 # include <string.h>
+# include <netinet/tcp.h>
 
 # include "eibclient.h"
 

@@ -6,4 +6,6 @@ $result  =  $request -> send_request();
 
 $scenarioList = $result->listScenarios;
 
+echo '<title>'._('Scenarios').'</title>';
+
 ?>

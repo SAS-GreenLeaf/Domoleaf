@@ -883,7 +883,7 @@ class Admin extends User {
 	 * @param string : password
 	 * @return NULL
 	 */
-	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr=''){
+	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
 		$link = Link::get_link('domoleaf');
 		
 		if(empty($idroom) or empty($name) or empty($devaddr) or empty($iddevice)) {
@@ -927,7 +927,8 @@ class Admin extends User {
 		if(empty($pass)){
 			$sql = 'UPDATE room_device
 			        SET name=:name, daemon_id=:daemon_id, addr=:addr, 
-			            room_id=:room_id, plus1=:plus1, plus2=:plus2, plus4=:plus4 
+			            room_id=:room_id, plus1=:plus1, plus2=:plus2, 
+			            plus4=:plus4, password=:password
 			        WHERE room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
@@ -938,13 +939,13 @@ class Admin extends User {
 			$req->bindValue(':plus1', $port, PDO::PARAM_STR);
 			$req->bindValue(':plus2', $login, PDO::PARAM_STR);
 			$req->bindValue(':plus4', $macaddr, PDO::PARAM_STR);
-			
+			$req->bindValue(':password', $password, PDO::PARAM_STR);
 		}
 		else {
 			$sql = 'UPDATE room_device
 			        SET name=:name, daemon_id=:daemon_id, addr=:addr, 
 			            room_id=:room_id, plus1=:plus1, plus2=:plus2, 
-			            plus3=:plus3, plus4=:plus4 
+			            plus3=:plus3, plus4=:plus4, password=:password
 			        WHERE room_device_id=:room_device_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
@@ -956,6 +957,7 @@ class Admin extends User {
 			$req->bindValue(':plus2', $login, PDO::PARAM_STR);
 			$req->bindValue(':plus3', $pass, PDO::PARAM_STR);
 			$req->bindValue(':plus4', $macaddr, PDO::PARAM_STR);
+			$req->bindValue(':password', $password, PDO::PARAM_STR);
 		}
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
@@ -1043,31 +1045,6 @@ class Admin extends User {
 		$this->udpateScenariosList();
 	}
 	
-	/**
-	 * Return all options from a device
-	 * @param id : device id
-	 * @return all options
-	 */
-	
-	function confDeviceRoomOpt($deviceroomid) { 
-		$link = Link::get_link('domoleaf');
-		$list = array();
-		
-		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
-		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
-		        FROM room_device_option
-		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id
-		        ORDER BY room_device_option.option_id';
-		$req = $link->prepare($sql);
-		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->option_id] = clone $do;
-		}
-		return $list;
-	}
-	
 	function confRoomDeviceList($room){
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1076,7 +1053,8 @@ class Admin extends User {
 			$sql = 'SELECT room_device_id, room_device.name, 
 			               room_device.protocol_id, room_id, 
 			               if(device.name'.$this->getLanguage().' = "", device.name, device.name'.$this->getLanguage().') as device_name, 
-			               room_device.device_id, daemon_id, addr, device.application_id
+			               room_device.device_id, daemon_id, addr, 
+			               device.application_id, password
 			        FROM room_device
 			        JOIN device ON room_device.device_id = device.device_id
 			        WHERE room_id=:room_id
@@ -1088,7 +1066,8 @@ class Admin extends User {
 			$sql = 'SELECT room_device_id, room_device.name, 
 			               room_device.protocol_id, room_id, 
 			               if(device.name'.$this->getLanguage().' = "", device.name, device.name'.$this->getLanguage().') as device_name, 
-			               room_device.device_id, daemon_id, addr, plus1, plus2, plus4, device.application_id
+			               room_device.device_id, daemon_id, addr, plus1, plus2,
+			               plus3, plus4, device.application_id, password
 			        FROM room_device
 			        JOIN device ON room_device.device_id = device.device_id
 			        ORDER BY name ASC';
@@ -1227,24 +1206,25 @@ class Admin extends User {
 		return $newdeviceid;
 	}
 	
-	function confDeviceNewEnocean($name, $proto, $room, $device, $addr){
+	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		$link = Link::get_link('domoleaf');
 		
-		if(empty($name) or empty($proto) or 
-		   empty($room) or empty($device) or empty($addr)) {
+		if(empty($name) or empty($proto) or empty($room) or 
+		   empty($device) or empty($addr) or empty($daemon)) {
 			return 0;
 		}
 		
 		$sql = 'INSERT INTO room_device
-		        (name, protocol_id, room_id, device_id, addr)
+		        (name, protocol_id, room_id, device_id, addr, daemon_id)
 		        VALUES
-		        (:name, :proto, :room, :device, :addr)';
+		        (:name, :proto, :room, :device, :addr, :dae)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':name',  ucfirst($name),  PDO::PARAM_STR);
 		$req->bindValue(':proto', $proto, PDO::PARAM_INT);
 		$req->bindValue(':room', $room, PDO::PARAM_INT);
 		$req->bindValue(':device', $device, PDO::PARAM_INT);
 		$req->bindValue(':addr', $addr, PDO::PARAM_STR);
+		$req->bindValue(':dae', $daemon, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$newdeviceid = $link->lastInsertId();
@@ -1676,6 +1656,21 @@ class Admin extends User {
 		return $socket->receive();
 	}
 	
+	function confMenuProtocol() {
+		$link = Link::get_link('domoleaf');
+		$list = array();
+		
+		$sql = 'SELECT count(protocol_id) as nb, protocol_id
+		        FROM daemon_protocol
+		        GROUP BY protocol_id';
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
+			$list[$do->protocol_id] = $do->nb;
+		}
+		
+		return $list;
+	}
 	
 	/*** User permission ***/
 	function mcAllowed(){
@@ -1763,13 +1758,12 @@ class Admin extends User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
-		               optiondef.option_id,
+		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
 		               dpt.unit,
-		               room_device_option.valeur
+		               room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -1778,7 +1772,7 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
+			if(!empty($listDevice[$do->room_device_id])) {
 				if ($do->option_id == 399){
 					$highCost = $res[14]->configuration_value;
 					$lowCost = $res[15]->configuration_value;
@@ -1794,7 +1788,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => valueToDPTValue($do->dpt_id, $do->valeur),
+						'opt_value'    => $do->opt_value,
 						'highCost'  => $highCost,
 						'lowCost'   => $lowCost,
 						'lowField1' => $lowField1,
@@ -1811,7 +1805,7 @@ class Admin extends User {
 						'addr_plus' => $do->addr_plus,
 						'dpt_id'    => $do->dpt_id,
 						'unit'      => $do->unit,
-						'valeur'    => valueToDPTValue($do->dpt_id, $do->valeur)
+						'opt_value'    => $do->opt_value
 					);
 				}
 			}
@@ -1895,7 +1889,7 @@ class Admin extends User {
 		$link = Link::get_link('domoleaf');
 
 		$sql = 'UPDATE room_device_option
-		        SET valeur = "0"
+		        SET opt_value = "0"
 		        WHERE room_device_id=:room_device_id AND option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);

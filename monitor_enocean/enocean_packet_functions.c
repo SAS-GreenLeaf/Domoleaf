@@ -65,6 +65,7 @@ Slave *slave_init()
 	Slave *slave;
 	char  *addr;
 	int    port;
+	int    on = 1;
 
 	addr = malloc(32);
 	memset(addr, 0, 32);
@@ -89,6 +90,7 @@ Slave *slave_init()
 		return (NULL);
 	}
 
+	setsockopt(slave->sock_fd, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
 	slave->addr_in.sin_family = AF_INET;
 	slave->addr_in.sin_port = htons(port);
 	slave->addr_in.sin_addr.s_addr = inet_addr("127.0.0.1");

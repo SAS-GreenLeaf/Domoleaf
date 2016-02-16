@@ -16,7 +16,7 @@ echo
 				<span class="glyphicon glyphicon-home"></span>
 				'._('Master Command').'
 			</a>
-			<div class="navbar-brand">
+			<div class="navbar-brand navbar-xshide">
 				<span class="glyphicon glyphicon-time"></span>
 				<span id="navbarTime"></span>
 			</div>

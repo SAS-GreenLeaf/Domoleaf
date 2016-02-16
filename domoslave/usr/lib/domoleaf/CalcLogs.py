@@ -240,7 +240,10 @@ class CalcLogs:
         query = ('DELETE FROM knx_log '
                  'WHERE t_date < ' + str(end_tr));
         res = self.sql.mysql_handler_personnal_query(query);
-
+        query = ('DELETE FROM enocean_log '
+                 'WHERE t_date < ' + str(end_tr));
+        res = self.sql.mysql_handler_personnal_query(query);
+        
         query = ('INSERT INTO knx_log '
                  '(type, addr_src, addr_dest, knx_value, t_date, daemon_id) '
                  'VALUES ');

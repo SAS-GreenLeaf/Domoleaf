@@ -31,30 +31,28 @@ echo '<table class="table table-bordered table-striped table-condensed">
 									echo $request->date($elem->activity + $time, 3);
 								}
 							echo '</td><td class="center">
-									<button type="button" title="'._('Edit').'" class="btn btn-primary" id="" onclick="GetUser('.$elem->mcuser_id.')">
-			  							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					  				</button>';
-						 		if ($currentuser != $elem->mcuser_id){
+									<a href="/conf_users/'.$elem->mcuser_id.'" class="btn btn-primary" title="'._('Edit').'">
+										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+									</a>';
+								if ($currentuser != $elem->mcuser_id){
 									if ($elem->mcuser_level == 1){
 									echo '
-											<a class="btn btn-warning" href="/conf_users/'.$elem->mcuser_id.'/'.$elem->mcuser_level.'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
+										<a class="btn btn-warning" href="/conf_users/'.$elem->mcuser_id.'/'.$elem->mcuser_level.'" title="'._('Permissions').'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
 									}
 									else {
-										echo '<button type="button" class="btn btn-invisible" onclick="">
-								  					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-								  				</button>';
+										echo '
+										<a class="btn btn-invisible" href="/conf_users/'.$elem->mcuser_id.'/'.$elem->mcuser_level.'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
 									}
 									echo'
 										<button type="button" title="'._('Delete').'" id="" class="btn btn-danger" onclick="PopupDeleteUser('.$elem->mcuser_id.')">
-						  					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-						  				</button>';
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>';
 								}else {
-									echo '<button type="button" class="btn btn-invisible" onclick="">
-					  					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					  				</button>
+									echo '
+									<a class="btn btn-invisible" href="/conf_users/'.$elem->mcuser_id.'/'.$elem->mcuser_level.'"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
 									<button type="button" class="btn btn-invisible" onclick="">
-					  					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					  				</button>';
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									</button>';
 								}
 						echo '</td>
 						</tr>';
@@ -97,14 +95,6 @@ function PopupDeleteUser(iduser){
 			});
 		}
 	});
-}
-
-function Permission(userid, lvl){
-	location.href="/conf_users/"+userid+"/"+lvl;
-}
-
-function GetUser(id){
-	location.href="/conf_users/"+id;
 }
 
 function NewUser(){

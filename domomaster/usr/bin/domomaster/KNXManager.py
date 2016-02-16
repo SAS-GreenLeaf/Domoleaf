@@ -16,34 +16,6 @@ import hashlib;
 
 LOG_FILE                = '/var/log/domoleaf/domomaster.log';
 
-OPTION_ON_OFF           = 12;   # Indice pour une action ON/OFF
-OPTION_VAR              = 13;   # Indice pour une action de variation
-OPTION_UP_DOWN          = 54;   # Indice pour une action de type monter/descendre
-OPTION_STOP_UP_DOWN     = 365;
-OPTION_OPEN_CLOSE       = 96;   # Indice pour une action de type ouvrir/fermer
-OPTION_TEMPERATURE      = 72;   # Indice pour le traitement d'une temperature
-OPTION_OPTION_1         = 181;
-OPTION_OPTION_2         = 182;
-OPTION_OPTION_3         = 189;
-OPTION_OPTION_4         = 191;
-OPTION_OPTION_5         = 195;
-OPTION_OPTION_6         = 196;
-OPTION_OPTION_7         = 197;
-OPTION_OPTION_8         = 198;
-OPTION_OPTION_9         = 199;
-OPTION_TEMPERATURE_W    = 388;  # Indice pour l'ecriture d'une temperature
-OPTION_SPEED_FAN_0      = 400;  # Indice pour le traitement de la vitesse 0 d'un ventilateur
-OPTION_SPEED_FAN_1      = 401;  # Indice pour le traitement de la vitesse 1 d'un ventilateur
-OPTION_SPEED_FAN_2      = 402;  # Indice pour le traitement de la vitesse 2 d'un ventilateur
-OPTION_SPEED_FAN_3      = 403;  # Indice pour le traitement de la vitesse 3 d'un ventilateur
-OPTION_SPEED_FAN_4      = 404;  # Indice pour le traitement de la vitesse 4 d'un ventilateur
-OPTION_SPEED_FAN_5      = 405;  # Indice pour le traitement de la vitesse 5 d'un ventilateur
-OPTION_SPEED_FAN_6      = 406;  # Indice pour le traitement de la vitesse 6 d'un ventilateur
-OPTION_COLOR_R          = 392;
-OPTION_COLOR_G          = 393;
-OPTION_COLOR_B          = 394;
-OPTION_COLOR_W          = 410;
-
 KNX_RESPONSE            = 1;    # Donnee KNX de type RESPONSE
 KNX_WRITE_SHORT         = 2;    # Donnee KNX de type ecriture courte (0 | 1)
 KNX_WRITE_LONG          = 3;    # Donnee KNX de type ecriture longue (0x0 -> 0xFF)
@@ -53,34 +25,6 @@ class KNXManager:
     KNX management class
     """
     def __init__(self, slave_keys):
-        self.knx_function = {
-            OPTION_ON_OFF       : self.send_knx_write_short_to_slave,
-            OPTION_VAR          : self.send_knx_write_long_to_slave,
-            OPTION_UP_DOWN      : self.send_knx_write_short_to_slave,
-            OPTION_OPEN_CLOSE   : self.send_knx_write_short_to_slave,
-            OPTION_STOP_UP_DOWN : self.send_knx_write_short_to_slave,
-            OPTION_SPEED_FAN_0  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_1  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_2  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_3  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_4  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_5  : self.send_knx_write_speed_fan,
-            OPTION_SPEED_FAN_6  : self.send_knx_write_speed_fan,
-            OPTION_TEMPERATURE_W: self.send_knx_write_temp,
-            OPTION_COLOR_R      : self.send_knx_write_long_to_slave,
-            OPTION_COLOR_G      : self.send_knx_write_long_to_slave,
-            OPTION_COLOR_B      : self.send_knx_write_long_to_slave,
-            OPTION_COLOR_W      : self.send_knx_write_long_to_slave,
-            OPTION_OPTION_1     : self.send_knx_write_button,
-            OPTION_OPTION_2     : self.send_knx_write_button,
-            OPTION_OPTION_3     : self.send_knx_write_button,
-            OPTION_OPTION_4     : self.send_knx_write_button,
-            OPTION_OPTION_5     : self.send_knx_write_button,
-            OPTION_OPTION_6     : self.send_knx_write_button,
-            OPTION_OPTION_7     : self.send_knx_write_button,
-            OPTION_OPTION_8     : self.send_knx_write_button,
-            OPTION_OPTION_9     : self.send_knx_write_button
-        };
         self.logger = Logger(True, LOG_FILE);
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
@@ -91,25 +35,11 @@ class KNXManager:
         Update room_device_option table in database to set new values of the device described by 'json_obj'
         """
         if int(json_obj['type']) == KNX_RESPONSE:
-            self.sql.update_room_device_option_resp(json_obj, daemon_id);
+            return self.sql.update_room_device_option_resp(json_obj, daemon_id);
         elif int(json_obj['type']) == KNX_WRITE_SHORT:
-            self.sql.update_room_device_option_write_short(json_obj, daemon_id);
+            return self.sql.update_room_device_option_write_short(json_obj, daemon_id);
         elif int(json_obj['type']) == KNX_WRITE_LONG:
-            self.sql.update_room_device_option_write_long(json_obj, daemon_id);
-
-    def protocol_knx(self, json_obj, dev, hostname):
-        """
-        KNX protocol data treatment function
-        """
-        new_obj = {
-            "data": {
-                "addr": str(dev['addr_dst']),
-                "value": str(json_obj['data']['value']),
-                "option_id": str(json_obj['data']['option_id']),
-                "room_device_id": str(dev['room_device_id']),
-            }
-        };
-        self.knx_function[int(json_obj['data']['option_id'])](hostname, new_obj);
+            return self.sql.update_room_device_option_write_long(json_obj, daemon_id);
 
     def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key, close_flag = True):
         """
@@ -129,7 +59,7 @@ class KNXManager:
         if close_flag == True:
             sock.close();
 
-    def send_knx_write_speed_fan(self, hostname, json_obj):
+    def send_knx_write_speed_fan(self, json_obj, dev, hostname):
         """
         Ask to close all the speed fan before open another
         """
@@ -139,7 +69,7 @@ class KNXManager:
         if json_obj['data']['value'] == '1':
             query =  'SELECT option_id, addr, dpt_id ';
             query += 'FROM room_device_option ';
-            query += 'WHERE room_device_id=' + str(json_obj['data']['room_device_id']) + ' AND ';
+            query += 'WHERE room_device_id=' + str(dev['room_device_id']) + ' AND ';
             query += 'option_id IN(400, 401, 402, 403, 404, 405, 406) AND status=1';
             res = self.sql.mysql_handler_personnal_query(query);
             for line in res:
@@ -167,59 +97,17 @@ class KNXManager:
                     );
                     self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
                     sock.close();
-
         sock = socket.create_connection((hostname, port));
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_short",
-                "addr_to_send": json_obj['data']['addr'],
+                "addr_to_send": str(dev['addr_dst']),
                 "value": json_obj['data']['value']
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
 
-    def send_knx_write_button(self, hostname, json_obj):
-        """
-        Ask to close all the speed fan before open another
-        """
-        port = self._parser.getValueFromSection('connect', 'port');
-        if not port:
-            sys.exit(4);
-        
-        query =  'SELECT option_id, addr, dpt_id ';
-        query += 'FROM room_device_option ';
-        query += 'WHERE room_device_id=' + str(json_obj['data']['room_device_id']) + ' AND ';
-        query += 'option_id ='+str(json_obj['data']['option_id'])+' AND status=1';
-        res = self.sql.mysql_handler_personnal_query(query);
-        for line in res:
-            if str(line[2]) == "2":
-                sock = socket.create_connection((hostname, port));
-                json_str = json.JSONEncoder().encode(
-                    {
-                        "packet_type": "knx_write_short",
-                        "addr_to_send": line[1],
-                        "value": json_obj['data']['value']
-                    }
-                );
-                self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
-                sock.close();
-                return;
-            if str(line[2]) == "51":
-                sock = socket.create_connection((hostname, port));
-                json_str = json.JSONEncoder().encode(
-                    {
-                        "packet_type": "knx_write_long",
-                        "addr_to_send": line[1],
-                        "value": hex(int(json_obj['data']['value']))
-                    }
-                );
-                self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
-                sock.close();
-                return;
-            if str(line[2]) == "73":
-                self.send_knx_write_temp(hostname, json_obj)
-
-    def send_knx_write_temp(self, hostname, json_obj):
+    def send_knx_write_temp(self, json_obj, dev, hostname):
         """
         Converts absolute value of temperature (Celsius) in 2 hexadecimal values for
         sending to KNX device
@@ -235,13 +123,13 @@ class KNXManager:
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_temp",
-                "addr_to_send": json_obj['data']['addr'],
+                "addr_to_send": str(dev['addr_dst']),
                 "value": value[0] + ' ' + value[1]
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
 
-    def send_knx_write_long_to_slave(self, hostname, json_obj):
+    def send_knx_write_long_to_slave(self, json_obj, dev, hostname):
         """
         Constructs long write request and sends it to 'hostname'
         """
@@ -252,13 +140,13 @@ class KNXManager:
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_long",
-                "addr_to_send": json_obj['data']['addr'],
+                "addr_to_send": str(dev['addr_dst']),
                 "value": hex(int(json_obj['data']['value']))
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
 
-    def send_knx_write_short_to_slave(self, hostname, json_obj):
+    def send_knx_write_short_to_slave(self, json_obj, dev, hostname):
         """
         Constructs short write request and sends it to 'hostname'
         """
@@ -269,7 +157,7 @@ class KNXManager:
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_short",
-                "addr_to_send": json_obj['data']['addr'],
+                "addr_to_send": str(dev['addr_dst']),
                 "value": json_obj['data']['value']
             }
         );
@@ -310,22 +198,22 @@ class KNXManager:
         sock.close();
         return;
     
-    def send_to_thermostat(self, json_obj_2, dev, hostname):
+    def send_to_thermostat(self, json_obj, dev, hostname):
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
         
-        if json_obj_2['data']['option_id'] == '412':
+        if json_obj['data']['option_id'] == '412':
             val = 1;
-        elif json_obj_2['data']['option_id'] == '413':
+        elif json_obj['data']['option_id'] == '413':
             val = 2;
-        elif json_obj_2['data']['option_id'] == '414':
+        elif json_obj['data']['option_id'] == '414':
             val = 4;
-        elif json_obj_2['data']['option_id'] == '415':
+        elif json_obj['data']['option_id'] == '415':
             val = 8;
-        elif json_obj_2['data']['option_id'] == '416':
+        elif json_obj['data']['option_id'] == '416':
             val = 16;
-        elif json_obj_2['data']['option_id'] == '417':
+        elif json_obj['data']['option_id'] == '417':
             val = 32;
         else:
             val = 0
@@ -334,7 +222,7 @@ class KNXManager:
             json_str = json.JSONEncoder().encode(
                 {
                     "packet_type": "knx_write_long",
-                    "addr_to_send": str(dev['addr_dst']),
+                    "addr_to_send": hex(int(dev['addr_dst'])),
                     "value": val
                 }
             );
@@ -342,3 +230,45 @@ class KNXManager:
             self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
             sock.close();
             return;
+    
+    def send_clim_mode(self, json_obj, dev, hostname):
+        if json_obj['data']['option_id'] == '425': #Auto
+            val = 0
+        elif json_obj['data']['option_id'] == '426': #Heat
+            val = 1
+        elif json_obj['data']['option_id'] == '427': #Morning Warmup
+            val = 2
+        elif json_obj['data']['option_id'] == '428': #Cool
+            val = 3
+        elif json_obj['data']['option_id'] == '429': #Night Purge
+            val = 4
+        elif json_obj['data']['option_id'] == '430': #Precool
+            val = 5
+        elif json_obj['data']['option_id'] == '431': #Off
+            val = 6
+        elif json_obj['data']['option_id'] == '432': #Test
+            val = 7
+        elif json_obj['data']['option_id'] == '433': #Emergency Heat
+            val = 8
+        elif json_obj['data']['option_id'] == '434': #Fan only
+            val = 9
+        elif json_obj['data']['option_id'] == '435': #Free Cool
+            val = 10
+        elif json_obj['data']['option_id'] == '436': #Ice
+            val = 11
+        else:
+            val = -1
+        
+        if val >= 0:
+            json_str = json.JSONEncoder().encode(
+                {
+                    "packet_type": "knx_write_long",
+                    "addr_to_send": str(dev['addr_dst']),
+                    "value":  hex(int(val))
+                }
+            );
+            sock = socket.create_connection((hostname, port));
+            self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+            sock.close();
+            return;
+

@@ -67,7 +67,7 @@ echo '
 			</div><br/>
 			<div class="control-group" id="selectDae">
 				<label class="control-label" for="listdaemon">'.
-					_('Daemon').'
+					_('Box').'
 				</label>
 				<select class="selectpicker form-control" id="listdaemon">	
 				</select>
@@ -108,13 +108,13 @@ echo '
 				<label for="login" class="input-group-addon">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 				</label>
-				<input type="text" class="form-control" id="login" placeholder="'._('Login').'">
+				<input type="text" class="form-control" id="login" placeholder="'._('Login').'" autocomplete="off">
 			</div>
 			<div class="input-group">
 				<label for="password" class="input-group-addon">
 					<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 				</label>
-				<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+				<input type="password" class="form-control" id="pass" placeholder="'._('Password').'" autocomplete="off">
 			</div>
 			<div class="input-group">
 				<label for="macaddress" class="input-group-addon">
@@ -130,21 +130,12 @@ echo '
 		<div class="col-xs-6" id="ipinfo">
 		</div>
 	</div>
-	<div class="col-md-6" id="enocean">
-		<table>
-			<tr>
-				<td>
-					<div class="input-group">
-						<input type="text" class="form-control" id="enoceanaddr" placeholder="'._('Enocean address ').'">
-					</div>
-				</td>
-				<td class="center">
-					&nbsp;&nbsp;<button class="btn btn-greenleaf" onclick="AddNewDevice()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '._('Add').'</button>
-				</td>
-			</tr>
-		</table><br/>
+	<div class="col-md-6 center" id="enocean">
+		<input type="hidden" class="form-control" value="EnOcean" id="enoceanaddr" placeholder="'._('Enocean address ').'">
+		
+		<button class="btn btn-greenleaf" onclick="AddNewDevice()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '._('Add').'</button>
+		
 		<div class="alert alert-danger alert-hidden alert-dismissible" role="alert">
-		</div>
 	</div>
 </div>
 
@@ -186,7 +177,7 @@ function CheckProto(){
 	}
 	else if (proto == 2){
 		$("#enocean").show("slow");
-		$("#selectDae").hide("slow");
+		$("#selectDae").show("slow");
 		$("#ip").hide("slow");
 		$("#knx").hide("slow");
 	}
@@ -238,14 +229,15 @@ function AddNewDevice(){
 						}
 					}
 					else {
-							CatchError("'._('No daemon associate').'");
+						CatchError("'._('No Box associate').'");
 					}
 				}
-				else {
+				else if (proto == 2){
+					var daemon = $("#listdaemon").val();
 					var enoceanaddr = $("#enoceanaddr").val();
 								
 					if (enoceanaddr != \'\'){
-						SendByAjax(data+"&enoceanaddr="+enoceanaddr);
+						SendByAjax(data+"&enoceanaddr="+enoceanaddr+"&daemon="+daemon);
 					}
 					else {
 						CatchError("'._('Empty enocean address').'");

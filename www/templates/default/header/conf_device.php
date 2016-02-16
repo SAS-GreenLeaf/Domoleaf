@@ -12,6 +12,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$request -> add_request('confOptionList');
 	$request -> add_request('confOptionDptList', array($_GET['device']));
 	$request -> add_request('confManufacturerList', array($_GET['device']));
+	$request -> add_request('confMenuProtocol');
 	$result  =  $request -> send_request();
 	
 	$floorlistroom = $result->confFloorList;
@@ -23,25 +24,24 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$listdpt = $result->confOptionDptList;
 	$listoptdevice = $result->confDeviceRoomOpt;
 	$manufacturerList = $result->confManufacturerList;
+	$menuProtocol = $result->confMenuProtocol;
 	
 	$device = $roomdevice->$_GET['device'];
 	$deviceconf = $deviceall->{$device->device_id};
 	
 	$tabopt = array();
 	
-	$exceptionaddress = array(72 => 1, 79 => 1, 355 => 1, 356 => 1, 357 => 1, 358 => 1, 359 => 1, 360 => 1, 361 => 1, 
-							  363 => 1, 364 => 1, 365 => 1, 366 => 1, 367 => 1, 368 => 1, 383 => 1, 399 => 1, 407 => 1);
-
-	if (!empty($deviceconf->protocol_option->{0})){
-		foreach ($deviceconf->protocol_option->{0} as $option){
-			$tabopt[$option->option_id] = array(
-				'id' => $option->option_id,
-				'name' => $option->name
-			);
-		}
-	}
-	else if (is_array($deviceconf->protocol_option) && !empty($deviceconf->protocol_option[0])){
-		foreach ($deviceconf->protocol_option[0] as $option){
+	$exceptionaddress = array(
+		 72 => 1,  79 => 1, 153 => 1, 174 => 1, 355 => 1, 356 => 1, 357 => 1, 
+		358 => 1, 359 => 1, 360 => 1, 361 => 1, 363 => 1, 364 => 1, 365 => 1, 
+		366 => 1, 367 => 1, 368 => 1, 383 => 1, 399 => 1, 407 => 1, 425 => 1, 
+		426 => 1, 427 => 1, 428 => 1, 429 => 1, 430 => 1, 431 => 1, 432 => 1, 
+		433 => 1, 434 => 1, 435 => 1, 436 => 1, 437 => 1, 438 => 1, 439 => 1,
+		440 => 1
+	);
+	
+	if(!empty($deviceconf->protocol_option)) {
+		foreach ($deviceconf->protocol_option as $option){
 			$tabopt[$option->option_id] = array(
 				'id' => $option->option_id,
 				'name' => $option->name
@@ -49,14 +49,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 		}
 	}
 	
-	if(!empty($deviceconf->protocol_option->{$device->protocol_id})) {
-		foreach ($deviceconf->protocol_option->{$device->protocol_id} as $option){
-			$tabopt[$option->option_id] = array(
-				'id' => $option->option_id,
-				'name' => $option->name
-			);
-		}
-	}
+	echo '<title>'._('Device configuration').'</title>';
 }
 else {
 	$request =  new Api();

@@ -117,6 +117,10 @@ class User {
 		return null;
 	}
 	
+	function confMenuProtocol() {
+		return null;
+	}
+	
 	/*** Floors ***/
 	function confFloorList() {
 		return null;
@@ -164,23 +168,32 @@ class User {
 		return null;
 	}
 	
-	function confDeviceSaveInfo($idroom, $name, $daemon='', $devaddr, $iddevice){
+	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
 		return null;
 	}
 	
 	function confDeviceSaveOption($idroom, $options) {
 		return null;
 	}
-	
+
+	/**
+	 * Return all options from a device
+	 * @param id : device id
+	 * @return all options
+	 */
 	function confDeviceRoomOpt($deviceroomid) {
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		
-		$sql = 'SELECT room_device_option.option_id, addr, addr_plus, dpt_id, status, valeur,
-		        if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name 
+		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
+		               addr_plus, room_device_option.dpt_id, status, opt_value, 
+		               function_writing,
+		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM room_device_option
+		        JOIN room_device ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device_id=:room_device_id
+		        JOIN dpt_optiondef ON dpt_optiondef.option_id=optiondef.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id
+		        WHERE room_device_option.room_device_id=:room_device_id AND status=1
 		        ORDER BY room_device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id',  $deviceroomid,  PDO::PARAM_INT);
@@ -203,11 +216,11 @@ class User {
 		return null;
 	}
 	
-	function confDeviceNewKnx($name, $proto, $room, $device, $daemon, $addr) {
+	function confDeviceNewKnx($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
 	
-	function confDeviceNewEnocean($name, $proto, $room, $device, $addr) {
+	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
 	
@@ -266,7 +279,6 @@ class User {
 		$sql = 'SELECT device_id, protocol_id, application_id,
 		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name
 		        FROM device
-		        WHERE mc_element=1
 		        ORDER BY name ASC';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -281,16 +293,14 @@ class User {
 		}
 		
 		$sql = 'SELECT device_option. device_id, device_option.option_id,
-		               if(protocol_id IS NULL,0,protocol_id) as protocol_id,
-		               hidden_arg, groupe, bydefault,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM device_option
 		        JOIN optiondef ON optiondef.option_id=device_option.option_id';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if(!empty($list[$do->device_id]) and $do->hidden_arg & 0x04) {
-				$list[$do->device_id]['protocol_option'][$do->protocol_id][$do->option_id] = clone $do;
+			if(!empty($list[$do->device_id])) {
+				$list[$do->device_id]['protocol_option'][$do->option_id] = clone $do;
 			}
 		}
 		
@@ -651,7 +661,7 @@ class User {
 	function mcValueDef($iddevice, $idoption, $action){
 		$link = Link::get_link('domoleaf');
 		
-		$sql = 'SELECT  valeur
+		$sql = 'SELECT  opt_value
 				FROM    room_device_option
 				WHERE   room_device_id=:iddevice
 				AND     option_id=:option_id';
@@ -662,20 +672,20 @@ class User {
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		$val = '0';
-		if (!empty($do->valeur)){
-			$val = $do->valeur + $action;
+		if (!empty($do->opt_value)){
+			$val = $do->opt_value + $action;
 		}
 		if ((int)$val == $val){
 			$val = $val.'.0';
 		}
 		$sql = 'UPDATE  room_device_option
-				SET     valeur =  :valeur
+				SET     opt_value =  :opt_value
 				WHERE   room_device_id=:iddevice
 				AND     option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->bindValue(':option_id', $idoption, PDO::PARAM_INT);
-		$req->bindValue(':valeur', $val, PDO::PARAM_STR);
+		$req->bindValue(':opt_value', $val, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$this->mcTemperature($iddevice, $idoption, $val);
@@ -786,13 +796,12 @@ class User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
-		               optiondef.option_id,
+		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus,
 		               dpt.dpt_id,
 		               dpt.unit,
-		               room_device_option.valeur
+		               room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -801,7 +810,7 @@ class User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4 and !empty($listDevice[$do->room_device_id])) {
+			if(!empty($listDevice[$do->room_device_id])) {
 				if ($do->option_id == 399){
 					$highCost = $res[14]->configuration_value;
 					$lowCost = $res[15]->configuration_value;
@@ -817,7 +826,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> valueToDPTValue($do->dpt_id, $do->valeur),
+							'opt_value'	=> $do->opt_value,
 							'highCost'  => $highCost,
 							'lowCost'   => $lowCost,
 							'lowField1' => $lowField1,
@@ -834,7 +843,7 @@ class User {
 							'addr_plus' => $do->addr_plus,
 							'dpt_id'    => $do->dpt_id,
 							'unit'      => $do->unit,
-							'valeur'	=> valueToDPTValue($do->dpt_id, $do->valeur)
+							'opt_value'	=> $do->opt_value
 					);
 				}
 			}
@@ -908,6 +917,24 @@ class User {
 		return null;
 	}
 
+	function popupPassword($room_device_id, $password) {
+		$link = Link::get_link('domoleaf');
+		$sql = 'SELECT room_device_id, password
+		        FROM room_device
+		        WHERE room_device_id=:device_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device_id', $room_device_id, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		if(empty($do->room_device_id) || $do->password != $password) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param unknown $userid
@@ -1462,15 +1489,26 @@ class User {
 				$blue = $do->option_value;
 				$exec_id = $do->exec_id;
 			}
+			if ($do->option_id == 410 && empty($white)) {
+				$white = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
 			
-			if (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
+				$white = 0;
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			elseif (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue);
 				$red = 0;
 				$green = 0;
 				$blue = 0;
 				$list[$exec_id]['option_value'] = $hexa_color;
 			}
-			
 		}
 		return $list;
 	}
@@ -1797,14 +1835,26 @@ class User {
 				$blue = $do->option_value;
 				$id_condition = $do->id_condition;
 			}
-			if (!empty($red) && !empty($green) && !empty($blue) && !empty($id_condition)) {
+			if ($do->option_id == 410 && empty($white)) {
+				$white = $do->option_value;
+				$exec_id = $do->exec_id;
+			}
+			
+			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
+				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
+				$white = 0;
+				$red = 0;
+				$green = 0;
+				$blue = 0;
+				$list[$exec_id]['option_value'] = $hexa_color;
+			}
+			elseif (!empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue);
 				$red = 0;
 				$green = 0;
 				$blue = 0;
-				$list[$id_condition]['value'] = $hexa_color;
+				$list[$exec_id]['option_value'] = $hexa_color;
 			}
-				
 		}
 		return $list;
 	}
@@ -1871,6 +1921,20 @@ class User {
 		$req->bindValue(':option_value', $valoption, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
+	}
+	
+	function triggerElemOption($idtrigger, $idcondition) {
+		$link = Link::get_link('domoleaf');
+		$sql = 'SELECT value, operator
+		        FROM trigger_events_conditions
+		        WHERE id_trigger=:trigger_id AND id_condition=:condition_id';
+		$req = $link->prepare($sql);
+		$req->bindValue(':trigger_id', $idtrigger, PDO::PARAM_INT);
+		$req->bindValue(':condition_id', $idcondition, PDO::PARAM_INT);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do;
 	}
 	
 	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
@@ -2577,10 +2641,10 @@ class User {
 		}
 		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
+		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr_plus, room_device_option.valeur
+		               room_device_option.addr_plus, room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -2588,15 +2652,13 @@ class User {
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4) {
-				$list[$do->room_device_id]['device_opt'][$do->option_id] = array(
-					'option_id'=> $do->option_id,
-					'name'     => $do->name,
-					'addr'     => $do->addr,
-					'addr_plus'=> $do->addr_plus,
-					'valeur'   => $do->valeur
-				);
-			}
+			$list[$do->room_device_id]['device_opt'][$do->option_id] = array(
+				'option_id'=> $do->option_id,
+				'name'     => $do->name,
+				'addr'     => $do->addr,
+				'addr_plus'=> $do->addr_plus,
+				'opt_value'   => $do->opt_value
+			);
 		}
 		return $list;
 	}
@@ -2641,10 +2703,10 @@ class User {
 				'device_opt'    => array()
 		);
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               optiondef.hidden_arg, room_device.device_id, 
+		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
-		               room_device_option.addr_plus, room_device_option.valeur
+		               room_device_option.addr_plus, room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
@@ -2654,15 +2716,13 @@ class User {
 		$req->bindValue(':room_device_id', $roomdeviceid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			if($do->hidden_arg & 4) {
-				$info['device_opt'][$do->option_id] = array(
-					'option_id' => $do->option_id,
-					'name'      => $do->name,
-					'addr'      => $do->addr,
-					'addr_plus' => $do->addr_plus,
-					'valeur'    => $do->valeur
-				);
-			}
+			$info['device_opt'][$do->option_id] = array(
+				'option_id' => $do->option_id,
+				'name'      => $do->name,
+				'addr'      => $do->addr,
+				'addr_plus' => $do->addr_plus,
+				'opt_value'    => $do->opt_value
+			);
 		}
 		return $info;
 	}
@@ -2722,12 +2782,12 @@ class User {
 			}
 			
 			$sql ='UPDATE room_device_option
-			       SET valeur=:valeur
+			       SET opt_value=:opt_value
 			       WHERE room_device_id=:room_device_id AND 
 			             option_id=:option_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
-			$req->bindValue(':valeur', $value, PDO::PARAM_INT);
+			$req->bindValue(':opt_value', $value, PDO::PARAM_INT);
 			$req->bindValue(':option_id', $optionid, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$socket = new Socket();
@@ -2735,25 +2795,6 @@ class User {
 				'room_device_id'=> $iddevice,
 				'value'         => $value,
 				'option_id'     => $optionid
-			);
-			$socket->send('send_to_device', $data);
-		}
-	}
-
-	/**
-	 * 
-	 * @param unknown $iddevice
-	 * @param unknown $val
-	 * @param unknown $optionid
-	 */
-	function mcAudio($iddevice, $val, $optionid, $optionval=0){
-		if($this->checkDevice($iddevice)){
-			$socket = new Socket();
-			$data = array(
-				'room_device_id' => $iddevice,
-				'option_id'      => $optionid,
-				'action'         => $val,
-				'value'          => $optionval
 			);
 			$socket->send('send_to_device', $data);
 		}
@@ -2772,7 +2813,7 @@ class User {
 		$res = $this->conf_load();
 		$list = Array();
 		
-		$sql = 'SELECT room_device_option.room_device_id, option_id, valeur, addr_plus, room_device.device_id, dpt_id
+		$sql = 'SELECT room_device_option.room_device_id, option_id, opt_value, addr_plus, room_device.device_id, dpt_id
 		        FROM   room_device_option
 		        JOIN   room_device ON room_device_option.room_device_id=room_device.room_device_id';
 		$req = $link->prepare($sql);
@@ -2791,7 +2832,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => valueToDPTValue($do->dpt_id, $do->valeur),
+						'opt_value'        => $do->opt_value,
 						'highCost'      => $highCost,
 						'lowCost'       => $lowCost,
 						'lowField1'     => $lowField1,
@@ -2806,7 +2847,7 @@ class User {
 						'addr_plus'     => $do->addr_plus,
 						'room_device_id'=> $do->room_device_id,
 						'option_id'     => $do->option_id,
-						'valeur'        => valueToDPTValue($do->dpt_id, $do->valeur)
+						'opt_value'     => $do->opt_value
 				);
 			}
 		}

@@ -25,7 +25,7 @@ if (!empty($_GET['id_smartcmd'])) {
 								'.$elem->device_name.'
 							</div>
 							<div id="smartcmdElemOption-'.$elem->exec_id.'" class="col-xs-6 left">';
-								echo display_option($elem->exec_id, $elem->option_id, $elem->option_value, $elem->room_device_id);
+								echo display_option($elem);
 								echo '
 							</div>
 						</div>
@@ -123,10 +123,9 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 				
 }
 
-function display_option($exec_id, $option_id, $option_value, $room_device_id) {
-	
+function display_option($elem) {
 	$display = '';
-	if (empty($option_id)) {
+	if (empty($elem->option_id)) {
 		return $display;
 	}
 	$tab_func = array(
@@ -150,16 +149,22 @@ function display_option($exec_id, $option_id, $option_value, $room_device_id) {
 			392 => "display_option_color",
 			393 => "display_option_color",
 			394 => "display_option_color",
-			400 => "display_option_fans",
-			401 => "display_option_fans",
-			402 => "display_option_fans",
-			403 => "display_option_fans",
-			404 => "display_option_fans",
-			405 => "display_option_fans",
-			406 => "display_option_fans"
+			400 => 'display_option_fans',
+			401 => 'display_option_fans',
+			402 => 'display_option_fans',
+			403 => 'display_option_fans',
+			404 => 'display_option_fans',
+			405 => 'display_option_fans',
+			406 => 'display_option_fans',
+			410 => 'display_option_color_white',
+			442 => 'display_option_tilt'
 	);
-	
-	$display.=$tab_func[$option_id]($exec_id, $room_device_id, $option_value, $option_id);
+	if(!empty($tab_func[$elem->option_id])) {
+		$display .= $tab_func[$elem->option_id]($elem->exec_id, $elem->room_device_id, $elem->option_value, $elem->option_id);
+	}
+	else {
+		$display .= display_option_button($elem);
+	}
 	return $display;
 }
 
@@ -390,6 +395,16 @@ function display_option_color($exec_id, $room_device_id, $option_value, $option_
 	return $display;
 }
 
+function display_option_color_white($exec_id, $room_device_id, $option_value, $option_id) {
+	$display =
+	'<div class="lg smartcmd-color-option" id="color-'.$room_device_id.''.$exec_id.'"></div> '.
+	round(100*hexdec(substr($option_value, -2))/255).'% <span aria-hidden="true" class="glyphicon glyphicon-adjust"></span>
+			<script type="text/javascript">
+				$("#color-'.$room_device_id.''.$exec_id.'").css("background-color", "'.substr($option_value, 0, -2).'");
+			</script>';
+	return $display;
+}
+
 function display_option_fans($exec_id, $room_device_id, $option_value, $option_id) {
 	$fans_speed = array(
 			400 => "0",
@@ -407,6 +422,43 @@ function display_option_fans($exec_id, $room_device_id, $option_value, $option_i
 				'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
 					'._('Speed').' '.$fans_speed[$option_id].'
 				</button>';
+	return $display;
+}
+
+function display_option_button($elem) {
+	$display =
+	'<button type="button" class="btn btn-info disabled-with-opacity btn-lg" disabled>
+			'.$elem->option_name.'
+		</button>';
+	return $display;
+}
+
+function display_option_tilt($exec_id, $room_id_device, $option_value, $option_id) {
+	$display = '
+	<div class="col-xs-6 center-div">
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<i class="fa fa-sort-amount-asc fa-flip-vertical-rotate-270"></i>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<output id="range-'.$room_id_device.''.$exec_id.'"
+			        for="slider-value-'.$room_id_device.''.$exec_id.'">
+				50%
+			</output>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<i class="fa fa-sort-amount-asc fa-rotate-270"></i>
+		</div>
+		<div class="row">
+			<input value="128" min="0" step="1" max="255"
+			       id="slider-value-'.$room_id_device.''.$exec_id.'"
+			       type="range"
+			       disabled>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#slider-value-'.$room_id_device.''.$exec_id.'").val('.$option_value.');
+		outputUpdate('.$room_id_device.''.$exec_id.', '.$option_value.')
+	</script>';
 	return $display;
 }
 

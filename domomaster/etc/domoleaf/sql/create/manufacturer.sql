@@ -13,6 +13,8 @@ INSERT INTO `manufacturer` (`manufacturer_id`, `name`)
 VALUES
 	(1, 'D-Link'),
 	(2, 'TRENDnet'),
-	(3, 'Sonos');
+	(3, 'Sonos'),
+	(15, 'Free'),
+	(16, 'Orange');
 
 SET FOREIGN_KEY_CHECKS=1;

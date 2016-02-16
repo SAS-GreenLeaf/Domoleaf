@@ -26,7 +26,7 @@ echo '
 		if (!empty($device->daemon_id)){
 			echo '
 			<div class="control-group" >
-				<label class="control-label" for="listdaemon">'._('Daemon').'</label>
+				<label class="control-label" for="listdaemon">'._('Box').'</label>
 				<select class="selectpicker form-control" id="listdaemon">';
 					foreach ($daemonlist as $elem){
 						if (!empty($elem->protocol->{1})) {
@@ -63,7 +63,7 @@ echo '
 		</div>
 		<br/>
 		<div id="selectRoom" class="control-group">
-			<label for="listroom" class="control-label">Room</label>
+			<label for="listroom" class="control-label">'._('Room').'</label>
 			<select class="selectpicker form-control" onchange="" id="listroom" selected="">';
 				foreach ($roomlist as $elem){
 					if ($_GET['room'] == $elem->room_id){
@@ -86,7 +86,7 @@ if ($device->protocol_id == 6){
 	echo
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="ipaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 				<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" value="'.$device->addr.'" id="addr" placeholder="'._('IP address or name').'">
@@ -99,7 +99,7 @@ if ($device->protocol_id == 6){
 			<input type="text" class="form-control" value="'.$device->plus1.'" id="port" placeholder="'._('Port').' ('._('Default: 80').')">
 		</div>
 		<div class="input-group">
-			<label for="macaddress" class="input-group-addon">
+			<label for="macaddr" class="input-group-addon">
 				<span class="fa flaticon-chip" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" value="'.$device->plus4.'" id="macaddr" placeholder="'._('Mac Address').'">
@@ -110,14 +110,14 @@ if ($device->protocol_id == 6){
 			<label for="login" class="input-group-addon">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			</label>
-			<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'">
+			<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'" autocomplete="off">
 		</div>
 	
 		<div class="input-group">
-			<label for="password" class="input-group-addon">
+			<label for="pass" class="input-group-addon">
 				<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 			</label>
-			<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+			<input type="password" class="form-control" value="'.$device->plus3.'" id="pass" placeholder="'._('Password').'" autocomplete="off">>
 		</div>
 	</div><br/>';
 }
@@ -125,28 +125,39 @@ else if ($device->protocol_id == 1){
 	echo 
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="knxaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
 			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('KNX address or name').'">
 		</div>
 	</div>';
+	if($device->device_id == 30) {
+		echo
+		'<div class="col-md-6 col-xs-12">
+			<div class="input-group">
+				<label for="widgetpassword" class="input-group-addon">
+				<span class="fa fa-key" aria-hidden="true"></span>
+				</label>
+				<input type="text" class="form-control" id="widgetpassword" value="'.$device->password.'" placeholder="'._('Widget\'s password').'">
+			</div>
+		</div>';
+	}
 }
 else if ($device->protocol_id == 2){
 	echo
 	'<div class="col-md-6 col-xs-12">
 		<div class="input-group">
-			<label for="enoceanaddress" class="input-group-addon">
+			<label for="addr" class="input-group-addon">
 			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>
-			<input type="text" class="form-control" id="addr" value="'.$device->addr.'" placeholder="'._('Enocean address or name').'">
+			<input type="hidden" class="form-control" id="addr" value="EnOcean" placeholder="'._('Enocean address or name').'">
 		</div>
 	</div>';
 }
 echo '
 </div>&nbsp;
 
-<div class="col-xs-12 col-xs-offset-5 btn-group btn-group-greenleaf center">
+<div class="col-xs-12 center">
 	<button type="button" id="saveinfo" title="'._('Save').'" class="btn btn-greenleaf" onclick="SaveInfo()">'._('Save').'</button>
 </div>
 
@@ -285,7 +296,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 				</thead>
 				<tbody>';
 				foreach ($tabopt as $i => $elem) {
-					if (!empty($tabopt[$i])) {
+					if (!empty($tabopt[$i]) && isset($listdpt->$i)) {
+						$list = $listdpt->$i;
 						echo '
 						<tr>
 							<td>
@@ -308,30 +320,28 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 						}
 						echo
 							'<td>'; 
-							if (isset($listdpt->$i)) {
-								$list = $listdpt->$i;
-								if (sizeof($listdpt->$i) == 1){
-									echo
-									'<div hidden>
-										<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
-											<option value="'.$list[0]->dpt_id.'"></option>
-										</select>
-									</div>';
-								}
-								else {
-									echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
-									foreach ($listdpt->$i as $list){
-										if (!empty($list->dpt_id)){
-											if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
-												echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
-											}
-											else{
-												echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
-											}
+							
+							if (sizeof($list) == 1){
+								echo
+								'<div hidden>
+									<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+										<option value="'.$list[0]->dpt_id.'"></option>
+									</select>
+								</div>';
+							}
+							else {
+								echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+								foreach ($list as $list){
+									if (!empty($list->dpt_id)){
+										if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+											echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+										}
+										else{
+											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
 										}
 									}
-									echo '</select>';
 								}
+								echo '</select>';
 							}
 						echo
 							'</td>
@@ -396,6 +406,7 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 	else if ($device->protocol_id == 6) {
 		//getIcon ???
 		$icons = array(
+			 12 => 'glyphicon glyphicon-off',
 			357 => 'glyphicon glyphicon-chevron-up',
 			358 => 'glyphicon glyphicon-chevron-down',
 			359 => 'glyphicon glyphicon-chevron-left',
@@ -408,7 +419,35 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			367 => 'glyphicon glyphicon-backward',
 			368 => 'glyphicon glyphicon-volume-off',
 			383 => 'fa fa-volume-up',
-			408 => 'glyphicon glyphicon-camera'
+			408 => 'glyphicon glyphicon-camera',
+			443 => 'glyphicon glyphicon-eject',
+			444 => 'fa fa-plus-square-o',
+			445 => 'fa fa-plus-square-o',
+			446 => 'fa fa-plus-square-o',
+			447 => 'fa fa-plus-square-o',
+			448 => 'fa fa-plus-square-o',
+			449 => 'fa fa-plus-square-o',
+			450 => 'fa fa-plus-square-o',
+			451 => 'fa fa-plus-square-o',
+			452 => 'fa fa-plus-square-o',
+			453 => 'fa fa-plus-square-o',
+			454 => 'glyphicon glyphicon-unchecked',
+			455 => 'fa fa-plus-square-o red',
+			456 => 'fa fa-plus-square-o green',
+			457 => 'fa fa-plus-square-o blue',
+			458 => 'fa fa-plus-square-o yellow',
+			459 => 'fa fa-caret-up',
+			460 => 'fa fa-caret-down',
+			461 => 'fa fa-caret-left',
+			462 => 'fa fa-caret-right',
+			463 => 'glyphicon glyphicon-plus',
+			464 => 'glyphicon glyphicon-minus',
+			465 => 'glyphicon glyphicon-plus',
+			466 => 'glyphicon glyphicon-minus',
+			467 => 'glyphicon glyphicon-record',
+			468 => 'fa fa-backward',
+			469 => 'fa fa-forward',
+			470 => 'glyphicon glyphicon-unchecked'
 		);
 		
 		echo
@@ -424,7 +463,8 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 			</thead>
 			<tbody>';
 		foreach ($tabopt as $i => $elem){
-			if (!empty($tabopt[$i])){
+			if (!empty($tabopt[$i]) && !empty($listdpt->$i)) {
+				$list = $listdpt->$i;
 				echo
 				'<tr>
 					<td>';
@@ -435,31 +475,28 @@ if (!empty($tabopt) && sizeof($tabopt) > 0){
 					</td>
 					<td><input id="waddr-'.$tabopt[$i]['id'].'" class="form-control" type="text" placeholder="'._('Source').'"></td>
 					<td>';
-					if (isset($listdpt->$i)) {
-						$list = $listdpt->$i;
-						if (sizeof($listdpt->$i) == 1){
-							echo
-							'<div hidden>
-								<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
-									<option value="'.$list[0]->dpt_id.'"></option>
-								</select>
-							</div>';
-						}
-						else {
-							echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
-								foreach ($listdpt->$i as $list){
-									if (!empty($list->dpt_id)){
-										if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
-											echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
-										}
-										else{
-											echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
-										}
+					if (sizeof($listdpt->$i) == 1){
+						echo
+						'<div hidden>
+							<select disabled class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">
+								<option value="'.$list[0]->dpt_id.'"></option>
+							</select>
+						</div>';
+					}
+					else {
+						echo '<select class="selectpicker form-control" id="unity-'.$tabopt[$i]['id'].'">';
+							foreach ($listdpt->$i as $list){
+								if (!empty($list->dpt_id)){
+									if (!empty($option_overload[$list->option_id]) && !empty($option_overload[$list->option_id][$list->dpt_id])){
+										echo '<option value="'.$list->dpt_id.'">'.$option_overload[$list->option_id][$list->dpt_id].'</option>';
+									}
+									else{
+										echo '<option value="'.$list->dpt_id.'">'.$list->unit.'</option>';
 									}
 								}
-							echo
-							'</select>';
-						}
+							}
+						echo
+						'</select>';
 					}
 					echo
 					'</td>
@@ -547,6 +584,7 @@ function SaveInfo(){
 	var pass = $("#pass").val();
 	var port = $("#port").val();
 	var macaddr = $("#macaddr").val();
+	var widgetpassword = $("#widgetpassword").val();
 	
 	if (!daemon){
 		daemon = 0;
@@ -566,11 +604,18 @@ function SaveInfo(){
 	if (!macaddr){
 		macaddr = "";
 	}
+	if (!widgetpassword){
+		widgetpassword = "";
+	}
 	if (devname != \'\' && addr != \'\'){
 		$.ajax({
 			type:"GET",
 			url: "/form/form_device_info_opt.php",
-			data: "idroomdevice="+idroomdevice+"&devname="+encodeURIComponent(devname)+"&daemon="+daemon+"&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+"&login="+login+"&pass="+pass+"&macaddr="+macaddr,
+			data: "idroomdevice="+idroomdevice+
+			      "&devname="+encodeURIComponent(devname)+"&daemon="+daemon+
+			      "&addr="+addr+"&iddevice="+'.$_GET['device'].'+"&port="+port+
+			      "&login="+login+"&pass="+pass+"&macaddr="+macaddr+
+			      "&widgetpassword="+widgetpassword,
 			complete: function(result, status) {
 				LoadingButton("saveinfo", 0);
 			}
@@ -582,7 +627,7 @@ function SaveInfo(){
 }
 
 function CheckAddr(addr, addr_plus, optid){
-	var protoopt = '.$deviceconf->protocol_id.';
+	var protoopt = '.$device->protocol_id.';
 
 	if (protoopt == 1 && $("#toggle-"+optid).prop(\'checked\') == 1){
 		var tabaddr = addr.split("/");
@@ -646,11 +691,12 @@ function ProductList(device_id, protocol_id){
 
 function PreConfigurationDevice(){
 	var product_id = $("#productList").val();
+	var password   = $("#pass").val();
 	if (product_id > 0){
 		$.ajax({
 			type: "GET",
 			url: "/form/form_pre_configuration_device_option.php",
-			data: "product_id="+product_id,
+			data: "product_id="+product_id+"&password="+password,
 			dataType: "json",
 			success: function(result) {
 				for (var i = 0 ; i < result.length ; i++){

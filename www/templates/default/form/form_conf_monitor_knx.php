@@ -22,7 +22,7 @@ echo '
 	<table class="table table-bordered table-striped table-condensed">
 		<thead>
 			<tr>
-				<th class="center">'._('Daemon').'</th>
+				<th class="center">'._('Box').'</th>
 				<th class="center">'._('Source').'</th>
 				<th class="center">'._('Destination').'</th>
 				<th class="center">'._('Value').'</th>

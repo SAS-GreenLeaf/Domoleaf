@@ -55,7 +55,7 @@ echo '
 					foreach ($elem['room'] as $room){
 						echo '
 							<tr>
-								<td class="cursor">
+								<td>
 									<a href="/conf_installation/'.$elem['id'].'/'.$room['id'].'">'.$room['name'].'</a>
 								</td>
 								<td class="center">

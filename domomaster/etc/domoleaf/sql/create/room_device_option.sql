@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `room_device_option` (
   `addr_plus` varchar(2047) DEFAULT NULL,
   `dpt_id` int(10) unsigned DEFAULT NULL,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `valeur` varchar(15) NOT NULL DEFAULT '',
+  `opt_value` varchar(15) NOT NULL DEFAULT '',
   KEY `room_device_id` (`room_device_id`),
   KEY `option_id` (`option_id`),
   KEY `addr_plus` (`addr_plus`),

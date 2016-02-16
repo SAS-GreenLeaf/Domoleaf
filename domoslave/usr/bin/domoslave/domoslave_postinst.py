@@ -58,13 +58,13 @@ def slave_conf_init():
     file.writeValueFromSection('personnal_key', 'aes', KEY);
     
     #KNX Interface
-    knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd '
+    knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -b '
     if os.path.exists('/dev/ttyAMA0'):
         knx_edit = knx_edit + 'tpuarts:/dev/ttyAMA0"';
     elif os.path.exists('/dev/ttyS0'):
         knx_edit = knx_edit + 'tpuarts:/dev/ttyS0"';
     else:
-        knx_edit = knx_edit + '-b ipt:127.0.0.1"';
+        knx_edit = knx_edit + 'ipt:127.0.0.1"';
     conf_knx = open('/etc/knxd.conf', 'w');
     conf_knx.write(knx_edit + '\n');
     conf_knx.close();

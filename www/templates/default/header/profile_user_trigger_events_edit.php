@@ -17,11 +17,13 @@ $id_trigger = $_GET['id_trigger'];
 
 $request = new Api();
 $request -> add_request('confUserInstallation');
-$request -> add_request('mcVisible');
+$request -> add_request('mcAllowed');
 $request -> add_request('searchTriggerById', array($id_trigger));
 $result  =  $request -> send_request();
 
-$listAllVisible = $result->mcVisible;
+echo '<title>'._('Trigger edit').'</title>';
+
+$listAllVisible = $result->mcAllowed;
 
 $floorallowed = $listAllVisible->ListFloor;
 $roomallowed = $listAllVisible->ListRoom;

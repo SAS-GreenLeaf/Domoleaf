@@ -1,4 +1,5 @@
 #include "enocean.h"
+#include <netinet/tcp.h>
 
 /*
 ** Global flag for the main loop

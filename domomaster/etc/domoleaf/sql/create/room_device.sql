@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `room_device` (
   `plus3` varchar(255) DEFAULT NULL,
   `plus4` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `widget_template` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`room_device_id`),
   KEY `protocol_id` (`protocol_id`),
   KEY `room_id` (`room_id`),

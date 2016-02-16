@@ -16,15 +16,17 @@ function showPopup($id_smartcmd, $room_id_device, $id_option, $id_exec, $modif) 
 		return $display;
 	}
 	$tab_func = array(
-			12 => "display_smartcmd_on_off",
-			13 => "display_smartcmd_varie",
-			54 => "display_smartcmd_up_down",
-			96 => "display_smartcmd_open_close",
-			383 => "display_smartcmd_set_volume",
-			388 => "display_smartcmd_set_temp",
-			392 => "display_smartcmd_color_wheel",
-			393 => "display_smartcmd_color_wheel",
-			394 => "display_smartcmd_color_wheel"
+			12 => 'display_smartcmd_on_off',
+			13 => 'display_smartcmd_varie',
+			54 => 'display_smartcmd_up_down',
+			96 => 'display_smartcmd_open_close',
+			383 => 'display_smartcmd_set_volume',
+			388 => 'display_smartcmd_set_temp',
+			392 => 'display_smartcmd_color_wheel',
+			393 => 'display_smartcmd_color_wheel',
+			394 => 'display_smartcmd_color_wheel',
+			410 => 'display_smartcmd_color_wheel_white',
+			442 => 'display_smartcmd_tilt'
 	);
 	$display.='<p class="center margin-bottom">'._('Choose the option state for this device.').'</p></br>';
 	$display.='<input id="smartcmdPopupValue-'.$room_id_device.'" value="0" hidden>';
@@ -206,5 +208,73 @@ function display_smartcmd_color_wheel($room_id_device) {
 	return $display;
 }
 
+function display_smartcmd_color_wheel_white($room_id_device) {
+	
+	$display = 
+		'<form class="center padding-bottom">
+			<input type="text" id="color" name="color" value="#123456" disabled="disabled" />
+		</form>
+		<br/>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+			<i class="fa fa-certificate"></i>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<output id="range-'.$room_id_device.'-popup" for="slider-value-'.$room_id_device.'-popup">50%</output>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor">
+			<i class="fa fa-sun-o"></i>
+		</div>
+		<div class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-2">
+			<input value="128" min="0" step="1" max="255"
+			       oninput="outputUpdate('.$room_id_device.', value, 1)"
+			       onchange="getVariation('.$room_id_device.', 410, 1)"
+			       id="slider-value-'.$room_id_device.'-popup" type="range" style="background: #FFFF66"/>
+		</div>
+		<div class="clearfix"></div>
+		<br/>
+		<div id="colorpicker"></div>
+
+		<script type="text/javascript">
+			$("#colorpicker").on("mouseup touchend", function(event) {
+				smartcmdUpdateRGBColor('.$room_id_device.', $("#color").val()+parseInt($("#slider-value-'.$room_id_device.'-popup").val()).toString(16));
+			});
+			$("#slider-value-'.$room_id_device.'-popup").on("mouseup touchend", function(event) {
+				smartcmdUpdateRGBColor('.$room_id_device.', $("#color").val()+parseInt($("#slider-value-'.$room_id_device.'-popup").val()).toString(16));
+			});
+			$("#colorpicker").farbtastic("#color");
+			smartcmdUpdateRGBColor('.$room_id_device.', $("#color").val()+parseInt($("#slider-value-'.$room_id_device.'-popup").val()).toString(16));
+		</script>';
+	
+	return $display;
+}
+
+function display_smartcmd_tilt($room_id_device) {
+	$display = '
+		<div class="col-xs-6 center-div">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor"
+			     onclick="Variation('.$room_id_device.', 13, -1)">
+				<i class="fa fa-sort-amount-asc fa-flip-vertical-rotate-270"></i>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<output id="range-'.$room_id_device.'"
+				        for="slider-value-'.$room_id_device.'">50%</output>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 cursor"
+			     onclick="Variation('.$room_id_device.', 13, 1)">
+				<i class="fa fa-sort-amount-asc fa-rotate-270"></i>
+			</div>
+			<div class="row">
+				<input value="128" min="0" step="1" max="255"
+				       oninput="outputUpdate('.$room_id_device.', value)"
+				       onchange="smartcmdVarie('.$room_id_device.')"
+				       id="slider-value-'.$room_id_device.'"
+				       type="range">
+			</div>
+		</div>
+		<script type="text/javascript">
+			smartcmdVarie('.$room_id_device.');
+		</script>';
+	return $display;
+}
 
 ?>

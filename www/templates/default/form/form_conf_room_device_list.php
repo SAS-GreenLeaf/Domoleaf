@@ -30,14 +30,19 @@ if (!empty($_GET['room'])){
 			foreach($listroomdevice as $elem){
 				echo '
 				<tr>
-					<td onclick="SelectRow('.$elem->room_device_id.')" class="cursor">'.$elem->name.'</td>
-					<td onclick="SelectRow('.$elem->room_device_id.')" class="cursor">'.$listproto[$elem->protocol_id].'</td>
-					<td onclick="SelectRow('.$elem->room_device_id.')" class="cursor">'.$elem->device_name.'</td>
-					<td onclick="SelectRow('.$elem->room_device_id.')" class="cursor">'.$elem->addr.'</td>
+					<td>
+						<a href="/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'/'.$elem->room_device_id.'">
+							'.$elem->name.'
+						</a>
+					</td>
+					<td>'.$listproto[$elem->protocol_id].'</td>
+					<td>'.$elem->device_name.'</td>
+					<td>'.$elem->addr.'</td>
 					<td class="center">
-						<button type="button" title="'._('Edit').'" class="btn btn-primary" id="btn-edit-'.$elem->room_device_id.'" onclick="SelectRow('.$elem->room_device_id.')">
+						<a title="'._('Edit').'" class="btn btn-primary" id="btn-edit-'.$elem->room_device_id.'" 
+						   href="/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'/'.$elem->room_device_id.'">
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-						</button>
+						</a>
 						<button title="'._('Delete').'" onclick="PopupRemoveDevice('.$elem->room_device_id.')" class="btn btn-danger">
 							<span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
 						</button>

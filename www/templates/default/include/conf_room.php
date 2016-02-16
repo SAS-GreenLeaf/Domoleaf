@@ -76,7 +76,7 @@ function GetDeviceList(){
 	$.ajax({
 		type:"GET",
 		url: "/templates/'.TEMPLATE.'/form/form_conf_room_device_list.php",
-		data: "room="+room,
+		data: "floor="+floor+"&room="+room,
 		success: function(result) {
 			$("#listdevice").html(result);
 			if (result.split("</td>").length == 1) {
@@ -86,10 +86,6 @@ function GetDeviceList(){
 		error: function(result, status, error){
 		}
 	});
-}
-
-function SelectRow(id){
-	location.href=\'/conf_installation/'.$_GET['floor'].'/'.$_GET['room'].'/\'+id;
 }
 
 </script>';

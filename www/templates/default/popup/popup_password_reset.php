@@ -16,7 +16,7 @@ echo '
 echo '
 	<div class="input-group margin-top">'.
 		'<label class="input-group-addon left" id="labresetKey" for="resetKey">'._('Reset Key').'</label>'.
-		'<input id="resetKey" name="resetKey" title="'._('Reset Key').'" value="'.$_POST['resetKeyval'].'" placeholder="Type your key" type="text" class="form-control">'.
+		'<input id="resetKey" name="resetKey" title="'._('Reset Key').'" value="'.$_POST['resetKeyval'].'" placeholder="'._('Enter your key').'" type="text" class="form-control">'.
 	'</div>'.
 	'<br/><br/><div class="form-group">'.
 		'<div class="input-group">'.

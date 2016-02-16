@@ -32,6 +32,12 @@ class MasterSql:
             frameinfo = getframeinfo(currentframe());
             self.logger.info("[ MASTER DAEMON " + frameinfo.filaname + ":" + str(frameinfo.lineno) + " ]: initialization error: wrong or missing SQL configuration.");
             sys.exit(1);
+        self.functions_transform = {
+              0: utils.convert_none,
+              1: utils.convert_temperature,
+              2: utils.convert_hundred,
+              3: utils.convert_float32
+        };
 
     def insert_hostlist_in_db(self, hostlist):
         """
@@ -101,23 +107,27 @@ class MasterSql:
         """
         Update of the table room_device_option with long KNX value
         """
-        query = "SELECT option_id, room_device.room_device_id, addr_plus FROM room_device_option ";
+        query  = "SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM room_device_option ";
         query += "JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ";
+        query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
+        query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
         query += "WHERE daemon_id=" + str(daemon_id) + " AND room_device_option.addr=\"";
         query += str(json_obj['dst_addr']) + "\"";
         res = self.mysql_handler_personnal_query(query);
         
         if len(res) == 0:
-            query = "SELECT option_id, room_device.room_device_id FROM ";
+            query  = "SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM ";
             query += "room_device_option JOIN room_device ON ";
-            query += "room_device_option.room_device_id=room_device.room_device_id WHERE ";
-            query += "daemon_id=" + str(daemon_id) + " AND room_device_option.addr_plus=\"";
+            query += "room_device_option.room_device_id=room_device.room_device_id ";
+            query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
+            query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
+            query += "WHERE "+ str(daemon_id) + " AND room_device_option.addr_plus=\"";
             query += str(json_obj['dst_addr']) + "\"";
             res = self.mysql_handler_personnal_query(query);
         
         for r in res:
-            if int(r[0]) == MasterDaemon.OPTION_VAR:
-                up = 'UPDATE room_device_option SET valeur=';
+            if int(r[0]) == 13:
+                up = 'UPDATE room_device_option SET opt_value=';
                 if json_obj['value'] == 0:
                     up += '0';
                 else:
@@ -128,66 +138,50 @@ class MasterSql:
                 self.mysql_handler_personnal_query(up);
                 
                 query = "UPDATE room_device_option SET ";
-                query += "valeur=\"" + str(json_obj['value']) + "\" ";
+                query += "opt_value=\"" + str(json_obj['value']) + "\" ";
                 query += "WHERE room_device_id=" + str(r[1]) + " AND option_id="+str(r[0]);
                 self.mysql_handler_personnal_query(query);
-            elif int(r[0]) == MasterDaemon.OPTION_TEMPERATURE or int(r[0]) == MasterDaemon.OPTION_TEMPERATURE_W:
+            elif int(r[0]) == 72 or int(r[0]) == 388:
                 val = int(json_obj['value']);
                 res = utils.convert_temperature(val);
                 query = "UPDATE room_device_option JOIN room_device ON ";
                 query += "room_device_option.room_device_id=room_device.room_device_id SET ";
-                query += "valeur=\"" + str(res) + "\" WHERE daemon_id=" + str(daemon_id);
+                query += "opt_value=\"" + str(res) + "\" WHERE daemon_id=" + str(daemon_id);
                 query += " AND room_device_option.addr=\"" + str(json_obj['dst_addr']) + "\"";
                 self.logger.info('update_room_device_option write_long: query = ' + query);
                 self.mysql_handler_personnal_query(query);
             else:
-                up = "UPDATE room_device_option SET valeur=\"" + str(json_obj['value'])
+                val = self.functions_transform[r[2]](int(json_obj['value']));
+                up = "UPDATE room_device_option SET opt_value=\"" + str(val)
                 up += "\" WHERE room_device_id=" + str(r[1]) + " AND option_id=\"" + str(r[0]) + "\"";
                 self.logger.info('update_room_device_option write_long: up = ' + up)
                 self.mysql_handler_personnal_query(up);
+        return res
 
     def update_room_device_option_resp(self, json_obj, daemon_id):
         """
         Update of the table room_device_option with resp KNX value
         """
-        query = "SELECT option_id, room_device.room_device_id FROM ";
+        query  = "SELECT option_id, room_device.room_device_id, function_answer FROM ";
         query += "room_device_option JOIN room_device ON ";
-        query += "room_device_option.room_device_id=room_device.room_device_id WHERE ";
-        query += "daemon_id=" + str(daemon_id) + " AND room_device_option.addr=\"";
+        query += "room_device_option.room_device_id=room_device.room_device_id ";
+        query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
+        query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
+        query += "WHERE daemon_id=" + str(daemon_id) + " AND room_device_option.addr=\"";
         query += str(json_obj['dst_addr']) + "\"";
         
         res = self.mysql_handler_personnal_query(query);
-        if type(res).__name__ == 'list':
-            for r in res:
-                query = "UPDATE room_device_option JOIN room_device ON ";
-                query += "room_device_option.room_device_id=room_device.room_device_id SET ";
-                if int(r[0]) == OPTION_TEMPERATURE:
-                    val = int(json_obj['value']);
-                    val = utils.convert_temperature(val);
-                    query += "valeur=\"" + str(val) + "\" WHERE daemon_id=" + str(daemon_id);
-                    query += " AND room_device_option.addr=\"" + str(json_obj['dst_addr']) + "\"";
-                    self.logger.info("update_room_device_option resp query = " + query);
-                    self.mysql_handler_personnal_query(query);
-                else:
-                    query += "valeur=\"" + str(json_obj['value']) + "\" WHERE daemon_id=" + str(daemon_id);
-                    query += " AND addr_plus=\"" + str(json_obj['dst_addr']) + "\"";
-                    self.logger.info("update_room_device_option resp query = " + query);
-                    self.mysql_handler_personnal_query(query);
-        else:
+        for r in res:
+            val = self.functions_transform[r[2]](int(json_obj['value']));
+            
             query = "UPDATE room_device_option JOIN room_device ON ";
             query += "room_device_option.room_device_id=room_device.room_device_id SET ";
-            if int(r[0]) == OPTION_TEMPERATURE:
-                val = int(json_obj['value']);
-                val = utils.convert_temperature(val);
-                query += "valeur=\"" + str(val) + "\" WHERE daemon_id=" + str(daemon_id);
-                query += " AND room_device_option.addr=\"" + str(json_obj['dst_addr']) + "\"";
-                self.logger.info("update_room_device_option resp query = " + query);
-                self.mysql_handler_personnal_query(query);
-            else:
-                query += "valeur=\"" + str(json_obj['value']) + "\" WHERE daemon_id=" + str(daemon_id);
-                query += " AND addr_plus=\"" + str(json_obj['dst_addr']) + "\"";
-                self.logger.info('update_room_device_option resp query = ' + query);
-                self.mysql_handler_personnal_query(query);
+            query += "opt_value=\"" + str(val) + "\" WHERE daemon_id=" + str(daemon_id);
+            query += " AND room_device_option.addr=\"" + str(json_obj['dst_addr']) + "\"";
+            
+            self.logger.info("update_room_device_option resp query = " + query);
+            self.mysql_handler_personnal_query(query);
+        return res
 
     def update_room_device_option_write_short(self, json_obj, daemon_id):
         """
@@ -212,7 +206,7 @@ class MasterSql:
         
         for r in res:
             if (int(r[0]) == MasterDaemon.OPTION_ON_OFF or int(r[0]) == MasterDaemon.OPTION_UP_DOWN or int(r[0]) == MasterDaemon.OPTION_OPEN_CLOSE):
-                up = 'UPDATE room_device_option SET valeur=';
+                up = 'UPDATE room_device_option SET opt_value=';
                 if json_obj['value'] == 0:
                     up += '0';
                 else:
@@ -220,10 +214,11 @@ class MasterSql:
                 up += ' WHERE room_device_id=' + str(r[1]) + " AND option_id=13";
                 self.logger.info("update_room_device_option write_short up1: " + up)
                 self.mysql_handler_personnal_query(up);
-            up = "UPDATE room_device_option SET valeur=" + str(json_obj['value']);
+            up = "UPDATE room_device_option SET opt_value=" + str(json_obj['value']);
             up += " WHERE room_device_id=" + str(r[1]) + " AND option_id=" + str(r[0]) + "";
             self.logger.info("update_room_device_option write_short up2: " + up)
             self.mysql_handler_personnal_query(up);
+        return res
 
     def mysql_handler_personnal_query(self, query):
         """

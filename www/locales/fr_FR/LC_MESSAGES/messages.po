@@ -240,7 +240,7 @@ msgstr "Chargement en cours"
 msgid "New Box"
 msgstr "Nouvelle Box"
 
-#: popup/popup_new_daemon.php
+#: popup/popup_new_daemon.php popup/popup_rename_daemon.php
 msgid "Enter the Box name"
 msgstr "Entrez le nom de la Box"
 
@@ -292,10 +292,6 @@ msgstr "Annuler"
 #: popup/popup_new_daemon.php:13
 msgid "Create a new box"
 msgstr "Créer une nouvelle box"
-
-#: popup/popup_new_daemon.php:19 popup/popup_rename_daemon.php:23
-msgid "Enter daemon name"
-msgstr "Entrez le nom du Daemon"
 
 #: popup/popup_new_daemon.php:31 popup/popup_rename_daemon.php:35
 msgid "Enter the secret key"
@@ -352,7 +348,7 @@ msgstr "Entrez le Nom de famille"
 msgid "Enter the Firstname"
 msgstr "Entrez le Prénom"
 
-#: popup/popup_new_user.php:33
+#: popup/popup_new_user.php:33 popup/popup_alarm.php
 msgid "Enter the Password"
 msgstr "Entrez le Mot de passe"
 
@@ -986,6 +982,10 @@ msgstr "Redémarrer"
 msgid "Edit"
 msgstr "Editer"
 
+#: include/conf_users.php
+msgid "Permissions"
+msgstr "Permissions"
+
 #: include/conf_daemon.php:70 include/conf_users.php:48
 msgid "Delete"
 msgstr "Supprimer"
@@ -999,12 +999,12 @@ msgid "Reboot D3"
 msgstr "Redémarrer D3"
 
 #: include/conf_daemon.php:183
-msgid "Rename Daemon"
-msgstr "Renommer Daemon"
+msgid "Rename Box"
+msgstr "Renommer la Box"
 
 #: include/conf_daemon.php:197
-msgid "Delete Daemon"
-msgstr "Supprimer Daemon"
+msgid "Delete Box"
+msgstr "Supprimer la Box"
 
 #: include/conf_db.php:14
 msgid "USB Backup"
@@ -1102,8 +1102,8 @@ msgid "Empty knx address"
 msgstr "Adresse KNX vide"
 
 #: include/conf_device_new.php:231
-msgid "No daemon associate"
-msgstr "Aucun Daemon associé"
+msgid "No Box associate"
+msgstr "Aucune Box associée"
 
 #: include/conf_device_new.php:241
 msgid "Empty enocean address"
@@ -1284,7 +1284,7 @@ msgstr "Nom d'utilisateur SMTP"
 msgid "SMTP Password"
 msgstr "Mot de passe SMTP"
 
-#: include/conf_general.php:103
+#: include/conf_general.php:103 popup/popup_clim.php
 msgid "Test"
 msgstr "Tester"
 
@@ -1717,7 +1717,7 @@ msgstr "On"
 
 #: include/profile_user_scenarios.php:61 function/display_widget.php:608
 #: function/display_widget.php:625 function/display_widget.php:642
-#: function/display_widget.php:650
+#: function/display_widget.php:650 popup/popup_clim.php
 msgid "Off"
 msgstr "Off"
 
@@ -2024,7 +2024,7 @@ msgstr "Configuration Wifi"
 msgid "This account does not exist"
 msgstr "Ce compte n'existe pas"
 
-#: functions.php:81
+#: functions.php:81 popup/popup_alarm.php
 msgid "Bad password"
 msgstr "Mot de passe invalide"
 
@@ -2107,3 +2107,88 @@ msgstr "Saisissez votre email"
 #: home.php
 msgid "Thermostat"
 msgstr "Thermostat"
+
+#: popup/popup_clim.php
+msgid "Auto"
+msgstr "Auto"
+
+#: popup/popup_clim.php
+msgid "Heat"
+msgstr "Chauffage"
+
+#: popup/popup_clim.php
+msgid "Morning Warmup"
+msgstr "Préchauffage"
+
+#: popup/popup_clim.php
+msgid "Cool"
+msgstr "Froid"
+
+#: popup/popup_clim.php
+msgid "Night Purge"
+msgstr "Nettoyage"
+
+#: popup/popup_clim.php
+msgid "Precool"
+msgstr "Pré-refroidissement"
+
+#: popup/popup_clim.php
+msgid "Emergency Heat"
+msgstr "Chauffage rapide"
+
+#: popup/popup_clim.php
+msgid "Fan only"
+msgstr "Ventilateur seulement"
+
+#: popup/popup_clim.php
+msgid "Free Cool"
+msgstr "Restitution de froid"
+
+#: popup/popup_clim.php
+msgid "Ice"
+msgstr "Froid intense"
+
+#: function/display_widget.php
+msgid "VOC"
+msgstr "COV"
+
+#: include/home.php
+msgid "Blind"
+msgstr "Store"
+
+#: popup/popup_password_lost.php popup/popup_password_reset.php
+msgid "Enter your key"
+msgstr "Entrez votre clé"
+
+#: include/conf_device.php
+msgid "Widget's password"
+msgstr "Mot de passe du widget"
+
+#: include/home.php
+msgid "Alarm"
+msgstr "Alarme"
+
+#: popup/popup_alarm.php
+msgid "Validate"
+msgstr "Valider"
+
+#: popup/popup_alarm.php
+msgid "Lock"
+msgstr "Vérouiller"
+
+#: include/home.php
+msgid "Video player"
+msgstr "Lecteur vidéo"
+
+#: header/profile_user_trigger_events_edit.php
+msgid "Triggers edition"
+msgstr "Edition des déclencheurs"
+
+#: header/profile_user_trigger_schedules_edit.php
+msgid "Schedules edition"
+msgstr "Edition des horaires"
+
+#: header/profile_user_smartcmd_edit.php
+msgid "Smartcommands edition"
+msgstr "Edition des Smartcommands"
+

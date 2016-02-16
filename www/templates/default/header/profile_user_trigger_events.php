@@ -6,4 +6,6 @@ $result  =  $request -> send_request();
 
 $triggersList = $result->listTriggers;
 
+echo '<title>'._('Triggers').'</title>';
+
 ?>

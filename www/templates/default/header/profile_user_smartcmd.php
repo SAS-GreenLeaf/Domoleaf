@@ -9,4 +9,6 @@ $userid = $request->getId();
 $listuser = $result->profileList;
 $smartcmdList = $result->listSmartcmd;
 
+echo '<title>'._('Smartcommands').'</title>';
+
 ?>

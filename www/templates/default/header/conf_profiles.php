@@ -11,11 +11,13 @@ $request =  new Api();
 $request -> add_request('profileInfo', Array($_GET['user']));
 $request -> add_request('language');
 $request -> add_request('design');
+$request -> add_request('confMenuProtocol');
 $result  =  $request -> send_request();
 
 $profilInfo = $result->profileInfo;
 $language = $result->language;
 $currentuser = $request->getId();
+$menuProtocol = $result->confMenuProtocol;
 
 if (empty($profilInfo)){
 	redirect('/conf_users');

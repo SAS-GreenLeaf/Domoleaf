@@ -145,6 +145,22 @@ output {
 	top:20px;
 }
 
+.red {
+	color:red;
+}
+
+.blue {
+	color:blue;
+}
+
+.green {
+	color:green;
+}
+
+.yellow {
+	color:yellow;
+}
+
 /* Special input range*/
 
 input[type="range"] {
@@ -740,17 +756,24 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 }
 
 .glyphicon.led-on {
-    font-size: 5em;
-    color: green;
+	color: green;
+}
+.glyphicon.led-off {
+	color: red;
 }
 
-.glyphicon.led-off {
-    font-size: 5em;
-    color: red;
+.glyphicon-4 {
+	font-size: 4em;
+}
+.glyphicon-5 {
+	font-size: 5em;
+}
+
+.tv-area {
+	padding:0px;
 }
 
 /* java apps */
-
 img {
   border: 0px;
 }
@@ -1033,6 +1056,12 @@ a.carousel-control-camera:hover {
 	color : #EEEEEE;
 }
 
+@media screen and (max-width : 768px){
+	.navbar-inverse .navbar-brand.navbar-xshide {
+		display:none
+	}
+}
+
 .btn-hide {
 	display:none;
 }
@@ -1078,6 +1107,13 @@ a.carousel-control-camera:hover {
 
 .bootstrap-dialog .bootstrap-dialog-title {
 	display: inline;
+}
+
+/*** Fontawesome ***/
+.fa-flip-vertical-rotate-270 {
+	-webkit-transform: rotate(270deg) scale(1, -1);
+	-ms-transform: rotate(270deg) scale(1, -1);
+	transform: rotate(270deg) scale(1, -1);
 }
 
 /*** Partie deco ***/
@@ -1751,6 +1787,7 @@ a.carousel-control-camera:hover {
 .list-group-item.active:focus {
 	background-color: #76af1a;
 	color: #fff;
+	border: 1px solid #ddd;
 }
 
 .list-group-item > .badge,

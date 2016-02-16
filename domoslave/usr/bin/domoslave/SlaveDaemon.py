@@ -164,6 +164,11 @@ class SlaveDaemon:
         self.enocean_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cron_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
+        self.knx_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        
         port = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_PORT_ENTRY);
         if not port:
             sys.exit(2);
@@ -573,11 +578,11 @@ class SlaveDaemon:
             if new_val == '' or new_val == None:
                 Popen(['systemctl', '-q', 'disable', 'knxd']);
             else:
-                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -u /tmp/knxd ';
+                knx_edit = 'KNXD_OPTS="-e 1.0.254 -D -T -S -b ';
                 if json_obj['interface_knx'] == 'tpuarts':
                     knx_edit = knx_edit + json_obj['interface_knx'] + ':/dev/' + new_val + '"';
                 else:
-                    knx_edit = knx_edit + '-b ' + json_obj['interface_knx']  + ':' + new_val + '"';
+                    knx_edit = knx_edit + json_obj['interface_knx']  + ':' + new_val + '"';
                 conf_knx = open('/etc/knxd.conf', 'w');
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();

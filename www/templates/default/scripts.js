@@ -50,6 +50,32 @@ function PopupLoading(){
 	});
 }
 
+function popupPassword(iddevice) {
+	$("#popup-error").hide();
+	var password = $("#popup-password").val();
+	$.ajax({
+		url: "/form/form_check_popuppassword.php",
+		data: "iddevice="+iddevice+"&password="+password,
+		success: function(result){
+			if(result == '1') {
+				popup_close();
+				$("#btn-"+iddevice).click();
+			}
+			else {
+				$("#popup-error").show();
+			}
+		}
+	});
+}
+function popupLock(iddevice) {
+	$.ajax({
+		url: "/form/form_popup_lock.php",
+		data: "iddevice="+iddevice,
+		success: function(result){
+			popup_close();
+		}
+	});
+}
 /*** Widget Audio ***/
 
 function Volume(iddevice, optionid, step){
@@ -81,18 +107,6 @@ function SetVolume(iddevice, optionid){
 		complete: function(result, status) {
 		}
 	});
-}
-
-function RemoteAudio(action, iddevice, optionid){
-	if (iddevice != ""){
-		$.ajax({
-			type:"GET",
-			url: "form/form_mc_audio.php",
-			data: "iddevice="+iddevice+"&action="+action+"&optionid="+optionid,
-			complete: function(result, status) {
-			}
-		});
-	}
 }
 
 /*** Widget on/off varie ***/
@@ -248,12 +262,15 @@ function resetError(room_device_id, device_opt){
 function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 	var lamp_device = ["3", "4", "6", "55", "56", "57"];
 
-	if (idopt == 12){
+	if (idopt == 6){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
+	}
+	else if (idopt == 12){
 		if($("#onoff-"+roomdeviceid).hasClass('unlockwidget')) {
 			$("#onoff-"+roomdeviceid).removeClass('unlockwidget');
 			return;
 		}
-		if (val.valeur > 0){
+		if (val.opt_value > 0){
 			$("#onoff-"+roomdeviceid).removeAttr("onchange");
 			$("#onoff-"+roomdeviceid).prop("checked", true).change();
 			$("#onoff-"+roomdeviceid).attr("onchange", "onOffToggle(\'"+roomdeviceid+"\', \'"+idopt+"\')");
@@ -278,42 +295,72 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			$("#slider-value-"+roomdeviceid).removeClass('unlockwidget');
 			return;
 		}
-		if (val.valeur >= 0 && val.valeur < 256){
+		if (val.opt_value >= 0 && val.opt_value < 256){
 			$("#slider-value-"+roomdeviceid).removeAttr("onchange");
-			outputUpdate(roomdeviceid, val.valeur);
-			$("#slider-value-"+roomdeviceid).val(val.valeur);
+			outputUpdate(roomdeviceid, val.opt_value);
+			$("#slider-value-"+roomdeviceid).val(val.opt_value);
 			$("#slider-value-"+roomdeviceid).attr("onchange", "getVariation(\'"+roomdeviceid+"\', \'"+idopt+"\')");
 		}
 	}
-	else if (idopt == 72){
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	else if (idopt == 72 || idopt == 73){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
 	}
 	else if (idopt == 79){
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
 	}
-	else if (idopt == 6){
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+	else if (idopt == 92){
+		if (val.opt_value == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
+		}
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
+		}
+	}
+	else if(idopt == 97 || idopt == 112 || idopt == 113) {
+		if (val.opt_value == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
+		}
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
+		}
+	}
+	else if (idopt == 153){
+		if (val.opt_value == 0){
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");
+		}
+		else{
+			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
+			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
+		}
+	}
+	else if (idopt == 173 || idopt == 174){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
 	}
 	else if (idopt == 388){
-		$("#output-mp-"+roomdeviceid).html(val.valeur);
+		$("#output-mp-"+roomdeviceid).html(val.opt_value);
 	}
 	else if (idopt == 392){
 		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
-		var red = parseInt((val.valeur)).toString(16);
+		var red = parseInt((val.opt_value)).toString(16);
 		current_color = current_color.replaceAt(1, red[0]);
 		current_color = current_color.replaceAt(2, red[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
 	else if (idopt == 393){
 		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
-		var green = parseInt((val.valeur)).toString(16);
+		var green = parseInt((val.opt_value)).toString(16);
 		current_color = current_color.replaceAt(3, green[0]);
 		current_color = current_color.replaceAt(4, green[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
 	}
 	else if (idopt == 394){
 		var current_color = getElemHexaColor("#icon-image-widget-"+roomdeviceid);
-		var blue = parseInt((val.valeur)).toString(16);
+		var blue = parseInt((val.opt_value)).toString(16);
 		current_color = current_color.replaceAt(5, blue[0]);
 		current_color = current_color.replaceAt(6, blue[1]);
 		$("#icon-image-widget-"+roomdeviceid).css("color", current_color);
@@ -339,8 +386,7 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 				cost = val.lowCost;
 			}
 		}
-
-
+		
 		h1 = val.lowField2.split("-")[0];
 		h2 = val.lowField2.split("-")[1];
 		
@@ -358,24 +404,27 @@ function WidgetReturn(iddevice, roomdeviceid, idopt, val){
 			}
 		}
 		
-		//alert(val.valeur + " * " + cost + " = ");
+		//alert(val.opt_value + " * " + cost + " = ");
 		
 		//va.lowField2
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
-		$("#widget-"+roomdeviceid+"-"+idopt+"-cost").html("&nbsp;-&nbsp;" + String((val.valeur * cost).toFixed(2)).replace(".", ",") + val.currency);
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
+		$("#widget-"+roomdeviceid+"-"+idopt+"-cost").html("&nbsp;-&nbsp;" + String((val.opt_value * cost).toFixed(2)).replace(".", ",") + val.currency);
 	}
 	else if (idopt == 407){
-		$("#widget-"+roomdeviceid+"-"+idopt).text(val.valeur);
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
 	}
-	else if (idopt == 153){
-		if (val.valeur == 0){
-			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-danger");
-			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-greenleaf");
+	else if (idopt == 437 || idopt == 438 || idopt == 439 || idopt == 440){
+		if (val.opt_value == 1){
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-off");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-on");
 		}
-		else{
-			$("#widget_info-"+roomdeviceid+"-"+idopt).removeClass("btn-greenleaf");
-			$("#widget_info-"+roomdeviceid+"-"+idopt).addClass("btn-danger");
+		else {
+			$("#command-"+roomdeviceid+"-"+idopt).removeClass("led-on");
+			$("#command-"+roomdeviceid+"-"+idopt).addClass("led-off");
 		}
+	}
+	else if (idopt == 441){
+		$("#widget-"+roomdeviceid+"-"+idopt).text(val.opt_value);
 	}
 }
 
@@ -429,12 +478,11 @@ function CustomPopup(type_elem, id_elem, userid){
 	});
 }
 
-function popupChromaWheel(iddevice, bg_color, userid, white){
-	white = typeof white !== 'undefined' ? white : 0;
+function popupChromaWheel(iddevice, bg_color, userid){
 	$.ajax({
 		type:"GET",
 		url: "/templates/default/popup/popup_chroma_wheel.php",
-		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid+"&white="+white,
+		data: "iddevice="+iddevice+"&bg_color="+bg_color+"&userid="+userid,
 		success: function(msg) {
 			BootstrapDialog.show({
 				title: '<div id="popupTitle" class="center"></div>',

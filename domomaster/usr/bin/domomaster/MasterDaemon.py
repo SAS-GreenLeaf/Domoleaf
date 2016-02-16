@@ -30,6 +30,7 @@ from SlaveReceiver import *;
 from CommandReceiver import *;
 from MasterSql import *;
 from KNXManager import *;
+from EnOceanManager import *;
 from UpnpAudio import *;
 from IP_IRManager import *;
 from Smartcommand import *;
@@ -58,36 +59,6 @@ MASTER_CONF_LISTEN_PORT_CMD_ENTRY       = 'port_cmd';
 MASTER_CONF_CONNECT_SECTION             = 'connection';
 MASTER_CONF_CONNECT_PORT_ENTRY          = 'port';
 MASTER_CONF_PKEY_SIZE_ENTRY             = 'size';
-
-PROTOCOL_KNX            = 1;    # KNX protocol id
-PROTOCOL_ENOCEAN        = 2;    # EnOcean protocol id
-PROTOCOL_IP             = 6;    # IP protocol id
-
-FUNCTION_KNX_SHORT = 1;
-FUNCTION_KNX_LONG  = 2;
-FUNCTION_IR        = 5;
-FUNCTION_ON        = 6;
-FUNCTION_THERMOSTAT= 7;
-
-# IDs for UPNP protocol
-UPNP_PLAY           = 'play';               # Play command id
-UPNP_PAUSE          = 'pause';              # Pause command id
-UPNP_NEXT           = 'next';               # Next command id
-UPNP_PREVIOUS       = 'prev';               # Prev command id
-UPNP_STOP           = 'stop';               # Stop command id
-UPNP_MUTE           = 'mute';               # Mute command id
-UPNP_VOLUME_UP      = 'volume_up';          # Volume++ command id
-UPNP_VOLUME_DOWN    = 'volume_down';        # Volume-- command id
-UPNP_SET_VOLUME     = 'set_volume';         # Set volume command id
-
-# IDs for HttpReq protocol
-CAMERA_TOP          = 'top';                # Top command id
-CAMERA_BOTTOM       = 'bottom';             # Bottom command id
-CAMERA_LEFT         = 'left';               # Left command id
-CAMERA_RIGHT        = 'right';              # Right command id
-CAMERA_HOME         = 'home';               # Home command id
-CAMERA_PICTURE      = 'picture';            # Picture command id
-
 
 #################################################
 # Packet types that can be received and treated #
@@ -155,43 +126,24 @@ class MasterDaemon:
         self.hostlist = self.scanner._HostList;
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.knx_manager = KNXManager(self.aes_slave_keys);
+        self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
         self.trigger = Trigger(self);
         self.schedule = Schedule(self);
         self.scenario = Scenario(self);
         self.calcLogs = CalcLogs(self);
-        self.protocol_function = {
-            PROTOCOL_KNX        : self.knx_manager.protocol_knx,
-            PROTOCOL_ENOCEAN    : self.protocol_enocean,
-            PROTOCOL_IP         : self.protocol_ip
-        };
         self.functions = {
-            FUNCTION_KNX_SHORT  : self.knx_manager.protocol_knx,
-            FUNCTION_KNX_LONG   : self.knx_manager.protocol_knx,
-            FUNCTION_IR         : IP_IRManager().send_to_gc,
-            FUNCTION_ON         : self.knx_manager.send_on,
-            FUNCTION_THERMOSTAT : self.knx_manager.send_to_thermostat
+              1 : self.knx_manager.send_knx_write_short_to_slave,
+              2 : self.knx_manager.send_knx_write_long_to_slave,
+              3 : self.knx_manager.send_knx_write_speed_fan,
+              4 : self.knx_manager.send_knx_write_temp,
+              5 : IP_IRManager().send_to_gc,
+              6 : self.knx_manager.send_on,
+              7 : self.knx_manager.send_to_thermostat,
+              8 : self.knx_manager.send_clim_mode,
+              9 : HttpReq().http_action,
+             10 : self.upnp_audio
         };
-        self.upnp_function = {
-            UPNP_PLAY           : self.upnp_set_play,
-            UPNP_PAUSE          : self.upnp_set_pause,
-            UPNP_NEXT           : self.upnp_set_next,
-            UPNP_PREVIOUS       : self.upnp_set_prev,
-            UPNP_STOP           : self.upnp_set_stop,
-            UPNP_MUTE           : self.upnp_set_mute,
-            UPNP_VOLUME_UP      : self.upnp_set_volume_up,
-            UPNP_VOLUME_DOWN    : self.upnp_set_volume_down,
-            UPNP_SET_VOLUME     : self.upnp_set_volume
-        };
-        self.http_req_function = {
-            CAMERA_TOP          : self.camera_action,
-            CAMERA_BOTTOM       : self.camera_action,
-            CAMERA_LEFT         : self.camera_action,
-            CAMERA_RIGHT        : self.camera_action,
-            CAMERA_HOME         : self.camera_action,
-            CAMERA_PICTURE      : self.camera_action
-        };
-        self.enocean_function = {};
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
             DATA_MONITOR_IP                   : self.monitor_ip,
@@ -266,6 +218,8 @@ class MasterDaemon:
         """
         self.slave_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cmd_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.slave_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.cmd_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         self.slave_connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         self.cmd_connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1);
         s_port = self._parser.getValueFromSection(MASTER_CONF_LISTEN_SECTION, MASTER_CONF_LISTEN_PORT_SLAVE_ENTRY);
@@ -575,8 +529,9 @@ class MasterDaemon:
         Updates room_device_option values in the database and check scenarios.
         """
         daemon_id = self.sql.update_knx_log(json_obj);
-        self.knx_manager.update_room_device_option(daemon_id, json_obj);
-        self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
+        doList = self.knx_manager.update_room_device_option(daemon_id, json_obj);
+        if len(doList) > 0:
+            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
         connection.close();
 
     def knx_write_short(self, json_obj, connection):
@@ -646,14 +601,11 @@ class MasterDaemon:
         Callback called each time a monitor_enocean packet is received.
         Stores the data in enocean_log table.
         """
-        print('updating enocean log with ' + str(json_obj));
         daemon_id = self.sql.update_enocean_log(json_obj);
-        print('[ ok ] Done update')
+        doList = self.enocean_manager.update_room_device_option(daemon_id, json_obj);
         connection.close();
-        ###########################################################################################
-        # A VOIR SI CETTE FONCTION EST UTILE (VOIR QUAND LES DEVICES ENOCEAN SERONT DANS LA BASE) #
-        # self.enocean_manager.update_room_device_option(daemon_id, json_obj);                    #
-        ###########################################################################################
+        if len(doList) > 0:
+            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
         return None;
 
     def send_to_device(self, json_obj, connection):
@@ -673,121 +625,27 @@ class MasterDaemon:
                 if dev['daemon_name'] == host._Hostname:
                     hostname = host._Hostname;
                     break;
-        if dev['protocol_id'] == PROTOCOL_IP:
-            json_obj['addr'] = dev['addr'];
-            json_obj['port'] = dev['plus1'];
-
-        function_id = int(dev['function_id']);
-        if (function_id > 0):
+        function_writing = int(dev['function_writing']);
+        if (function_writing > 0):
             try:
-                if (function_id == FUNCTION_KNX_SHORT or function_id == FUNCTION_KNX_LONG):       
-                    if (hostname == ''):          
-                        return;
-                self.functions[function_id](json_obj, dev, hostname);
+                self.functions[function_writing](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
-        else:
-            if dev['protocol_id'] == PROTOCOL_IP:
-                self.protocol_function[dev['protocol_id']](json_obj, dev, hostname);
-                return;
-            if hostname != '' and dev['protocol_id'] == PROTOCOL_KNX:
-                self.knx_manager.protocol_knx(json_obj, dev, hostname);
-        
         #add scenario check here to allow trigger on write ???
         #self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
 
         connection.close();
 
-    def protocol_enocean(self, json_obj, dev, hostname):
-        """
-        TODO
-        """
-        print("PROTOCOL ENOCEAN:");
-        print(str(json_obj));
-        print(hostname);
-        print('=======');
-
-    def upnp_set_play(self, json_obj, dev, hostname):
-        """
-        Send "play" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_play();
-
-    def upnp_set_pause(self, json_obj, dev, hostname):
-        """
-        Send "pause" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_pause();
-
-    def upnp_set_stop(self, json_obj, dev, hostname):
-        """
-        Send "stop" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_stop();
-
-    def upnp_set_mute(self, json_obj, dev, hostname):
-        """
-        Send "mute" command to the Upnp device described in dev
-        """
-        mute = UpnpAudio(json_obj['addr'], int(json_obj['port'])).get_mute();
-        mute = (int(mute)+1)%2;
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_mute(mute = mute);
-
-    def upnp_set_next(self, json_obj, dev, hostname):
-        """
-        Send "next" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_next();
-
-    def upnp_set_prev(self, json_obj, dev, hostname):
-        """
-        Send "prev" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_previous();
-
-    def upnp_set_volume_up(self, json_obj, dev, hostname):
-        """
-        Send "volume_up" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume_inc();
-
-    def upnp_set_volume_down(self, json_obj, dev, hostname):
-        """
-        Send "volume_down" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume_dec();
-
-    def upnp_set_volume(self, json_obj, dev, hostname):
-        """
-        Send "set_volume" command to the Upnp device described in dev
-        """
-        UpnpAudio(json_obj['addr'], int(json_obj['port'])).set_volume(desired_volume = int(json_obj['data']['value']));
-
-    def camera_action(self, json_obj, dev, hostname):
-        HttpReq.camera_action(json_obj['addr'], json_obj['data']['value'], dev['plus2'], dev['plus3']);
-
-    def protocol_ip(self, json_obj, dev, hostname):
-        """
-        Callback called each time a protocol_ip packet is received.
-        Calls the desired Upnp function.
-        """
-        try:
-            if 'value' not in json_obj['data']:
-                json_obj['data']['value'] = '';
-            if json_obj['data']['value'] == '':
-                json_obj['data']['value'] = dev['addr_dst'];
-            if json_obj['data']['action'] in self.upnp_function.keys():
-                self.upnp_function[json_obj['data']['action']](json_obj, dev, hostname);
-            elif json_obj['data']['action'] in self.http_req_function.keys():
-                self.http_req_function[json_obj['data']['action']](json_obj, dev, hostname);
-        except Exception as e:
-            self.logger.error(e);
+    def upnp_audio(self, json_obj, dev, hostname):
+        cmd = UpnpAudio(dev['addr'], int(dev['plus1']));
+        cmd.action(json_obj);
 
     def get_ip_ifname(self, ifname):
         """
         Retrieves network interface name from IP address.
         """
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         try:
             res = socket.inet_ntoa(fcntl.ioctl(s.fileno(),
                                                0x8915,
@@ -1015,7 +873,7 @@ class MasterDaemon:
             self.logger.error(e);
 
     def get_global_state(self):
-        query = ('SELECT room_device_id, option_id, valeur FROM room_device_option');
+        query = ('SELECT room_device_id, option_id, opt_value FROM room_device_option');
         res = self.sql.mysql_handler_personnal_query(query);
         filtered = [];
         for elem in res:
@@ -1067,10 +925,8 @@ class MasterDaemon:
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         rlist, wlist, elist = select.select([sock], [], [], SELECT_TIMEOUT * 300);
         re = '';
-        for s in rlist:
-            data = sock.recv(4096);
-            if not data:
-                continue;
+        data = sock.recv(4096);
+        if data:
             decrypt_IV = data[:16].decode();
             host = None;
             for h in self.hostlist:

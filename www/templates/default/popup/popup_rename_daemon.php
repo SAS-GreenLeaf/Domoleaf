@@ -20,7 +20,7 @@ echo	'
 			<label class="input-group-addon">'.
 			'<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
 			</label>'.
-			'<input type="text" id="redaemon" placeholder="'._('Enter daemon name').'" value="'.$daemon->name.'" class="form-control">
+			'<input type="text" id="redaemon" placeholder="'._('Enter the Box name').'" value="'.$daemon->name.'" class="form-control">
 		</div>
 		<div class="input-group">
 			<label class="input-group-addon">'.

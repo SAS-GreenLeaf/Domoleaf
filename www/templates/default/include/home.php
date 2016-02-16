@@ -183,6 +183,15 @@ function HandlePopup(type, iddevice){
 	else if (type == 5){
 		var data = new Array("popup_clim.php", "'._('Thermostat').' <i class=\"fi flaticon-thermometer2\"></i>");
 	}
+	else if (type == 6){
+		var data = new Array("popup_blind.php", "'._('Blind').' <i class=\"fa fa-bars\"></i>");
+	}
+	else if (type == 7){
+		var data = new Array("popup_alarm.php", "'._('Alarm').' <i class=\"fa fa-bars\"></i>");
+	}
+	else if (type == 8){
+		var data = new Array("popup_videoplayer.php", "'._('Video player').' <i class=\"fa fa-bars\"></i>");
+	}
 	
 	if (data){
 		$.ajax({
@@ -207,19 +216,18 @@ function HandlePopup(type, iddevice){
 setInterval(function() { GetReturn() }, 1000);
 
 function GetReturn(){
-	var token = document.cookie.split("=");
-
+	var token = $.cookie(\'token\');
 	$.ajax({
 		type:"GET",
 		url: "/api.php",
-		data: "token="+token[1]+"&request[mcReturn]=0",
+		data: "token="+token+"&request[mcReturn]=0",
 		dataType: "json",
 		timeout: 999,
 		success: function(msg) {
 				$.each(msg.request.mcReturn, function(device_id, value){
 					$.each(value, function(room_device_id, val){
 						$.each(val, function(idopt, val2){
-							if (val2.valeur){
+							if (val2.opt_value){
 								WidgetReturn(device_id, room_device_id, idopt, val2);
 							}
 						});
