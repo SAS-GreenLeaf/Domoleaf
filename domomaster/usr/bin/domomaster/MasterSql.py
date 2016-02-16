@@ -107,7 +107,7 @@ class MasterSql:
         """
         Update of the table room_device_option with long KNX value
         """
-        query  = "SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer FROM room_device_option ";
+        query  = "SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM room_device_option ";
         query += "JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ";
         query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
         query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
@@ -116,7 +116,7 @@ class MasterSql:
         res = self.mysql_handler_personnal_query(query);
         
         if len(res) == 0:
-            query  = "SELECT room_device_option.option_id, room_device.room_device_id, function_answer FROM ";
+            query  = "SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM ";
             query += "room_device_option JOIN room_device ON ";
             query += "room_device_option.room_device_id=room_device.room_device_id ";
             query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
@@ -126,7 +126,7 @@ class MasterSql:
             res = self.mysql_handler_personnal_query(query);
         
         for r in res:
-            if int(r[0]) == MasterDaemon.OPTION_VAR:
+            if int(r[0]) == 13:
                 up = 'UPDATE room_device_option SET opt_value=';
                 if json_obj['value'] == 0:
                     up += '0';
@@ -141,7 +141,7 @@ class MasterSql:
                 query += "opt_value=\"" + str(json_obj['value']) + "\" ";
                 query += "WHERE room_device_id=" + str(r[1]) + " AND option_id="+str(r[0]);
                 self.mysql_handler_personnal_query(query);
-            elif int(r[0]) == MasterDaemon.OPTION_TEMPERATURE or int(r[0]) == MasterDaemon.OPTION_TEMPERATURE_W:
+            elif int(r[0]) == 72 or int(r[0]) == 388:
                 val = int(json_obj['value']);
                 res = utils.convert_temperature(val);
                 query = "UPDATE room_device_option JOIN room_device ON ";
@@ -151,7 +151,8 @@ class MasterSql:
                 self.logger.info('update_room_device_option write_long: query = ' + query);
                 self.mysql_handler_personnal_query(query);
             else:
-                up = "UPDATE room_device_option SET opt_value=\"" + str(json_obj['value'])
+                val = self.functions_transform[r[2]](int(json_obj['value']));
+                up = "UPDATE room_device_option SET opt_value=\"" + str(val)
                 up += "\" WHERE room_device_id=" + str(r[1]) + " AND option_id=\"" + str(r[0]) + "\"";
                 self.logger.info('update_room_device_option write_long: up = ' + up)
                 self.mysql_handler_personnal_query(up);
