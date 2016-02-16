@@ -110,14 +110,14 @@ if ($device->protocol_id == 6){
 			<label for="login" class="input-group-addon">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			</label>
-			<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'">
+			<input type="text" class="form-control" value="'.$device->plus2.'" id="login" placeholder="'._('Login').'" autocomplete="off">
 		</div>
 	
 		<div class="input-group">
 			<label for="pass" class="input-group-addon">
 				<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 			</label>
-			<input type="password" class="form-control" value="'.$device->plus3.'" id="pass" placeholder="'._('Password').'">
+			<input type="password" class="form-control" value="'.$device->plus3.'" id="pass" placeholder="'._('Password').'" autocomplete="off">>
 		</div>
 	</div><br/>';
 }

@@ -108,13 +108,13 @@ echo '
 				<label for="login" class="input-group-addon">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 				</label>
-				<input type="text" class="form-control" id="login" placeholder="'._('Login').'">
+				<input type="text" class="form-control" id="login" placeholder="'._('Login').'" autocomplete="off">
 			</div>
 			<div class="input-group">
 				<label for="password" class="input-group-addon">
 					<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 				</label>
-				<input type="password" class="form-control" id="pass" placeholder="'._('Password').'">
+				<input type="password" class="form-control" id="pass" placeholder="'._('Password').'" autocomplete="off">
 			</div>
 			<div class="input-group">
 				<label for="macaddress" class="input-group-addon">
