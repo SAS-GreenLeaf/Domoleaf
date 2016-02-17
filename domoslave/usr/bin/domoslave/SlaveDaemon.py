@@ -166,8 +166,8 @@ class SlaveDaemon:
         
         self.knx_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
-        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
-        self.master_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.enocean_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
+        self.cron_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         
         port = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_PORT_ENTRY);
         if not port:
