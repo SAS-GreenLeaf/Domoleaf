@@ -277,11 +277,10 @@ class MasterDaemon:
         Gets new slave connections and threads the treatment.
         """
         new_connection, addr = connection.accept();
-        for host in self.hostlist:
-            if addr[0] == host._IpAddr:
-                hostname = host._Hostname.split('.')[0];
-                r = SlaveReceiver(new_connection, hostname, self);
-                r.start();
+        name = socket.gethostbyaddr(addr[0])[0]
+        if name.startswith('MD3') or name.startswith('SD3'):
+            r = SlaveReceiver(new_connection, name, self);
+            r.start();
 
     def parse_data(self, data, connection, daemon_id):
         """
@@ -337,8 +336,8 @@ class MasterDaemon:
         json_obj['data'].append(hostname);
         port = self._parser.getValueFromSection('connect', 'port');
         for host in self.hostlist:
-            sock = socket.create_connection((host._IpAddr, port));
             if host._Hostname.startswith('MD3') or host._Hostname.startswith('SD3') and host._Hostname not in json_obj['data']:
+                sock = socket.create_connection((host._IpAddr, port));
                 json_str = json.JSONEncoder().encode(json_obj);
                 sock.send(bytes(json_str, 'utf-8'));
                 data = sock.recv(4096);
