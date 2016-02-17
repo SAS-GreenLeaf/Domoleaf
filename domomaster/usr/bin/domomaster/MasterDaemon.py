@@ -279,6 +279,7 @@ class MasterDaemon:
         new_connection, addr = connection.accept();
         name = socket.gethostbyaddr(addr[0])[0]
         if name.startswith('MD3') or name.startswith('SD3'):
+            name = name.split('.')[0];
             r = SlaveReceiver(new_connection, name, self);
             r.start();
 
