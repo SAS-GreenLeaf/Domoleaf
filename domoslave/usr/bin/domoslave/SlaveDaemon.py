@@ -637,8 +637,11 @@ class SlaveDaemon:
                 if opt == 1:
                     call(['service', 'dnsmasq', 'stop']);
 
+                conf_str = ''
                 conf_file = open('/etc/network/interfaces', 'w');
-                conf_str  = 'auto wlan0\n';
+                conf_str += 'auto eth0\n';
+                conf_str += 'iface eth0 inet dhcp\n';
+                conf_str += 'auto wlan0\n';
                 conf_str += 'iface wlan0 inet dhcp\n';
                 conf_str += '\twpa-conf ' + WPA_SUPPLICANT_CONF_FILE + '\n';
                 conf_file.write(conf_str);
