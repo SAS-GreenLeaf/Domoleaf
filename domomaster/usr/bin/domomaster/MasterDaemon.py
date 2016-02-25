@@ -122,9 +122,7 @@ class MasterDaemon:
         self.get_aes_slave_keys();
         self.reload_camera(None, None);
         self.scanner = Scanner(HOSTS_CONF);
-        self.scanner.scan(True);
-        self.hostlist = self.scanner._HostList;
-        self.sql.insert_hostlist_in_db(self.scanner._HostList);
+        self.hostlist = [];
         self.knx_manager = KNXManager(self.aes_slave_keys);
         self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);

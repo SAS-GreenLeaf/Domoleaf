@@ -196,6 +196,7 @@ class SlaveDaemon:
         self.master_sock.listen(MAX_MASTERS);
         self.enocean_sock.listen(MAX_ENOCEAN);
         self.cron_sock.listen(MAX_CRON);
+        self.send_monitor_ip()
         
         self.loop();
 
@@ -363,7 +364,15 @@ class SlaveDaemon:
         """
         self._scanner.scan(False);
         self._hostlist = self._scanner._HostList;
-
+    
+    def send_monitor_ip(self):
+        json_str = json.JSONEncoder().encode(
+            {
+                "packet_type": "monitor_ip"
+            }
+        );
+        self.send_data_to_all_masters(json_str);
+    
     def loop(self):
         """
         Main daemon loop.
