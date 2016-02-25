@@ -447,6 +447,20 @@ function display_portal($info){
 	if (!empty($info->device_opt->{12}) or !empty($info->device_opt->{96})){
 		$display.=display_OpenClose($info);
 	}
+	$open = 0;
+	$close= 0;
+	if(!empty($info->device_opt->{471})) {
+		$open = 1;
+	}
+	if(!empty($info->device_opt->{472})) {
+		$close = 1;
+	}
+	if ($open){
+		$display.=display_Open($info, $close);
+	}
+	if ($close){
+		$display.=display_Close($info, $open);
+	}
 	
 	return $display;
 }
@@ -686,11 +700,29 @@ function display_OpenClose($info){
 			<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">
 				<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, 96)">'._('Open').'</button>
 				<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 0, 96)">'._('Close').'</button>
-			</div>';
+			</div>
+			<br/>';
 	
 	return $display;
 }
+function display_Open($info, $close){
+	$display = '';
+	if(!empty($close)) {
+		$display .= '<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">';
+	}
+	$display .='<button type="button" class="btn btn-onoff-widget btn-primary" onclick="onOff(\''.$info->room_device_id.'\', 1, 471)">'._('Open').'</button>';
 
+	return $display;
+}
+function display_Close($info, $open){
+	$display = '';
+	$display .='<button type="button" class="btn btn-onoff-widget btn-default" onclick="onOff(\''.$info->room_device_id.'\', 1, 472)">'._('Close').'</button>';
+	if(!empty($open)) {
+		$display .= '</div>';
+	}
+
+	return $display;
+}
 //Up Down
 function display_UpDown($info){
 	if (!empty($info->device_opt->{13})){

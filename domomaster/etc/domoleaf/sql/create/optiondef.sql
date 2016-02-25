@@ -124,6 +124,8 @@ VALUES
 	(467, NULL, '', '', 'Enregistrer', ''),
 	(468, NULL, '', '', 'Retour arrière', ''),
 	(469, NULL, '', '', 'Avance rapide', ''),
-	(470, NULL, '', '', 'Bouton OK', '');
+	(470, NULL, '', '', 'Bouton OK', ''),
+	(471, 'Open', '', '', 'Ouverture', ''),
+	(472, 'Close', '', '', 'Fermeture', '');
 
 SET FOREIGN_KEY_CHECKS=1;
