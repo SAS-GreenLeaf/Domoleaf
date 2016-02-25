@@ -122,7 +122,7 @@ class MasterDaemon:
         self.get_aes_slave_keys();
         self.reload_camera(None, None);
         self.scanner = Scanner(HOSTS_CONF);
-        self.scanner.scan(False);
+        self.scanner.scan(True);
         self.hostlist = self.scanner._HostList;
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.knx_manager = KNXManager(self.aes_slave_keys);
@@ -587,7 +587,7 @@ class MasterDaemon:
         Callback called each time a monitor_ip packet is received.
         A new local network scan is performed and the result stored in the database
         """
-        self.scanner.scan(True);
+        self.scanner.scan(False);
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.hostlist = self.scanner._HostList;
         connection.close();

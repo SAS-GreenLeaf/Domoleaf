@@ -106,7 +106,7 @@ class SlaveDaemon:
         self.connected_cron = [];
         self.clients = [];
         self._scanner = Scanner(HOST_CONF_FILE);
-        self._scanner.scan(False);
+        self._scanner.scan(True);
         self._hostlist = self._scanner._HostList;
         self._parser = DaemonConfigParser(SLAVE_CONF_FILE);
         self.encrypt_keys = {};
@@ -361,7 +361,7 @@ class SlaveDaemon:
         """
         Re scan the local network to refresh hostlist.
         """
-        self._scanner.scan(True);
+        self._scanner.scan(False);
         self._hostlist = self._scanner._HostList;
 
     def loop(self):
