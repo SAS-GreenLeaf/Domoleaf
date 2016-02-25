@@ -141,7 +141,7 @@ class Scanner:
         - True => Erase existing hosts conf file and scan network again
         - False => If hosts conf file exists, reads the file and retrieves hosts.
         """
-        if rewrite:
+        if rewrite and os.path.exists(self._host_conf_file):
             os.remove(self._host_conf_file);
         print('#########################');
         print('# LOCAL NETWORK SCANNER #');
