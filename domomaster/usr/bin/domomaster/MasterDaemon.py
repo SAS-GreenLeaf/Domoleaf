@@ -545,9 +545,11 @@ class MasterDaemon:
         if slave_name is None:
             connection.close();
             return None;
-        for host in self.hostlist:
-            if slave_name in host._Hostname:
-                self.knx_manager.send_knx_write_short_to_slave(host._Hostname, json_obj);
+        
+        dev = {}
+        dev["addr_dst"] = json_obj['data']['addr']
+        
+        self.knx_manager.send_knx_write_short_to_slave(json_obj, dev, slave_name);
         connection.close();
         return None;
 
@@ -561,9 +563,9 @@ class MasterDaemon:
         if slave_name is None:
             connection.close();
             return None;
-        for host in self.hostlist:
-            if slave_name in host._Hostname:
-                self.knx_manager.send_knx_write_long_to_slave(host._Hostname, json_obj);
+        dev = {}
+        dev["addr_dst"] = json_obj['data']['addr']
+        self.knx_manager.send_knx_write_long_to_slave(json_obj, dev, slave_name);
         connection.close();
         return None;
 
@@ -575,9 +577,7 @@ class MasterDaemon:
         slave_name = self.get_slave_name(json_obj, daemons);
         if slave_name is None:
             return None;
-        for host in self.hostlist:
-            if slave_name in host._Hostname:
-                self.knx_manager.send_knx_read_request_to_slave(host._Hostname, json_obj);
+        self.knx_manager.send_knx_read_request_to_slave(slave_name, json_obj);
         connection.close();
 
     def monitor_ip(self, json_obj, connection):
