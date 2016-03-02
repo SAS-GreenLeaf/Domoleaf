@@ -338,7 +338,7 @@ class MasterDaemon:
         json_obj['data'].append(hostname);
         port = self._parser.getValueFromSection('connect', 'port');
         for host in self.hostlist:
-            if host._Hostname.startswith('MD3') or host._Hostname.startswith('SD3') and host._Hostname not in json_obj['data']:
+            if (host._Hostname.startswith('MD3') or host._Hostname.startswith('SD3')) and host._Hostname not in json_obj['data']:
                 sock = socket.create_connection((host._IpAddr, port));
                 json_str = json.JSONEncoder().encode(json_obj);
                 sock.send(bytes(json_str, 'utf-8'));
