@@ -78,9 +78,11 @@ function GetDeviceList(){
 		url: "/templates/'.TEMPLATE.'/form/form_conf_room_device_list.php",
 		data: "floor="+floor+"&room="+room,
 		success: function(result) {
-			$("#listdevice").html(result);
 			if (result.split("</td>").length == 1) {
 				 CatchError("'._('No device').'");
+			}
+			else {
+				$("#listdevice").html(result);
 			}
 		},
 		error: function(result, status, error){
