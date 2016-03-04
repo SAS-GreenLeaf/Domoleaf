@@ -146,12 +146,7 @@ else if ($device->protocol_id == 1){
 else if ($device->protocol_id == 2){
 	echo
 	'<div class="col-md-6 col-xs-12">
-		<div class="input-group">
-			<label for="addr" class="input-group-addon">
-			<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-			</label>
-			<input type="hidden" class="form-control" id="addr" value="EnOcean" placeholder="'._('Enocean address or name').'">
-		</div>
+		<input type="hidden" class="form-control" id="addr" value="EnOcean" placeholder="'._('Enocean address or name').'">
 	</div>';
 }
 echo '
