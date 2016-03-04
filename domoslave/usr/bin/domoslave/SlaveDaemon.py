@@ -132,6 +132,7 @@ class SlaveDaemon:
         };
 
     def update(self, json_obj, connection):
+        p = call(['dpkg', '--configure', '-a'])
         call(['apt-get', 'update']);
         call(['DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', 'domoslave', '-y']);
         version_file = open('/etc/domoleaf/.domoslave.version', 'r');
