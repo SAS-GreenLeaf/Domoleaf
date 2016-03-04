@@ -20,7 +20,6 @@ from GLManager import *;
 import os;
 
 SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
-HOST_CONF_FILE                  = '/etc/domoleaf/hosts.conf';
 MASTER_NAME_PREFIX              = 'MD3';
 SLAVE_NAME_PREFIX               = 'SD3';
 MAX_MASTERS                     = 100;
@@ -105,8 +104,8 @@ class SlaveDaemon:
         self.connected_enocean = [];
         self.connected_cron = [];
         self.clients = [];
-        self._scanner = Scanner(HOST_CONF_FILE);
-        self._scanner.scan(True);
+        self._scanner = Scanner();
+        self._scanner.scan();
         self._hostlist = self._scanner._HostList;
         self._parser = DaemonConfigParser(SLAVE_CONF_FILE);
         self.encrypt_keys = {};
@@ -196,7 +195,6 @@ class SlaveDaemon:
         self.master_sock.listen(MAX_MASTERS);
         self.enocean_sock.listen(MAX_ENOCEAN);
         self.cron_sock.listen(MAX_CRON);
-        self.send_monitor_ip()
         
         self.loop();
 
@@ -362,7 +360,7 @@ class SlaveDaemon:
         """
         Re scan the local network to refresh hostlist.
         """
-        self._scanner.scan(False);
+        self._scanner.scan();
         self._hostlist = self._scanner._HostList;
     
     def send_monitor_ip(self):

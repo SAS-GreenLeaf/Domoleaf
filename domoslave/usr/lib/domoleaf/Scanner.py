@@ -18,9 +18,8 @@ class Scanner:
     """
     Local network scanning class.
     """
-    def __init__(self, host_conf):
+    def __init__(self):
         self._HostList = [];
-        self._host_conf_file = host_conf;
 
     def isHostAvailable(self, hostname):
         """
@@ -74,20 +73,6 @@ class Scanner:
             print("HOST: " + h._Hostname);
             print('');
 
-    def writeHostsToFile(self):
-        """
-        Cette fonction parcoure la liste d'hotes et les ecrit dans le fichier
-        hosts.conf dans le dossier courant du programme appelant le Scanner.
-        Ce fichier est sous forme de fichier de configuration.
-        """
-        config = configparser.ConfigParser();
-        for host in self._HostList:
-            config[host._Hostname.upper()] = {};
-            config[host._Hostname.upper()][HOST_IP_FIELD] = host._IpAddr;
-            config[host._Hostname.upper()][HOST_MAC_FIELD] = host._MacAddr;
-        with open(self._host_conf_file, 'w') as configfile:
-            config.write(configfile);
-
     def getHosts(self, net, interface):
         """
         Retrieving every hosts on the local network with ARP requests.
@@ -102,11 +87,6 @@ class Scanner:
                 try:
                     hostnames = socket.gethostbyaddr(r.psrc);
                     hostname = hostnames[0];
-                    print('Adding new host');
-                    print("IP  : " + ipAddr);
-                    print("MAC : " + macAddr);
-                    print("HOST: " + hostname);
-                    print('');
                     self.addNewHost(macAddr, ipAddr, hostname.upper());
                 except socket.herror:
                     pass;
@@ -116,50 +96,22 @@ class Scanner:
             else:
                 raise;
         self.addNewHost(macAddr = '', ipAddr = '127.0.0.1', hostname = socket.gethostname().upper());
-        self.writeHostsToFile();
 
-    def getHostsFromFile(self):
-        """
-        Retrieves the hosts stored in hosts.conf file passed in parameter at construct.
-        """
-        config = configparser.ConfigParser();
-        if not config.read(self._host_conf_file):
-            return False;
-        for section in config.sections():
-            if HOST_IP_FIELD not in config[section]:
-                raise Exception("'" + HOST_IP_FIELD + "' is not defined in section '" + section + "' in file " + self._host_conf_file);
-            elif HOST_MAC_FIELD not in config[section]:
-                raise Exception("'" + HOST_MAC_FIELD + "' is not defined in section '" + section + "' in file " + self._host_conf_file);
-            host = Host(macAddr = config[section][HOST_MAC_FIELD], ipAddr = config[section][HOST_IP_FIELD], hostname = section, socket = None, Id = 0);
-            self._HostList.append(host);
-        return True;
-
-    def scan(self, rewrite):
+    def scan(self):
         """
         Hosts retrieving.
-        'rewrite' is a boolean which defines if the network has to be scanned again.
-        - True => Erase existing hosts conf file and scan network again
-        - False => If hosts conf file exists, reads the file and retrieves hosts.
         """
-        if rewrite and os.path.exists(self._host_conf_file):
-            os.remove(self._host_conf_file);
-        print('#########################');
-        print('# LOCAL NETWORK SCANNER #');
-        print('#########################');
-        print('[ .. ] Scanning network...');
-        if not self.getHostsFromFile():
-            for network, netmask, _, interface, address in scapy.config.conf.route.routes:
-                if (network == 0 or
-                    interface == 'lo' or
-                    address == '127.0.0.1' or
-                    address == '0.0.0.0' or
-                    netmask <= 0 or
-                    netmask == 0xFFFFFFFF or
-                    interface != scapy.config.conf.iface):
-                    continue;
-                net = self.bytesToCIDR(network, netmask);
-                if (net):
-                    self.getHosts(net, interface);
-                    # Essayer de ne pas mettre le break
-                    break;
-        print('[ OK ]: Done scanning network.');
+        for network, netmask, _, interface, address in scapy.config.conf.route.routes:
+            if (network == 0 or
+                interface == 'lo' or
+                address == '127.0.0.1' or
+                address == '0.0.0.0' or
+                netmask <= 0 or
+                netmask == 0xFFFFFFFF or
+                interface != scapy.config.conf.iface):
+                continue;
+            net = self.bytesToCIDR(network, netmask);
+            if (net):
+                self.getHosts(net, interface);
+                # TOFIX
+                break;

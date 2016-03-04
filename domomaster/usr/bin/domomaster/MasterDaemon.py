@@ -100,7 +100,6 @@ DATA_SHUTDOWN_D3              = 'shutdown_d3';
 DATA_REBOOT_D3                = 'reboot_d3';
 DATA_WIFI_UPDATE              = 'wifi_update';
 
-HOSTS_CONF                    = '/etc/domoleaf/hosts.conf';          # Path for the network configuration file
 CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
 
 DEBUG_MODE = True;      # Debug flag
@@ -121,8 +120,9 @@ class MasterDaemon:
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
         self.get_aes_slave_keys();
         self.reload_camera(None, None);
-        self.scanner = Scanner(HOSTS_CONF);
-        self.hostlist = [];
+        self._scanner = Scanner();
+        self._scanner.scan();
+        self._hostlist = self._scanner._HostList;
         self.knx_manager = KNXManager(self.aes_slave_keys);
         self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
@@ -589,7 +589,7 @@ class MasterDaemon:
         Callback called each time a monitor_ip packet is received.
         A new local network scan is performed and the result stored in the database
         """
-        self.scanner.scan(False);
+        self.scanner.scan();
         self.sql.insert_hostlist_in_db(self.scanner._HostList);
         self.hostlist = self.scanner._HostList;
         connection.close();
@@ -730,17 +730,20 @@ class MasterDaemon:
             connection.close();
             return ;
         hostname = res[0][0];
-        ip = '';
-        for h in self.hostlist:
-            if hostname in h._Hostname.upper():
-                ip = h._IpAddr;
+        self_hostname = socket.gethostname();
+        if hostname == self_hostname:
+            ip = '127.0.0.1';
+        else:
+            ip = '';
+            for h in self.hostlist:
+                if hostname in h._Hostname.upper():
+                    ip = h._IpAddr;
         if ip == '':
             self.logger.error('in check_slave: ' + hostname + ' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
         sock = socket.create_connection((ip, port));
-        self_hostname = socket.gethostname();
         if '.' in self_hostname:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
@@ -754,21 +757,12 @@ class MasterDaemon:
         version = '';
         interface_knx = '';
         interface_enocean = '';
-        for s in rlist:
-            data = sock.recv(4096);
-            if not data:
-                continue;
+        data = sock.recv(4096);
+        if data:
             decrypt_IV = data[:16].decode();
-            host = None;
-            for h in self.hostlist:
-                if h._IpAddr == ip:
-                    host = h;
             decode_obj = AES.new(res[0][1], AES.MODE_CBC, decrypt_IV);
             data2 = decode_obj.decrypt(data[16:]).decode();
             resp = json.JSONDecoder().decode(data2);
-            hostname = host._Hostname;
-            if '.' in host._Hostname:
-                hostname = host._Hostname.split('.')[0];
             if str(self.aes_slave_keys[hostname]) == str(resp['aes_pass']):
                 val = '1';
                 version = resp['version'];
