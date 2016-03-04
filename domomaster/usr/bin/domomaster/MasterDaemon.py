@@ -686,8 +686,8 @@ class MasterDaemon:
             elif act['action'] == 'close':
                 for r in res:
                     if int(r[0]) == int(act['configuration_id']):
-                        print('calling ' + str(["upnpc", "-d", local_ip, str(r[1]), act['protocol']]));
-                        call(["upnpc", "-d", local_ip, str(r[1]), act['protocol']]);
+                        print('calling ' + str(["upnpc", "-d", str(r[1]), act['protocol']]));
+                        call(["upnpc", "-d", str(r[1]), act['protocol']]);
 
     def reload_camera(self, json_obj, connection):
         """
