@@ -8,7 +8,6 @@ from DaemonConfigParser import *;
 
 if __name__ == "__main__":
     try:
-        print("hey cron");
         parser = DaemonConfigParser('/etc/domoleaf/master.conf')
         ip = '127.0.0.1'
         port = parser.getValueFromSection('listen', 'port_cmd')
@@ -22,6 +21,3 @@ if __name__ == "__main__":
         s.close()                                                        
     except Exception as e:
         print(str(e))
-
-
-        
