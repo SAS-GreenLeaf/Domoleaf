@@ -106,7 +106,12 @@ class SlaveDaemon:
         self.clients = [];
         self._scanner = Scanner();
         self._hostlist = [];
-        self._hostlist.append(Host('', '127.0.0.1', socket.gethostname().upper()));
+        myhostname = socket.gethostname().upper()
+        if SLAVE_NAME_PREFIX in myhostname:
+            self._scanner.scan();
+            self._hostlist = self._scanner._HostList;
+        else:
+            self._hostlist.append(Host('', '127.0.0.1', myhostname));
         self._parser = DaemonConfigParser(SLAVE_CONF_FILE);
         self.encrypt_keys = {};
         self.knx_sock = None;
