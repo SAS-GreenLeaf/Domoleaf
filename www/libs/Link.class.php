@@ -12,6 +12,7 @@ class Link {
 				try {
 					$this->db = new PDO($dns, DB_USER, DB_PASSWORD, $option);
 				} catch (PDOException $e) {
+					include('templates/default/include/nosql.php');
 					die();
 				}
 			break;
