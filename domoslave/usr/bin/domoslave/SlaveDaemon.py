@@ -105,8 +105,8 @@ class SlaveDaemon:
         self.connected_cron = [];
         self.clients = [];
         self._scanner = Scanner();
-        self._scanner.scan();
-        self._hostlist = self._scanner._HostList;
+        self._hostlist = [];
+        self._hostlist.append(Host('', '127.0.0.1', socket.gethostname().upper()));
         self._parser = DaemonConfigParser(SLAVE_CONF_FILE);
         self.encrypt_keys = {};
         self.knx_sock = None;
@@ -196,6 +196,7 @@ class SlaveDaemon:
         self.master_sock.listen(MAX_MASTERS);
         self.enocean_sock.listen(MAX_ENOCEAN);
         self.cron_sock.listen(MAX_CRON);
+        self.send_monitor_ip()
         
         self.loop();
 

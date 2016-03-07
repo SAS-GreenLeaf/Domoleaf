@@ -121,8 +121,8 @@ class MasterDaemon:
         self.get_aes_slave_keys();
         self.reload_camera(None, None);
         self._scanner = Scanner();
-        self._scanner.scan();
-        self._hostlist = self._scanner._HostList;
+        self._hostlist = [];
+        self._hostlist.append(Host('', '127.0.0.1', socket.gethostname().upper()));
         self.knx_manager = KNXManager(self.aes_slave_keys);
         self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
