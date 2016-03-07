@@ -4,10 +4,12 @@ include('header.php');
 
 if (!empty($_GET['room_id_device']) || !empty($_GET['id_smartcmd'])) {
 	$request =  new Api();
+	$request -> add_request('mcDeviceInfo', array($_GET['room_id_device']));
 	$request -> add_request('confDeviceRoomOpt', array($_GET['room_id_device']));
 	$request -> add_request('countElemSmartcmd', array($_GET['id_smartcmd']));
 	
 	$result  =  $request -> send_request();
+	$mcDeviceInfo = $result->mcDeviceInfo;
 	$listoptdevice = $result->confDeviceRoomOpt;
 	$idexec = $result->countElemSmartcmd + 1;
 	if (empty($listoptdevice)) {

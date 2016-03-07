@@ -24,8 +24,12 @@ class Smartcommand:
             self.logger.error('Invalid Smartcommand');
             return;
         tab_except_http = [356, 357, 358, 359, 360, 361];
-        query = ('SELECT room_device_id, option_id, option_value, time_lapse '
+        query = ('SELECT smartcommand_elems.room_device_id, option_value, '
+                 '       smartcommand_elems.option_id, time_lapse, opt_value, '
+                 '       device_id '
                  'FROM smartcommand_elems '
+                 'JOIN room_device_option ON room_device_option.room_device_id=smartcommand_elems.room_device_id '
+                 'JOIN room_device ON room_device.room_device_id=smartcommand_elems.room_device_id '
                  'WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" '
                  'ORDER BY exec_id');
         res = self.sql.mysql_handler_personnal_query(query);
@@ -35,10 +39,12 @@ class Smartcommand:
             obj['sync'] = 0;
             data = {};
             data['room_device_id'] = r[0];
-            data['option_id'] = r[1];
-            data['value'] = r[2];
-            data['action'] = r[2];
-            if r[1] in tab_except_http:
+            data['value'] = r[1];
+            data['option_id'] = r[2];
+            data['action'] = r[1];
+            if [r[5] == 86]:
+                data['value'] = r[4]
+            elif data['option_id'] in tab_except_http:
                 data['value'] = '';
             obj['data'] = data;
             obj['packet_type'] = 'smartcmd_launch';
