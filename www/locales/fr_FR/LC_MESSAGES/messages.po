@@ -2192,3 +2192,6 @@ msgstr "Edition des horaires"
 msgid "Smartcommands edition"
 msgstr "Edition des Smartcommands"
 
+#: popup/popup_new_daemon.php popup/popup_rename_daemon.php
+msgid "Programmation mode"
+msgstr "Mode programmation"

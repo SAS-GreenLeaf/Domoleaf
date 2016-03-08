@@ -80,8 +80,10 @@ echo '<div id="div-interface-KNXTP">'.
 			echo '<input type="text" id="input-interface-KNXTP-IP" placeholder="'._('Enter IP Adress').'" value="" class="form-control">';
 		}
 
-echo 	'</div>'.
-	 '</div>'.
+echo '</div><div class="center">'.
+	'<input type="checkbox" id="activated-interface-KNXTP" '.
+	(empty($daemon->protocol->{1}->daemon_activated)?' checked="checked"':'').'> <b>'._('Programmation mode').'</b> '.
+	 '</div></div>'.
 	 '<br/>'.
 	 '<div id="div-interface-EnOcean">'.
 	 '<label class="control-label" for="label-interface-EnOcean">'._('EnOcean Interface').'</label>'.

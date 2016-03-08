@@ -585,6 +585,7 @@ class SlaveDaemon:
             previous_val_EnOcean = self._parser.getValueFromSection('enocean', 'interface');
             new_val = str(json_obj['interface_arg_knx'])
             self._parser.writeValueFromSection('knx', 'interface', new_val);
+            self._parser.writeValueFromSection('knx', 'activated', str(json_obj['daemon_knx']));
             self._parser.writeValueFromSection('enocean', 'interface', str(json_obj['interface_arg_EnOcean']));
             if previous_val_knx == '' or previous_val_knx == None:
                 call(['update-rc.d', 'knxd', 'defaults']);
@@ -601,7 +602,10 @@ class SlaveDaemon:
                 conf_knx.write(knx_edit + '\n');
                 conf_knx.close();
                 call(['service', 'knxd', 'start']);
-                Popen(['monitor_knx', 'ip:localhost', '--daemon']);
+                if json_obj['daemon_knx'] == 1:
+                    if os.path.exists('/var/run/monitor_knx.pid'):
+                        os.remove('/var/run/monitor_knx.pid');
+                    Popen(['monitor_knx', 'ip:localhost', '--daemon']);
         except Exception as e:
             self.logger.error(e);
         json_str = '{"packet_type": "send_interfaces", "aes_pass": "' + self.private_aes + '"}';

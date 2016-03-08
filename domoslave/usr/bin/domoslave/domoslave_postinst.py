@@ -28,6 +28,8 @@ def slave_conf_copy():
     file_to.writeValueFromSection('knx', 'port', var);
     var = file_from.getValueFromSection('knx', 'interface');
     file_to.writeValueFromSection('knx', 'interface', var);
+    var = file_from.getValueFromSection('knx', 'activated');
+    file_to.writeValueFromSection('knx', 'activated', var);
     
     #enocean
     var = file_from.getValueFromSection('enocean', 'port');

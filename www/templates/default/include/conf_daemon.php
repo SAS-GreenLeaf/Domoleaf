@@ -363,6 +363,12 @@ function RenameDaemon(id){
 	else if (interface_knx == "ipt"){
 		interface_knx_arg = $("#input-interface-KNXTP-IP").val();
 	}
+	if($("#activated-interface-KNXTP").is(":checked")) {
+		var daemon_knx = 0;
+	}
+	else {
+		var daemon_knx = 1;
+	}
 	var interface_EnOcean = $("#select-interface-EnOcean").val();
 	var interface_EnOcean_arg = \'\';
 	if (interface_EnOcean == "usb"){
@@ -378,7 +384,7 @@ function RenameDaemon(id){
 	$.ajax({
 		type:"GET",
 		url: "/form/form_conf_daemon_rename.php",
-		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&interface_EnOcean="+interface_EnOcean+"&interface_knx_arg="+interface_knx_arg+"&interface_EnOcean_arg="+interface_EnOcean_arg,
+		data: "id="+id+"&name="+encodeURIComponent(name)+"&serial="+encodeURIComponent(serial)+"&skey="+encodeURIComponent(skey)+"&proto="+proto.join(\'_\')+"&interface_knx="+interface_knx+"&daemon_knx="+daemon_knx+"&interface_EnOcean="+interface_EnOcean+"&interface_knx_arg="+interface_knx_arg+"&interface_EnOcean_arg="+interface_EnOcean_arg,
 		beforeSend:function(result, status){
 			PopupLoading();
 		},

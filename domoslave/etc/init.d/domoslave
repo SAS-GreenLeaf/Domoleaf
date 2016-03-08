@@ -45,8 +45,28 @@ start()
 	if [ -f $PID_FILE_MONITOR_KNX ]; then
 		echo "$PROG_MONITOR_KNX is already running"
 	else
-		echo "Starting $PROG_MONITOR_KNX"
-		$MONITOR_KNX $MONITOR_KNX_OPTIONS > $LOG_FILE_MONITOR_KNX 2>&1
+		activated=1
+		pre=0
+		while read line
+		do
+			if [ $pre == 1 ]; then
+				array=($line)
+				
+				if [ ${#array[@]} == 1 ]; then
+					break;
+				elif [ ${array[0]} == "activated" ]; then
+					activated=$array[1]
+					break;
+				fi
+			fi
+			if [ "$line" = "[knx]" ]; then
+				pre=1;
+			fi
+		done < /etc/domoleaf/slave.conf
+		if [ ${array[2]} == 1 ]; then
+			echo "Starting $PROG_MONITOR_KNX"
+			$MONITOR_KNX $MONITOR_KNX_OPTIONS > $LOG_FILE_MONITOR_KNX 2>&1
+		fi
 	fi
 	if [ -f $PID_FILE_MONITOR_ENOCEAN ]; then
 		echo "$MONITOR_ENOCEAN is already running"

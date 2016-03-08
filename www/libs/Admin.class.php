@@ -1358,7 +1358,8 @@ class Admin extends User {
 			);
 		}
 		
-		$sql = 'SELECT daemon_id, protocol_id, interface, interface_arg
+		$sql = 'SELECT daemon_id, protocol_id, interface, interface_arg,
+		               daemon_activated
 		        FROM daemon_protocol';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1540,7 +1541,7 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_knx_arg='', $interface_EnOcean='ttyUSB0', $interface_EnOcean_arg='') {
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_knx_arg='', $daemon_knx=1, $interface_EnOcean='ttyUSB0', $interface_EnOcean_arg='') {
 		if ($interface_knx == "tpuarts"){
 			if ($interface_knx_arg != "ttyS0" && $interface_knx_arg != "ttyS1" && $interface_knx_arg != "ttyS2"){
 				$interface_knx_arg = "ttyAMA0";
@@ -1555,6 +1556,9 @@ class Admin extends User {
 		else{
 			$interface_knx = "tpuarts";
 			$interface_knx_arg = "ttyAMA0";
+		}
+		if($daemon_knx != 1) {
+			$daemon_knx = 0;
 		}
 		
 		if ($interface_EnOcean == "usb"){
@@ -1583,6 +1587,7 @@ class Admin extends User {
 				'daemon_id' => $daemon,
 				'interface_knx' => $interface_knx,
 				'interface_arg_knx' => $interface_knx_arg,
+				'daemon_knx' => $daemon_knx,
 				'interface_EnOcean' => $interface_EnOcean,
 				'interface_arg_EnOcean' => $interface_EnOcean_arg
 				
@@ -1616,21 +1621,23 @@ class Admin extends User {
 				if(!empty($protocolList[$protocol])) {
 					if ($protocol == 1 || $protocol == 2){
 						$sql = 'INSERT INTO daemon_protocol
-					        	(daemon_id, protocol_id, interface, interface_arg)
-					        	VALUES
-					        	(:daemon_id, :protocol_id, :interface, :interface_arg)';
+						        (daemon_id, protocol_id, interface, interface_arg, daemon_activated)
+						        VALUES
+						        (:daemon_id, :protocol_id, :interface, :interface_arg, :activated)';
 						$req = $link->prepare($sql);
 						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
 						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
 						if ($protocol == 1){
 							$req->bindValue(':interface', $interface_knx, PDO::PARAM_STR);
 							$req->bindValue(':interface_arg', $interface_knx_arg, PDO::PARAM_STR);
+							$req->bindValue(':activated', $daemon_knx, PDO::PARAM_STR);
 						}
 						else{
 							$req->bindValue(':interface', $interface_EnOcean, PDO::PARAM_STR);
 							$req->bindValue(':interface_arg', $interface_EnOcean_arg, PDO::PARAM_STR);
+							$req->bindValue(':activated', 1, PDO::PARAM_STR);
 						}
-						$req->execute() or die (error_log(serialize($req->errorInfo())));						
+						$req->execute() or die (error_log(serialize($req->errorInfo())));
 					}
 					else{
 						$sql = 'INSERT INTO daemon_protocol
