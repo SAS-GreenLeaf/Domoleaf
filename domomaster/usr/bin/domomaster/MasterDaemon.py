@@ -651,7 +651,6 @@ class MasterDaemon:
         Retrieves network interface name from IP address.
         """
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
-        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         try:
             res = socket.inet_ntoa(fcntl.ioctl(s.fileno(),
                                                0x8915,
