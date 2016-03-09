@@ -174,7 +174,7 @@ class MasterDaemon:
             DATA_CHECK_UPDATES                : self.check_updates,
             DATA_UPDATE                       : self.update,
             DATA_SEND_ALIVE                   : self.send_request,
-            DATA_SEND_TECH                    : self.send_request,
+            DATA_SEND_TECH                    : self.send_tech,
             DATA_SEND_INTERFACES              : self.send_interfaces,
             DATA_SHUTDOWN_D3                  : self.shutdown_d3,
             DATA_REBOOT_D3                    : self.reboot_d3,
@@ -885,6 +885,15 @@ class MasterDaemon:
         else:
             global_state = '';
         return global_state;
+    
+    def send_tech(self, json_obj, connection):
+        query = 'SELECT configuration_value FROM configuration WHERE configuration_id=1';
+        http = self.sql.mysql_handler_personnal_query(query);
+        query = 'SELECT configuration_value FROM configuration WHERE configuration_id=2';
+        ssl = self.sql.mysql_handler_personnal_query(query);
+        json_obj['info']['http'] = http[0][0];
+        json_obj['info']['ssl']  = ssl[0][0];
+        self.send_request(json_obj, connection)
 
     def send_request(self, json_obj, connection):
         if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
