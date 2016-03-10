@@ -64,7 +64,7 @@ if (!empty($_GET['iddevice'])) {
 			echo '<input value="128" min="0" step="1" max="255"';
 		}
 		echo		'oninput="outputUpdate(\''.$_GET['iddevice'].'\', value, 1)"'.
-					'onchange="getVariation(\''.$_GET['iddevice'].'\', \''.$device_opt->{410}->option_id.'\', 1)"'.
+					'onchange="getVariation(\''.$_GET['iddevice'].'\', 410, 1)"'.
 					'id="slider-value-'.$_GET['iddevice'].'-popup" type="range" style="background: #FFFF66"/>'.
 			 '</div>'.
 			 '<div class="clearfix"></div>'.

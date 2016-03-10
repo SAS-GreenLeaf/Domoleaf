@@ -17,9 +17,9 @@ if (!empty($_GET['iddevice'])){
 			echo '
 				<div class="center col-xs-12"><output id="vol-popup-'.$device->room_device_id.'" for="volume-popup-'.$device->room_device_id.'">50%</output></div>'.
 				'<div class="center col-xs-12">'.
-					'<div class="col-xs-2 cursor" onclick="Volume(\'popup-'.$device->room_device_id.'\', \''.$device->device_opt->{383}->option_id.'\', -1)"><i class="glyphicon glyphicon-volume-down"></i></div>'.
-					'<div class="col-xs-8" ><input onchange="SetVolume(\'popup-'.$device->room_device_id.'\', \''.$device->device_opt->{383}->option_id.'\')" value="50" min="0" step="1" max="100" id="volume-popup-'.$device->room_device_id.'" oninput="UpdateVol(\'popup-'.$device->room_device_id.'\', value)" type="range"></div>'.
-					'<div class="col-xs-2 cursor" onclick="Volume(\'popup-'.$device->room_device_id.'\', \''.$device->device_opt->{383}->option_id.'\', 1)"><i class="glyphicon glyphicon-volume-up"></i></div>'.
+					'<div class="col-xs-2 cursor" onclick="Volume(\'popup-'.$device->room_device_id.'\', 383, -1)"><i class="glyphicon glyphicon-volume-down"></i></div>'.
+					'<div class="col-xs-8" ><input onchange="SetVolume(\'popup-'.$device->room_device_id.'\', 383)" value="50" min="0" step="1" max="100" id="volume-popup-'.$device->room_device_id.'" oninput="UpdateVol(\'popup-'.$device->room_device_id.'\', value)" type="range"></div>'.
+					'<div class="col-xs-2 cursor" onclick="Volume(\'popup-'.$device->room_device_id.'\', 383, 1)"><i class="glyphicon glyphicon-volume-up"></i></div>'.
 				'</div>'.
 			 '<div class="clearfix"></div>&nbsp;';
 		}

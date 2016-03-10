@@ -41,23 +41,23 @@ if (!empty($_GET['iddevice'])){
 			echo '<div class="carousel thumbnail">';
 			if (!empty($deviceinfo->device_opt->{'357'})){
 			echo '<a id="cmd-camera-top" class="up carousel-control-camera cursor">'.
-					'<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'top\', \''.$deviceinfo->device_opt->{'357'}->option_id.'\')"></span>'.
+					'<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'top\', 357)"></span>'.
 				'</a>';
 			}
 			
 			if (!empty($deviceinfo->device_opt->{'358'})){
 			echo '<a id="cmd-camera-bottom" class="down carousel-control-camera cursor">'.
-						'<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'bottom\', \''.$deviceinfo->device_opt->{'358'}->option_id.'\')"></span>'.
+						'<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'bottom\', 358)"></span>'.
 				'</a>';
 			}
 			if (!empty($deviceinfo->device_opt->{'359'})){
 			 echo '<a id="cmd-camera-left" class="left carousel-control-camera cursor">'.
-					'<span style="z-index:500;" class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'left\', \''.$deviceinfo->device_opt->{'359'}->option_id.'\')"></span>'.
+					'<span style="z-index:500;" class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'left\', 359)"></span>'.
 				  '</a>';
 			}
 			if (!empty($deviceinfo->device_opt->{'360'})){
 			 echo '<a id="cmd-camera-right" class="right carousel-control-camera cursor">'.
-					'<span style="z-index:500;" class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'right\', \''.$deviceinfo->device_opt->{'360'}->option_id.'\')"></span>'.
+					'<span style="z-index:500;" class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="cmd_camera('.$_GET['iddevice'].', \'right\', 360)"></span>'.
 				  '</a>';
 			}
 			
@@ -66,10 +66,10 @@ if (!empty($_GET['iddevice'])){
 		 	'<div class="center">';
 		 
 			 if (!empty($deviceinfo->device_opt->{'361'})){
-			 	echo '<button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'home\', \''.$deviceinfo->device_opt->{'361'}->option_id.'\')"><span class="glyphicon glyphicon-home"></span></button> ';
+			 	echo '<button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'home\', 361)"><span class="glyphicon glyphicon-home"></span></button> ';
 			 }
 			 if (!empty($deviceinfo->device_opt->{'408'})){
-			 	echo ' <button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'picture\', \''.$deviceinfo->device_opt->{'408'}->option_id.'\')"><span class="glyphicon glyphicon-camera"></span></button>';
+			 	echo ' <button class="btn btn-info" type="button" onclick="cmd_camera('.$_GET['iddevice'].', \'picture\', 408)"><span class="glyphicon glyphicon-camera"></span></button>';
 			 }
 
 			 echo '</div>';
