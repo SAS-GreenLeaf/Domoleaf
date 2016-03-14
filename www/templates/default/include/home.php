@@ -204,6 +204,10 @@ function HandlePopup(type, iddevice){
 					message: msg,
 					onhide: function(){
 						if ($("#cmd-camera-display").length) {
+							var src = $("#cmd-camera-display").attr("src");
+							var res = src.split("@");
+							var url = "http://reset:reset@"+res[1];
+							$("#cmd-camera-display").attr("src", url);
 							$("#cmd-camera-display").removeAttr("src");
 						}
 					}
