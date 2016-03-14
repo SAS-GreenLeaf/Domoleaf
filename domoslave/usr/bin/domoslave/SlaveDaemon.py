@@ -657,6 +657,8 @@ class SlaveDaemon:
 
                 conf_str = ''
                 conf_file = open('/etc/network/interfaces', 'w');
+                conf_str += 'auto lo\n';
+                conf_str += 'iface lo inet loopback\n\n';
                 conf_str += 'auto eth0\n';
                 conf_str += 'iface eth0 inet dhcp\n';
                 conf_str += 'auto wlan0\n';
