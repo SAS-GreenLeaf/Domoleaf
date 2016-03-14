@@ -829,6 +829,10 @@ img {
 	margin:auto;
 }
 
+#cmd-camera-display {
+	width:100%;
+}
+
 a.carousel-control-camera:focus,
 a.carousel-control-camera:hover {
 	color:#fff;
