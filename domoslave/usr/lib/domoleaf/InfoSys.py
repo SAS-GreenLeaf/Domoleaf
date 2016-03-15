@@ -41,7 +41,7 @@ class InfoSys:
         if disk[0:11] == "/dev/mmcblk":
             return os.popen("udevadm info -a -n "+disk+" | grep -i cid | awk -F \\\" '{print $2}'").read().split('\n')[0];
         elif disk[0:7] == "/dev/sd":
-            serial = os.popen("hdparm -i /dev/sda | grep -oE 'SerialNo=.*'").read().split('\n')[0];
+            serial = os.popen("hdparm -i "+disk+" | grep -oE 'SerialNo=.*'").read().split('\n')[0];
             return serial[9:]
         return ""
     
