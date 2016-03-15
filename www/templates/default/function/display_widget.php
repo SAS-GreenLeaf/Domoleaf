@@ -1129,37 +1129,60 @@ function display_luminosity($info){
 function display_generic($info){
 	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>
 				<div class="foreground-widget">';
+	$btn = '';
+	$btnNb = 0;
+	$btnOld= 0;
 	
 	if (!empty($info->device_opt->{181})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 181)" class="btn btn-info">'._('1').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 181)" class="btn btn-info">'._('1').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{182})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 182)" class="btn btn-info">'._('2').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 182)" class="btn btn-info">'._('2').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{189})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 189)" class="btn btn-info">'._('3').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 189)" class="btn btn-info">'._('3').'</button> ';
+		++$btnNb;
 	}
-	$display.= '<br/>';
+	if($btnNb > 0) {
+		$btnOld = $btnNb;
+		$btn.= '<br/>';
+	}
 	if (!empty($info->device_opt->{191})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 191)" class="btn btn-info">'._('4').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 191)" class="btn btn-info">'._('4').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{195})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 195)" class="btn btn-info">'._('5').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 195)" class="btn btn-info">'._('5').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{196})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 196)" class="btn btn-info">'._('6').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 196)" class="btn btn-info">'._('6').'</button> ';
+		++$btnNb;
 	}
-	$display.= '<br/>';
+	if($btnNb > $btnOld) {
+		$btn.= '<br/>';
+	}
 	if (!empty($info->device_opt->{197})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 197)" class="btn btn-info">'._('7').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 197)" class="btn btn-info">'._('7').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{198})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 198)" class="btn btn-info">'._('8').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 198)" class="btn btn-info">'._('8').'</button> ';
+		++$btnNb;
 	}
 	if (!empty($info->device_opt->{199})){
-		$display.= '<button onclick="launchGeneric('.$info->room_device_id.', 199)" class="btn btn-info">'._('9').'</button> ';
+		$btn.= '<button onclick="launchGeneric('.$info->room_device_id.', 199)" class="btn btn-info">'._('9').'</button> ';
+		++$btnNb;
 	}
 	
+	
+	if ($btnNb == 1 &&!empty($info->device_opt->{181})) {
+		$btn = '<button onclick="launchGeneric('.$info->room_device_id.', 181)" class="btn btn-info">&nbsp;&nbsp;&nbsp;</button> ';
+	}
+	
+	$display .= $btn;
 	$display .= '</div>';
 	
 	return $display;
