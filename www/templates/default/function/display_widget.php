@@ -743,7 +743,7 @@ function display_UpDown($info){
 				</button>';
 				if (!empty($info->device_opt->{365})){
 					$display.='<button type="button" class="btn btn-warning"
-								       onclick="onOff(\''.$info->room_device_id.'\', 0, 365)">
+								       onclick="launchGeneric('.$info->room_device_id.', 365)">
 									<span class="'.$icon_pause.'"></span>
 								</button>';
 				}
@@ -752,7 +752,7 @@ function display_UpDown($info){
 					<span class="'.$icon_down.'"></span>
 				</button>
 			</div>';
-	
+	 
 	return $display;
 }
 
