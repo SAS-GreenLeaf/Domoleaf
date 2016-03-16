@@ -140,7 +140,8 @@ class MasterDaemon:
               7 : self.knx_manager.send_to_thermostat,
               8 : self.knx_manager.send_clim_mode,
               9 : HttpReq().http_action,
-             10 : self.upnp_audio
+             10 : self.upnp_audio,
+             11 : self.knx_manager.send_knx_write_percent,
         };
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,

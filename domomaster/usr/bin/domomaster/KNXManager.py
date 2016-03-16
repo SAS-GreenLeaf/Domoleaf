@@ -272,3 +272,17 @@ class KNXManager:
             sock.close();
             return;
 
+    def send_knx_write_percent(self, json_obj, dev, hostname):
+        port = self._parser.getValueFromSection('connect', 'port');
+        if not port:
+            sys.exit(4);
+        sock = socket.create_connection((hostname, port));
+        json_str = json.JSONEncoder().encode(
+            {
+                "packet_type": "knx_write_long",
+                "addr_to_send": str(dev['addr_dst']),
+                "value": hex(255*int(json_obj['data']['value'])/100)
+            }
+        );
+        self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+
