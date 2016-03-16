@@ -1,0 +1,52 @@
+# Compile Deb files
+#
+# VERSION               0.0.1
+#
+
+FROM     debian:jessie
+MAINTAINER Virgil "vr@greenleaf.fr"
+
+ENV DEBIAN_FRONTEND noninteractive
+
+#Add libpthsem for KNXD
+WORKDIR /root/
+RUN apt-get update
+RUN apt-get install wget -y -q
+RUN (echo "deb http://depot.domoleaf.com jessie main" > /etc/apt/sources.list.d/domoleaf.list)
+RUN wget http://depot.domoleaf.com/domoleaf.key
+RUN apt-key add domoleaf.key
+RUN rm domoleaf.key
+
+#Update System
+RUN (apt-get update && apt-get dist-upgrade -y -q && \
+     apt-get -y -q autoclean && apt-get -y -q autoremove)
+
+#Install packages
+RUN apt-get install autoconf debhelper dh-systemd dpkg-dev g++ gcc git \
+            gettext libpthsem-dev libpthsem20 libtool libsystemd-daemon-dev \
+            libusb-1.0-0 libusb-1.0-0-dev libxml2-dev make pkg-config -y -q
+
+#Build KNXD
+WORKDIR /root/
+RUN git clone https://github.com/knxd/knxd.git
+WORKDIR /root/knxd
+RUN dpkg-buildpackage -b -uc
+WORKDIR /root/
+RUN dpkg -i knxd-tools*.deb knxd-dev*.deb
+
+#Copy directories
+ADD dists /root/domoleaf/dists
+ADD domomaster /root/domoleaf/domomaster
+ADD domoslave /root/domoleaf/domoslave
+ADD monitor_enocean /root/domoleaf/monitor_enocean
+ADD monitor_knx /root/domoleaf/monitor_knx
+ADD www /root/domoleaf/www
+ADD check_compiler /root/domoleaf/check_compiler
+ADD Makefile /root/domoleaf/Makefile
+ADD gengettext /root/domoleaf/gengettext
+
+#Build Domoleaf
+WORKDIR /root/domoleaf
+RUN make
+
+CMD ["/bin/bash"]
