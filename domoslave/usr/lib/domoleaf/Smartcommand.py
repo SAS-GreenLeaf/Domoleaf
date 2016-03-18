@@ -28,7 +28,7 @@ class Smartcommand:
                  '       smartcommand_elems.option_id, time_lapse, opt_value, '
                  '       device_id '
                  'FROM smartcommand_elems '
-                 'JOIN room_device_option ON room_device_option.room_device_id=smartcommand_elems.room_device_id '
+                 'JOIN room_device_option ON room_device_option.room_device_id=smartcommand_elems.room_device_id AND room_device_option.option_id=smartcommand_elems.option_id '
                  'JOIN room_device ON room_device.room_device_id=smartcommand_elems.room_device_id '
                  'WHERE smartcommand_id ="'+ str(self.smartcmd_id) +'" '
                  'ORDER BY exec_id');
@@ -42,7 +42,7 @@ class Smartcommand:
             data['value'] = r[1];
             data['option_id'] = r[2];
             data['action'] = r[1];
-            if [r[5] == 86]:
+            if r[5] == 86:
                 data['value'] = r[4]
             elif data['option_id'] in tab_except_http:
                 data['value'] = '';
