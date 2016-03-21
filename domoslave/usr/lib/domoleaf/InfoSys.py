@@ -67,6 +67,13 @@ class InfoSys:
         ip = ([(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
         return ip
     
+    def ipv6():
+        try:
+            ip = ([(s.connect(('google.com', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)]][0][1])
+        except Exception as e:
+            ip = ''
+        return ip
+    
     def ipVPN():
         private = InfoSys.ipPrivate();
         parser = DaemonConfigParser(SLAVE_CONF_FILE);
