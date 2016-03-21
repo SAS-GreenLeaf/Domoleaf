@@ -64,7 +64,10 @@ class InfoSys:
         return str(time).split('.')[0];
     
     def ipPrivate():
-        ip = ([(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+        try:
+            ip = ([(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+        except Exception as e:
+            ip = ''
         return ip
     
     def ipv6():
@@ -82,7 +85,10 @@ class InfoSys:
         if server.decode() == 'none':
             return '';
         
-        vpn = ([(s.connect((server, 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+        try:
+            vpn = ([(s.connect((server, 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
+        except Exception as e:
+            return ''
         
         if private != vpn:
             return vpn;
