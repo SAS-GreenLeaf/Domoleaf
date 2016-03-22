@@ -55,8 +55,8 @@ VALUES
 	(54, 'Porte', 1, 15, '', '', 'Porte', ''),
 	(60, 'Brightness sensor', 1, 17, '', '', 'Détecteur de luminosité', ''),
 	(61, 'Weather station', 1, 17, '', '', 'Station Météo', ''),
-	(68, 'Climatisation', 1, 5, '', '', 'Climatisation', ''),
-	(85, 'Controleur RGBW', 1, 1, '', '', 'Controleur RGBW', ''),
+	(68, 'Air conditioner', 1, 5, '', '', 'Climatisation', ''),
+	(85, 'RGBW controller', 1, 1, '', '', 'Controleur RGBW', ''),
 	(86, 'Generic', 1, 17, '', '', 'Generique', '');
 
 SET FOREIGN_KEY_CHECKS=1;

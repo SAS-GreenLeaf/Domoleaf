@@ -24,7 +24,7 @@ VALUES
 	(3, 'Sunblind', '', '', 'Store', ''),
 	(4, 'Consumption', '', '', 'Consommation', ''),
 	(5, 'Air conditioning', '', '', 'Air conditionné', ''),
-	(6, 'Audio', '', '', 'Audio/Vidéo', ''),
+	(6, 'Audio/Video', '', '', 'Audio/Vidéo', ''),
 	(7, 'Smartcommands', '', '', 'Smartcommands', ''),
 	(8, 'Garden', '', '', 'Jardin', ''),
 	(10, 'Furnace', '', '', 'Chaudière', ''),
