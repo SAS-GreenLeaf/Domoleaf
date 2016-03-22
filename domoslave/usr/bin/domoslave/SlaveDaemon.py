@@ -661,7 +661,7 @@ class SlaveDaemon:
                 conf_str += 'auto lo\n';
                 conf_str += 'iface lo inet loopback\n\n';
                 
-                conf_str += 'auto eth0\n';
+                conf_str += 'allow-hotplug eth0\n';
                 conf_str += 'iface eth0 inet dhcp\n\n';
                 
                 conf_str += 'allow-hotplug usb0\n';
