@@ -840,9 +840,9 @@ class MasterDaemon:
         """
         Call "service reload nginx"
         """
-        self.logger.info('Reloading web server...');
+        self.logger.debug('Reloading web server...');
         call(["service", "nginx", "reload"]);
-        self.logger.info('[ OK ] Done reloading web server.');
+        self.logger.debug('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection):
         Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);

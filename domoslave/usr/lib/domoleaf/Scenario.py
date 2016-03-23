@@ -22,7 +22,7 @@ class Scenario:
 
     def get_scenarios_tab(self, scenarios):
         scenarios_tab = {};
-        self.logger.info('\n\nGETTING SCENARIOS TAB\n');
+        self.logger.debug('\n\nGETTING SCENARIOS TAB\n');
         for d in scenarios:
             scHash = str(d[4])+'_'+str(d[5])
             if (scHash not in scenarios_tab):
@@ -31,7 +31,7 @@ class Scenario:
         return scenarios_tab;
     
     def update_scenarios_list(self):
-        self.logger.info('UPDATING SCENARIOS');
+        self.logger.debug('UPDATING SCENARIOS');
 
         query = ('SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, '
                  'id_smartcmd, trigger_events_conditions.room_device_id, id_option '
@@ -42,30 +42,30 @@ class Scenario:
                  'ORDER BY id_scenario');
         scenarios_list = self.sql.mysql_handler_personnal_query(query);
         
-        self.logger.info('S LIST = ' + str(scenarios_list) + '\n');
+        self.logger.debug('S LIST = ' + str(scenarios_list) + '\n');
         self.scenarios_list = self.get_scenarios_tab(scenarios_list);
-        self.logger.info('S TAB = ' + str(self.scenarios_list) + '\n\n\n');
+        self.logger.debug('S TAB = ' + str(self.scenarios_list) + '\n\n\n');
         
     def check_all_scenarios(self, global_state, trigger, schedule, connection, doList):
-        self.logger.info('CHECKING ALL SCENARIOS');
-        self.logger.info('SCENARIOS LIST = ');
-        self.logger.info(self.scenarios_list);
-        self.logger.info('\n');
+        self.logger.debug('CHECKING ALL SCENARIOS');
+        self.logger.debug('SCENARIOS LIST = ');
+        self.logger.debug(self.scenarios_list);
+        self.logger.debug('\n');
         for do in doList:
             slist = self.scenarios_list[str(do[1])+'_'+str(do[0])];
-            self.logger.info('SLIST = ');
-            self.logger.info(slist);
+            self.logger.debug('SLIST = ');
+            self.logger.debug(slist);
             for scenario in slist:
                 self.logger.error(scenario);
-                self.logger.info('Scenario : ' + str(scenario) + '\n\n');
+                self.logger.debug('Scenario : ' + str(scenario) + '\n\n');
                 if trigger.test_trigger(scenario[1], global_state) == 1:
-                    self.logger.info('Trigger OK');
+                    self.logger.debug('Trigger OK');
                     if (scenario[2] is None or
                         scenario[2] is not None and schedule.test_schedule(scenario[2]) ==  1):
                         self.launch_scenario(scenario[3], connection);
     
     def launch_scenario(self, id_smartcmd, connection):
-        self.logger.info('LAUNCH !!!');
+        self.logger.debug('LAUNCH !!!');
         jsonString = json.JSONEncoder().encode({
             "data": id_smartcmd
         });

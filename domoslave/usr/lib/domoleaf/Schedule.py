@@ -20,7 +20,7 @@ class Schedule:
         self.update_schedules_list();
 
     def update_schedules_list(self):
-        self.logger.info('Updating Schedules');
+        self.logger.debug('Updating Schedules');
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
                  'FROM scenarios_list '

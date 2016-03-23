@@ -19,7 +19,7 @@ class Trigger:
         self.update_triggers_list();
 
     def update_triggers_list(self):
-        self.logger.info('Updating Triggers');
+        self.logger.debug('Updating Triggers');
         query = ('SELECT trigger_events_list.id_trigger, '
                  'trigger_events_conditions.room_device_id, '
                  'trigger_events_conditions.id_option, trigger_events_conditions.operator, trigger_events_conditions.value '
@@ -29,7 +29,7 @@ class Trigger:
                  'ORDER BY trigger_events_list.id_trigger');
         res = self.sql.mysql_handler_personnal_query(query);
         self.triggers_list = res;
-        self.logger.info(res);
+        self.logger.debug(res);
 
     def get_trigger_info(self, id_trigger):
         triggers_list = self.triggers_list;
@@ -80,7 +80,7 @@ class Trigger:
         if not device_state:
             self.logger.error('No Device State');
             return False;
-        self.logger.info(device_state);
+        self.logger.debug(device_state);
         functab = {
             "0" : self.test_equ,
             "1" : self.test_sup_equ,

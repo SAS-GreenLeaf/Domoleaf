@@ -18,14 +18,14 @@ class CalcLogs:
 
     def __init__(self, daemon):
         self.logger = Logger(False, LOG_FILE);
-        self.logger.info('Init CalcLogs');
+        self.logger.debug('Init CalcLogs');
         self.sql = MasterSql();
         self.daemon = daemon;
         self.devices_list = {};
         self.devices_list_update();
 
     def devices_list_update(self):
-        self.logger.info('Updating Logs');
+        self.logger.debug('Updating Logs');
         query = ('SELECT room_device.daemon_id, room_device_option.addr_plus, room_device_option.addr, '
                  'room_device.room_device_id, room_device_option.option_id, room_device.name '
                  'FROM room_device '
@@ -59,10 +59,10 @@ class CalcLogs:
 
     def get_only_good_logs(self, res):
         tab = [];
-        self.logger.info(self.devices_list);
+        self.logger.debug(self.devices_list);
         for r in res:
             if (r[1] in self.devices_list[r[0]]):
-                self.logger.info(r);
+                self.logger.debug(r);
                 log = [];
                 log.append(r[2]);
                 log.append(r[3]);
@@ -81,7 +81,7 @@ class CalcLogs:
         end_tr = now - TIME_BEFORE_TIME_TO_CALC - 1;
         init_tr = end_tr - TIME_RANGE_TO_CALC + 1;
 
-        #self.logger.info('NOW = '+ time.strftime("%d %m %Y %H:%M:%S", time.localtime(now)));
+        #self.logger.debug('NOW = '+ time.strftime("%d %m %Y %H:%M:%S", time.localtime(now)));
 
         tab = [];
         for r in res:
@@ -259,37 +259,37 @@ class CalcLogs:
         res = self.sql.mysql_handler_personnal_query(query);
         
     def sort_logs(self, connection):
-        self.logger.info('\n\nSorting Logs : \n');
+        self.logger.debug('\n\nSorting Logs : \n');
 
         try:
             logs = self.get_logs(0);
-            #self.logger.info('LOGS :\n' + str(logs) + '\n');
+            #self.logger.debug('LOGS :\n' + str(logs) + '\n');
 
             if not logs:
                 return;
             tablogs = self.get_only_good_logs(logs);
-            self.logger.info('TABLOGS 1 :\n' + str(tablogs) + '\n');
+            self.logger.debug('TABLOGS 1 :\n' + str(tablogs) + '\n');
             tablogs = self.get_good_time_range(tablogs);
             if not tablogs:
                 return;
-            self.logger.info('TABLOGS 2 :\n' + str(tablogs) + '\n');
+            self.logger.debug('TABLOGS 2 :\n' + str(tablogs) + '\n');
             
             dictlogs = self.cut_tab(tablogs);
             if not dictlogs:
                 return;
-            self.logger.info('DICTLOGS :\n' + str(dictlogs) + '\n');
+            self.logger.debug('DICTLOGS :\n' + str(dictlogs) + '\n');
             
             dictlogstime = self.cut_dict_time(dictlogs);
             dictlogstime = self.calc_average_values(dictlogstime);
             if not dictlogstime:
                 return;
-            self.logger.info('DICTLOGSTIME :\n' + str(dictlogstime) + '\n');
+            self.logger.debug('DICTLOGSTIME :\n' + str(dictlogstime) + '\n');
 
-            self.logger.info('Save Graph Logs\n');
+            self.logger.debug('Save Graph Logs\n');
             self.save_graph_logs(dictlogstime);
-            self.logger.info('Delete Logs\n');
+            self.logger.debug('Delete Logs\n');
             self.delete_knx_logs(dictlogs);
-            self.logger.info('OK\n\n');
+            self.logger.debug('OK\n\n');
             
         except Exception as e:
             self.logger.error(e);

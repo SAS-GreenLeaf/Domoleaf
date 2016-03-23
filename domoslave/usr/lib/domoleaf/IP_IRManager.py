@@ -36,4 +36,4 @@ class IP_IRManager:
             s.close();
         except Exception as e:
             self.logger.error(e);
-        self.logger.info("Received Global Cache data :" + str(data));
+        self.logger.debug("Received Global Cache data :" + str(data));

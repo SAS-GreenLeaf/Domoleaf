@@ -14,7 +14,7 @@ class Smartcommand:
 
     def __init__(self, daemon, smartcmd_id = 0):
         self.logger = Logger(False, LOG_FILE);
-        self.logger.info('Started SMARTCMD');
+        self.logger.debug('Started SMARTCMD');
         self.smartcmd_id = smartcmd_id;
         self.sql = MasterSql();
         self.daemon = daemon;
