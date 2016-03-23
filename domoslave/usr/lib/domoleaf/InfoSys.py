@@ -46,16 +46,13 @@ class InfoSys:
         return ""
     
     def softMaster():
-        file = open('/etc/domoleaf/.domomaster.version', 'r');
-        return file.read().split('\n')[0];
+        return os.popen("dpkg-query -W -f='${Version}\n' domomaster").read().split('\n')[0];
     
     def softSlave():
-        file = open('/etc/domoleaf/.domoslave.version', 'r');
-        return file.read().split('\n')[0];
+        return os.popen("dpkg-query -W -f='${Version}\n' domoslave").read().split('\n')[0];
     
     def softKNX():
-        version = os.popen("apt show knxd | grep Version").read().split('\n')[0];
-        return version[8:].strip()
+        return os.popen("dpkg-query -W -f='${Version}\n' knxd").read().split('\n')[0];
     
     def uptime():
         p = Popen(['cat', '/proc/uptime'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);

@@ -1,0 +1,56 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+export DH_VERBOSE=1
+export DEB_BUILD_MAINT_OPTIONS=hardening=-format
+export DEB_BUILD_HARDENING_FORMAT=0
+
+export DH_OPTIONS
+
+%:
+	dh $@ 
+
+override_dh_install:
+	cp -r domomaster debian/
+	cp -r domoslave debian/
+	cp -r www debian/domomaster/etc/domoleaf/
+	@chmod 755 gengettext
+	@./gengettext
+	@echo "[ \033[33m..\033[0m ] Compiling for $(ARCH)..."
+	@make ARCH="${ARCH}" -C monitor_knx
+	@make ARCH="${ARCH}" -C monitor_enocean
+	@echo "[ \033[32mok\033[0m ] Done compiling for $(ARCH)"
+	@cp monitor_knx/monitor_knx         debian/domoslave/usr/bin
+	@cp monitor_enocean/monitor_enocean debian/domoslave/usr/bin
+
+override_dh_installdeb:
+	sed s/#DEBHELPER#// < debian/domomaster.postinst > debian/domomaster/DEBIAN/postinst
+	sed s/#DEBHELPER#// < debian/domomaster.preinst > debian/domomaster/DEBIAN/preinst
+	sed s/#DEBHELPER#// < debian/domomaster.prerm > debian/domomaster/DEBIAN/prerm
+	sed s/#DEBHELPER#// < debian/domomaster.postrm > debian/domomaster/DEBIAN/postrm
+	
+	sed s/#DEBHELPER#// < debian/domoslave.postinst > debian/domoslave/DEBIAN/postinst
+	sed s/#DEBHELPER#// < debian/domoslave.preinst > debian/domoslave/DEBIAN/preinst
+	sed s/#DEBHELPER#// < debian/domoslave.prerm > debian/domoslave/DEBIAN/prerm
+	sed s/#DEBHELPER#// < debian/domoslave.postrm > debian/domoslave/DEBIAN/postrm
+	
+	chown 0:0 debian/domomaster/DEBIAN/postinst
+	chmod 755 debian/domomaster/DEBIAN/postinst
+	chown 0:0 debian/domomaster/DEBIAN/preinst
+	chmod 755 debian/domomaster/DEBIAN/preinst
+	chown 0:0 debian/domomaster/DEBIAN/prerm
+	chmod 755 debian/domomaster/DEBIAN/prerm
+	chown 0:0 debian/domomaster/DEBIAN/postrm
+	chmod 755 debian/domomaster/DEBIAN/postrm
+
+	chown 0:0 debian/domoslave/DEBIAN/postinst
+	chmod 755 debian/domoslave/DEBIAN/postinst
+	chown 0:0 debian/domoslave/DEBIAN/preinst
+	chmod 755 debian/domoslave/DEBIAN/preinst
+	chown 0:0 debian/domoslave/DEBIAN/prerm
+	chmod 755 debian/domoslave/DEBIAN/prerm
+	chown 0:0 debian/domoslave/DEBIAN/postrm
+	chmod 755 debian/domoslave/DEBIAN/postrm
+	
+override_dh_clean:
+	dh_clean

@@ -12,6 +12,6 @@ cp -r /etc/domoleaf/www/templates/default/custom /etc/domoleaf/
 rm -f /etc/cron.d/domomaster*
 rm -rf /etc/domoleaf/www
 rm -rf /etc/domoleaf/sql
-rm -f /init.d/domomaster
+rm -f /etc/init.d/domomaster
 rm -f /etc/nginx/sites-available/domoleaf.conf
 rm -rf /usr/bin/domomaster 

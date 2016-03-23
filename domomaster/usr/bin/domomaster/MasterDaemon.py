@@ -325,14 +325,7 @@ class MasterDaemon:
         hostname = socket.gethostname();
         if '.' in hostname:
             hostname = hostname.split('.')[0];
-        version_file = open('/etc/domoleaf/.domomaster.version', 'r');
-        if not version_file:
-            self.logger.error("File not found: /etc/domoleaf/.domomaster.version");
-            print("File not found: /etc/domoleaf/.domomaster.version");
-            return;
-        version = version_file.read();
-        if '\n' in version:
-            version = version.split('\n')[0];
+        version = os.popen("dpkg-query -W -f='${Version}\n' domomaster").read().split('\n')[0];
         query = 'UPDATE daemon SET version="' + version + '" WHERE name="' + hostname + '"';
         self.sql.mysql_handler_personnal_query(query);
         query = 'UPDATE configuration SET configuration_value="' + version + '" WHERE configuration_id=4';

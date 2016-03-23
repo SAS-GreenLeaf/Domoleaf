@@ -140,14 +140,7 @@ class SlaveDaemon:
         p = call(['dpkg', '--configure', '-a'])
         call(['apt-get', 'update']);
         call(['DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', 'domoslave', '-y']);
-        version_file = open('/etc/domoleaf/.domoslave.version', 'r');
-        if not version_file:
-            self.logger.error('/etc/domoleaf/.domoslave.version: no such file or directory');
-            print('/etc/domoleaf/.domoslave.version: no such file or directory');
-            return;
-        version = version_file.read();
-        if '\n' in version:
-            version = version.split('\n')[0];
+        version = os.popen("dpkg-query -W -f='${Version}\n' domoslave").read().split('\n')[0];
         json_str = '{"packet_type": "update_finished", "aes_pass": "' + self.private_aes + '", "new_version": ' + version + '}'
         encrypt_IV = AESManager.get_IV();
         spaces = 16 - len(json_str) % 16;
@@ -352,8 +345,7 @@ class SlaveDaemon:
         print("=======================");
         interface_knx = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_INTERFACE);
         interface_enocean = self._parser.getValueFromSection(SLAVE_CONF_ENOCEAN_SECTION, SLAVE_CONF_ENOCEAN_INTERFACE);
-        file = open('/etc/domoleaf/.domoslave.version', 'r');
-        version = file.read().split('\n')[0];
+        version = os.popen("dpkg-query -W -f='${Version}\n' domoslave").read().split('\n')[0];
         json_str = '{"packet_type": "check_slave", "aes_pass": "' + self.private_aes + '", "version": "' + version + '", "interface_knx": "' + interface_knx + '", "interface_enocean": "' + interface_enocean + '"}';
         master_hostname = str(json_obj['sender_name']);
         encrypt_IV = AESManager.get_IV();

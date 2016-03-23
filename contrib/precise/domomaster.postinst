@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -e "[ \033[32mok\033[0m ] Done installing Domoleaf master daemon"
-domomaster=`cat /etc/domoleaf/.domomaster.version`
+domomaster=`dpkg-query -W -f='${Version}\n' domomaster`
 
 #Backups
 mkdir -p /etc/domoleaf/mnt
@@ -13,6 +13,7 @@ touch /etc/domoleaf/camera.conf
 bash /etc/domoleaf/sql/database.sh
 python3 /usr/bin/domomaster/domomaster_postinst.py
 
+pip3 install --allow-all-external mysql-connector-python
 user=`mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "SELECT mcuser_id FROM mcuser WHERE mcuser_id = 1;"`
 if [ "$user" = "" ]; then
     adminpasswd=`echo -n '1_admin' | sha256sum | sed 's/  -//g'`
@@ -37,13 +38,8 @@ chown www-data:www-data /etc/domoleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/room
 
 #CRON
-chown root:root /etc/cron.d/domomaster
-chmod 744 /etc/cron.d/domomaster
 chmod +x /etc/domoleaf/cron/CronOpenPort.py
 
 chmod +x /usr/bin/domomaster.py
-chmod +x /etc/init.d/domomaster
 update-rc.d domomaster defaults
-update-rc.d domomaster enable
 service domomaster start
-service php5-fpm restart

@@ -1,6 +1,6 @@
 # Compile Deb files
 #
-# VERSION               0.0.1
+# VERSION               0.0.2
 #
 
 FROM     debian:jessie
@@ -35,18 +35,18 @@ WORKDIR /root/
 RUN dpkg -i knxd-tools*.deb knxd-dev*.deb
 
 #Copy directories
-ADD dists /root/domoleaf/dists
+ADD debian /root/domoleaf/debian
 ADD domomaster /root/domoleaf/domomaster
 ADD domoslave /root/domoleaf/domoslave
+ADD locales /root/domoleaf/locales
 ADD monitor_enocean /root/domoleaf/monitor_enocean
 ADD monitor_knx /root/domoleaf/monitor_knx
 ADD www /root/domoleaf/www
-ADD check_compiler /root/domoleaf/check_compiler
 ADD Makefile /root/domoleaf/Makefile
 ADD gengettext /root/domoleaf/gengettext
 
 #Build Domoleaf
 WORKDIR /root/domoleaf
-RUN make
+RUN dpkg-buildpackage -b -uc
 
 CMD ["/bin/bash"]
