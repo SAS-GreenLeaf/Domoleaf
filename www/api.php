@@ -23,7 +23,12 @@ include('libs/Api.class.php');
 if(!empty($_GET)) {
 	$_POST = $_GET;
 }
-
+if(empty($_POST['token'])) {
+	$_POST['token'] = null;
+}
+if(empty($_POST['request'])) {
+	$_POST['request'] = null;
+}
 $answer = Api::action($_POST['token'], $_POST['request']);
 
 echo json_encode($answer);
