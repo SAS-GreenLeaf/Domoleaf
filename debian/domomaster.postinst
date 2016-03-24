@@ -37,9 +37,7 @@ chown www-data:www-data /etc/domoleaf/www/templates/default/custom/device
 chown www-data:www-data /etc/domoleaf/www/templates/default/custom/room
 
 #CRON
-chown root:root /etc/cron.d/domomaster
-chmod 744 /etc/cron.d/domomaster
-chmod +x /etc/domoleaf/cron/CronOpenPort.py
+chmod +x /etc/domoleaf/cron/Cron*.py
 
 chmod +x /usr/bin/domomaster.py
 update-rc.d domomaster defaults
