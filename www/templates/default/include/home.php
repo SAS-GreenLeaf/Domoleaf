@@ -204,10 +204,12 @@ function HandlePopup(type, iddevice){
 					message: msg,
 					onhide: function(){
 						if ($("#cmd-camera-display").length) {
-							var src = $("#cmd-camera-display").attr("src");
-							var res = src.split("@");
-							var url = "http://reset:reset@"+res[1];
-							$("#cmd-camera-display").attr("src", url);
+							if (navigator.userAgent.indexOf(\'Safari\') == -1 || navigator.userAgent.indexOf(\'Chrome\') != -1) {
+								var src = $("#cmd-camera-display").attr("src");
+								var res = src.split("@");
+								var url = "http://reset:reset@"+res[1];
+								$("#cmd-camera-display").attr("src", url);
+							}
 							$("#cmd-camera-display").removeAttr("src");
 						}
 					}
