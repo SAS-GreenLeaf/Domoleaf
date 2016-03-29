@@ -1,0 +1,20 @@
+domoleaf (0.8.0) unstable; urgency=medium
+
+  * Add IR and KNX for audio/video remote control
+  * Add KNX Programmation mode
+  * Code cleaning
+  * Docker's scripts
+  * Fix cameras (not with Safari)
+  * Fix crons
+  * Fix network when wifi is configured
+  * Fix some interface bug
+  * Fix Ubuntu 16.04 compatibility
+  * Improve upgrade code
+  * Increase networkscan speed
+  * Loading page during startup
+  * Move to dpkg-buildpackage
+  * New options for SC
+  * Remove "1" if there is only one button
+  * Update translations
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Thu, 27 Oct 2015 16:13:17 +0200
