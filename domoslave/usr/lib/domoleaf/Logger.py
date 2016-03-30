@@ -25,3 +25,10 @@ class Logger:
         """
         if self.log_flag:
             logging.error(msg);
+
+    def debug(self, msg):
+        """
+        Log a debug message in the file
+        """
+        if self.log_flag:
+            logging.debug(msg);

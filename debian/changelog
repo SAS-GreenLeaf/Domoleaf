@@ -1,3 +1,9 @@
+domoleaf (0.8.1) unstable; urgency=critical
+
+  * Fix log code
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Wed, 30 Mar 2016 9:42:00 +0100
+
 domoleaf (0.8.0) unstable; urgency=medium
 
   * Add IR and KNX for audio/video remote control
@@ -17,4 +23,4 @@ domoleaf (0.8.0) unstable; urgency=medium
   * Remove "1" if there is only one button
   * Update translations
 
- -- Virgil Rochette <vr@greenleaf.fr>  Thu, 27 Oct 2015 16:13:17 +0200
+ -- Virgil Rochette <vr@greenleaf.fr>  Thu, 29 Mar 2016 10:13:17 +0100
