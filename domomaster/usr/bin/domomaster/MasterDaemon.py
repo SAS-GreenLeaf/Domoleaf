@@ -344,6 +344,7 @@ class MasterDaemon:
                 version = data2['new_version'];
                 query = 'UPDATE daemon SET version="' + version + '" WHERE name="' + host._Hostname + '"';
                 self.sql.mysql_handler_personnal_query(query);
+                sock.close();
 
     def backup_db_create_local(self, json_obj, connection):
         path = '/etc/domoleaf/sql/backup/';
@@ -770,6 +771,7 @@ class MasterDaemon:
         self.sql.mysql_handler_personnal_query(query);
         query = 'UPDATE daemon_protocol SET interface="' + interface_enocean + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="2"';
         self.sql.mysql_handler_personnal_query(query);
+        sock.close();
 
     def get_secret_key(self, hostname):
         """
@@ -954,6 +956,7 @@ class MasterDaemon:
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
         connection.close();
+        sock.close();
 
     def shutdown_d3(self, json_obj, connection):
         """
@@ -990,6 +993,7 @@ class MasterDaemon:
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         connection.close();
+        sock.close();
 
     def reboot_d3(self, json_obj, connection):
         """
@@ -1026,6 +1030,7 @@ class MasterDaemon:
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         connection.close();
+        sock.close();
 
     def wifi_update(self, json_obj, connection):
         """
@@ -1082,3 +1087,4 @@ class MasterDaemon:
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
         connection.close();
+        sock.close();
