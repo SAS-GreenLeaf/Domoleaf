@@ -108,7 +108,11 @@ echo '
 	<div class="col-xs-12 col-md-6">
 		<br/>
 		<div class="center">
-			<h3>'._('Price for kilowatt per hour').'</h3>
+			<h3>'
+				._('Price for kilowatt per hour').'
+				<button id="popupDateAndTime" type"button" class="btn btn-primary margin-left" onclick="PopupModifDateTime()" title="'._('Date and Time').'"><span class="fa fa-clock-o"></span></button>
+			</h3>
+			
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="currency">'._('Currency').'</label>
@@ -331,6 +335,19 @@ function SendTestMail(){
 			}
 		});
 	}
+}
+
+function PopupModifDateTime(){
+	$.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_modif_datetime.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: "'._('Configure date and time').'",
+				message: result
+			});
+		}
+	});
 }
 
 var idIntervalCheck = null;

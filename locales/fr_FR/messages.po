@@ -278,6 +278,7 @@ msgstr "IP"
 #: include/profile.php:73 include/profile.php:126
 #: include/profile_user_trigger_schedules_edit.php:31
 #: popup/popup_wifi.php:44 popup/popup_new_room.php
+#: popup/popup_modif_datetime.php
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -286,6 +287,7 @@ msgstr "Sauvegarder"
 #: popup/popup_rename_daemon.php:165 popup/popup_rename_floor.php:20
 #: popup/popup_rename_room.php:39 include/conf_device_new.php:9
 #: popup/popup_new_room.php:26
+#: popup/popup_modif_datetime.php
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -395,6 +397,35 @@ msgstr "Pré-configurer"
 #: popup/popup_pre_configuration_mail.php:12
 msgid "Enter your email to complete your configuration"
 msgstr "Entrez votre email pour compléter votre configuration"
+
+#: include/conf_general.php
+#: popup/popup_modif_datetime.php
+msgid "Configure date and time"
+msgstr "Configuration de la date et de l'heure"
+
+#: popup/popup_modif_datetime.php
+msgid "Warning if the box is connected to Internet the date will be automatically updated"
+msgstr "Attention si le boitier est connecter a internet l'heure se met a jour automatiquement"
+
+#: popup/popup_modif_datetime.php
+msgid "Day"
+msgstr "Jour"
+
+#: popup/popup_modif_datetime.php
+msgid "Month"
+msgstr "Mois"
+
+#: popup/popup_modif_datetime.php
+msgid "Year"
+msgstr "Année"
+
+#: popup/popup_modif_datetime.php
+msgid "Hour"
+msgstr "Heure"
+
+#: popup/popup_modif_datetime.php
+msgid "Minute"
+msgstr "Minute"
 
 #: popup/popup_reboot_d3.php:15
 #, php-format

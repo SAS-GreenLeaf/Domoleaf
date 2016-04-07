@@ -389,6 +389,25 @@ class Api {
 							$res = $user->confPriceElec($var[0], $var[1], $var[2], $var[3], $var[4]);
 						break;
 
+						case 'confDateTime':		
+							if (empty($var[0]) or !preg_match('/^([0-9]*)$/', $var[0])) {
+								$var[0] = date('j');
+							}
+							if (empty($var[1]) or !preg_match('/^([0-9]*)$/', $var[1])) {
+								$var[1] = date('n');
+							}
+							if (empty($var[2]) or !preg_match('/^([0-9]*)$/', $var[2])) {
+								$var[2] = date('Y');
+							}
+							if (!isset($var[3]) or !preg_match('/^([0-9]*)$/', $var[3])) {
+								$var[3] = date('G');
+							}
+							if (!isset($var[4]) or !preg_match('/^([0-9]*)$/', $var[4])) {
+								$var[4] = date('i');
+							}
+							$res = $user->confDateTime($var[0], $var[1], intval($var[2]), $var[3], $var[4]);
+						break;
+						
 						/*** Floor ***/
 						
 						case 'confFloorList':
