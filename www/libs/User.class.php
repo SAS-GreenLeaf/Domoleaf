@@ -121,6 +121,10 @@ class User {
 		return null;
 	}
 	
+	function confDateTime($day, $month, $year, $hour, $minute) {
+		return null;
+	}
+	
 	/*** Floors ***/
 	function confFloorList() {
 		return null;

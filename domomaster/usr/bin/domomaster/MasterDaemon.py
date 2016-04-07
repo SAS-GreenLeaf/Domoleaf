@@ -73,6 +73,7 @@ DATA_KNX_WRITE_L              = 'knx_write_l';
 DATA_SEND_TO_DEVICE           = 'send_to_device';
 DATA_CRON_UPNP                = 'cron_upnp';
 DATA_SEND_MAIL                = 'send_mail';
+DATA_MODIF_DATETIME           = 'modif_date';
 DATA_CHECK_SLAVE              = 'check_slave';
 DATA_RELOAD_CAMERA            = 'reload_camera';
 DATA_RELOAD_D3CONFIG          = 'reload_d3config';
@@ -154,6 +155,7 @@ class MasterDaemon:
             DATA_SEND_TO_DEVICE               : self.send_to_device,
             DATA_CRON_UPNP                    : self.cron_upnp,
             DATA_SEND_MAIL                    : self.send_mail,
+            DATA_MODIF_DATETIME               : self.modif_datetime,
             DATA_CHECK_SLAVE                  : self.check_slave,
             DATA_RELOAD_CAMERA                : self.reload_camera,
             DATA_RELOAD_D3CONFIG              : self.reload_d3config,
@@ -816,6 +818,10 @@ class MasterDaemon:
             self.logger.error(e);
             connection.send(bytes('Error', 'utf-8'));
             connection.close();
+
+    def modif_datetime(self, json_obj, connection):
+        os.system('date --set '+json_obj['data'][0]);
+        os.system('date --set '+json_obj['data'][1]);
 
     def get_slave_name(self, json_obj, daemons):
         """
