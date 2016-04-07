@@ -14,8 +14,7 @@ override_dh_install:
 	cp -r domomaster debian/
 	cp -r domoslave debian/
 	cp -r www debian/domomaster/etc/domoleaf/
-	@chmod 755 gengettext
-	@./gengettext
+	@sh gengettext
 	@echo "[ \033[33m..\033[0m ] Compiling for $(ARCH)..."
 	@make ARCH="${ARCH}" -C monitor_knx
 	@make ARCH="${ARCH}" -C monitor_enocean
