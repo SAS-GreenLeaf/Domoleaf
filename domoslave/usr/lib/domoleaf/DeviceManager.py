@@ -126,7 +126,7 @@ class DeviceManager:
                 res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
                 device['daemon_name'] = res[0][2];
                 device['daemon_secretkey'] = res[0][3];
-            db.close();
+                db.close();
             return device;
         device['addr_dst'] = 0;
 
@@ -142,5 +142,5 @@ class DeviceManager:
             res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
             device['daemon_name'] = res[0][2];
             device['daemon_secretkey'] = res[0][3];
-        db.close();
+            db.close();
         return device;
