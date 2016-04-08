@@ -14,8 +14,8 @@ class Link {
 				} catch (PDOException $e) {
 					if(file_exists('templates/default/include/nosql.php')) {
 						include('templates/default/include/nosql.php');
-						die();
 					}
+					die();
 				}
 			break;
 		}
