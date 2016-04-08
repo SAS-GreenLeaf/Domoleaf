@@ -1,3 +1,10 @@
+domoleaf (0.8.2) unstable; urgency=critical
+
+  * Clean gettext
+  * Fix unclosed db
+  * Fix unclosed sockets
+  * Fix warning during reboot
+
 domoleaf (0.8.1) unstable; urgency=critical
 
   * Fix log code
