@@ -333,7 +333,7 @@ class SlaveDaemon:
             else:
                 if cron in self.connected_cron:
                     cron.close();
-                    self.parse_data.remove(cron);
+                    self.connected_cron.remove(cron);
     
     def check_slave(self, json_obj, connection):
         """
