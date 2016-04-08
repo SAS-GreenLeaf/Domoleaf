@@ -5,6 +5,8 @@ domoleaf (0.8.2) unstable; urgency=critical
   * Fix unclosed sockets
   * Fix warning during reboot
 
+ -- Virgil Rochette <vr@greenleaf.fr>  Fri, 8 Apr 2016 16:12:00 +0100
+
 domoleaf (0.8.1) unstable; urgency=critical
 
   * Fix log code
