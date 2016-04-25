@@ -278,14 +278,18 @@ class MasterDaemon:
         Gets new slave connections and threads the treatment.
         """
         new_connection, addr = connection.accept();
-        name = socket.gethostbyaddr(addr[0])[0]
         myname = socket.gethostname();
+        
+        try:
+            name = socket.gethostbyaddr(addr[0])[0]
+        except socket.error as serr:
+            name = 'localhost'
+        
         if name == 'localhost':
             name = myname
-        if name == myname or name.startswith('MD3') or name.startswith('SD3'):
-            name = name.split('.')[0];
-            r = SlaveReceiver(new_connection, name, self);
-            r.start();
+        name = name.split('.')[0];
+        r = SlaveReceiver(new_connection, name, self);
+        r.start();
 
     def parse_data(self, data, connection, daemon_id):
         """
