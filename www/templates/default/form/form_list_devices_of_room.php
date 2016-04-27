@@ -6,6 +6,9 @@ $request =  new Api();
 $result  =  $request -> send_request();
 
 $resDevices = '';
+$graphOptions = array(
+	6, 72, 73, 79, 173, 174, 399, 407, 441
+);
 
 if (!empty($_GET['room_id'])) {
 
@@ -20,7 +23,12 @@ if (!empty($_GET['room_id'])) {
 
 	foreach ($listDevice as $device) {
 		if ($device->room_id == $room_id){
-			$resDevices.='<option value="'.$device->room_device_id.'">'.$device->name.'</option>';
+			foreach ($device->device_opt as $option){
+				if(in_array($option->option_id, $graphOptions)) {
+					$resDevices.='<option value="'.$device->room_device_id.'">'.$device->name.'</option>';
+					break;
+				}
+			}
 		}
 	}
 }
