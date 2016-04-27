@@ -174,9 +174,9 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
-	function passwordRename($last, $new, $id=0) {
+	function profilePassword($last, $new, $id=0) {
 		if(empty($id)) {
-			parent::passwordRename($last, $new);
+			parent::profilePassword($last, $new);
 		}
 		else {
 			$link = Link::get_link('domoleaf');

@@ -134,7 +134,7 @@ class Guest {
 	public static function confResetPassword($resetKey, $newPassword){
 		if (self::confCheckResetKey($resetKey)){
 			$admin = new Admin(1);
-			$admin->passwordRename('', $newPassword, 1);
+			$admin->profilePassword('', $newPassword, 1);
 			return '1'.$admin->profileInfo(1)->username;
 		}
 		return False;

@@ -1462,9 +1462,13 @@ msgstr "Langue"
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: include/conf_profiles.php:87 include/profile.php:83
+#: include/profile.php
 msgid "Warning : Please fill the 3 password inputs !"
 msgstr "Attention : Merci de remplir les 3 champs de mot de passe"
+
+#: include/conf_profiles.php
+msgid "Warning : Please fill the 2 password inputs!"
+msgstr "Attention : Merci de remplir les 2 champs de mot de passe"
 
 #: include/conf_profiles.php:92 include/profile.php:87
 msgid "Old password"
@@ -1474,9 +1478,13 @@ msgstr "Ancien mot de passe"
 msgid "Type old password"
 msgstr "Entrez votre ancien mot de passe"
 
-#: include/conf_profiles.php:102 include/profile.php:98
+#: include/profile.php
 msgid "Warning : Your new password is too short ! (6 characters min)"
 msgstr "Attention : Votre nouveau mot de passe est trop court ! (6 caractères min)"
+
+#: include/conf_profiles.php
+msgid "Warning : The new password is too short! (6 characters min)"
+msgstr "Attention : Le nouveau mot de passe est trop court ! (6 caractères min)"
 
 #: include/conf_profiles.php:111 include/profile.php:106
 msgid "Type new password"

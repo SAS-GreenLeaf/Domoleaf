@@ -409,13 +409,13 @@ class User {
 		
 		$sql = 'SELECT mcuser_id, mcuser_password
 		        FROM mcuser
-		        WHERE mcuser_id= :id';
+		        WHERE mcuser_id= :user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 	
-		if($do->user_password == hash('sha256', $do->mcuser_id.'_'.$last)) {
+		if($do->mcuser_password == hash('sha256', $do->mcuser_id.'_'.$last)) {
 			$sql = 'UPDATE mcuser
 			        SET mcuser_password=:user_password
 			        WHERE mcuser_id=:user_id';

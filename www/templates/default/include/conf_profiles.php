@@ -85,7 +85,7 @@ echo '
 				
 				<label class="control-label" for="timeZone">'._('Time zone').'</label>
 				<div class="input-group">
-		  			<label class="input-group-addon" for="timeZone">
+					<label class="input-group-addon" for="timeZone">
 							<span aria-hidden="true" class=" glyphicon glyphicon-time"></span>
 					</label>
 					<select id="selectTimeZone" name="selectbasic" class="input-xlarge center form-control selectpicker medium-input">';
@@ -131,23 +131,15 @@ echo '
 			<h2>'._('Change password').'</h2>
 			<div id="alert1" class="alert alert-danger center" role="alert">
 				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-				'._('Warning : Please fill the 3 password inputs !').'
+				'._('Warning : Please fill the 2 password inputs!').'
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 						
 			<div class="control-group control-group-profile">
-				<label class="control-label" for="oldPWD">'._('Old password').'</label>
-				<div class="input-group">
-					<label for="username" class="input-group-addon">
-						<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-					</label>
-					<input name="oldPWD" type="password" class="form-control" id="oldPWD" placeholder="'._('Type old password').'">
-				</div>
-							
 				<div id="alert2" class="alert alert-danger center" role="alert">
-						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						'._('Warning : Your new password is too short ! (6 characters min)').'
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					'._('Warning : The new password is too short! (6 characters min)').'
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
 								
 				<label class="control-label" for="newPWD">'._('New password').'</label>
@@ -173,7 +165,7 @@ echo '
 				</div>
 				
 				<div class="controls save-button">
-					<button onclick="savePassword()" id="savePassword" name="savePassword" class="btn btn-greenleaf center">'._('Save').'</button>
+					<button onclick="savePassword('.$profilInfo->mcuser_id.')" id="savePassword" name="savePassword" class="btn btn-greenleaf center">'._('Save').'</button>
 				</div>
 			</div>
 		</fieldset>
@@ -193,18 +185,17 @@ $("#alert3").hide();
 function loadingForm() {
 	BootstrapDialog.show({
 		title: \''._('Loading').'\',
-   		message: \''._('Load in progress').'\'
+		message: \''._('Load in progress').'\'
 	});
 }
 
-function savePassword() {
+function savePassword(id) {
 	$("#alert1").hide();
 	$("#alert2").hide();
 	$("#alert3").hide();
-	var old = $("#oldPWD").val();
 	var newPassword = $("#newPWD").val();
 	var confirm = $("#confirmPWD").val();
-	if (old != "" && newPassword != "" && confirm != "")
+	if(newPassword != "" && confirm != "")
 	{
 		if (newPassword.length < 6)
 		{
@@ -219,7 +210,7 @@ function savePassword() {
 			$.ajax({
 				type:"GET",
 				url: "/form/form_password_save.php",
-				data: "old="+old+"&password="+newPassword+"&id=0",
+				data: "old=oldpassword&password="+newPassword+"&id="+id,
 				beforeSend: function(){
 					loadingForm();
 				},
@@ -239,8 +230,8 @@ function saveProfile() {
 	var lastname = $("#lastname").val();
 	var firstname = $("#firstname").val();
 	var language = $("#selectLanguage").val();
-   	var timeZone = $("#selectTimeZone").val();
-   	var level = $("#selectLvl").val();
+	var timeZone = $("#selectTimeZone").val();
+	var level = $("#selectLvl").val();
 
 	if ($("#sexe-1").is(\':checked\'))
 	{
