@@ -73,6 +73,7 @@ DATA_KNX_WRITE_L              = 'knx_write_l';
 DATA_SEND_TO_DEVICE           = 'send_to_device';
 DATA_CRON_UPNP                = 'cron_upnp';
 DATA_SEND_MAIL                = 'send_mail';
+DATA_MODIF_DATETIME           = 'modif_date';
 DATA_CHECK_SLAVE              = 'check_slave';
 DATA_RELOAD_CAMERA            = 'reload_camera';
 DATA_RELOAD_D3CONFIG          = 'reload_d3config';
@@ -154,6 +155,7 @@ class MasterDaemon:
             DATA_SEND_TO_DEVICE               : self.send_to_device,
             DATA_CRON_UPNP                    : self.cron_upnp,
             DATA_SEND_MAIL                    : self.send_mail,
+            DATA_MODIF_DATETIME               : self.modif_datetime,
             DATA_CHECK_SLAVE                  : self.check_slave,
             DATA_RELOAD_CAMERA                : self.reload_camera,
             DATA_RELOAD_D3CONFIG              : self.reload_d3config,
@@ -276,14 +278,18 @@ class MasterDaemon:
         Gets new slave connections and threads the treatment.
         """
         new_connection, addr = connection.accept();
-        name = socket.gethostbyaddr(addr[0])[0]
         myname = socket.gethostname();
+        
+        try:
+            name = socket.gethostbyaddr(addr[0])[0]
+        except socket.error as serr:
+            name = 'localhost'
+        
         if name == 'localhost':
             name = myname
-        if name == myname or name.startswith('MD3') or name.startswith('SD3'):
-            name = name.split('.')[0];
-            r = SlaveReceiver(new_connection, name, self);
-            r.start();
+        name = name.split('.')[0];
+        r = SlaveReceiver(new_connection, name, self);
+        r.start();
 
     def parse_data(self, data, connection, daemon_id):
         """
@@ -344,6 +350,7 @@ class MasterDaemon:
                 version = data2['new_version'];
                 query = 'UPDATE daemon SET version="' + version + '" WHERE name="' + host._Hostname + '"';
                 self.sql.mysql_handler_personnal_query(query);
+                sock.close();
 
     def backup_db_create_local(self, json_obj, connection):
         path = '/etc/domoleaf/sql/backup/';
@@ -770,6 +777,7 @@ class MasterDaemon:
         self.sql.mysql_handler_personnal_query(query);
         query = 'UPDATE daemon_protocol SET interface="' + interface_enocean + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="2"';
         self.sql.mysql_handler_personnal_query(query);
+        sock.close();
 
     def get_secret_key(self, hostname):
         """
@@ -814,6 +822,10 @@ class MasterDaemon:
             self.logger.error(e);
             connection.send(bytes('Error', 'utf-8'));
             connection.close();
+
+    def modif_datetime(self, json_obj, connection):
+        os.system('date --set '+json_obj['data'][0]);
+        os.system('date --set '+json_obj['data'][1]);
 
     def get_slave_name(self, json_obj, daemons):
         """
@@ -954,6 +966,7 @@ class MasterDaemon:
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
         connection.close();
+        sock.close();
 
     def shutdown_d3(self, json_obj, connection):
         """
@@ -990,6 +1003,7 @@ class MasterDaemon:
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         connection.close();
+        sock.close();
 
     def reboot_d3(self, json_obj, connection):
         """
@@ -1026,6 +1040,7 @@ class MasterDaemon:
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
         connection.close();
+        sock.close();
 
     def wifi_update(self, json_obj, connection):
         """
@@ -1082,3 +1097,4 @@ class MasterDaemon:
                 re = '1';
             connection.send(bytes(re, 'utf-8'));
         connection.close();
+        sock.close();

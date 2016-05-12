@@ -41,7 +41,7 @@ class KNXManager:
         elif int(json_obj['type']) == KNX_WRITE_LONG:
             return self.sql.update_room_device_option_write_long(json_obj, daemon_id);
 
-    def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key, close_flag = True):
+    def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key):
         """
         Send 'json_obj' to 'hostname' via 'sock'
         """
@@ -56,8 +56,6 @@ class KNXManager:
         spaces = 16 - len(json_str) % 16;
         data2 = encode_obj.encrypt(json_str + (spaces * ' '));
         sock.send(bytes(aes_IV, 'utf-8') + data2);
-        if close_flag == True:
-            sock.close();
 
     def send_knx_write_speed_fan(self, json_obj, dev, hostname):
         """
@@ -106,6 +104,7 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
 
     def send_knx_write_temp(self, json_obj, dev, hostname):
         """
@@ -128,6 +127,7 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
 
     def send_knx_write_long_to_slave(self, json_obj, dev, hostname):
         """
@@ -145,6 +145,7 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
 
     def send_knx_write_short_to_slave(self, json_obj, dev, hostname):
         """
@@ -162,6 +163,7 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
 
     def send_knx_read_request_to_slave(self, hostname, json_obj):
         """
@@ -178,6 +180,7 @@ class KNXManager:
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
     
     def send_on(self, json_obj, dev, hostname):
         """
@@ -281,8 +284,9 @@ class KNXManager:
             {
                 "packet_type": "knx_write_long",
                 "addr_to_send": str(dev['addr_dst']),
-                "value": hex(255*int(json_obj['data']['value'])/100)
+                "value": hex(int(255*int(json_obj['data']['value'])/100))
             }
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
+        sock.close();
 

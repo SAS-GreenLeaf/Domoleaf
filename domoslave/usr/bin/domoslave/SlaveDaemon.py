@@ -290,7 +290,8 @@ class SlaveDaemon:
             decode_obj = AES.new(self.private_aes, AES.MODE_CBC, decrypt_IV);
             data2 = decode_obj.decrypt(data[16:]);
             self.parse_data(data2.decode(), master);
-
+            master.close();
+    
     def receive_from_knx(self, knx_to_read):
         """
         Read data from monitor KNX and transmits to master.
@@ -299,10 +300,9 @@ class SlaveDaemon:
             data = knx.recv(TELEGRAM_LENGTH);
             if data:
                 self.send_knx_data_to_masters(data);
-            else:
-                if knx in self.connected_knx:
-                    knx.close();
-                    self.connected_knx.remove(knx);
+            if knx in self.connected_knx:
+                knx.close();
+                self.connected_knx.remove(knx);
 
     def receive_from_enocean(self, enocean_to_read):
         """
@@ -312,10 +312,9 @@ class SlaveDaemon:
             data = enocean.recv(4096);
             if data:
                 self.send_enocean_data_to_masters(data);
-            else:
-                if enocean in self.connected_enocean:
-                    enocean.close();
-                    self.connected_enocean.remove(enocean);
+            if enocean in self.connected_enocean:
+                enocean.close();
+                self.connected_enocean.remove(enocean);
     
     def receive_from_cron(self, cron_to_read):
         """
@@ -330,10 +329,9 @@ class SlaveDaemon:
                     }
                 );
                 self.parse_data(json_str, cron);
-            else:
-                if cron in self.connected_cron:
-                    cron.close();
-                    self.parse_data.remove(cron);
+            if cron in self.connected_cron:
+                cron.close();
+                self.connected_cron.remove(cron);
     
     def check_slave(self, json_obj, connection):
         """

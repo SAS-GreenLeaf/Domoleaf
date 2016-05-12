@@ -174,9 +174,9 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
-	function passwordRename($last, $new, $id=0) {
+	function profilePassword($last, $new, $id=0) {
 		if(empty($id)) {
-			parent::passwordRename($last, $new);
+			parent::profilePassword($last, $new);
 		}
 		else {
 			$link = Link::get_link('domoleaf');
@@ -519,6 +519,41 @@ class Admin extends User {
 		$socket->send('reload_d3config');
 	}
 	
+	function confDateTime($day, $month, $year, $hour, $minute) {
+		$link = Link::get_link('domoleaf');
+		if (empty($day)) {
+			$day = '';
+		}
+		if (empty($month)) {
+			$month = '';
+		}
+		if (empty($year)) {
+			$year = '';
+		}
+		if (empty($hour)) {
+			$hour = 0;
+		}
+		if (empty($minute)) {
+			$minute = 0;
+		}
+		$time_diff = $this->profileTime();
+		$datetime = new Datetime($year.'-'.$month.'-'.$day.'T'.$hour.':'.$minute.':00');
+		if ($time_diff > 0)
+		{
+			$diff_time = $time_diff;
+			$datetime->sub(new DateInterval('PT'.$diff_time.'S'));
+		}
+		else
+		{
+			$diff_time = abs($time_diff);
+			$datetime->add(new DateInterval('PT'.$diff_time.'S'));
+		}
+		$new_date = $datetime->format('Y-m-d H:i:s');
+		$send_date = explode(' ', $new_date);
+		$socket = new Socket();
+		$socket->send('modif_date', $send_date);
+	}
+		
 	/*** Floors ***/
 	function confFloorList() {
 		$link = Link::get_link('domoleaf');

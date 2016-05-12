@@ -43,3 +43,4 @@ chmod +x /etc/domoleaf/cron/Cron*.py
 chmod +x /usr/bin/domomaster.py
 update-rc.d domomaster defaults
 service domomaster start
+service domoslave restart
