@@ -408,14 +408,17 @@ msgid "Warning if the box is connected to Internet the date will be automaticall
 msgstr "Attention si le boitier est connecter a internet l'heure se met a jour automatiquement"
 
 #: popup/popup_modif_datetime.php
+#: function/profile_user_graphcis.php
 msgid "Day"
 msgstr "Jour"
 
 #: popup/popup_modif_datetime.php
+#: function/profile_user_graphcis.php
 msgid "Month"
 msgstr "Mois"
 
 #: popup/popup_modif_datetime.php
+#: function/profile_user_graphcis.php
 msgid "Year"
 msgstr "Année"
 
@@ -1965,20 +1968,8 @@ msgid "Days"
 msgstr "Jours"
 
 #: function/profile_user_graphcis.php
-msgid "Year"
-msgstr "Année"
-
-#: function/profile_user_graphcis.php
-msgid "Month"
-msgstr "Mois"
-
-#: function/profile_user_graphcis.php
 msgid "Week"
 msgstr "Semaine"
-
-#: function/profile_user_graphcis.php
-msgid "Day"
-msgstr "Jour"
 
 #: function/show_time_select_schedule.php:168
 #: function/show_time_select_schedule.php:169
