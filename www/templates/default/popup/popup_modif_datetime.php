@@ -11,7 +11,7 @@ $curr_year = date('Y');
 $curr_hour = date('G');
 $curr_minute = intval(date('i'));
 
-echo '<div class="center">'._('Warning if the box is connected to Internet the date will be automatically updated').'';
+echo '<div class="center">'._('Warning if the box is connected to Internet the date will be automatically updated daily.').'';
 echo '<div id="error_modif_datetime"></div>';
 
 echo '
