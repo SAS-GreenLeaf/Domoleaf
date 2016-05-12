@@ -1909,8 +1909,8 @@ msgstr "Mois"
 
 #: function/show_time_select_schedule.php:34
 #: function/show_time_select_schedule.php:35
-msgid "All&nbspyear"
-msgstr "Toute&nbspl'année"
+msgid "All&nbsp;year"
+msgstr "Toute&nbsp;l'année"
 
 #: function/show_time_select_schedule.php:96
 msgid "Weekdays"
@@ -1918,17 +1918,33 @@ msgstr "Jours de la semaine"
 
 #: function/show_time_select_schedule.php:101
 #: function/show_time_select_schedule.php:102
-msgid "All&nbspweek"
-msgstr "Toute&nbspla semaine"
+msgid "All&nbsp;week"
+msgstr "Toute&nbsp;la semaine"
 
 #: function/show_time_select_schedule.php:163
 msgid "Days"
 msgstr "Jours"
 
+#: function/profile_user_graphcis.php
+msgid "Year"
+msgstr "Année"
+
+#: function/profile_user_graphcis.php
+msgid "Month"
+msgstr "Mois"
+
+#: function/profile_user_graphcis.php
+msgid "Week"
+msgstr "Semaine"
+
+#: function/profile_user_graphcis.php
+msgid "Day"
+msgstr "Jour"
+
 #: function/show_time_select_schedule.php:168
 #: function/show_time_select_schedule.php:169
-msgid "All&nbspdays"
-msgstr "Tous&nbsples jours"
+msgid "All&nbsp;days"
+msgstr "Tous&nbsp;les jours"
 
 #: function/show_time_select_schedule.php:234
 msgid "Hours"
@@ -1936,8 +1952,8 @@ msgstr "Heures"
 
 #: function/show_time_select_schedule.php:239
 #: function/show_time_select_schedule.php:240
-msgid "All&nbsphours"
-msgstr "Toutes&nbsples heures"
+msgid "All&nbsp;hours"
+msgstr "Toutes&nbsp;les heures"
 
 #: function/show_time_select_schedule.php:305
 msgid "Mins"
@@ -1945,8 +1961,8 @@ msgstr "Minutes"
 
 #: function/show_time_select_schedule.php:310
 #: function/show_time_select_schedule.php:311
-msgid "All&nbspminutes"
-msgstr "Toutes&nbsples minutes"
+msgid "All&nbsp;minutes"
+msgstr "Toutes&nbsp;les minutes"
 
 #: top_connected.php
 msgid "Configuration"
@@ -2195,3 +2211,19 @@ msgstr "Edition des Smartcommands"
 #: popup/popup_new_daemon.php popup/popup_rename_daemon.php
 msgid "Programmation mode"
 msgstr "Mode programmation"
+
+#: include/profile_user_graphics.php
+msgid "Period"
+msgstr "Période"
+
+#: include/profile_user_graphics.php
+msgid "From"
+msgstr "Du"
+
+#: include/profile_user_graphics.php
+msgid "To"
+msgstr "Au"
+
+#: form/form_user_graphics.php
+msgid "Cost"
+msgstr "Coût"

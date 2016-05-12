@@ -120,7 +120,153 @@ class User {
 	function confMenuProtocol() {
 		return null;
 	}
-	
+
+	function getGraphicsInfo($id_device, $id_option, $from, $to) {
+		$list = array(
+			'config' => array(),
+			'datas'  => array(),
+			'infos'  => array()
+		);
+		if (empty($id_device)) {
+			return $list;
+		}
+		if (empty($id_option)) {
+			return $list;
+		}
+		if (empty($from)) {
+			$from = date('Y-m-d');
+		}
+		if (empty($to)) {
+			$to = date('Y-m-d');
+		}
+		$link = Link::get_link('domoleaf');
+		$functions = array(
+			1 => 'convert_temperature',
+			2 => 'convert_hundred',
+			3 => 'convert_float32'
+		);
+		if ($id_option == 399) {
+			$sql = 'SELECT configuration_id, configuration_value 
+			        FROM configuration 
+			        WHERE configuration_id BETWEEN 14 AND 18';
+			$req = $link->prepare($sql);
+			$req->execute() or die (error_log('error : '.serialize($req->errorInfo())));
+			while($do = $req->fetch(PDO::FETCH_OBJ)) {
+				$list['config'][$do->configuration_id] = $do->configuration_value;
+			}
+			$high_cost = $list['config'][14];
+			$low_cost = $list['config'][15];
+			$time_slot_a = explode('-', $list['config'][16]);
+			$time_slot_b = explode('-', $list['config'][17]);
+		}
+		$sql = 'SELECT if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
+		               dpt.unit, room_device.protocol_id, room_device.daemon_id, room_device_option.addr,
+		               function_answer
+		        FROM room_device_option 
+		        JOIN room_device ON room_device.room_device_id=room_device_option.room_device_id
+		        JOIN dpt ON room_device_option.dpt_id = dpt.dpt_id 
+		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id 
+		        JOIN dpt_optiondef ON dpt_optiondef.option_id= optiondef.option_id AND 
+		                              dpt_optiondef.dpt_id=dpt.dpt_id AND 
+		                              dpt_optiondef.protocol_id=room_device.protocol_id
+		        WHERE room_device_option.room_device_id = :device 
+		        AND room_device_option.option_id = :option';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device', $id_device, PDO::PARAM_INT);
+		$req->bindValue(':option', $id_option, PDO::PARAM_INT);
+		$req->execute() or die (error_log('error : '.serialize($req->errorInfo())));
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		if(empty($do)) {
+			return $list;
+		}
+		$list['infos'] = clone $do;
+		if($list['infos']->function_answer > 0) {
+			$fct_current = $functions[$list['infos']->function_answer];
+		}
+		$from_timestamp = strtotime($from);
+		$to_timestamp = strtotime($to) + 86399;
+		$sql = 'SELECT graphic_log.date as date_time, graphic_log.value, 0 as price
+		        FROM graphic_log 
+		        WHERE graphic_log.room_device_id = :device 
+		        AND graphic_log.option_id = :option 
+		        AND graphic_log.date BETWEEN :from_date AND :to_date 
+		        ORDER BY graphic_log.date';
+		$req = $link->prepare($sql);
+		$req->bindValue(':device', $id_device, PDO::PARAM_INT);
+		$req->bindValue(':option', $id_option, PDO::PARAM_INT);
+		$req->bindValue(':from_date', $from_timestamp, PDO::PARAM_INT);
+		$req->bindValue(':to_date', $to_timestamp, PDO::PARAM_INT);
+		$req->execute() or die (error_log('error : '.serialize($req->errorInfo())));
+		while($do = $req->fetch(PDO::FETCH_OBJ)) {
+			if (!empty($fct_current)) {
+				$do->value = $fct_current($do->value);
+			}
+			if($id_option == 399) {
+				if (!empty($prev_do)) {
+					$inter = $do->date_time - $prev_do->date_time;
+					if ($inter > 0) {
+						$res = ($prev_do->value * $inter) / 3600;
+						$h = date('h', $prev_do->date_time);
+						if (($time_slot_a[0] < $time_slot_a[1] && $h >= $time_slot_a[0] && $h < $time_slot_a[1]) ||
+							($time_slot_a[0] > $time_slot_a[1] && ($h >= $time_slot_a[0] || $h < $time_slot_a[1])) ||
+							($time_slot_b[0] < $time_slot_b[1] && $h >= $time_slot_b[0] && $h < $time_slot_b[1]) ||
+							($time_slot_b[0] > $time_slot_b[1] && ($h >= $time_slot_b[0] || $h < $time_slot_b[1]))) {
+							$cost = $res * $low_cost;
+						}
+						else {
+							$cost = $res * $high_cost;
+						}
+						$do->price = $prev_do->price + $cost;
+					}
+				}
+				$prev_do = clone $do;
+			}
+
+			$list['datas'][] = clone $do;
+		}
+		//KNX
+		if ($list['infos']->protocol_id == 1) {
+			$sql = 'SELECT t_date as date_time, knx_value as value, 0 as price
+			        FROM knx_log 
+			        WHERE knx_log.daemon_id = :daemon 
+			        AND knx_log.t_date < :date_limit
+			        AND addr_dest=:addr
+			        ORDER BY t_date ASC';
+			$req = $link->prepare($sql);
+			$req->bindValue(':daemon', $list['infos']->daemon_id, PDO::PARAM_INT);
+			$req->bindValue(':date_limit', $to_timestamp, PDO::PARAM_INT);
+			$req->bindValue(':addr', $list['infos']->addr, PDO::PARAM_STR);
+			$req->execute() or die (error_log('error : '.serialize($req->errorInfo())));
+			while($do = $req->fetch(PDO::FETCH_OBJ)) {
+				if (!empty($fct_current)) {
+					$do->value = $fct_current($do->value);
+				}
+				if($id_option == 399) {
+					if (!empty($prev_do)) {
+						$inter = $do->date_time - $prev_do->date_time;
+						if ($inter > 0) {
+							$res = ($prev_do->value * $inter) / 3600;
+							$h = date('h', $prev_do->date_time);
+							if (($time_slot_a[0] < $time_slot_a[1] && $h >= $time_slot_a[0] && $h < $time_slot_a[1]) ||
+								($time_slot_a[0] > $time_slot_a[1] && ($h >= $time_slot_a[0] || $h < $time_slot_a[1])) ||
+								($time_slot_b[0] < $time_slot_b[1] && $h >= $time_slot_b[0] && $h < $time_slot_b[1]) ||
+								($time_slot_b[0] > $time_slot_b[1] && ($h >= $time_slot_b[0] || $h < $time_slot_b[1]))) {
+								$cost = $res * $low_cost;
+							}
+							else {
+								$cost = $res * $high_cost;
+							}
+							$do->price = $prev_do->price + $cost;
+						}
+					}
+					$prev_do = clone $do;
+				}
+				$list['datas'][] = clone $do;
+			}
+		}
+		return $list;
+	}
+
 	/*** Floors ***/
 	function confFloorList() {
 		return null;

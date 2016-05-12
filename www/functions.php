@@ -239,4 +239,33 @@ function checkCurrency($currencyId) {
 	}
 }
 
+function convert_none($val) {
+	return $val;
+}
+
+function convert_hundred($val) {
+	return $val / 100;
+}
+
+function convert_temperature($val) {
+	$factor = 0.01;
+	$exp = ($val & 0x7800) >> 11;
+	$sign = $val & 0x8000;
+	$mant = $val & 0x7ff;
+	if ($sign)
+		$mant = $mant | 0xfffffffffffff800;
+	return ($mant*pow(2,$exp)*$factor);
+}
+
+function convert_float32($val) {
+	$factor = 0.01;
+	$exp = ($val & 0x7F800000) >> 23;
+	$sign = $val >> 31;
+	$mant = $val & 0x007FFFFF;
+	if ($sign) {
+		$mant = $mant | 0xFFFFFFFFFF800000;		
+	}
+	return strval(round($mant * pow(2, $exp) * $factor, 2));
+}
+
 ?>

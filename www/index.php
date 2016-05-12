@@ -237,8 +237,7 @@ else {
 		break;
 	}
 }
-echo '
-<!DOCTYPE html>
+echo '<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -253,12 +252,15 @@ include('templates/'.TEMPLATE.'/header/'.$page.'.php');
 echo '
 		<!-- Bootstrap core CSS -->
 		<link href="/css/jquery-ui.min.css" rel="stylesheet">
+		<link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/css/bootstrap-dialog.min.css" rel="stylesheet">
 		<link href="/css/font-awesome.min.css" rel="stylesheet">
 		<link href="/css/flaticon.css" rel="stylesheet">
 		<link href="/css/bootstrap-switch.min.css" rel="stylesheet">
 		<link href="/css/bootstrap-select.min.css" rel="stylesheet">
+		<!-- Morris.js charts styles  -->
+		<link href="/css/morris.css" rel="stylesheet">
 		
 		<!-- Custom styles for this template -->
 		<link href="/templates/'.TEMPLATE.'/design.css" rel="stylesheet">
@@ -267,17 +269,19 @@ echo '
 		<script src="/js/jquery-ui.min.js"></script>
 		<script src="/js/touch.js"></script>
 		<script src="/js/jquery.validate.min.js"></script>
+		<script src="/js/datepicker-fr.js"></script>
 		<script src="/js/additional-methods.js"></script>
-		
 		<script src="/templates/'.TEMPLATE.'/scripts.js"></script>
 		<script type="text/javascript" src="/js/farbtastic.js"></script>
 		<script src="/js/bootstrap-switch.min.js"></script>
 		<script src="/js/bootstrap-select.min.js"></script>
+		<script src="/js/raphael.min.js"></script>
+		<script src="/js/morris.min.js"></script>
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="/js/html5shiv.min.js"></script>
 			<script src="/js/respond.min.js"></script>
-		<![endif]-->
+		<![endif]-->		
 	</head>
 	<body>';
 

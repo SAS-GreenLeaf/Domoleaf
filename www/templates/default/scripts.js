@@ -869,6 +869,7 @@ function listOptionOfDevice() {
 			if (result) {
 				$("#selectOption").html(result);
 				$('.selectpicker').selectpicker('refresh');
+				displayOptionChart();
 			}
 		}
 	});
