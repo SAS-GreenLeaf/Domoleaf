@@ -388,6 +388,35 @@ class Api {
 							}
 							$res = $user->confPriceElec($var[0], $var[1], $var[2], $var[3], $var[4]);
 						break;
+						
+						case 'getGraphicsInfo':
+							if (empty($var[0])) {
+								$var[0] = '';
+							}
+							if (empty($var[1])) {
+								$var[1] = '';
+							}
+							if (empty($var[2])) {
+								$var[2] = '';
+							}
+							if (empty($var[3])) {
+								$var[3] = '';
+							}
+							$res = $user->getGraphicsInfo($var[0], $var[1], $var[2], $var[3]);
+						break;
+
+						case 'getLogsInfo':
+							if (empty($var[0])) {
+								$var[0] = '';
+							}
+							if (empty($var[1])) {
+								$var[1] = '';
+							}
+							if (empty($var[2])) {
+								$var[2] = '';
+							}
+							$res = $user->getLogsInfo($var[0], $var[1], $var[2]);
+						break;
 
 						case 'confDateTime':		
 							if (empty($var[0]) or !preg_match('/^([0-9]*)$/', $var[0])) {

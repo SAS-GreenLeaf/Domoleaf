@@ -56,7 +56,7 @@ typedef struct __attribute__((packed)) s_packet
 	uint8_t               sync_byte;
 	Enocean_packet_header header;
 	uint8_t               CRC8H;
-	uint8_t               data[255];
+	uint8_t               *data;
 	uint8_t               opt_data[255];
 	uint8_t               CRC8D;
 } Enocean_packet;

@@ -2360,7 +2360,7 @@ class Admin extends User {
 		$sql = 'SELECT type, addr_src, addr_dest, eo_value, t_date, daemon_id
 		        FROM enocean_log
 		        ORDER BY t_date DESC
-		        LIMIT 1000';
+		        LIMIT 500';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -2393,7 +2393,7 @@ class Admin extends User {
 		$sql = 'SELECT type, addr_src, addr_dest, knx_value, t_date, daemon_id
 		        FROM knx_log
 		        ORDER BY t_date DESC
-		        LIMIT 1000';
+		        LIMIT 100';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
