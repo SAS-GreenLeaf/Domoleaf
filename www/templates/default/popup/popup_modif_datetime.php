@@ -11,7 +11,8 @@ $curr_year = date('Y');
 $curr_hour = date('G');
 $curr_minute = intval(date('i'));
 
-echo '<div class="center">'._('Warning if the box is connected to Internet the date will be automatically updated daily.').'';
+echo '<div class="center">'._('Warning if the box is connected to Internet the date will be automatically updated daily.');
+
 echo '<div id="error_modif_datetime"></div>';
 
 echo '
@@ -77,13 +78,18 @@ echo '
 		'</div>'.
 	'</div>'.
 '</div>'.
-'<br/><br/>
-<div class="controls center">'.
+'<br/><br/>'.
+'</div>'.
+'<div class="controls center">'.
 	'<button onclick="ChangeDateTime()" id="Save" class="btn btn-success">'._('Save').' <span class="glyphicon glyphicon-ok"></span></button>'.
 	'<button onclick="popup_close()" id="Cancel" class="btn btn-danger">'._('Cancel').' <span class="glyphicon glyphicon-remove"></span></button>'.
 '</div>'.
 
 '<script type="text/javascript">'.
+	'$(document).ready(function(){'.
+		'$("#popupTitle").html("'._("Configure date and time").'");'.
+	'});'.
+	
 	'function ChangeDateTime(){'.
 		'var dayval = $("#days").val();'.
 		'var monthval = $("#months").val();'.

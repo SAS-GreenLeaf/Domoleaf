@@ -1262,3 +1262,16 @@ function activateMenuElem(id_elem) {
 	$(".bhoechie-tab-menu .list-group a").removeClass("active");
 	$("#menu-"+id_elem).addClass("active");
 }
+
+function PopupModifDateTime() {
+	$.ajax({
+		type: "GET",
+		url: "/templates/default/popup/popup_modif_datetime.php",
+		success: function(result) {
+			BootstrapDialog.show({
+				title: '<div id="popupTitle" class="center"></div>',
+				message: result
+			});
+		}
+	});
+}

@@ -405,7 +405,7 @@ msgstr "Configuration de la date et de l'heure"
 
 #: popup/popup_modif_datetime.php
 msgid "Warning if the box is connected to Internet the date will be automatically updated daily."
-msgstr "Attention si le boitier est connecté à Internet, l'heure se met à jour quotidiennement, de façon automatique."
+msgstr "Attention si le boîtier est connecté à Internet, l'heure se met à jour quotidiennement, de façon automatique."
 
 #: popup/popup_modif_datetime.php
 #: function/profile_user_graphcis.php
