@@ -18,9 +18,9 @@ else {
 $target_dir = "/etc/domoleaf/www/templates/default/custom/room/";
 $deleteOk = 1;
 
-if (!empty($_POST["room"]) && !empty($rooms->$_POST["room"])){
+if (!empty($_POST["room"]) && !empty($rooms->{$_POST["room"]})){
 	
-	$current_room = $rooms->$_POST['room'];
+	$current_room = $rooms->{$_POST['room']};
 	if (!empty($current_room->room_bgimg)){
 		unlink($target_dir.$current_room->room_bgimg);
 	}

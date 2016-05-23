@@ -8,7 +8,7 @@ $result  =  $request -> send_request();
 
 $listdaemon = $result->confDaemonList;
 
-$daemon = $listdaemon->$_GET['id'];
+$daemon = $listdaemon->{$_GET['id']};
 
 echo '
 <div class="center">';

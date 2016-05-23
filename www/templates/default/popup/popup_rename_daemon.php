@@ -10,7 +10,7 @@ $result  =  $request -> send_request();
 $listdaemon = $result->confDaemonList;
 $listproto = $result->confDaemonProtocolList;
 
-$daemon =  $listdaemon->$_GET['id'];
+$daemon =  $listdaemon->{$_GET['id']};
 
 echo '<div class="controls">';
 echo '<div class="center">';printf(_('Do you want to rename %s?'), $daemon->name);

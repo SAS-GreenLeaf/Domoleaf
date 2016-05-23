@@ -28,7 +28,7 @@ $target_file = $target_dir_abs . basename($_FILES["fileToUpload"]["name"]);
 $imageFileType = "jpg";
 $uploadOk = 0;
 
-if (!empty($_POST['id_elem']) && !empty($devices->$_POST['id_elem']) && !empty($iduser)){
+if (!empty($_POST['id_elem']) && !empty($devices->{$_POST['id_elem']}) && !empty($iduser)){
 	$filename = $iduser.'_'.$_POST['id_elem'].'_'.$_SERVER['REQUEST_TIME'].'.'.$imageFileType;
 	$target_file = $target_dir_abs.$filename;
 	if (empty($_FILES["fileToUpload"]["tmp_name"]) || empty($target_file)) {
@@ -41,7 +41,7 @@ if (!empty($_POST['id_elem']) && !empty($devices->$_POST['id_elem']) && !empty($
 	if (!(rename($compressed, $target_file))){
 		echo 0;
 	}
-	$current_device = $devices->$_POST['id_elem'];
+	$current_device = $devices->{$_POST['id_elem']};
 	if (!empty($current_device->device_bgimg)){
 		unlink($target_dir_abs.$current_device->device_bgimg);
 	}

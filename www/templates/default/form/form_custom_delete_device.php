@@ -18,9 +18,9 @@ else {
 $target_dir = "/etc/domoleaf/www/templates/default/custom/device/";
 $deleteOk = 1;
 
-if (!empty($_POST["device"]) && !empty($devices->$_POST["device"])){
+if (!empty($_POST["device"]) && !empty($devices->{$_POST["device"]})){
 	
-	$current_device = $devices->$_POST['device'];
+	$current_device = $devices->{$_POST['device']};
 	if (!empty($current_device->device_bgimg)){
 		unlink($target_dir.$current_device->device_bgimg);
 	}

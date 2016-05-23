@@ -12,7 +12,7 @@ if (!empty($_GET['floor'])){
 	$floorlistroom = $result->confFloorList;
 	$roomlist = $result->confRoomList;
 	
-	if(empty($roomlist) or empty($floorlistroom) or empty($roomlist->$_GET['room'])){
+	if(empty($roomlist) or empty($floorlistroom) or empty($roomlist->{$_GET['room']})){
 		redirect('/conf_installation');
 	}
 }

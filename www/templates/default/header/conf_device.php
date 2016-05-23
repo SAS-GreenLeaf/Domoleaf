@@ -26,7 +26,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$manufacturerList = $result->confManufacturerList;
 	$menuProtocol = $result->confMenuProtocol;
 	
-	$device = $roomdevice->$_GET['device'];
+	$device = $roomdevice->{$_GET['device']};
 	$deviceconf = $deviceall->{$device->device_id};
 	
 	$tabopt = array();

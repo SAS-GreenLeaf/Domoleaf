@@ -14,7 +14,7 @@ $protodevice =  $result->confDeviceProtocol;
 
 foreach ($allproto as $elem){
 	if (in_array($elem->protocol_id, $protodevice)){
-		if ($elem->protocol_id == $alldevice->$_GET['iddevice']->protocol_id){
+		if ($elem->protocol_id == $alldevice->{$_GET['iddevice']}->protocol_id){
 			echo '<option value="'.$elem->protocol_id.'" selected>'.$elem->name.'</option>';
 		}
 		else{
