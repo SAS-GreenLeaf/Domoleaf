@@ -13,8 +13,8 @@ if (!empty($_GET['userid'])){
 	$listuser = $result->profileList;
 	$userinfo = $result->profileInfo;
 	if (!empty($listuser->$userid)) {
-		$bg_color = {$listuser->$userid}->bg_color;
-		$menus_color = {$listuser->$userid}->border_color;
+		$bg_color = $listuser->{$userid}->bg_color;
+		$menus_color = $listuser->{$userid}->border_color;
 	}
 	else {
 		$bg_color = $userinfo->bg_color;

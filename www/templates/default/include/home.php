@@ -14,7 +14,7 @@ echo '
 		foreach ($allapp as $elem){
 			echo '
 			<a href="#" id="app-'.$elem.'" onclick="displayApplication('.$elem.')" class="list-group-item text-center">
-				<h4 class="'.$icons[$elem].' lg"></h4><br/>'.{$app->$elem}->name.'
+				<h4 class="'.$icons[$elem].' lg"></h4><br/>'.$app->{$elem}->name.'
 			</a>';
 		}
 		echo '
