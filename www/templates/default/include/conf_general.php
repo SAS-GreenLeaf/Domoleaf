@@ -337,19 +337,6 @@ function SendTestMail(){
 	}
 }
 
-function PopupModifDateTime(){
-	$.ajax({
-		type: "GET",
-		url: "/templates/'.TEMPLATE.'/popup/popup_modif_datetime.php",
-		success: function(result) {
-			BootstrapDialog.show({
-				title: "'._('Configure date and time').'",
-				message: result
-			});
-		}
-	});
-}
-
 var idIntervalCheck = null;
 
 function popupCheckUpdates(){

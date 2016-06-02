@@ -43,7 +43,7 @@ function display_months($months, $id_schedule) {
 		</div>
 		<div hidden class="MonthsListAndBtn">
 			<ul id="monthsList">';
-	for($i = 0 ; $i < 12; $i++) {
+	for($i = 0 ; $i < 12; ++$i) {
 		$day = strftime('%B', strtotime(date('Y').'-'.($i+1).'-01'));
 		$display.=
 				'<li class="triggerScheduleElems checkbox-inline">
@@ -110,7 +110,7 @@ function display_weekdays($weekdays, $id_schedule) {
 		</div>
 		<div hidden class="WeekdaysListAndBtn">
 			<ul id="weekdaysList">';
-	for($i = 0 ; $i < 7; $i++) {
+	for($i = 0 ; $i < 7; ++$i) {
 		$day = strftime('%A', strtotime( 'next Monday +' . $i . ' days' ));
 		$display.=
 				'<li class="triggerScheduleElems checkbox-inline">
@@ -178,7 +178,7 @@ function display_days($days, $id_schedule) {
 		</div>
 		<div hidden class="DaysListAndBtn">
 			<ul id="daysList">';
-	for($i = 1 ; $i <= 31; $i++) {
+	for($i = 1 ; $i <= 31; ++$i) {
 		if ($i < 10) {
 			$j = '0'.$i;
 		}
@@ -250,7 +250,7 @@ function display_hours($hours, $id_schedule) {
 		</div>
 		<div hidden class="HoursListAndBtn">
 			<ul id="hoursList">';
-	for($i = 0 ; $i <= 23; $i++) {
+	for($i = 0 ; $i <= 23; ++$i) {
 		if ($i < 10) {
 			$j = '0'.$i;
 		}
@@ -322,7 +322,7 @@ function display_mins($mins, $id_schedule) {
 		</div>
 		<div hidden class="MinsListAndBtn">
 			<ul id="minsList">';
-	for($i = 0 ; $i <= 59; $i++) {
+	for($i = 0 ; $i <= 59; ++$i) {
 		if ($i < 10) {
 			$j = '0'.$i;
 		}

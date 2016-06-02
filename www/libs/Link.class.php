@@ -22,11 +22,9 @@ class Link {
 	}
 
 	static function get_link($link=NULL) {
-		
 		if(!self::$instance || !self::$instance[$link]) {
 			self::$instance[$link] = new Link($link);
 		}
-	
 		return self::$instance[$link]->db;
 	}
 }

@@ -43,7 +43,6 @@ class User {
 	 */
 	function activity() {
 		$link = Link::get_link('domoleaf');
-			
 		$sql = 'UPDATE mcuser
 		        SET activity= :activity
 		        WHERE mcuser_id= :user_id';
@@ -61,7 +60,6 @@ class User {
 	 */
 	function disconnect($token) {
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'DELETE FROM mcuser_token
 		        WHERE token= :token';
 		$req = $link->prepare($sql);
@@ -74,7 +72,6 @@ class User {
 	function conf_load(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT configuration_id, configuration_value
 		        FROM configuration
 		        ORDER BY configuration_id ASC';
@@ -83,7 +80,6 @@ class User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->configuration_id] = clone $do;
 		}
-		
 		return $list;
 	}
 	
@@ -334,7 +330,6 @@ class User {
 	function confDeviceRoomOpt($deviceroomid) {
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
 		               addr_plus, room_device_option.dpt_id, status, opt_value, 
 		               function_writing,
@@ -383,7 +378,6 @@ class User {
 	function confApplicationAll() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name,
 		               application_id
 		        FROM application
@@ -393,7 +387,6 @@ class User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->application_id] = clone $do;
 		}
-		
 		return $list;
 	}
 	
@@ -404,7 +397,6 @@ class User {
 	function confProtocolAll() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT protocol_id, wired,
 		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name
 		        FROM protocol
@@ -414,7 +406,6 @@ class User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->protocol_id] = clone $do;
 		}
-		
 		return $list;
 	}
 	
@@ -425,7 +416,6 @@ class User {
 	function confDeviceAll() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT device_id, protocol_id, application_id,
 		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name
 		        FROM device
@@ -441,7 +431,6 @@ class User {
 				'protocol_option'=> array()
 			);
 		}
-		
 		$sql = 'SELECT device_option. device_id, device_option.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM device_option
@@ -453,14 +442,12 @@ class User {
 				$list[$do->device_id]['protocol_option'][$do->option_id] = clone $do;
 			}
 		}
-		
 		return $list;
 	}
 	
 	/********************** Users configuration **********************/
 
 	function profileList() { return null; }
-	
 	/**
 	 * Get user information
 	 * @param int : not used
@@ -468,7 +455,6 @@ class User {
 	 */
 	function profileInfo($id=0) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT mcuser_id, username, mcuser_mail, lastname, firstname,
 		               gender, phone, language, timezone, design, bg_color, border_color
 		        FROM mcuser
@@ -477,7 +463,6 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-	
 		return $do;
 	}
 	
@@ -502,11 +487,9 @@ class User {
 	 */
 	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timeZone, $id=0) {
 		$link = Link::get_link('domoleaf');
-
 		if ($gender != 1) {
 			$gender = 0;
 		}
-	
 		$langList = Guest::language();
 		if(empty($langList[$language])) {
 			$language = $this->getLanguage();
@@ -514,7 +497,6 @@ class User {
 		if(empty($timeZone) || !($timeZone > 0 && $timeZone < 42)) {
 			$timeZone = 1;
 		}
-
 		$sql = 'UPDATE mcuser
 		        SET lastname= :lastname,
 		            firstname= :firstname,
@@ -552,7 +534,6 @@ class User {
 	 */
 	function profilePassword($last, $new, $id=0) {
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT mcuser_id, mcuser_password
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -560,7 +541,6 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-	
 		if($do->mcuser_password == hash('sha256', $do->mcuser_id.'_'.$last)) {
 			$sql = 'UPDATE mcuser
 			        SET mcuser_password=:user_password
@@ -574,7 +554,6 @@ class User {
 	
 	function profileTime() {
 		$link = Link::get_link('domoleaf');
-
 		$sql = 'SELECT timezone
 		        FROM mcuser
 		        WHERE mcuser_id= :user_id';
@@ -582,7 +561,6 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-
 		$allTimeZone = array(
 				2	=>	-46800,
 				3	=>	-43200,
@@ -661,7 +639,6 @@ class User {
 	 */
 	function SetFloorOrder($userid, $floorid, $action) {
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT floor_order, floor_id
 		        FROM mcuser_floor
 		        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
@@ -670,7 +647,6 @@ class User {
 		$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		$order = $do->floor_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT floor_order, floor_id
@@ -681,7 +657,6 @@ class User {
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
-			
 			if(!empty($do2)) {
 				$sql = 'UPDATE mcuser_floor
 				        SET floor_order=:order
@@ -691,7 +666,6 @@ class User {
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-				
 				$sql = 'UPDATE  mcuser_floor
 				        SET floor_order=:order
 				        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
@@ -701,7 +675,6 @@ class User {
 				$req->bindValue(':floor_id', $do2->floor_id, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
 			}
-			
 		}
 	}
 	
@@ -713,7 +686,6 @@ class User {
 	 */
 	function SetRoomOrder($userid, $roomid, $action){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT room_order, room_id
 		        FROM mcuser_room
 		        WHERE mcuser_id=:user_id AND room_id=:room_id';
@@ -722,7 +694,6 @@ class User {
 		$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		$order = $do->room_order + $action;
 		if($order >= 1){
 			$sql = 'SELECT room_order, room_id
@@ -733,7 +704,6 @@ class User {
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
-		
 			if(!empty($do2)){
 				$sql = 'UPDATE mcuser_room
 				        SET room_order=:order
@@ -743,7 +713,6 @@ class User {
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-			
 				$sql = 'UPDATE  mcuser_room
 				        SET room_order=:order
 				        WHERE room_id=:room_id AND mcuser_id=:user_id';
@@ -764,7 +733,6 @@ class User {
 	 */
 	function SetDeviceOrder($userid, $deviceid, $action){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT  device_order, room_device_id
 		        FROM mcuser_device
 		        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
@@ -773,7 +741,6 @@ class User {
 		$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		$order = $do->device_order + $action;
 		if($order >= 1) {
 			$sql = 'SELECT device_order, room_device_id
@@ -784,7 +751,6 @@ class User {
 			$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$do2 = $req->fetch(PDO::FETCH_OBJ);
-			
 			if(!empty($do2)){
 				$sql = 'UPDATE mcuser_device
 				        SET device_order=:order
@@ -794,7 +760,6 @@ class User {
 				$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 				$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-				
 				$sql = 'UPDATE  mcuser_device
 				        SET device_order=:order
 				        WHERE room_device_id=:room_device_id AND mcuser_id=:user_id';
@@ -810,7 +775,6 @@ class User {
 	
 	function mcValueDef($iddevice, $idoption, $action){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT  opt_value
 				FROM    room_device_option
 				WHERE   room_device_id=:iddevice
@@ -819,7 +783,6 @@ class User {
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->bindValue(':option_id', $idoption, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		$val = '0';
 		if (!empty($do->opt_value)){
@@ -837,9 +800,7 @@ class User {
 		$req->bindValue(':option_id', $idoption, PDO::PARAM_INT);
 		$req->bindValue(':opt_value', $val, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$this->mcTemperature($iddevice, $idoption, $val);
-		
 		return $val;
 	}
 	
@@ -849,15 +810,12 @@ class User {
 	 */
 	function mcAllowed(){
 		$link = Link::get_link('domoleaf');
-		
 		$listFloor = array();
 		$listRoom = array();
 		$listDevice = array();
 		$listSmartcmd = array();
 		$listApps= array();
-		
 		$res = $this->conf_load();
-		
 		$sql = 'SELECT floor_name, mcuser_floor.floor_id, mcuser_floor.floor_order
 		        FROM mcuser_floor
 		        JOIN floor ON mcuser_floor.floor_id=floor.floor_id
@@ -873,7 +831,6 @@ class User {
 				'floor_order' 	=> $do->floor_order
 			);
 		}
-		
 		$sql = 'SELECT room.room_name, room.room_id, mcuser_room.room_order, 
 		               floor, mcuser_room.room_bgimg
 		        FROM room
@@ -929,7 +886,6 @@ class User {
 				$listApps[] = $do->application_id;
 			}
 		}
-		
 		$sql = 'SELECT smartcommand_id, name, mcuser_id, room_id
 		        FROM smartcommand_list
 		        WHERE mcuser_id=:user_id';
@@ -944,7 +900,6 @@ class User {
 					'room_id'         => $do->room_id
 			);
 		}
-		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
 		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
@@ -1014,27 +969,22 @@ class User {
 	 */
 	function mcVisible(){
 		$link = Link::get_link('domoleaf');
-		
 		$listFloor = array();
 		$listRoom = array();
 		$listDevice = array();
 		$listSmartcmd = array();
 		$listApps= array();
-		
 		$listall = $this->mcAllowed();
-		
 		foreach ($listall['ListFloor'] as $elem) {
 			if($elem['floor_order'] > 0) {
 				$listFloor[$elem['floor_id']] = $elem;
 			}
 		}
-		
 		foreach ($listall['ListRoom'] as $elem) {
 			if($elem['room_order'] > 0) {
 				$listRoom[$elem['room_id']] = $elem;
 			}
 		}
-		
 		foreach ($listall['ListDevice'] as $elem) {
 			if($elem['device_order'] > 0) {
 				$listDevice[$elem['room_device_id']] = $elem;
@@ -1043,17 +993,14 @@ class User {
 				}
 			}
 		}
-		
 		foreach ($listall['ListSmartcmd'] as $elem) {
 			if(!empty($elem['room_id'])) {
 				$listSmartcmd[$elem['smartcmd_id']] = $elem;
 			}
 		}
-		
 		if (!empty($listSmartcmd)) {
 			$listApps[] = 7;
 		}
-
 		return array(
 				'ListFloor'    => $listFloor,
 				'ListRoom'     => $listRoom,
@@ -1076,7 +1023,6 @@ class User {
 		$req->bindValue(':device_id', $room_device_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(empty($do->room_device_id) || $do->password != $password) {
 			return 0;
 		}
@@ -1092,11 +1038,9 @@ class User {
 	 */
 	function confUserInstallation($userid){
 		$link = Link::get_link('domoleaf');
-		
 		if(empty($userid)){
 			$userid = $this->getId();
 		}
-		
 		$list = array();
 		$sql = 'SELECT floor.floor_id, floor_name, floor_allowed, floor_order
 		        FROM floor
@@ -1115,7 +1059,6 @@ class User {
 				'room' => array()
 			);
 		}
-		
 		$sql = 'SELECT room.room_id, room_name, floor, room_order, room_allowed, mcuser_room.room_bgimg
 		        FROM room
 		        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
@@ -1134,7 +1077,6 @@ class User {
 				'devices'     => array()
 			);
 		}
-		
 		$sql = 'SELECT room_device.room_device_id, room_device.name,
 		               room_device.room_id, room.floor, device_order,
 		               device_allowed, device_bgimg, device_id
@@ -1156,7 +1098,6 @@ class User {
 				'device_allowed'=> $do->device_allowed
 			);
 		}
-		
 		return $list;
 	}
 	
@@ -1168,11 +1109,9 @@ class User {
 	 */
 	function confUserVisibleDevice($userid, $deviceid, $status){
 		$link = Link::get_link('domoleaf');
-		
 		if(empty($userid)){
 			$userid = $this->getId();
 		}
-		
 		$sql = 'SELECT mcuser_device.room_device_id, device_order, room_id
 		        FROM mcuser_device
 		        JOIN room_device ON mcuser_device.room_device_id = room_device.room_device_id
@@ -1182,7 +1121,6 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(!empty($do)){
 			if($status == 1){
 				if($do->device_order == 0){
@@ -1197,7 +1135,6 @@ class User {
 					$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
-					
 					$sql = 'UPDATE mcuser_device
 				 	        SET device_order = :order
 					        WHERE mcuser_id=:user_id AND room_device_id=:room_device_id';
@@ -1216,7 +1153,6 @@ class User {
 				$req->bindValue(':room_device_id', $deviceid, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 				if($do->device_order > 0){
 					$sql = 'UPDATE room_device
 					        JOIN mcuser_device ON mcuser_device.room_device_id = room_device.room_device_id
@@ -1241,11 +1177,9 @@ class User {
 	 */
 	function confUserVisibleRoom($userid, $roomid, $status){
 		$link = Link::get_link('domoleaf');
-		
 		if(empty($userid)) {
 			$userid = $this->getId();
 		}
-		
 		$sql = 'SELECT mcuser_room.room_id, room_order, floor
 		        FROM mcuser_room
 		        JOIN room ON mcuser_room.room_id = room.room_id
@@ -1255,7 +1189,6 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(!empty($do)){
 			if($status == 1){
 				if($do->room_order == 0){
@@ -1270,7 +1203,6 @@ class User {
 					$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
-					
 					$sql = 'UPDATE mcuser_room
 				 	        SET room_order = :order
 					        WHERE mcuser_id=:user_id AND room_id=:room_id';
@@ -1289,7 +1221,6 @@ class User {
 				$req->bindValue(':room_id', $roomid, PDO::PARAM_INT);
 				$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-				
 				if($do->room_order > 0){
 					$sql = 'UPDATE room
 					        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
@@ -1315,12 +1246,10 @@ class User {
 	 */
 	function confUserVisibleFloor($userid, $floorid, $status){
 		$link = Link::get_link('domoleaf');
-		
 		if(empty($userid)){
 			$userid = $this->getId();
 		}
 		$list = array();
-		
 		$sql = 'SELECT floor_id, floor_order
 		        FROM mcuser_floor
 		        WHERE floor_id=:floor_id AND mcuser_id=:user_id';
@@ -1329,7 +1258,6 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(!empty($do)){
 			if($status == 1){
 				if($do->floor_order == 0){
@@ -1342,7 +1270,6 @@ class User {
 					$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 					$req->execute() or die (error_log(serialize($req->errorInfo())));
 					$do2 = $req->fetch(PDO::FETCH_OBJ);
-		
 					$sql = 'UPDATE mcuser_floor
 				 	        SET floor_order = :order
 					        WHERE mcuser_id=:user_id AND floor_id=:floor_id';
@@ -1361,7 +1288,6 @@ class User {
 				$req->bindValue(':user_id',   $userid,   PDO::PARAM_INT);
 				$req->bindValue(':floor_id', $floorid, PDO::PARAM_INT);
 				$req->execute() or die (error_log(serialize($req->errorInfo())));
-				
 				if($do->floor_order > 0){
 					$sql = 'UPDATE mcuser_floor
 					        SET floor_order= floor_order - 1
@@ -1377,10 +1303,8 @@ class User {
 	
 	function confUserDeviceEnable($userid){
 		$userid = $this -> getId();
-		
 		$link = Link::get_link('domoleaf');
 		$list = array();
-
 		$sql = 'SELECT mcuser_id, room_device_id, device_allowed, device_order,
 		               device_bgimg
 		        FROM mcuser_device
@@ -1398,7 +1322,6 @@ class User {
 				'device_order'  => $do->device_order
 			);
 		}
-		
 		return $list;
 	}
 	
@@ -1408,10 +1331,8 @@ class User {
 	
 	function confUserRoomEnable($userid = 0){
 		$userid = $this->getId();
-		
 		$link = Link::get_link('domoleaf');
 		$list = array();
-	
 		$sql = 'SELECT mcuser_id, room_id, room_allowed, room_order, room_bgimg
 		        FROM mcuser_room
 		        WHERE mcuser_id=:user_id
@@ -1428,7 +1349,6 @@ class User {
 					'room_order'  => $do->room_order
 			);
 		}
-	
 		return $list;
 	}
 	
@@ -1444,9 +1364,7 @@ class User {
 	
 	function confUserDeviceBgimg($iddevice, $bgimg, $userid=0){
 		$userid = $this->getId();
-
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'UPDATE mcuser_device
 		        SET device_bgimg=:bgimg
 		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
@@ -1459,9 +1377,7 @@ class User {
 	
 	function confUserRoomBgimg($idroom, $bgimg, $userid=0){
 		$userid = $this->getId();
-	
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE mcuser_room
 		        SET room_bgimg=:bgimg
 		        WHERE mcuser_id=:user_id AND room_id=:idroom';
@@ -1474,9 +1390,7 @@ class User {
 	
 	function userUpdateBGColor($color, $userid = 0){
 		$userid = $this->getId();
-	
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE mcuser
 		        SET bg_color=:color
 		        WHERE mcuser_id=:user_id';
@@ -1488,9 +1402,7 @@ class User {
 	
 	function userUpdateMenusBordersColor($color, $userid = 0){
 		$userid = $this->getId();
-	
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE mcuser
 		        SET border_color=:color
 		        WHERE mcuser_id=:user_id';
@@ -1504,16 +1416,13 @@ class User {
 	
 	function searchSmartcmdByName($smartcmd_name){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT smartcommand_id, mcuser_id
 				FROM smartcommand_list
 				WHERE name=:smartcmd_name AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
-		
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -1526,7 +1435,6 @@ class User {
 	
 	function searchSmartcmdById($smartcmd_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT smartcommand_list.name, mcuser_id,
 				       smartcommand_list.room_id AS room_id,
 				       room.floor AS floor_id, floor.floor_name AS floor_name
@@ -1537,7 +1445,6 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -1550,33 +1457,27 @@ class User {
 	
 	function countElemSmartcmd($idsmartcmd) {
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT COUNT(smartcommand_id) AS nb
 				FROM smartcommand_elems
 				WHERE smartcommand_id=:smartcommand_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		return $do->nb;
 	}
 	
 	function listSmartcmd(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-	
 		$sql = 'SELECT smartcommand_id, name, room.room_name
 				FROM smartcommand_list
 				LEFT OUTER JOIN room ON smartcommand_list.room_id = room.room_id
 				WHERE mcuser_id=:user_id
 				ORDER BY name';
-		
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			if (empty($do->room_name)) {
@@ -1588,7 +1489,6 @@ class User {
 					'room_name'           => $do->room_name
 			);
 		}
-		
 		return $list;
 	}
 	
@@ -1599,7 +1499,6 @@ class User {
 		$blue = 0;
 		$exec_id = 0;
 		$list = array();
-		
 		$sql = 'SELECT exec_id, smartcommand_elems.room_device_id AS room_device_id,
 				       optiondef.option_id, option_value, time_lapse,
 				       room_device.name AS device_name, room_device.device_id AS device_id,
@@ -1612,9 +1511,7 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $id_smartcmd, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-			
 			$list[$do->exec_id] = array(
 					'smartcmd_id'       => $id_smartcmd,
 					'exec_id'           => $do->exec_id,
@@ -1626,7 +1523,6 @@ class User {
 					'device_id'         => $do->device_id,
 					'option_name'       => $do->option_name
 			);
-			
 			if ($do->option_id == 392 && empty($red)) {
 				$red = $do->option_value;
 				$exec_id = $do->exec_id;
@@ -1643,7 +1539,6 @@ class User {
 				$white = $do->option_value;
 				$exec_id = $do->exec_id;
 			}
-			
 			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
 				$white = 0;
@@ -1665,14 +1560,12 @@ class User {
 	
 	function createNewSmartcmd($smartcmd_name, $room_id){
 		$link = Link::get_link('domoleaf');
-
 		if ($this->searchSmartcmdByName($smartcmd_name) != 0) {
 			return -1;
 		}
 		if ($room_id == 0) {
 			$room_id = NULL;
 		}
-		
 		$sql = 'INSERT INTO smartcommand_list
 		        (name, mcuser_id, room_id)
 				VALUES
@@ -1682,7 +1575,6 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->bindValue(':room_id', $room_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		return $link->lastInsertId();
 	}
 	
@@ -1691,7 +1583,6 @@ class User {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE smartcommand_list
 				SET name=:smartcmd_name
 				WHERE smartcommand_id=:smartcmd_id';
@@ -1699,18 +1590,15 @@ class User {
 		$req->bindValue(':smartcmd_name', $smartcmd_name, PDO::PARAM_STR);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-
 		return $smartcmd_id;
 	}
 	
 	function saveNewElemSmartcmd($idsmartcmd, $idexec, $iddevice, $idoption, $valoption, $timelapse, $no_update = 0){
 		$link = Link::get_link('domoleaf');
-
 		if ($no_update == 0) {
 			$sql = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
-		
 			$req = $link->prepare($sql);
 			$req->bindValue(':idexec', $idexec, PDO::PARAM_INT);
 			$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
@@ -1733,7 +1621,6 @@ class User {
 	
 	function updateSmartcmdElemOptionValue($idsmartcmd, $idexec, $optionval, $id_option) {
 		$link = Link::get_link('domoleaf');
-
 		$sql = 'UPDATE smartcommand_elems
 				SET option_value=:option_val
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND option_id=:option_id';
@@ -1747,20 +1634,16 @@ class User {
 	
 	function smartcmdChangeElemsOrder($smartcmd_id, $old_exec_id, $new_exec_id) {
 		$link = Link::get_link('domoleaf');
-		
 		if ($old_exec_id == $new_exec_id) {
 			return;
 		}
-		
 		if ($new_exec_id > $old_exec_id) {
 			$sql1 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id <= :idexec';
-
 			$sql2 = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id-1';
-			
 			$sql3 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id < :idexec';
@@ -1769,27 +1652,22 @@ class User {
 			$sql1 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id+1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id >= :idexec';
-
 			$sql2 = 'UPDATE smartcommand_elems
 					SET exec_id=:new_exec_id
 					WHERE smartcommand_id=:smartcmd_id AND exec_id=:old_exec_id+1';
-
 			$sql3 = 'UPDATE smartcommand_elems
 					SET exec_id=exec_id-1
 					WHERE smartcommand_id=:smartcommand_id AND exec_id > :idexec';
 		}
-		
 		$req = $link->prepare($sql1);
 		$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->bindValue(':idexec', $new_exec_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$req = $link->prepare($sql2);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->bindValue(':old_exec_id', $old_exec_id, PDO::PARAM_INT);
 		$req->bindValue(':new_exec_id', $new_exec_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$req = $link->prepare($sql3);
 		$req->bindValue(':idexec', $old_exec_id, PDO::PARAM_INT);
 		$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
@@ -1798,7 +1676,6 @@ class User {
 	
 	function removeSmartcmd($smartcmd_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM smartcommand_list
 				WHERE smartcommand_id=:smartcmd_id';
 		$req = $link->prepare($sql);
@@ -1808,14 +1685,12 @@ class User {
 	
 	function removeSmartcmdElem($smartcmd_id, $exec_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM smartcommand_elems
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$sql = 'UPDATE smartcommand_elems
 				SET exec_id=exec_id-1
 				WHERE smartcommand_id=:smartcmd_id AND exec_id > :exec_id';
@@ -1827,7 +1702,6 @@ class User {
 	
 	function smartcmdUpdateDelay($smartcmd_id, $exec_id, $delay) {
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'UPDATE smartcommand_elems
 				SET time_lapse=:delay
 				WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id';
@@ -1840,7 +1714,6 @@ class User {
 	
 	function smartcmdSaveLinkedRoom($smartcmd_id, $room_id) {
 		$link = Link::get_link('domoleaf');
-
 		if ($room_id == 0) {
 			$room_id = NULL;
 		}
@@ -1857,7 +1730,6 @@ class User {
 	
 	function searchTriggerByName($trigger_name){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT id_trigger, mcuser_id
 				FROM trigger_events_list
 				WHERE trigger_name=:trigger_name AND mcuser_id=:user_id';
@@ -1865,7 +1737,6 @@ class User {
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -1878,14 +1749,12 @@ class User {
 	
 	function searchTriggerById($trigger_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT trigger_name, mcuser_id
 				FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -1898,30 +1767,25 @@ class User {
 	
 	function countTriggerConditions($trigger_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT COUNT(id_condition) AS nb
 				FROM trigger_events_conditions
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do->nb;
 	}
 	
 	function listTriggers(){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT id_trigger, trigger_name
 				FROM trigger_events_list
 				WHERE mcuser_id=:user_id
 				ORDER BY trigger_name';
-	
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->id_trigger] = array(
@@ -1929,7 +1793,6 @@ class User {
 					'name'           => $do->trigger_name
 			);
 		}
-	
 		return $list;
 	}
 	
@@ -1939,7 +1802,6 @@ class User {
 		$green = 0;
 		$blue = 0;
 		$id_condition = 0;
-	
 		$sql = 'SELECT id_condition,
 				       trigger_events_conditions.room_device_id AS room_device_id,
 				       optiondef.option_id,
@@ -1956,11 +1818,8 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_id', $id_trigger, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$list ='';
-	
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-				
 			$list[$do->id_condition] = array(
 					'trigger_id'        => $id_trigger,
 					'condition_id'      => $do->id_condition,
@@ -1972,7 +1831,6 @@ class User {
 					'option_name'       => $do->option_name,
 					'operator'          => $do->operator
 			);
-				
 			if ($do->option_id == 392 && empty($red)) {
 				$red = $do->option_value;
 				$id_condition = $do->id_condition;
@@ -1989,7 +1847,6 @@ class User {
 				$white = $do->option_value;
 				$exec_id = $do->exec_id;
 			}
-			
 			if (!empty($white) && !empty($red) && !empty($green) && !empty($blue) && !empty($exec_id)) {
 				$hexa_color = convertRGBToHexa($red, $green, $blue, $white);
 				$white = 0;
@@ -2014,7 +1871,6 @@ class User {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'INSERT INTO trigger_events_list
 		        (trigger_name, mcuser_id)
 				VALUES 
@@ -2032,7 +1888,6 @@ class User {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE trigger_events_list
 				SET trigger_name=:trigger_name
 				WHERE id_trigger=:trigger_id';
@@ -2040,13 +1895,11 @@ class User {
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-
 		return $trigger_id;
 	}
 	
 	function saveNewElemTrigger($idtrigger, $idcondition, $iddevice, $idoption, $valoption, $operator, $no_update = 0){
 		$link = Link::get_link('domoleaf');
-	
 		if ($no_update == 0) {
 			$sql = 'UPDATE trigger_events_conditions
 					SET id_condition=id_condition+1
@@ -2057,7 +1910,6 @@ class User {
 			$req->bindValue(':id_trigger', $idtrigger, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-	
 		$sql = 'INSERT INTO trigger_events_conditions
 				(id_trigger, id_condition, room_device_id, id_option, operator, value)
 				VALUES
@@ -2083,13 +1935,11 @@ class User {
 		$req->bindValue(':condition_id', $idcondition, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		return $do;
 	}
 	
 	function updateTriggerElemOptionValue($idtrigger, $idcondition, $optionval, $id_option, $operator) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE trigger_events_conditions
 				SET value=:option_val, operator=:operator
 				WHERE id_trigger=:trigger_id AND id_condition=:condition_id AND id_option=:option_id';
@@ -2105,7 +1955,6 @@ class User {
 	
 	function triggerChangeElemsOrder($id_trigger, $old_condition_id, $new_condition_id) {
 		$link = Link::get_link('domoleaf');
-	
 		if ($old_condition_id == $new_condition_id) {
 			return;
 		}
@@ -2113,11 +1962,9 @@ class User {
 			$sql1 = 'UPDATE trigger_events_conditions
 					SET id_condition=id_condition-1
 					WHERE id_trigger=:id_trigger AND id_condition <= :idexec';
-	
 			$sql2 = 'UPDATE trigger_events_conditions
 					SET id_condition=:new_condition_id
 					WHERE id_trigger=:trigger_id AND id_condition=:old_condition_id-1';
-				
 			$sql3 = 'UPDATE trigger_events_conditions
 					SET id_condition=id_condition+1
 					WHERE id_trigger=:id_trigger AND id_condition < :idexec';
@@ -2126,27 +1973,22 @@ class User {
 			$sql1 = 'UPDATE trigger_events_conditions
 					SET id_condition=id_condition+1
 					WHERE id_trigger=:id_trigger AND id_condition >= :idexec';
-	
 			$sql2 = 'UPDATE trigger_events_conditions
 					SET id_condition=:new_condition_id
 					WHERE id_trigger=:trigger_id AND id_condition=:old_condition_id+1';
-	
 			$sql3 = 'UPDATE trigger_events_conditions
 					SET id_condition=id_condition-1
 					WHERE id_trigger=:id_trigger AND id_condition > :idexec';
 		}
-	
 		$req = $link->prepare($sql1);
 		$req->bindValue(':id_trigger', $id_trigger, PDO::PARAM_INT);
 		$req->bindValue(':idexec', $new_condition_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$req = $link->prepare($sql2);
 		$req->bindValue(':trigger_id', $id_trigger, PDO::PARAM_INT);
 		$req->bindValue(':old_condition_id', $old_condition_id, PDO::PARAM_INT);
 		$req->bindValue(':new_condition_id', $new_condition_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$req = $link->prepare($sql3);
 		$req->bindValue(':idexec', $old_condition_id, PDO::PARAM_INT);
 		$req->bindValue(':id_trigger', $id_trigger, PDO::PARAM_INT);
@@ -2156,7 +1998,6 @@ class User {
 	
 	function removeTrigger($trigger_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM trigger_events_list
 				WHERE id_trigger=:trigger_id';
 		$req = $link->prepare($sql);
@@ -2167,14 +2008,12 @@ class User {
 	
 	function removeTriggerElem($trigger_id, $condition_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM trigger_events_conditions
 				WHERE id_trigger=:trigger_id AND id_condition=:condition_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_id', $trigger_id, PDO::PARAM_INT);
 		$req->bindValue(':condition_id', $condition_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$sql = 'UPDATE trigger_events_conditions
 				SET id_condition=id_condition-1
 				WHERE id_trigger=:trigger_id AND id_condition > :condition_id';
@@ -2194,7 +2033,6 @@ class User {
 	
 	function searchScheduleByName($schedule_name){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT id_schedule, mcuser_id
 				FROM trigger_schedules_list
 				WHERE schedule_name=:schedule_name AND mcuser_id=:user_id';
@@ -2202,7 +2040,6 @@ class User {
 		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -2212,10 +2049,8 @@ class User {
 		}
 		return $do->id_schedule;
 	}
-	
 	function searchScheduleById($schedule_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT schedule_name,
 				       mcuser_id
 				FROM trigger_schedules_list
@@ -2223,7 +2058,6 @@ class User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -2236,16 +2070,13 @@ class User {
 	
 	function listSchedules(){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT id_schedule, schedule_name
 				FROM trigger_schedules_list
 				WHERE trigger_schedules_list.mcuser_id=:user_id
 				ORDER BY schedule_name';
-	
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->id_schedule] = array(
@@ -2253,55 +2084,42 @@ class User {
 					'name'           => $do->schedule_name,
 			);
 		}
-	
 		return $list;
 	}
 	
 	function updateSchedule($idschedule, $months, $weekdays, $days, $hours, $mins){
 		$link = Link::get_link('domoleaf');
-
 		$arrayHours = str_split(sprintf("%'.024s\n", decbin($hours)));
 		$arrayMins = str_split($mins);
 		$diffTime = $this->profileTime();
-
 		if ($diffTime > 0){
 			$nbHours = $diffTime / 3600;
 			$nbMins = $diffTime % 3600 / 60;
-
-			for ($i = 0 ; $i < $nbHours ; $i++){
+			for ($i = 0 ; $i < $nbHours ; ++$i){
 				array_unshift($arrayHours, array_pop($arrayHours));
 			}
-
-			for ($i = 0 ; $i < $nbMins ; $i++){
+			for ($i = 0 ; $i < $nbMins ; ++$i){
 				array_unshift($arrayMins, array_pop($arrayMins));
 			}
-
 			$hours = bindec(join($arrayHours));
 			$mins = join($arrayMins);
-
 		}
 		else if ($diffTime < 0){
 			$diffTime = $diffTime * -1;
 			$nbHours = $diffTime / 3600;
 			$nbMins = $diffTime % 3600 / 60;
-
-			for ($i = 0 ; $i < $nbHours ; $i++){
+			for ($i = 0 ; $i < $nbHours ; ++$i){
 				array_push($arrayHours, array_shift($arrayHours));
 			}
-
-			for ($i = 0 ; $i < $nbMins ; $i++){
+			for ($i = 0 ; $i < $nbMins ; ++$i){
 				array_push($arrayMins, array_shift($arrayMins));
 			}
-
 			$hours = bindec(join($arrayHours));
 			$mins = join($arrayMins);
-
 		}
-
 		$sql = 'UPDATE trigger_schedules_list
 				SET months=:months, weekdays=:weekdays, days=:days, hours=:hours, mins=:mins
 				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
-
 		$req = $link->prepare($sql);
 		$req->bindValue(':months', $months, PDO::PARAM_INT);
 		$req->bindValue(':weekdays', $weekdays, PDO::PARAM_INT);
@@ -2316,35 +2134,26 @@ class User {
 	
 	function getSchedule($idschedule){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT months, weekdays, days, hours, mins
 				FROM trigger_schedules_list
 				WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
-
 		$req = $link->prepare($sql);
 		$req->bindValue(':schedule_id', $idschedule, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
-	
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$do = $req->fetch(PDO::FETCH_OBJ);
-
 		$arrayHours = str_split(sprintf("%'.024s\n", decbin($do->hours)));
 		$arrayMins = str_split($do->mins);
 		$diffTime = $this->profileTime();
-		
 		if ($diffTime > 0){
 			$nbHours = $diffTime / 3600;
 			$nbMins = $diffTime % 3600 / 60;
-
-			for ($i = 0 ; $i < $nbHours - 1; $i++){
+			for ($i = 0 ; $i < $nbHours - 1; ++$i){
 				array_push($arrayHours, array_shift($arrayHours));
 			}
-
-			for ($i = 0 ; $i < $nbMins ; $i++){
+			for ($i = 0 ; $i < $nbMins ; ++$i){
 				array_push($arrayMins, array_shift($arrayMins));
 			}
-
 			$do->hours = bindec(join($arrayHours));
 			$do->mins = join($arrayMins);
 		}
@@ -2352,15 +2161,12 @@ class User {
 			$diffTime = $diffTime * -1;
 			$nbHours = $diffTime / 3600;
 			$nbMins = $diffTime % 3600 / 60;
-
-			for ($i = 0 ; $i < $nbHours + 1; $i++){
+			for ($i = 0 ; $i < $nbHours + 1; ++$i){
 				array_unshift($arrayHours, array_pop($arrayHours));
 			}
-
-			for ($i = 0 ; $i < $nbMins ; $i++){
+			for ($i = 0 ; $i < $nbMins ; ++$i){
 				array_unshift($arrayMins, array_pop($arrayMins));
 			}
-
 			$do->hours = bindec(join($arrayHours));
 			$do->mins = join($arrayMins);
 		}
@@ -2372,7 +2178,6 @@ class User {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE trigger_schedules_list
 				SET schedule_name=:schedule_name
 				WHERE id_schedule=:schedule_id';
@@ -2380,17 +2185,14 @@ class User {
 		$req->bindValue(':schedule_name', $schedule_name, PDO::PARAM_STR);
 		$req->bindValue(':schedule_id', $schedule_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		return $schedule_id;
 	}
 	
 	function createNewSchedule($schedule_name){
-	
 		if ($this->searchScheduleByName($schedule_name) != 0) {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'INSERT INTO trigger_schedules_list
 		        (schedule_name, mcuser_id, months, weekdays, days, hours, mins)
 				VALUES
@@ -2405,13 +2207,11 @@ class User {
 		$req->bindValue(':mins', str_repeat("1", 60), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateSchedulesList();
-		
 		return $link->lastInsertId();
 	}
 	
 	function removeSchedule($schedule_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM trigger_schedules_list
 				WHERE id_schedule=:schedule_id';
 		$req = $link->prepare($sql);
@@ -2429,16 +2229,13 @@ class User {
 	
 	function searchScenarioByName($scenario_name){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT id_scenario
 				FROM scenarios_list
 				WHERE name_scenario=:name_scenario AND mcuser_id=:user_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':name_scenario', $scenario_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
-		
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -2448,14 +2245,12 @@ class User {
 	
 	function searchScenarioById($scenario_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT name_scenario, mcuser_id
 				FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		if ($req->rowCount() == 0) {
 			return 0;
 		}
@@ -2469,18 +2264,15 @@ class User {
 	function listScenarios(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-	
 		$sql = 'SELECT id_scenario, name_scenario, id_trigger, id_schedule, scenarios_list.id_smartcmd,
 				       smartcommand_list.name AS name_smartcmd, activated, complete
 				FROM scenarios_list
 				LEFT OUTER JOIN smartcommand_list ON scenarios_list.id_smartcmd = smartcommand_list.smartcommand_id
 				WHERE scenarios_list.mcuser_id=:user_id
 				ORDER BY name_scenario';
-	
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		$list = array();
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->id_scenario] = array(
@@ -2494,20 +2286,16 @@ class User {
 					'complete'        => $do->complete
 			);
 		}
-	
 		return $list;
 	}
 	
 	function getScenario($idscenario){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'SELECT name_scenario, id_trigger, id_schedule, id_smartcmd, activated, complete, mcuser_id
 				FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
-	
 		$req = $link->prepare($sql);
 		$req->bindValue(':scenario_id', $idscenario, PDO::PARAM_INT);
-	
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		if(empty($do->mcuser_id) || $do->mcuser_id != $this->getId()) {
@@ -2522,17 +2310,14 @@ class User {
 		if (empty($do->id_smartcmd)) {
 			$do->id_smartcmd = 0;
 		}
-	
 		return $do;
 	}
 	 
 	function createNewScenario($scenario_name){
-	
 		if ($this->searchScenarioByName($scenario_name) != 0) {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'INSERT INTO scenarios_list
 		        (name_scenario, mcuser_id)
 		        VALUES
@@ -2541,13 +2326,11 @@ class User {
 		$req->bindValue(':scenario_name', $scenario_name, PDO::PARAM_STR);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		return $link->lastInsertId();
 	}
 	
 	function changeScenarioState($scenario_id, $state) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE scenarios_list
 				SET activated=:state
 				WHERE id_scenario=:id_scenario';
@@ -2560,7 +2343,6 @@ class User {
 
 	function updateScenarioSmartcmd($scenario_id, $smartcmd_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE scenarios_list
 				SET id_smartcmd=:smartcmd_id
 				WHERE id_scenario=:scenario_id';
@@ -2573,7 +2355,6 @@ class User {
 	
 	function updateScenarioTrigger($scenario_id, $trigger_id){
 		$link = Link::get_link('domoleaf');
-		
 		if ($trigger_id == 0) {
 			$trigger_id = null;
 		}
@@ -2589,7 +2370,6 @@ class User {
 	
 	function updateScenarioSchedule($scenario_id, $schedule_id){
 		$link = Link::get_link('domoleaf');
-	
 		if ($schedule_id == 0) {
 			$schedule_id = null;
 		}
@@ -2608,7 +2388,6 @@ class User {
 			return -1;
 		}
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE scenarios_list
 				SET name_scenario=:scenario_name
 				WHERE id_scenario=:scenario_id';
@@ -2616,13 +2395,11 @@ class User {
 		$req->bindValue(':scenario_name', $scenario_name, PDO::PARAM_STR);
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-	
 		return $scenario_id;
 	}
 	
 	function completeScenario($scenario_id){
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'UPDATE scenarios_list
 				SET complete=1
 				WHERE id_scenario=:scenario_id';
@@ -2633,7 +2410,6 @@ class User {
 	
 	function removeScenario($scenario_id) {
 		$link = Link::get_link('domoleaf');
-	
 		$sql = 'DELETE FROM scenarios_list
 				WHERE id_scenario=:scenario_id';
 		$req = $link->prepare($sql);
@@ -2705,7 +2481,6 @@ class User {
 	function confOptionList(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT option_id, 
 		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name 
 		        FROM optiondef
@@ -2715,7 +2490,6 @@ class User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->option_id] = clone $do;
 		}
-		
 		return $list;
 	}
 	
@@ -2724,7 +2498,6 @@ class User {
 	function listUnits(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-	
 		$sql = 'SELECT room_device_id,
 				       option_id,
 		               addr_plus
@@ -2735,7 +2508,6 @@ class User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->room_device_id][$do->option_id] = $do->addr_plus;
 		}
-	
 		return $list;
 	}
 	
@@ -2765,7 +2537,6 @@ class User {
 	function mcDeviceAll(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		
 		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id, 
 		               room_device.device_id, room_device.name, addr, plus1, 
 		               plus2, plus3, device.application_id
@@ -2789,7 +2560,6 @@ class User {
 				'device_opt'    => array()
 			);
 		}
-		
 		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
 		               room_device.device_id, 
 		               optiondef.option_id, room_device_option.addr,
@@ -2820,7 +2590,6 @@ class User {
 	 */
 	function mcDeviceInfo($roomdeviceid){
 		$link = Link::get_link('domoleaf');
-		
 		if(empty($roomdeviceid)){
 			return null;
 		}
@@ -2834,11 +2603,9 @@ class User {
 		$req->bindValue(':room_device_id', $roomdeviceid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(empty($do)) {
 			return null;
 		}
-		
 		$info = array(
 				'application_id'=> $do->application_id,
 				'room_device_id'=> $do->room_device_id,
@@ -2884,7 +2651,6 @@ class User {
 	 */
 	function checkDevice($iddevice){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT device_allowed
 		        FROM mcuser_device
 		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
@@ -2893,11 +2659,9 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		
 		if(empty($do->device_allowed)) {
 			return false;
 		}
-		
 		return true;
 	}
 	
@@ -2909,7 +2673,6 @@ class User {
 	 */
 	function mcAction($iddevice, $value, $optionid){
 		$link = Link::get_link('domoleaf');
-		
 		$sql = 'SELECT device_allowed, room_device_option.addr_plus, 
 		               room_device.device_id
 		        FROM mcuser_device
@@ -2923,14 +2686,12 @@ class User {
 		$req->bindValue(':option_id', $optionid, PDO::PARAM_INT);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		if(!empty($do->device_allowed) || $this->getlevel() > 1){
 			//Generic
 			if($do->device_id == 86) {
 				$value = $do->addr_plus;
 			}
-			
 			$sql ='UPDATE room_device_option
 			       SET opt_value=:opt_value
 			       WHERE room_device_id=:room_device_id AND 
@@ -2958,11 +2719,9 @@ class User {
 		if(apc_exists('mcReturn_'.$this->getId())) {
 			return unserialize(apc_fetch('mcReturn_'.$this->getId()));
 		}
-		
 		$link = Link::get_link('domoleaf');
 		$res = $this->conf_load();
 		$list = Array();
-		
 		$sql = 'SELECT room_device_option.room_device_id, option_id, opt_value, addr_plus, room_device.device_id, dpt_id
 		        FROM   room_device_option
 		        JOIN   room_device ON room_device_option.room_device_id=room_device.room_device_id';

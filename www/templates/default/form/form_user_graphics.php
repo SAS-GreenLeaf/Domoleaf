@@ -14,14 +14,14 @@ if (empty($_GET['from_dateval'])) {
 	$_GET['from_dateval'] = date('Y-m-d');
 }
 else {
-	$_GET['from_dateval'] = str_replace('/', '-', $_GET['from_dateval']);
+	$_GET['from_dateval'] = strtr($_GET['from_dateval'], '/', '-');
 }
 
 if (empty($_GET['to_dateval'])) {
 	$_GET['to_dateval'] = date('Y-m-d');
 }
 else {
-	$_GET['to_dateval'] = str_replace('/', '-', $_GET['to_dateval']);
+	$_GET['to_dateval'] = strtr($_GET['to_dateval'], '/', '-');
 }
 $request =  new Api();
 $request -> add_request('getGraphicsInfo', array($_GET['device_id'], $_GET['option_id'], $_GET['from_dateval'], $_GET['to_dateval']));
@@ -62,10 +62,10 @@ if (!empty($listvalues->datas)) {
 	$graphList = array();
 	foreach ($listvalues->datas as $graphic) {
 		if ($_GET['option_id'] == 399) {
-			$graphList[] = '{"time": "'.date('Y-m-d H:i', $graphic->date_time).'", "value": '.str_replace(',', '.', $graphic->value).', "cost": '.str_replace(',', '.', round($graphic->price, 2)).'}';
+			$graphList[] = '{"time": "'.date('Y-m-d H:i', $graphic->date_time).'", "value": '.strtr($graphic->value, ',', '.').', "cost": '.strtr(round($graphic->price, 2), ',', '.').'}';
 		}
 		else {
-			$graphList[] = '{"time": "'.date('Y-m-d H:i', $graphic->date_time).'", "value": '.str_replace(',', '.', $graphic->value).'}';
+			$graphList[] = '{"time": "'.date('Y-m-d H:i', $graphic->date_time).'", "value": '.strtr($graphic->value, ',', '.').'}';
 		}
 	}
 	/* Determine the timeLabel for a properly display */

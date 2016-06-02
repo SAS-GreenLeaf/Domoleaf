@@ -526,7 +526,7 @@ function display_commande($info){
 		$display.= $tab[0];
 	}
 	elseif($size > 1) {
-		for($i=0;$i<$size;$i++) {
+		for($i=0;$i<$size;++$i) {
 			if($i > 0 && $i%2 == 0) {
 				$display.= '<div class="clearfix"></div>';
 			}

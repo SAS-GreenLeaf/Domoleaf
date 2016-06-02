@@ -8,7 +8,6 @@ class Guest {
 	 	*/
 	 public static function connect($token) {
 		$token = trim($token);
-		
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT mcuser.mcuser_id, mcuser_level, language, design
 		        FROM mcuser_token
@@ -27,8 +26,7 @@ class Guest {
 	 		return array('id' => 0, 'level' => 0, 'language' => '', 'design' => 0);
 	 	}
 	 }
-	 
-
+	
 	 /**
 	  * Return id and token
 	  * @param mail
@@ -37,11 +35,9 @@ class Guest {
 	 public static function connexion($name, $pass) {
 	 	$return = array('id' => 0, 'token' => '', 'error' => 0, 'level' => 0, 'language' => '', 'design' => 0);
 	 	$error  = 0;
-	 
 	 	$username = addslashes(trim($name));
 	 	$password = trim($pass);
 	 	$link = Link::get_link('domoleaf');
-	 
 	 	$sql = 'SELECT mcuser_id, mcuser_password, mcuser_level, language, design
 		        FROM mcuser
 		        WHERE username= :username';
@@ -49,7 +45,6 @@ class Guest {
 	 	$req->bindValue(':username', $username, PDO::PARAM_STR);
 	 	$req->execute() or die (error_log(serialize($req->errorInfo())));
 	 	$do = $req->fetch(PDO::FETCH_OBJ);
-	 
 	 	if(!empty($do->mcuser_id)) {
 	 		if($do->mcuser_password == hash('sha256', $do->mcuser_id.'_'.$password)) {
 	 			$return['id']       = $do->mcuser_id;
@@ -67,8 +62,7 @@ class Guest {
 	 			$req->bindValue(':user',  $do->mcuser_id, PDO::PARAM_INT);
 	 			$req->bindValue(':lastupdate', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT);
 	 			$req->execute() or die (error_log(serialize($req->errorInfo())));
-	 			$req->fetch(PDO::FETCH_OBJ);
-	 			
+	 			$req->fetch(PDO::FETCH_OBJ);	
 	 			$return['token'] = $token;
 	 		}
 	 		else {
@@ -78,9 +72,7 @@ class Guest {
 	 	else {
 	 		$error = 1;
 	 	}
-	 
 	 	$return['error'] = $error;
-	 
 		return $return;
 	}
 	 
