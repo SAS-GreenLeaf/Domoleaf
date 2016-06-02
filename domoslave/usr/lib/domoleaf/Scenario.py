@@ -36,8 +36,7 @@ class Scenario(Thread):
         scenarios_tab = {};
         self.logger.debug('\n\nGETTING SCENARIOS TAB\n');
         for d in scenarios:
-            seq = (str(d[4]), '_', str(d[5]));
-            scHash = ''.join(seq);
+            scHash = ''.join([str(d[4]), '_', str(d[5])]);
             if scHash not in scenarios_tab:
                 scenarios_tab[scHash] = [];
             scenarios_tab[scHash].append(d)
@@ -45,12 +44,12 @@ class Scenario(Thread):
     
     def update_scenarios_list(self):
         self.logger.debug('UPDATING SCENARIOS');
-        query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, '
-                 'id_smartcmd, trigger_events_conditions.room_device_id, id_option '
-                 'FROM trigger_events_conditions '
-                 'JOIN scenarios_list '
-                 'ON trigger_events_conditions.id_trigger=scenarios_list.id_trigger '
-                 'WHERE activated = 1 && scenarios_list.id_trigger IS NOT NULL '
+        query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, ',
+                 'id_smartcmd, trigger_events_conditions.room_device_id, id_option ',
+                 'FROM trigger_events_conditions ',
+                 'JOIN scenarios_list ',
+                 'ON trigger_events_conditions.id_trigger=scenarios_list.id_trigger ',
+                 'WHERE activated = 1 && scenarios_list.id_trigger IS NOT NULL ',
                  'ORDER BY id_scenario']);
         scenarios_list = self.sql.mysql_handler_personnal_query(query);
         self.logger.debug('S LIST = '+str(scenarios_list)+'\n');

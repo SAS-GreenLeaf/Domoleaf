@@ -357,7 +357,7 @@ class MasterDaemon:
         if '.' in t:
             t = t.split('.')[0];
         filename += t+'.sql';
-        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > "+path, filename);
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > "+path+filename);
         os.system('cd '+path+' && tar -czf '+filename+'.tar.gz'+' '+filename);
         os.system('rm '+path+filename);
 
