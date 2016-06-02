@@ -15,8 +15,4 @@ class CommandReceiver(Thread):
         Thread run function overload
         """
         data = self.connection.recv(MasterDaemon.MAX_DATA_LENGTH).decode();
-        print('===== FROM CMD =====')
-        print(data);
-        print('====================')
-        print();
         self.daemon.parse_data(data, self.connection, 0);

@@ -16,9 +16,8 @@ Slave daemon main function
 if len(sys.argv) > 1:
     if sys.argv[1] == '--log':
         log_flag = True;
-
 pid = os.fork();
-if pid == 0:
+if not pid:
     if log_flag:
         logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG);
     try:

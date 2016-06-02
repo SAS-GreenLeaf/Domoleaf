@@ -25,15 +25,15 @@ class SlaveReceiver(Thread):
         """
         Thread run function overload
         """
-        self.logger.error('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\'' + self.connected_host + '\'')
-        res = self.sql.mysql_handler_personnal_query('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\'' + self.connected_host + '\'');
+        self.logger.error('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\''+self.connected_host+'\'');
+        res = self.sql.mysql_handler_personnal_query('SELECT serial, secretkey, daemon_id FROM daemon WHERE serial=\''+self.connected_host+'\'');
         aes_key = '';
         for r in res:
             if r[0] == self.connected_host:
                 aes_key = r[1];
                 daemon_id = r[2];
                 break;
-        if aes_key == '':
+        if not aes_key:
             return None;
         try:
             data = self.connection.recv(MasterDaemon.MAX_DATA_LENGTH);

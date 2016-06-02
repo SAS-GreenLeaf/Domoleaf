@@ -25,10 +25,10 @@ class DaemonConfigParser:
             if valueName in self._Config[sectionName]:
                 return self._Config[sectionName][valueName];
             else:
-                print("[ WARNING ]: '" + valueName + "' not defined in section '" + sectionName + "'");
+                print("[ WARNING ]: '", valueName, "' not defined in section '", sectionName, "'");
                 return None;
         else:
-            print("[ WARNING ]: '" + sectionName + "' not defined in " + self._Filename);
+            print("[ WARNING ]: '", sectionName, "' not defined in ", self._Filename);
             return None;
 
     def getSection(self, sectionName):
@@ -38,7 +38,7 @@ class DaemonConfigParser:
         if sectionName in self._Config:
             return self._Config[sectionName];
         else:
-            print("[ ERROR ]: '" + sectionName + "' not defined in " + self._Filename);
+            print("[ ERROR ]: '", sectionName, "' not defined in ", self._Filename);
             return None;
 
     def writeValueFromSection(self, sectionName, valueName, value):
@@ -53,4 +53,3 @@ class DaemonConfigParser:
                 self._Config.write(filename);
         except Exception as e:
             self.logger.error(e);
-            

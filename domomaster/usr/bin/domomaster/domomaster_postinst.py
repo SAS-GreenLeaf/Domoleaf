@@ -52,21 +52,19 @@ def master_conf_initdb():
     #mysql user
     query1 = 'DELETE FROM user WHERE User="domoleaf"';
     query2 = 'DELETE FROM db WHERE User="domoleaf"';
-    query3 = 'INSERT INTO user (Host, User, Password) VALUES (\'%\', \'domoleaf\', PASSWORD(\''+password.hexdigest()+'\'));';
+    query3 = 'INSERT INTO user (Host, User, Password) VALUES (\'%\', \'domoleaf\', PASSWORD(\''+password+'\'));';
     query4 = 'INSERT INTO db (Host, Db, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Create_tmp_table_priv, Lock_tables_priv, Create_view_priv, Show_view_priv, Create_routine_priv, Alter_routine_priv, Execute_priv, Event_priv, Trigger_priv) VALUES ("%","domoleaf","domoleaf","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y");';
     query5 = 'FLUSH PRIVILEGES';
-    
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query1], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query2], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query3], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query4], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query5], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
-    
+
 def master_conf_init():
     file = DaemonConfigParser(SLAVE_CONF_FILE);
     personnal_key = file.getValueFromSection('personnal_key', 'aes');
     hostname = socket.gethostname();
-    
     #KNX Interface
     if os.path.exists('/dev/ttyAMA0'):
         knx = "tpuarts"
@@ -77,16 +75,13 @@ def master_conf_init():
     else:
         knx = "ipt"
         knx_interface = '127.0.0.1';
-    
     domoslave = os.popen("dpkg-query -W -f='${Version}\n' domoslave").read().split('\n')[0];
-    
     query1 = "INSERT INTO daemon (name, serial, secretkey, validation, version) VALUES ('"+hostname+"','"+hostname+"','"+personnal_key+"',1,'"+domoslave+"')"
     query2 = "INSERT INTO daemon_protocol (daemon_id, protocol_id, interface, interface_arg) VALUES (1,1,'"+knx+"','"+knx_interface+"')"
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'domoleaf',
            '-e', query1], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'domoleaf',
            '-e', query2], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
-
 if __name__ == "__main__":
     #Upgrade
     if os.path.exists(MASTER_CONF_FILE_BKP):

@@ -27,8 +27,7 @@ class Schedule:
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
                  'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
                  'ORDER BY id_scenario ');
-        res = self.sql.mysql_handler_personnal_query(query);
-        self.schedules_list = res;
+        self.schedules_list = self.sql.mysql_handler_personnal_query(query);
         
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
@@ -36,8 +35,7 @@ class Schedule:
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
                  'WHERE scenarios_list.id_schedule IS NOT NULL && activated = 1 '
                  'ORDER BY id_scenario ');
-        res = self.sql.mysql_handler_personnal_query(query);
-        self.full_schedules_list = res;
+        self.full_schedules_list = self.sql.mysql_handler_personnal_query(query);
 
     def get_schedule_infos(self, id_schedule):
         schedules_list = self.full_schedules_list;

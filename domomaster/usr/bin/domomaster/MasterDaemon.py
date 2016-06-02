@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart;
 from email.mime.text import MIMEText;
 from email.utils import formataddr;
 import copy;
+import threading
 import time;
 import os;
 import json;
@@ -128,8 +129,8 @@ class MasterDaemon:
         self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None);
         self.trigger = Trigger(self);
-        self.schedule = Schedule(self);
         self.scenario = Scenario(self);
+        self.schedule = Schedule(self);
         self.calcLogs = CalcLogs(self);
         self.functions = {
               1 : self.knx_manager.send_knx_write_short_to_slave,
@@ -197,7 +198,6 @@ class MasterDaemon:
             elif self_hostname == r[0]:
                 self.aes_slave_keys[r[0]] = r[1];
                 self.aes_master_key = r[1];
-        print(self.aes_slave_keys)
 
     def stop(self):
         """
@@ -227,11 +227,11 @@ class MasterDaemon:
         c_port = self._parser.getValueFromSection(MASTER_CONF_LISTEN_SECTION, MASTER_CONF_LISTEN_PORT_CMD_ENTRY);
         if not s_port:
             frameinfo = getframeinfo(currentframe());
-            self.logger.error('in run: No slave listening port defined in ' + MASTER_CONF_FILE);
+            self.logger.error('in run: No slave listening port defined in '+MASTER_CONF_FILE);
             sys.exit(1);
         if not c_port:
             frameinfo = getframeinfo(currentframe());
-            self.logger.error('in run: No command listening port defined in ' + MASTER_CONF_FILE);
+            self.logger.error('in run: No command listening port defined in '+MASTER_CONF_FILE);
             sys.exit(1);
         self.slave_connection.bind(('', int(s_port)));
         self.slave_connection.listen(MAX_SLAVES);
@@ -255,13 +255,13 @@ class MasterDaemon:
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.info('in loop: Keyboard interrupt: leaving program');
-                print("[ MASTER DAEMON " + frameinfo.filename + ":" + str(frameinfo.lineno) + " ]: Keyboard Interrupt");
+                print("[ MASTER DAEMON ",frameinfo.filename,":",str(frameinfo.lineno)," ]: Keyboard Interrupt");
                 self.stop();
                 sys.exit(0);
             except ValueError as e:
                 frameinfo = getframeinfo(currentframe());
-                self.logger.error('in loop: Value error: ' + str(e));
-                print("[ MASTER DAEMON " + frameinfo.filename + ":" + str(frameinfo.lineno) + "]: Value Error");
+                self.logger.error('in loop: Value error: '+str(e));
+                print("[ MASTER DAEMON ",frameinfo.filename,":",str(frameinfo.lineno),"]: Value Error");
                 print(e);
                 pass;
 
@@ -279,12 +279,10 @@ class MasterDaemon:
         """
         new_connection, addr = connection.accept();
         myname = socket.gethostname();
-        
         try:
             name = socket.gethostbyaddr(addr[0])[0]
         except socket.error as serr:
             name = 'localhost'
-        
         if name == 'localhost':
             name = myname
         name = name.split('.')[0];
@@ -315,12 +313,12 @@ class MasterDaemon:
         output, error = p.communicate();
         p = Popen(['apt-show-versions',  '-u', 'domomaster'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
         output, error = p.communicate();
-        if p.returncode == 0:
+        if not p.returncode:
             tab = output.decode("utf-8").split(" ");
             version = tab[-1].rsplit("\n")[0];
         else:
             version = actual_version[0][0];
-        query = 'UPDATE configuration SET configuration_value="' + version + '" WHERE configuration_id=13';
+        query = ''.join(['UPDATE configuration SET configuration_value="', version, '" WHERE configuration_id=13']);
         self.sql.mysql_handler_personnal_query(query);
 
     def update(self, json_obj, connection):
@@ -332,9 +330,9 @@ class MasterDaemon:
         if '.' in hostname:
             hostname = hostname.split('.')[0];
         version = os.popen("dpkg-query -W -f='${Version}\n' domomaster").read().split('\n')[0];
-        query = 'UPDATE daemon SET version="' + version + '" WHERE name="' + hostname + '"';
+        query = ''.join(['UPDATmon SET version="', version, '" WHERE name="', hostname, '"' ]);
         self.sql.mysql_handler_personnal_query(query);
-        query = 'UPDATE configuration SET configuration_value="' + version + '" WHERE configuration_id=4';
+        query = ''.join(['UPDATE configuration SET configuration_value="', version, '" WHERE configuration_id=4']);
         self.sql.mysql_handler_personnal_query(query);
         json_obj['data'].append(hostname);
         port = self._parser.getValueFromSection('connect', 'port');
@@ -348,7 +346,7 @@ class MasterDaemon:
                 decode_obj = AES.new(self.aes_master_key, AES.MODE_CBC, decrypt_IV);
                 data2 = decode_obj.decrypt(data[16:]).decode();
                 version = data2['new_version'];
-                query = 'UPDATE daemon SET version="' + version + '" WHERE name="' + host._Hostname + '"';
+                query = ''.join(['UPDATE daemon SET version="', version, '" WHERE name="', host._Hostname, '"']);
                 self.sql.mysql_handler_personnal_query(query);
                 sock.close();
 
@@ -358,16 +356,13 @@ class MasterDaemon:
         t = str(time.time());
         if '.' in t:
             t = t.split('.')[0];
-        filename += t;
-        filename += '.sql';
-        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > " + path + filename);
-        os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
-        os.system('rm ' + path + filename);
+        filename += t+'.sql';
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > "+path, filename);
+        os.system('cd '+path+' && tar -czf '+filename+'.tar.gz'+' '+filename);
+        os.system('rm '+path+filename);
 
     def backup_db_remove_local(self, json_obj, connection):
-        filename = '/etc/domoleaf/sql/backup/domoleaf_backup_';
-        filename += str(json_obj['data']);
-        filename += '.sql.tar.gz';
+        filename = ''.join(['/etc/domoleaf/sql/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
             self.logger.error('The filename is corrupted. Aborting database file removing.')
             return;
@@ -385,46 +380,45 @@ class MasterDaemon:
 
     def backup_db_list_local(self, json_obj, connection):
         json_obj = [];
+        append = json_obj.append;
         backup_list = os.listdir('/etc/domoleaf/sql/backup/')
         for f in backup_list:
-            s = os.stat('/etc/domoleaf/sql/backup/' + f);
+            s = os.stat('/etc/domoleaf/sql/backup/'+f);
             if '.sql' in f:
-                f = f.split('.sql')[0];
-                json_obj.append({"name": f, "size": s.st_size});
+                g = f.split('.sql')[0];
+                append({"name": g, "size": s.st_size});
         json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name'], reverse=True);
         json_str = json.JSONEncoder().encode(json_sorted);
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_restore_local(self, json_obj, connection):
         path = '/etc/domoleaf/sql/backup/';
-        filename = 'domoleaf_backup_';
-        filename += str(json_obj['data']);
-        filename += '.sql.tar.gz';
+        filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
             self.logger.error('The filename is corrupted. Aborting database restoring.')
             return;
         try:
-            os.stat(path + filename);
-            os.system('cd ' + path + ' && tar -xzf ' + filename);
-            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < ' + path + filename.split('.tar.gz')[0]);
-            os.system('rm ' + path + filename.split('.tar.gz')[0]);
+            os.stat(path+filename);
+            os.system('cd '+path+' && tar -xzf '+filename);
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < '+path+filename.split('.tar.gz')[0]);
+            os.system('rm '+path+filename.split('.tar.gz')[0]);
             return;
         except Exception as e:
             try:
                 filename = filename.split('.tar.gz')[0];
-                os.stat(path + filename);
+                os.stat(path+filename);
             except Exception as e:
                 self.logger.error("The database file to restore does not exists.");
                 self.logger.error(e);
                 return;
-        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < ' + path + filename);
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < '+path+filename);
 
     def check_usb(self, json_obj, connection):
         try:
             sdx1 = glob.glob('/dev/sd?1')[0];
         except Exception as e:
             return;
-        if (os.path.exists(sdx1) == 0):
+        if not (os.path.exists(sdx1)):
             json_obj = 0;
         else:
             json_obj = 1;
@@ -433,33 +427,32 @@ class MasterDaemon:
 
     def backup_db_list_usb(self, json_obj, connection):
         json_obj = [];
+        append = json_obj.append
         sdx1 = glob.glob('/dev/sd?1')[0];
-        if (os.path.exists(sdx1) == 0):
+        if not (os.path.exists(sdx1)):
             return;
-        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        os.system('mount '+sdx1+' /etc/domoleaf/mnt');
         os.system('mkdir -p /etc/domoleaf/mnt/backup');
         backup_list = os.listdir('/etc/domoleaf/mnt/backup/')
         for f in backup_list:
-            s = os.stat('/etc/domoleaf/mnt/backup/' + f);
+            s = os.stat('/etc/domoleaf/mnt/backup/'+f);
             if '.sql' in f:
-                f = f.split('.sql')[0];
-                json_obj.append({"name": f, "size": s.st_size});
+                g = f.split('.sql')[0];
+                append({"name": g, "size": s.st_size});
         os.system('umount /etc/domoleaf/mnt');
         json_sorted = sorted(json_obj, key=lambda json_obj: json_obj['name'], reverse=True);
         json_str = json.JSONEncoder().encode(json_sorted);
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_remove_usb(self, json_obj, connection):
-        filename = '/etc/domoleaf/mnt/backup/domoleaf_backup_';
-        filename += str(json_obj['data']);
-        filename += '.sql.tar.gz';
+        filename = ''.join(['/etc/domoleaf/mnt/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
             self.logger.error('The filename is corrupted. Aborting database file removing.')
             return;
         sdx1 = glob.glob('/dev/sd?1')[0];
-        if (os.path.exists(sdx1) == 0):
+        if not (os.path.exists(sdx1)):
             return;
-        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        os.system('mount '+sdx1+' /etc/domoleaf/mnt');
         path = '/etc/domoleaf/mnt/backup/';
         try:
             os.stat(filename);
@@ -477,53 +470,50 @@ class MasterDaemon:
 
     def backup_db_restore_usb(self, json_obj, connection):
         path = '/etc/domoleaf/mnt/backup/';
-        filename = 'domoleaf_backup_';
-        filename += str(json_obj['data']);
-        filename += '.sql';
+        filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql']);
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
             self.logger.error('The filename is corrupted. Aborting database restoring.')
             return;
         sdx1 = glob.glob('/dev/sd?1')[0];
-        if (os.path.exists(sdx1) == 0):
+        if not (os.path.exists(sdx1)):
             return;
-        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        os.system('mount '+sdx1+' /etc/domoleaf/mnt');
         try:
-            os.stat(path + filename);
-            os.system('cp ' + path + filename + ' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/');
-            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/' + filename);
-            os.remove('/tmp/' + filename);
+            os.stat(path+filename);
+            os.system('cp '+path+filename+' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/');
+            os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/'+filename);
+            os.remove('/tmp/'+filename);
             return;
         except Exception as e:
             try:
-                filename = filename + '.tar.gz';
-                os.stat(path + filename);
-                os.system('cp ' + path + filename + ' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/ && tar -xzf ' + filename);
+                filename += '.tar.gz';
+                os.stat(path+filename);
+                os.system('cp '+path+filename+' /tmp/ && umount /etc/domoleaf/mnt && cd /tmp/ && tar -xzf '+filename);
             except Exception as e:
                 self.logger.error("The database file to restore does not exists.");
                 self.logger.error(e);
                 os.system('umount /etc/domoleaf/mnt');
                 return;
         os.system('umount /etc/domoleaf/mnt');
-        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/' + filename.split('.tar.gz')[0]);
-        os.remove('/tmp/' + filename);
-        os.remove('/tmp/' + filename.split('.tar.gz')[0]);
+        os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < /tmp/'+filename.split('.tar.gz')[0]);
+        os.remove('/tmp/'+filename);
+        os.remove('/tmp/'+filename.split('.tar.gz')[0]);
 
     def backup_db_create_usb(self, json_obj, connection):
         sdx1 = glob.glob('/dev/sd?1')[0];
-        if (os.path.exists(sdx1) == 0):
+        if not (os.path.exists(sdx1)):
             return;
-        os.system('mount ' + sdx1 + ' /etc/domoleaf/mnt');
+        os.system('mount '+sdx1+' /etc/domoleaf/mnt');
         path = '/etc/domoleaf/mnt/backup/';
         filename = 'domoleaf_backup_';
-        os.system('mkdir -p ' + path);
+        os.system('mkdir -p '+path);
         t = str(time.time());
         if '.' in t:
             t = t.split('.')[0];
-        filename += t;
-        filename += '.sql';
-        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > " + path + filename);
-        os.system('cd ' + path + ' && tar -czf ' + filename + '.tar.gz' + ' ' + filename);
-        os.system('rm ' + path + filename);
+        filename += t+'.sql';
+        os.system("mysqldump --defaults-file=/etc/mysql/debian.cnf domoleaf > "+path+filename);
+        os.system('cd '+path+' && tar -czf '+filename+'.tar.gz'+' '+filename);
+        os.system('rm '+path +filename);
         os.system('umount /etc/domoleaf/mnt');
 
     def monitor_knx(self, json_obj, connection):
@@ -533,8 +523,9 @@ class MasterDaemon:
         """
         daemon_id = self.sql.update_knx_log(json_obj);
         doList = self.knx_manager.update_room_device_option(daemon_id, json_obj);
-        if len(doList) > 0:
-            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
+        if doList:
+            self.scenario.setValues(self.get_global_state(), self.trigger, self.schedule, connection, doList);
+            self.scenario.start();
         connection.close();
 
     def knx_write_short(self, json_obj, connection):
@@ -547,11 +538,9 @@ class MasterDaemon:
         if slave_name is None:
             connection.close();
             return None;
-        
         dev = {}
         dev["addr_dst"] = json_obj['data']['addr']
         slave_name = slave_name.split('.')[0];
-        
         self.knx_manager.send_knx_write_short_to_slave(json_obj, dev, slave_name);
         connection.close();
         return None;
@@ -569,7 +558,6 @@ class MasterDaemon:
         dev = {}
         dev["addr_dst"] = json_obj['data']['addr']
         slave_name = slave_name.split('.')[0];
-        
         self.knx_manager.send_knx_write_long_to_slave(json_obj, dev, slave_name);
         connection.close();
         return None;
@@ -611,8 +599,9 @@ class MasterDaemon:
         daemon_id = self.sql.update_enocean_log(json_obj);
         doList = self.enocean_manager.update_room_device_option(daemon_id, json_obj);
         connection.close();
-        if len(doList) > 0:
-            self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, doList);
+        if doList:
+            self.scenario.setValues(self.get_global_state(), self.trigger, self.schedule, connection, doList);
+            self.scenario.start();
         return None;
 
     def send_to_device(self, json_obj, connection):
@@ -622,11 +611,9 @@ class MasterDaemon:
         hostname = '';
         dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
         dev = dm.load_from_db();
-
         if dev is None:
             connection.close();
             return ;
-
         if 'daemon_name' in dev:
             for host in self.hostlist:
                 if dev['daemon_name'] == host._Hostname:
@@ -638,9 +625,6 @@ class MasterDaemon:
                 self.functions[function_writing](json_obj, dev, hostname);
             except Exception as e:
                 self.logger.error(e);
-        #add scenario check here to allow trigger on write ???
-        #self.scenario.check_all_scenarios(self.get_global_state(), self.trigger, self.schedule, connection, json_obj);
-
         connection.close();
 
     def upnp_audio(self, json_obj, dev, hostname):
@@ -659,7 +643,7 @@ class MasterDaemon:
             return res;
         except Exception as e:
             frameinfo = getframeinfo(currentframe());
-            self.logger.error('in get_ip_ifname: ' + str(e));
+            self.logger.error('in get_ip_ifname: '+str(e));
             return None;
 
     def cron_upnp(self, json_obj, connection):
@@ -672,22 +656,18 @@ class MasterDaemon:
             return None;
         query = "SELECT configuration_id, configuration_value FROM configuration";
         res = self.sql.mysql_handler_personnal_query(query);
-        print(query);
         actions = json_obj['data'];
         for act in actions:
             if act['action'] == 'open':
                 for r in res:
                     if int(r[0]) == int(act['configuration_id']):
                         if int(r[0]) == 1:
-                            print(["upnpc", "-a", local_ip, str(r[1]), "80", act['protocol']]);
                             call(["upnpc", "-a", local_ip, str(r[1]), "80", act['protocol']]);
                         elif int(r[0]) == 2:
-                            print(["upnpc", "-a", local_ip, str(r[1]), "443", act['protocol']]);
                             call(["upnpc", "-a", local_ip, str(r[1]), "443", act['protocol']]);
             elif act['action'] == 'close':
                 for r in res:
                     if int(r[0]) == int(act['configuration_id']):
-                        print('calling ' + str(["upnpc", "-d", str(r[1]), act['protocol']]));
                         call(["upnpc", "-d", str(r[1]), act['protocol']]);
 
     def reload_camera(self, json_obj, connection):
@@ -698,12 +678,12 @@ class MasterDaemon:
         query = "SELECT room_device_id, addr, plus1 FROM room_device WHERE protocol_id = 6";
         res = self.sql.mysql_handler_personnal_query(query);
         for r in res:
-            if r[1] != '':
-                camera_file.write("location /camera/" + str(r[0]))
+            if r[1]:
+                camera_file.write("location /camera/"+str(r[0]));
                 camera_file.write("/ {\n")
                 camera_file.write("\tproxy_buffering off;\n")
-                camera_file.write("\tproxy_pass http://" + str(r[1]))
-                camera_file.write(":" + str(r[2]) + "/;\n}\n\n");
+                camera_file.write("\tproxy_pass http://"+str(r[1]));
+                camera_file.write(":"+str(r[2])+"/;\n}\n\n");
         camera_file.close();
         call(["service", "nginx", "restart"]);
 
@@ -720,14 +700,14 @@ class MasterDaemon:
         """
         Asks "check_slave" to the slave described in json_obj and waits for answer.
         """
-        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query);
-        if res is None or len(res) == 0:
-            self.logger.error('in check_slave: No daemon for id ' + str(json_obj['data']['daemon_id']));
+        if res is None or not res:
+            self.logger.error('in check_slave: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif len(res) > 1:
-            self.logger.error('in check_slave: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+        elif res:
+            self.logger.error('in check_slave: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
         hostname = res[0][0];
@@ -739,8 +719,8 @@ class MasterDaemon:
             for h in self.hostlist:
                 if hostname in h._Hostname.upper():
                     ip = h._IpAddr;
-        if ip == '':
-            self.logger.error('in check_slave: ' + hostname + ' not in hostlist. Try perform network scan again.');
+        if not ip:
+            self.logger.error('in check_slave: '+hostname+' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
@@ -749,7 +729,7 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "check_slave", "sender_name": "' + self_hostname + '"}';
+        obj_to_send = ''.join(['{"packet_type": "check_slave", "sender_name": "', self_hostname, '"}']);
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
@@ -771,11 +751,11 @@ class MasterDaemon:
                 interface_enocean = resp['interface_enocean'];
             connection.send(bytes(version, 'utf-8'));
         connection.close();
-        query = 'UPDATE daemon SET validation=' + val + ', version="' + version + '" WHERE serial="' + hostname + '"';
+        query = ''.join(['UPDATE daemon SET validation=', val, ', version="', version, '" WHERE serial="', hostname, '"']);
         self.sql.mysql_handler_personnal_query(query);
-        query = 'UPDATE daemon_protocol SET interface="' + interface_knx + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="1"';
+        query = ''.join(['UPDATE daemon_protocol SET interface="', interface_knx, '" WHERE daemon_id="', str(json_obj['data']['daemon_id']), '" AND protocol_id="1"']);
         self.sql.mysql_handler_personnal_query(query);
-        query = 'UPDATE daemon_protocol SET interface="' + interface_enocean + '" WHERE daemon_id="' + str(json_obj['data']['daemon_id']) + '" AND protocol_id="2"';
+        query = ''.join(['UPDATE daemon_protocol SET interface="', interface_enocean, '" WHERE daemon_id="', str(json_obj['data']['daemon_id']), '" AND protocol_id="2"']);
         self.sql.mysql_handler_personnal_query(query);
         sock.close();
 
@@ -783,7 +763,7 @@ class MasterDaemon:
         """
         Retrieves the secretkey of 'hostname' in the database.
         """
-        query = 'SELECT serial, secretkey FROM daemon WHERE serial = \'' + hostname + '\'';
+        query = ''.join(['SELECT serial, secretkey FROM daemon WHERE serial = \'', hostname, '\'']);
         res = self.sql.mysql_handler_personnal_query(query);
         for r in res:
             if r[0] == hostname:
@@ -812,7 +792,7 @@ class MasterDaemon:
                 server.ehlo();
                 server.starttls();
                 server.ehlo();
-            if (username != '' and password != ''):
+            if not username and not password:
                 server.login(self.d3config['5'], username);
             server.sendmail(from_addr, json_obj['data']['destinator'], msg.as_string());
             server.quit();
@@ -840,11 +820,11 @@ class MasterDaemon:
                 break;
         if daemon_found is False:
             frameinfo = getframeinfo(currentframe());
-            self.logger.error('in get_slave_name: ' + str(json_obj['data']['daemon']));
+            self.logger.error('in get_slave_name: '+str(json_obj['data']['daemon']));
             return None;
         if str(json_obj['data']['addr']).count('/') != 2:
             frameinfo = getframeinfo(currentframe());
-            self.logger.error('in get_slave_name: ' + str(json_obj['data']['addr']));
+            self.logger.error('in get_slave_name: '+str(json_obj['data']['addr']));
             return None;
         return slave_name;
 
@@ -857,14 +837,16 @@ class MasterDaemon:
         self.logger.debug('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection):
-        Smartcommand(self, int(json_obj['data'])).launch_smartcmd(json_obj, connection);
+        s = Smartcommand(self, int(json_obj['data']))
+        s.setValues(connection);
+        s.start();
 
     def triggers_list_update(self, json_obj, connection):
         self.trigger.update_triggers_list();
 
     def schedules_list_update(self, json_obj, connection):
         self.schedule.update_schedules_list();
-        
+
     def scenarios_list_update(self, json_obj, connection):
         self.scenario.update_scenarios_list();
 
@@ -878,19 +860,20 @@ class MasterDaemon:
             self.logger.error(e);
 
     def get_global_state(self):
-        query = ('SELECT room_device_id, option_id, opt_value FROM room_device_option');
+        query = 'SELECT room_device_id, option_id, opt_value FROM room_device_option';
         res = self.sql.mysql_handler_personnal_query(query);
         filtered = [];
+        append = filtered.append;
         for elem in res:
-            if (elem[2] != ''):
-                filtered.append(elem);
+            if elem[2]:
+                append(elem);
         global_state = [];
-        if (filtered != ''):
+        if filtered:
             global_state = filtered;
         else:
             global_state = '';
         return global_state;
-    
+
     def send_tech(self, json_obj, connection):
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=1';
         http = self.sql.mysql_handler_personnal_query(query);
@@ -907,14 +890,14 @@ class MasterDaemon:
             GLManager.SendRequest(str(json_obj), admin_addr, self.get_secret_key(hostname))
 
     def send_interfaces(self, json_obj, connection):
-        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query);
-        if res is None or len(res) == 0:
-            self.logger.error('in send_interfaces: No daemon for id ' + str(json_obj['data']['daemon_id']));
+        if res is None or not res:
+            self.logger.error('in send_interfaces: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif len(res) > 1:
-            self.logger.error('in send_interfaces: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+        elif res:
+            self.logger.error('in send_interfaces: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
         hostname = res[0][0];
@@ -922,8 +905,8 @@ class MasterDaemon:
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
                 ip = h._IpAddr;
-        if ip == '':
-            self.logger.error('in send_interfaces: ' + hostname + ' not in hostlist. Try perform network scan again.');
+        if not ip:
+            self.logger.error('in send_interfaces: '+hostname+' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
@@ -972,14 +955,14 @@ class MasterDaemon:
         """
         Asks "shutdown_d3" to the slave described in json_obj for shutdown daemon.
         """
-        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query);
-        if res is None or len(res) == 0:
-            self.logger.error('in shutdown_d3: No daemon for id ' + str(json_obj['data']['daemon_id']));
+        if res is None or not res:
+            self.logger.error('in shutdown_d3: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif len(res) > 1:
-            self.logger.error('in shutdown_d3: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+        elif res:
+            self.logger.error('in shutdown_d3: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
         hostname = res[0][0];
@@ -987,8 +970,8 @@ class MasterDaemon:
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
                 ip = h._IpAddr;
-        if ip == '':
-            self.logger.error('in shutdown_d3: ' + hostname + ' not in hostlist. Try perform network scan again.');
+        if not ip:
+            self.logger.error('in shutdown_d3: '+hostname+' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
@@ -998,7 +981,7 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "shutdown_d3", "sender_name": "' + self_hostname + '"}';
+        obj_to_send = ''.join(['{"packet_type": "shutdown_d3", "sender_name": "', self_hostname, '"}']);
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
@@ -1009,14 +992,14 @@ class MasterDaemon:
         """
         Asks "reboot_d3" to the slave described in json_obj for reboot daemon.
         """
-        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query);
-        if res is None or len(res) == 0:
-            self.logger.error('in reboot_d3: No daemon for id ' + str(json_obj['data']['daemon_id']));
+        if res is None or not res:
+            self.logger.error('in reboot_d3: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif len(res) > 1:
-            self.logger.error('in reboot_d3: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+        elif res:
+            self.logger.error('in reboot_d3: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
         hostname = res[0][0];
@@ -1024,8 +1007,8 @@ class MasterDaemon:
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
                 ip = h._IpAddr;
-        if ip == '':
-            self.logger.error('in reboot_d3: ' + hostname + ' not in hostlist. Try perform network scan again.');
+        if not ip:
+            self.logger.error('in reboot_d3: '+hostname+' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
@@ -1035,7 +1018,7 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "reboot_d3", "sender_name": "' + self_hostname + '"}';
+        obj_to_send = ''.join(['{"packet_type": "reboot_d3", "sender_name": "', self_hostname, '"}']);
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));
@@ -1046,14 +1029,14 @@ class MasterDaemon:
         """
         Send "wifi_update" to the slave described in json_obj for update the wifi configuration.
         """
-        query = "SELECT serial, secretkey FROM daemon WHERE daemon_id=" + str(json_obj['data']['daemon_id']);
+        query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query);
-        if res is None or len(res) == 0:
-            self.logger.error('in wifi_update: No daemon for id ' + str(json_obj['data']['daemon_id']));
+        if res is None or not res:
+            self.logger.error('in wifi_update: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif len(res) > 1:
-            self.logger.error('in wifi_update: Too much daemons for id ' + str(json_obj['data']['daemon_id']));
+        elif res:
+            self.logger.error('in wifi_update: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
         hostname = res[0][0];
@@ -1061,8 +1044,8 @@ class MasterDaemon:
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
                 ip = h._IpAddr;
-        if ip == '':
-            self.logger.error('in wifi_update: ' + hostname + ' not in hostlist. Try perform network scan again.');
+        if not ip:
+            self.logger.error('in wifi_update: '+hostname+' not in hostlist. Try perform network scan again.');
             connection.close();
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
@@ -1072,7 +1055,10 @@ class MasterDaemon:
             self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
-        obj_to_send = '{"packet_type": "wifi_update", "sender_name": "' + str(self_hostname) + '", "ssid": "' + str(json_obj['data']['ssid']) + '", "password": "' + str(json_obj['data']['password']) + '", "security": "' + str(json_obj['data']['security']) + '", "mode": "' + str(json_obj['data']['mode']) + '"}';
+        obj_to_send = ''.join(['{"packet_type": "wifi_update", "sender_name": "', str(self_hostname),
+              '", "ssid": "', str(json_obj['data']['ssid']), '", "password": "',
+              str(json_obj['data']['password']), '", "security": "', str(json_obj['data']['security']),
+              '", "mode": "', str(json_obj['data']['mode']), '"}']);
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         sock.send(bytes(aes_IV, 'utf-8') + encode_obj.encrypt(obj_to_send + (spaces * ' ')));

@@ -34,9 +34,10 @@ class Trigger:
     def get_trigger_info(self, id_trigger):
         triggers_list = self.triggers_list;
         trigger = [];
+        append = trigger.append;
         for condition in triggers_list:
             if (condition[0] == id_trigger):
-                trigger.append(condition);
+                append(condition);
         return trigger;
 
     def test_trigger(self, id_trigger, global_state):
@@ -44,7 +45,7 @@ class Trigger:
         res = True;
         for condition in trigger:
             res = res and self.test_condition(condition, global_state);
-        if (res == True):
+        if res:
             return 1;
         return 0;
 
@@ -86,5 +87,4 @@ class Trigger:
             "1" : self.test_sup_equ,
             "2" : self.test_inf_equ
             };
-        res = functab[str(condition[3])](device_state[2], condition[4]);
-        return res;
+        return functab[str(condition[3])](device_state[2], condition[4]);

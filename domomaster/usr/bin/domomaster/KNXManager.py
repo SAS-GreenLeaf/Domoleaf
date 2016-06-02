@@ -65,10 +65,9 @@ class KNXManager:
         if not port:
             sys.exit(4);
         if json_obj['data']['value'] == '1':
-            query =  'SELECT option_id, addr, dpt_id ';
-            query += 'FROM room_device_option ';
-            query += 'WHERE room_device_id=' + str(dev['room_device_id']) + ' AND ';
-            query += 'option_id IN(400, 401, 402, 403, 404, 405, 406) AND status=1';
+            query = ''.join(['SELECT option_id, addr, dpt_id FROM room_device_option WHERE room_device_id=',
+                           str(dev['room_device_id']), 
+                           ' AND option_id IN(400, 401, 402, 403, 404, 405, 406) AND status=1']);
             res = self.sql.mysql_handler_personnal_query(query);
             for line in res:
                 if str(line[2]) == "51" and str(line[0]) == str(json_obj['data']['option_id']):
@@ -84,7 +83,7 @@ class KNXManager:
                     self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
                     sock.close();
                     return;
-                if str(line[2]) == "2" and str(line[0]) != str(json_obj['data']['option_id']):
+                elif str(line[2]) == "2" and str(line[0]) != str(json_obj['data']['option_id']):
                     sock = socket.create_connection((hostname, port));
                     json_str = json.JSONEncoder().encode(
                         {
@@ -181,7 +180,7 @@ class KNXManager:
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
-    
+
     def send_on(self, json_obj, dev, hostname):
         """
         Ask to close all the speed fan before open another
@@ -200,12 +199,11 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
         return;
-    
+
     def send_to_thermostat(self, json_obj, dev, hostname):
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
-        
         if json_obj['data']['option_id'] == '412':
             val = 1;
         elif json_obj['data']['option_id'] == '413':
@@ -220,7 +218,6 @@ class KNXManager:
             val = 32;
         else:
             val = 0
-        
         if val > 0:
             json_str = json.JSONEncoder().encode(
                 {
@@ -233,7 +230,7 @@ class KNXManager:
             self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
             sock.close();
             return;
-    
+
     def send_clim_mode(self, json_obj, dev, hostname):
         if json_obj['data']['option_id'] == '425': #Auto
             val = 0
@@ -261,7 +258,6 @@ class KNXManager:
             val = 11
         else:
             val = -1
-        
         if val >= 0:
             json_str = json.JSONEncoder().encode(
                 {

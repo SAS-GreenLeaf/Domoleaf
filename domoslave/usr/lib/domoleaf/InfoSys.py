@@ -15,25 +15,20 @@ class InfoSys:
         p = Popen(['dmidecode',  '-s', 'baseboard-serial-number'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
         serial, error = p.communicate();
         serial=serial.decode()
-        
-        if serial == "":
+        if not serial:
             serial = os.popen("cat /proc/cpuinfo | grep Serial | awk ' {print $3}'").read().split('\n')[0];
-        if serial == "":
+        if not serial:
             serial = 'unknown';
         return serial
     
     def diskDetect():
         disk = os.popen("df / | tail -n 1 | awk '{print $1}'").read().split('\n')[0];
         disk = disk.rstrip('[0-9]')
-        
         if disk[0:7] == "/dev/sd":
             return disk
-        
         disk = os.popen("cat /etc/fstab | grep ' / ' | awk '{print $1}'").read().split('\n')[0];
-        
         if disk[0:11] == "/dev/mmcblk":
             return disk[0:-2]
-        
         return 'unknown'
     
     def diskSerial():

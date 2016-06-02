@@ -37,10 +37,11 @@ class RSAManager:
         Cette liste est retournee.
         """
         ret = [];
+        append = ret.append;
         for root, _, files in os.walk(keysFolder):
             for f in files:
                 if '.pub' in f:
-                    ret.append(str(f).split('.pub')[0]);
+                    append(str(f).split('.pub')[0]);
         return ret;
 
     def getPublicKeyFromFile(self, filename):
@@ -85,8 +86,9 @@ class RSAManager:
         Si les fichiers contenant les clefs de l'hote n'existent pas elles sont generees
         puis stockees dans le bon dossier et le bon fichier.
         """
-        publicFile = publicKeyFolder + '/' + socket.gethostname() + '.pub';
-        privateFile = personnalKeyFolder + '/' + socket.gethostname();
+        hostname = socket.gethostname();
+        publicFile = publicKeyFolder+'/'+hostname+'.pub';
+        privateFile = personnalKeyFolder+'/'+hostname;
         if not os.path.exists(publicFile) or not os.path.exists(privateFile):
             print('Generating keys files...');
             (pub, priv) = rsa.newkeys(keySize);

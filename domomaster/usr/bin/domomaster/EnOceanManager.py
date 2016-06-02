@@ -21,36 +21,31 @@ class EnOceanManager:
               0: utils.convert_none,
               4: utils.eno_onoff
         };
-    
+
     def update_room_device_option(self, daemon_id, json_obj):
         """
         Update of the table room_device_option with EnOcean value
         """
-        query  = "SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer, room_device_option.dpt_id ";
-        query += "FROM room_device_option ";
-        query += "JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ";
-        query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
-        query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
-        query += "WHERE daemon_id=" + str(daemon_id) + " AND room_device_option.addr=\"";
-        query += str(json_obj['src_addr']) + "\"";
+        query = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer, room_device_option.dpt_id ",
+              "FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ",
+              "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",
+              "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ",
+              "WHERE daemon_id=", str(daemon_id), " AND room_device_option.addr=\"", str(json_obj['src_addr']), "\""]);
         res = self.sql.mysql_handler_personnal_query(query);
         result = []
-        
-        if len(res) == 0:
-            query  = "SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer, room_device_option.dpt_id ";
-            query += "FROM room_device_option ";
-            query += "JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ";
-            query += "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ";
-            query += "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ";
-            query += "WHERE daemon_id=" + str(daemon_id) + " AND  room_device_option.addr_plus=\"";
-            query += str(json_obj['src_addr']) + "\"";
+        append = result.append
+        if not res:
+            query = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer, room_device_option.dpt_id ",
+                  "FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ",
+                  "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",
+                  "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ",
+                  "WHERE daemon_id=", str(daemon_id), " AND  room_device_option.addr_plus=\"", str(json_obj['src_addr']), "\""]);
             res = self.sql.mysql_handler_personnal_query(query);
-        
         for r in res:
             val = self.functions_transform[r[3]](int(json_obj['value']), r[4]);
             if val is not None:
-                result.append(r)
-                up = "UPDATE room_device_option SET opt_value=\"" + str(val)
-                up += "\" WHERE room_device_id=" + str(r[1]) + " AND option_id=\"" + str(r[0]) + "\"";
+                append(r)
+                up = ''.join(["UPDATE room_device_option SET opt_value=\"", str(val),
+                      "\" WHERE room_device_id=", str(r[1]), " AND option_id=\"", str(r[0]), "\""]);
                 self.sql.mysql_handler_personnal_query(up);
         return result

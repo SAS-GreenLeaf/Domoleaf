@@ -15,19 +15,15 @@ class Upnp:
         Building request to send with 'command' and 'args'.
         """
         control_type = self.get_type(command);
-        request = '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
-        request += "<s:Body>";
-        request += '<u:' + command + ' xmlns:u="urn:schemas-upnp-org:service:' + self.get_type(command) + ':1">';
+        request = ''.join(['<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">',
+                       "<s:Body>", '<u:', command, ' xmlns:u="urn:schemas-upnp-org:service:', self.get_type(command), ':1">']);
         for key in args.keys():
-            request += "<" + str(key) + ">" + str(args[key]) + "</" + str(key) + ">";
-        request += "</u:" + command + ">";
-        request += "</s:Body>";
-        request += "</s:Envelope>";
+            request += "<"+str(key)+">"+str(args[key])+"</"+str(key)+">";
+        request += "</u:"+command+">"+"</s:Body>"+"</s:Envelope>";
         ch = pycurl.Curl();
         ch.setopt(ch.SSL_VERIFYPEER, 0);
         ch.setopt(ch.SSL_VERIFYHOST, 0);
-        ch.setopt(ch.URL, "http://" + self.ip + ":" + str(self.port) + "/MediaRenderer/" +
-                  str(control_type) + "/Control");
+        ch.setopt(ch.URL, "http://"+self.ip+":"+str(self.port)+"/MediaRenderer/"+str(control_type)+"/Control");
         ch.setopt(ch.HEADER, 0);
         ch.setopt(ch.TIMEOUT, 300);
         ch.setopt(ch.HTTPHEADER, ['Content-Type: text/xml',
