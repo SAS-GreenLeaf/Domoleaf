@@ -481,6 +481,7 @@ VALUES
 	(469, '', 'IR'),
 	(470, '', '°C'),
 	(471, '', 'ON/OFF 1'),
-	(472, '', 'ON/OFF 2');
+	(472, '', 'ON/OFF 2'),
+	(473, '', 'Reverse');
 
 SET FOREIGN_KEY_CHECKS=1;

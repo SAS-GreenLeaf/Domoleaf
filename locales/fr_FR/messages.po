@@ -2261,3 +2261,11 @@ msgstr "Coût"
 #: include/conf_general.php
 msgid "Date and Time"
 msgstr "Date et heure"
+
+#: include/conf_device.php
+msgid "Forward"
+msgstr "Normal"
+
+#: include/conf_device.php
+msgid "Reverse"
+msgstr "Inversé"

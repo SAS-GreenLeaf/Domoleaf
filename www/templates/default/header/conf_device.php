@@ -103,6 +103,10 @@ $option_overload = array(
 		51 => _('8 bits'),
 		73 => _('2 bytes °C')
 	),
+	365 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
 	400 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits')

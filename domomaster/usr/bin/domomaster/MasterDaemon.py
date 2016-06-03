@@ -143,6 +143,7 @@ class MasterDaemon:
               9 : HttpReq().http_action,
              10 : self.upnp_audio,
              11 : self.knx_manager.send_knx_write_percent,
+             12 : self.knx_manager.send_off,
         };
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
