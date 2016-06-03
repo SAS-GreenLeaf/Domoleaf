@@ -21,5 +21,5 @@ Architecture: any
 Pre-Depends: knxd,python3-pip
 Depends: apt-show-versions,avahi-daemon,dmidecode,dnsmasq,hdparm,hostapd,knxd,
  knxd-tools,tcpdump,python3,python3-crypto,python3-pyasn1,
- python3-pycurl,python3-rsa,wpasupplicant
+ python3-pycurl,python3-requests,python3-rsa,wpasupplicant
 Description: Domoleaf slave daemon running under python 3 for D3 boxes
