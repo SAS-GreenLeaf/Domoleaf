@@ -96,9 +96,11 @@ class DeviceManager:
             res = db.personnal_query(LOAD_DEVICE_QUERY_IP + str(self._id));
         if len(res) == 0:
             self.logger.error('[ DeviceManager ]: Error: No device with id ' + str(self._id) + ' in database.');
+            db.close();
             return None;
         elif len(res) > 1:
             self.logger.error('[ DeviceManager ]: Dunno wut to do if more than one item in DB.');
+            db.close();
             return None;
         obj = res[0];
         device = {
@@ -111,25 +113,22 @@ class DeviceManager:
             KEY_PLUS_3: obj[6],
             KEY_ROOM_DEVICE_ID: self._id
         };
-        db.close();
-        db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
+        
         query = CHECK_ROOM_DEVICE_OPTIONS + str(device[KEY_PROTOCOL_ID]) + ' WHERE room_device_id = ' + str(self._id);
         res = db.personnal_query(query);
-        db.close();
         if len(res) == 0:
             self.logger.error('[ DeviceManager ]: Error: No room_device_option for room_device_id \'' + str(self._id) + '\'');
             device['option_id'] = self._option_id;
             device['function_writing'] = 0;
             device['dpt_id'] = 0;
             if device['protocol_id'] != IP_ID:
-                db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
                 res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
                 device['daemon_name'] = res[0][2];
                 device['daemon_secretkey'] = res[0][3];
-                db.close();
+            db.close();
             return device;
-        device['addr_dst'] = 0;
-
+        device['addr_dst'] = 0
+        
         for d in res:
             if d[0] == self._option_id:
                 device['addr_dst'] = d[1];
@@ -138,9 +137,8 @@ class DeviceManager:
                 break;
         device['option_id'] = self._option_id;
         if device['protocol_id'] != IP_ID:
-            db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
             res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
             device['daemon_name'] = res[0][2];
             device['daemon_secretkey'] = res[0][3];
-            db.close();
+        db.close();
         return device;
