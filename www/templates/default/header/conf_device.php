@@ -62,6 +62,10 @@ $option_overload = array(
 		2 => _('Normal'),
 		473 => _('Reverse')
 	),
+	96 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
 	181 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits'),
@@ -162,6 +166,14 @@ $option_overload = array(
 	417 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits')
+	),
+	471 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
+	472 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
 	)
 );
 
