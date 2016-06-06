@@ -1,3 +1,13 @@
+domoleaf (0.9.2) unstable; urgency=medium
+
+  * Add reverse for some KNX functions
+  * Begin code cleaning
+  * Fix pip3 during first installation
+  * PHP fix
+  * Remove unused scripts
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Mon, 6 Jun 2016 11:56:00 +0100
+
 domoleaf (0.9.1) unstable; urgency=medium
 
   * Custom error pages
