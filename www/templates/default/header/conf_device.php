@@ -58,6 +58,10 @@ else {
 
 /*** Modify options name ***/
 $option_overload = array(
+	54 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
 	181 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits'),
