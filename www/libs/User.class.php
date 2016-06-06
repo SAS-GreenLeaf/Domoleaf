@@ -2925,7 +2925,8 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		
 		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(!empty($do->device_allowed) || $this->getlevel() > 1){
+		if(!empty($do->device_id) &&
+		   (!empty($do->device_allowed) || $this->getlevel() > 1)) {
 			//Generic
 			if($do->device_id == 86) {
 				$value = $do->addr_plus;
