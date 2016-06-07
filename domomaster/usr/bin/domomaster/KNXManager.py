@@ -30,16 +30,16 @@ class KNXManager:
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
         self.aes_slave_keys = slave_keys;
 
-    def update_room_device_option(self, daemon_id, json_obj):
+    def update_room_device_option(self, daemon_id, json_obj, db):
         """
         Update room_device_option table in database to set new values of the device described by 'json_obj'
         """
         if int(json_obj['type']) == KNX_RESPONSE:
-            return self.sql.update_room_device_option_resp(json_obj, daemon_id);
+            return self.sql.update_room_device_option_resp(json_obj, daemon_id, db);
         elif int(json_obj['type']) == KNX_WRITE_SHORT:
-            return self.sql.update_room_device_option_write_short(json_obj, daemon_id);
+            return self.sql.update_room_device_option_write_short(json_obj, daemon_id, db);
         elif int(json_obj['type']) == KNX_WRITE_LONG:
-            return self.sql.update_room_device_option_write_long(json_obj, daemon_id);
+            return self.sql.update_room_device_option_write_long(json_obj, daemon_id, db);
 
     def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key):
         """
@@ -62,6 +62,7 @@ class KNXManager:
         Ask to close all the speed fan before open another
         """
         port = self._parser.getValueFromSection('connect', 'port');
+        sock = socket.create_connection((hostname, port));
         if not port:
             sys.exit(4);
         if json_obj['data']['value'] == '1':
@@ -71,7 +72,6 @@ class KNXManager:
             res = self.sql.mysql_handler_personnal_query(query);
             for line in res:
                 if str(line[2]) == "51" and str(line[0]) == str(json_obj['data']['option_id']):
-                    sock = socket.create_connection((hostname, port));
                     val = str(line[0]).split('40')[1];
                     json_str = json.JSONEncoder().encode(
                         {
@@ -81,10 +81,8 @@ class KNXManager:
                         }
                     );
                     self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
-                    sock.close();
                     return;
                 elif str(line[2]) == "2" and str(line[0]) != str(json_obj['data']['option_id']):
-                    sock = socket.create_connection((hostname, port));
                     json_str = json.JSONEncoder().encode(
                         {
                             "packet_type": "knx_write_short",
@@ -93,8 +91,6 @@ class KNXManager:
                         }
                     );
                     self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
-                    sock.close();
-        sock = socket.create_connection((hostname, port));
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "knx_write_short",

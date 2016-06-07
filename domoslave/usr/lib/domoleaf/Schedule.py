@@ -17,9 +17,9 @@ class Schedule:
         self.daemon = daemon;
         self.schedules_list = '';
         self.full_schedules_list = '';
-        self.update_schedules_list();
+        self.update_schedules_list(0);
 
-    def update_schedules_list(self):
+    def update_schedules_list(self, db):
         self.logger.debug('Updating Schedules');
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
@@ -27,15 +27,21 @@ class Schedule:
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
                  'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
                  'ORDER BY id_scenario ');
-        self.schedules_list = self.sql.mysql_handler_personnal_query(query);
-        
+        if not db:
+            self.schedules_list = self.sql.mysql_handler_personnal_query(query);
+        else:
+            self.schedules_list = self.sql.mysql_handler_personnal_query(query, db);
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
                  'FROM scenarios_list '
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
                  'WHERE scenarios_list.id_schedule IS NOT NULL && activated = 1 '
                  'ORDER BY id_scenario ');
-        self.full_schedules_list = self.sql.mysql_handler_personnal_query(query);
+        if not db:
+            self.full_schedules_list = self.sql.mysql_handler_personnal_query(query);
+        else:
+            self.full_schedules_list = self.sql.mysql_handler_personnal_query(query, db);
+
 
     def get_schedule_infos(self, id_schedule):
         schedules_list = self.full_schedules_list;
@@ -79,4 +85,4 @@ class Schedule:
             "data": id_smartcmd
         });
         data = json.JSONDecoder().decode(jsonString);
-        self.daemon.smartcmd_launch(data, connection);
+        self.daemon.smartcmd_launch(data, connection, 0);

@@ -18,7 +18,7 @@ class Trigger:
         self.triggers_list = '';
         self.update_triggers_list();
 
-    def update_triggers_list(self):
+    def update_triggers_list(self, db=0):
         self.logger.debug('Updating Triggers');
         query = ('SELECT trigger_events_list.id_trigger, '
                  'trigger_events_conditions.room_device_id, '
@@ -27,7 +27,7 @@ class Trigger:
                  'JOIN trigger_events_conditions '
                  'ON trigger_events_list.id_trigger = trigger_events_conditions.id_trigger '
                  'ORDER BY trigger_events_list.id_trigger');
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
         self.triggers_list = res;
         self.logger.debug(res);
 

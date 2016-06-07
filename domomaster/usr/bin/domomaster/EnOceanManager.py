@@ -22,7 +22,7 @@ class EnOceanManager:
               4: utils.eno_onoff
         };
 
-    def update_room_device_option(self, daemon_id, json_obj):
+    def update_room_device_option(self, daemon_id, json_obj, db):
         """
         Update of the table room_device_option with EnOcean value
         """
@@ -31,7 +31,7 @@ class EnOceanManager:
               "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",
               "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ",
               "WHERE daemon_id=", str(daemon_id), " AND room_device_option.addr=\"", str(json_obj['src_addr']), "\""]);
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
         result = []
         append = result.append
         if not res:
@@ -40,12 +40,12 @@ class EnOceanManager:
                   "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",
                   "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ",
                   "WHERE daemon_id=", str(daemon_id), " AND  room_device_option.addr_plus=\"", str(json_obj['src_addr']), "\""]);
-            res = self.sql.mysql_handler_personnal_query(query);
+            res = self.sql.mysql_handler_personnal_query(query, db);
         for r in res:
             val = self.functions_transform[r[3]](int(json_obj['value']), r[4]);
             if val is not None:
                 append(r)
                 up = ''.join(["UPDATE room_device_option SET opt_value=\"", str(val),
                       "\" WHERE room_device_id=", str(r[1]), " AND option_id=\"", str(r[0]), "\""]);
-                self.sql.mysql_handler_personnal_query(up);
+                self.sql.mysql_handler_personnal_query(up, db);
         return result

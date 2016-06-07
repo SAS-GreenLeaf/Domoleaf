@@ -39,11 +39,10 @@ class MasterSql:
               3: utils.convert_float32
         };
 
-    def insert_hostlist_in_db(self, hostlist):
+    def insert_hostlist_in_db(self, hostlist, db):
         """
         Update of the table containing the hosts. Inserts each host in 'hostlist'.
         """
-        db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         for host in hostlist:
             db.update_datas_in_table('ip_monitor',
                                      {"mac_addr": host._MacAddr},
@@ -53,16 +52,14 @@ class MasterSql:
         db.personnal_query("DELETE FROM ip_monitor WHERE last_update<"+str(time.time()-7200).split('.')[0]);
         db.updatedb();
         query = ''.join(["UPDATE room_device JOIN ip_monitor ON plus4=mac_addr SET addr=ip_addr WHERE protocol_id=6 AND plus4 != '' AND ip_addr != addr"]);
-        self.mysql_handler_personnal_query(query);
+        self.mysql_handler_personnal_query(query, db);
         db.updatedb();
-        db.close();
 
-    def update_enocean_log(self, json_obj):
+    def update_enocean_log(self, json_obj, db):
         """
         Update of the enocean log table with values from 'json_obj'
         """
         daemon_id = 0;
-        db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
         for d in daemons:
             if json_obj['sender_name'] == d[2]:
@@ -73,15 +70,13 @@ class MasterSql:
                                  (json_obj['type'], json_obj['src_addr'], json_obj['dst_addr'],
                                   json_obj['value'], json_obj['date'], daemon_id));
         db.updatedb();
-        db.close();
         return daemon_id;
 
-    def update_knx_log(self, json_obj):
+    def update_knx_log(self, json_obj, db):
         """
         Update of the knx log table with values from 'json_obj'
         """
         daemon_id = 0;
-        db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
         for d in daemons:
             if json_obj['sender_name'] == d[2]:
@@ -92,20 +87,19 @@ class MasterSql:
                                   json_obj['date'],
                                   daemon_id));
         db.updatedb();
-        db.close();
         return daemon_id;
 
-    def update_room_device_option_write_long(self, json_obj, daemon_id):
+    def update_room_device_option_write_long(self, json_obj, daemon_id, db):
         """
         Update of the table room_device_option with long KNX value
         """
         query  = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id WHERE daemon_id=",
                   str(daemon_id), " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
-        res = self.mysql_handler_personnal_query(query);
+        res = self.mysql_handler_personnal_query(query, db);
         if not res:
             query = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id WHERE ",
                      str(daemon_id), " AND room_device_option.addr_plus=\"", str(json_obj['dst_addr']), "\""]);
-            res = self.mysql_handler_personnal_query(query);
+            res = self.mysql_handler_personnal_query(query, db);
         for r in res:
             if int(r[0]) == 13:
                 if not json_obj['value']:
@@ -113,10 +107,10 @@ class MasterSql:
                 else:
                     up = 'UPDATE room_device_option SET opt_value=1 WHERE room_device_id=' + str(r[1]) + ' AND option_id=12';
                 self.logger.debug('update_room_device_option write_long: up = ' + up);
-                self.mysql_handler_personnal_query(up);
+                self.mysql_handler_personnal_query(up, db);
                 query = ''.join(["UPDATE room_device_option SET opt_value=\"", str(json_obj['value']),
                          "\" WHERE room_device_id=", str(r[1]), " AND option_id=", str(r[0])]);
-                self.mysql_handler_personnal_query(query);
+                self.mysql_handler_personnal_query(query, db);
             elif int(r[0]) == 72 or int(r[0]) == 388:
                 val = int(json_obj['value']);
                 res = utils.convert_temperature(val);
@@ -124,16 +118,16 @@ class MasterSql:
                          str(res), "\" WHERE daemon_id=", str(daemon_id),
                          " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
                 self.logger.debug('update_room_device_option write_long: query = ' + query);
-                self.mysql_handler_personnal_query(query);
+                self.mysql_handler_personnal_query(query, db);
             else:
                 val = self.functions_transform[r[2]](int(json_obj['value']));
                 up = ''.join(["UPDATE room_device_option SET opt_value=\"", str(val),
                      "\" WHERE room_device_id=", str(r[1]), " AND option_id=\"", str(r[0]), "\""]);
                 self.logger.debug('update_room_device_option write_long: up = ' + up)
-                self.mysql_handler_personnal_query(up);
+                self.mysql_handler_personnal_query(up, db);
         return res
 
-    def update_room_device_option_resp(self, json_obj, daemon_id):
+    def update_room_device_option_resp(self, json_obj, daemon_id, db):
         """
         Update of the table room_device_option with resp KNX value
         """
@@ -143,7 +137,7 @@ class MasterSql:
               "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",
               "dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id ",
               "WHERE daemon_id=", str(daemon_id), " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
-        res = self.mysql_handler_personnal_query(query);
+        res = self.mysql_handler_personnal_query(query, db);
         for r in res:
             val = self.functions_transform[r[2]](int(json_obj['value']));
             query = ''.join(["UPDATE room_device_option JOIN room_device ON ",
@@ -151,10 +145,10 @@ class MasterSql:
                   "opt_value=\"", str(val), "\" WHERE daemon_id=", str(daemon_id),
                   " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
             self.logger.debug("update_room_device_option resp query = "+query);
-            self.mysql_handler_personnal_query(query);
+            self.mysql_handler_personnal_query(query, db);
         return res
 
-    def update_room_device_option_write_short(self, json_obj, daemon_id):
+    def update_room_device_option_write_short(self, json_obj, daemon_id, db):
         """
         Update of the table room_device_option with short KNX value
         """
@@ -164,7 +158,7 @@ class MasterSql:
               "daemon_id=", str(daemon_id), " AND room_device_option.addr=\"",
               str(json_obj['dst_addr']), "\""]);
         #self.logger.debug("update_room_device_option write_short query : " + query);
-        res = self.mysql_handler_personnal_query(query);
+        res = self.mysql_handler_personnal_query(query, db);
         if not res:
             query = ''.join(["SELECT option_id, room_device.room_device_id FROM ",
                   "room_device_option JOIN room_device ON ",
@@ -172,7 +166,7 @@ class MasterSql:
                   "daemon_id=", str(daemon_id), " AND room_device_option.addr_plus=\"",
                   str(json_obj['dst_addr']), "\""]);
             #self.logger.debug("update_room_device_option write_short query : " + query);
-            res = self.mysql_handler_personnal_query(query);
+            res = self.mysql_handler_personnal_query(query, db);
         for r in res:
             if (int(r[0]) == MasterDaemon.OPTION_ON_OFF or int(r[0]) == MasterDaemon.OPTION_UP_DOWN or int(r[0]) == MasterDaemon.OPTION_OPEN_CLOSE):
                 up = 'UPDATE room_device_option SET opt_value=';
@@ -182,28 +176,29 @@ class MasterSql:
                     up += '255';
                 up += ' WHERE room_device_id='+str(r[1])+" AND option_id=13";
                 self.logger.debug("update_room_device_option write_short up1: "+up);
-                self.mysql_handler_personnal_query(up);
+                self.mysql_handler_personnal_query(up, db);
             up = ''.join(["UPDATE room_device_option SET opt_value=", str(json_obj['value']),
                   " WHERE room_device_id=", str(r[1]), " AND option_id=", str(r[0]), ""]);
             self.logger.debug("update_room_device_option write_short up2: "+up);
-            self.mysql_handler_personnal_query(up);
+            self.mysql_handler_personnal_query(up, db);
         return res
 
-    def mysql_handler_personnal_query(self, query):
+    def mysql_handler_personnal_query(self, query, db=0):
         """
         Sends personnal query to the database and returns the result
         """
-        db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
+        tmp = db;
+        if not tmp:
+            db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         res = db.personnal_query(query);
         db.updatedb();
-        db.close();
+        if not tmp:
+            db.close();
         return res;
 
-    def get_daemons(self):
+    def get_daemons(self, db):
         """
         Retrieves each daemon stored in the database
         """
-        db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
-        db.close();
         return daemons;

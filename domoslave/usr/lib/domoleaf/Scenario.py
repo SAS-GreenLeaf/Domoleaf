@@ -42,7 +42,7 @@ class Scenario(Thread):
             scenarios_tab[scHash].append(d)
         return scenarios_tab;
     
-    def update_scenarios_list(self):
+    def update_scenarios_list(self, db=0):
         self.logger.debug('UPDATING SCENARIOS');
         query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, ',
                  'id_smartcmd, trigger_events_conditions.room_device_id, id_option ',
@@ -51,7 +51,7 @@ class Scenario(Thread):
                  'ON trigger_events_conditions.id_trigger=scenarios_list.id_trigger ',
                  'WHERE activated = 1 && scenarios_list.id_trigger IS NOT NULL ',
                  'ORDER BY id_scenario']);
-        scenarios_list = self.sql.mysql_handler_personnal_query(query);
+        scenarios_list = self.sql.mysql_handler_personnal_query(query, db);
         self.logger.debug('S LIST = '+str(scenarios_list)+'\n');
         self.scenarios_list = self.get_scenarios_tab(scenarios_list);
         self.logger.debug('S TAB = '+str(self.scenarios_list)+'\n\n\n');

@@ -141,13 +141,11 @@ class CalcLogs:
                     dictaverage[time_r][device][option].append(avg_elem);
         return (dictaverage);
 
-    def get_logs(self, test):
-        if not test:
-            query = ('SELECT daemon_id, addr_dest, t_date, knx_value, type, addr_src '
-                     'FROM knx_log '
-                     'ORDER BY t_date');
-            return self.sql.mysql_handler_personnal_query(query);
-        return self.get_test_logs();
+    def get_logs(self, db):
+        query = ('SELECT daemon_id, addr_dest, t_date, knx_value, type, addr_src '
+                 'FROM knx_log '
+                 'ORDER BY t_date');
+        return self.sql.mysql_handler_personnal_query(query, db);
 
     def cut_dict_time(self, dictlogs):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC - 1;
@@ -186,7 +184,7 @@ class CalcLogs:
             end += TIME_INTERVAL;
         return dicttime;
 
-    def save_graph_logs(self, dictlogs):
+    def save_graph_logs(self, dictlogs, db):
         query = ('INSERT INTO graphic_log '
                  '(date, value, room_device_id, option_id) '
                  'VALUES ');
@@ -196,9 +194,9 @@ class CalcLogs:
                     for log in dictlogs[time_r][device][option]:
                         query += '('+str(log[0])+', '+str(log[1])+', '+str(log[2])+', '+str(log[3])+'), ';
         query = query[:-2];
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
 
-    def delete_knx_logs(self, dictlogs):
+    def delete_knx_logs(self, dictlogs, db):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC;
         last_logs = [];
         append = last_logs.append;
@@ -208,10 +206,10 @@ class CalcLogs:
                 append(log);
         query = ('DELETE FROM knx_log '
                  'WHERE t_date < ' + str(end_tr));
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
         query = ('DELETE FROM enocean_log '
                  'WHERE t_date < ' + str(end_tr));
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
         query = ('INSERT INTO knx_log '
                  '(type, addr_src, addr_dest, knx_value, t_date, daemon_id) '
                  'VALUES ');
@@ -220,12 +218,12 @@ class CalcLogs:
                       '\''+str(log[6])+'\', '+str(log[1])+', '+
                       str(log[0])+', '+str(log[7])+'), ');
         query = query[:-2];
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
 
-    def sort_logs(self, connection):
+    def sort_logs(self, connection, db):
         self.logger.debug('\n\nSorting Logs : \n');
         try:
-            logs = self.get_logs(0);
+            logs = self.get_logs(db);
             #self.logger.debug('LOGS :\n' + str(logs) + '\n');
             if not logs:
                 return;
@@ -245,13 +243,10 @@ class CalcLogs:
                 return;
             self.logger.debug('DICTLOGSTIME :\n'+str(dictlogstime)+'\n');
             self.logger.debug('Save Graph Logs\n');
-            self.save_graph_logs(dictlogstime);
+            self.save_graph_logs(dictlogstime, db);
             self.logger.debug('Delete Logs\n');
-            self.delete_knx_logs(dictlogs);
+            self.delete_knx_logs(dictlogs, db);
             self.logger.debug('OK\n\n');
         except Exception as e:
             self.logger.error(e);
 
-    def get_test_logs(self):
-        res = [(1, '0/0/12', 1448268700, 1), (1, '0/1/23', 1448268800, 3515), (1, '0/0/14', 1448268850, 255), (1, '0/0/17', 1448268860, 1), (1, '0/1/1', 1448268900, 1786), (1, '0/1/1', 1448270540, 1786), (1, '0/1/1', 1448270661, 1788), (1, '0/1/23', 1448270719, 3548), (1, '0/1/1', 1448270781, 1790), (1, '0/1/1', 1448270901, 1792), (1, '0/1/1', 1448271141, 1796), (1, '0/0/12', 1448271148, 1), (1, '0/0/14', 1448271152, 255), (1, '0/1/23', 1448271155, 3598), (1, '0/0/17', 1448271160, 1), (1, '0/0/19', 1448271163, 255), (1, '0/1/23', 1448271167, 3398), (1, '0/0/12', 1448271173, 0), (1, '0/0/14', 1448271175, 0), (1, '0/0/12', 1448271179, 0), (1, '0/0/17', 1448271181, 0), (1, '0/0/19', 1448271184, 0), (1, '0/0/17', 1448271188, 0), (1, '0/0/12', 1448271229, 1), (1, '0/0/14', 1448271232, 255), (1, '0/0/17', 1448271235, 1), (1, '0/0/19', 1448271238, 251), (1, '0/0/19', 1448271241, 255), (1, '0/0/12', 1448271245, 0), (1, '0/0/14', 1448271247, 0), (1, '0/0/17', 1448271251, 0), (1, '0/0/19', 1448271253, 0), (1, '0/0/12', 1448271257, 1), (1, '0/0/14', 1448271259, 204), (1, '0/1/1', 1448271262, 1802), (1, '0/0/12', 1448271265, 1), (1, '0/0/14', 1448271268, 255), (1, '0/0/14', 1448271273, 59), (1, '0/0/14', 1448271274, 58), (1, '0/0/17', 1448271281, 1), (1, '0/0/19', 1448271284, 255), (1, '0/1/1', 1448271381, 1806), (1, '0/1/1', 1448271501, 1812), (1, '0/1/1', 1448271621, 1816), (1, '0/1/1', 1448271741, 1824), (1, '0/1/1', 1448272011, 1830), (1, '0/1/23', 1448272062, 3398), (1, '0/1/1', 1448272101, 1834), (1, '0/1/1', 1448272222, 1834), (1, '0/1/1', 1448272295, 1824), (1, '0/1/1', 1448272415, 1822), (1, '0/1/1', 1448272535, 1822), (1, '0/1/1', 1448272655, 1824), (1, '0/1/1', 1448272775, 1824), (1, '0/1/1', 1448272911, 1830), (1, '0/1/23', 1448272963, 3398), (1, '0/1/1', 1448273015, 1836), (1, '0/1/1', 1448273135, 1838), (1, '0/1/1', 1448273255, 1842), (1, '0/1/1', 1448273375, 1844), (1, '0/1/1', 1448273495, 1850), (1, '0/1/1', 1448273615, 1852), (1, '0/1/1', 1448273735, 1856), (1, '0/1/1', 1448273856, 1856), (1, '0/1/23', 1448273863, 3398), (1, '0/1/1', 1448273976, 1858), (1, '0/1/1', 1448274096, 1864), (1, '0/1/1', 1448274216, 1866), (1, '0/1/1', 1448274336, 1870), (1, '0/1/1', 1448274456, 1874), (1, '0/1/1', 1448274576, 1876), (1, '0/1/1', 1448274712, 1882), (1, '0/1/23', 1448274764, 3398), (1, '0/1/24', 1448274767, 3423), (1, '0/1/1', 1448274816, 1884), (1, '0/1/1', 1448274936, 1886), (1, '0/1/1', 1448275056, 1888), (1, '0/1/1', 1448275176, 1892), (1, '0/1/1', 1448275296, 1892), (1, '0/1/1', 1448275416, 1896), (1, '0/1/6', 1448275519, 0), (1, '0/1/8', 1448275522, 0)];
-        return (res);
