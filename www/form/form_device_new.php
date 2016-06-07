@@ -19,7 +19,7 @@ if (!empty($_GET['ipaddr'])){
 	$result  =  $request -> send_request();
 	$listroom = $result->confRoomList;
 	$room_device_id = $result->confDeviceNewIp; 
-	echo $listroom->$_GET['room']->floor.'/'.$_GET['room'].'/'.$room_device_id;
+	echo $listroom->{$_GET['room']}->floor.'/'.$_GET['room'].'/'.$room_device_id;
 }
 else if (!empty($_GET['knxaddr'])){
 	$request =  new Api();
@@ -30,7 +30,7 @@ else if (!empty($_GET['knxaddr'])){
 	$result  =  $request -> send_request();
 	$listroom = $result->confRoomList;
 	$room_device_id = $result->confDeviceNewKnx;
-	echo $listroom->$_GET['room']->floor.'/'.$_GET['room'].'/'.$room_device_id;
+	echo $listroom->{$_GET['room']}->floor.'/'.$_GET['room'].'/'.$room_device_id;
 }
 else if (!empty($_GET['enoceanaddr'])){
 	$request =  new Api();
@@ -41,7 +41,7 @@ else if (!empty($_GET['enoceanaddr'])){
 	$result  =  $request -> send_request();
 	$listroom = $result->confRoomList;
 	$room_device_id = $result->confDeviceNewEnocean;
-	echo $listroom->$_GET['room']->floor.'/'.$_GET['room'].'/'.$room_device_id;
+	echo $listroom->{$_GET['room']}->floor.'/'.$_GET['room'].'/'.$room_device_id;
 }
 
 ?>

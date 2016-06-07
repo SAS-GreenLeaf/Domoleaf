@@ -10,7 +10,7 @@ echo '
 echo '
 	<div class="center">
 		<h2>
-			'._('User permission:').' '.$listuser->$_GET['userid']->username.'
+			'._('User permission:').' '.$listuser->{$_GET['userid']}->username.'
 			<button id="colorUserInstallBg" class="btn" onclick="popupChromaWheel(1, 1, '.$_GET['userid'].')">
 				<span class="fa fa-pencil-square-o md colorUserInstall"></span>
 			</button>

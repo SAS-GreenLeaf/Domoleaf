@@ -22,11 +22,6 @@ fi
 mysql --defaults-file=/etc/mysql/debian.cnf domoleaf -e "UPDATE configuration SET configuration_value='$domomaster' WHERE configuration_id=4"
 sed -i "s/define('VERSION', '0.0.0');/define('VERSION', '$domomaster');/g" /etc/domoleaf/www/config.php
 
-rm -f /etc/nginx/sites-enabled/domoleaf.conf
-ln -s /etc/nginx/sites-available/domoleaf.conf /etc/nginx/sites-enabled/domoleaf.conf
-
-service nginx restart
-
 #Copy saved images
 if [ -d /etc/domoleaf/custom ]; then
     cp -r /etc/domoleaf/custom/* /etc/domoleaf/www/templates/default/custom/
@@ -43,4 +38,14 @@ chmod +x /usr/bin/domomaster.py
 update-rc.d domomaster defaults
 update-rc.d domomaster enable
 service domomaster start
-service php5-fpm restart
+
+#PHP & Nginx
+rm -f /etc/nginx/sites-enabled/domoleaf.conf
+ln -s /etc/nginx/sites-available/domoleaf.conf /etc/nginx/sites-enabled/domoleaf.conf
+SOCKETLINE=$(find /etc/php* -iname "*.conf" | xargs grep -v ^\; | grep listen | grep sock | head -n 1);
+SOCKET=$(cut -d '=' -f 2 <<< "$SOCKETLINE")
+SERVICE=$(echo $SOCKET | cut -c10- | rev | cut -c6- | rev)
+SOCKET=$(echo $SOCKET | sed 's/\//\\\//g')
+sed -i "s/SOCKET/$SOCKET/g" /etc/nginx/sites-available/domoleaf.conf
+service $SERVICE restart
+service nginx restart

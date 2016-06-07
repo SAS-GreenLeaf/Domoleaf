@@ -1,3 +1,21 @@
+domoleaf (0.9.1) unstable; urgency=medium
+
+  * Custom error pages
+  * PHP7 compatibility
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Wed, 2 Jun 2016 14:01:00 +0100
+ 
+domoleaf (0.9.0) unstable; urgency=critical
+
+  * Add KNX video
+  * Add Graphics
+  * Fix a bug with multi Box
+  * Possibility to modify the clock
+  * Fix in password modification
+  * After an upgrade, a reboot is no longer required
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Wed, 18 May 2016 13:32:00 +0100
+
 domoleaf (0.8.3) unstable; urgency=medium
 
   * Fix send_knx_write_percent function

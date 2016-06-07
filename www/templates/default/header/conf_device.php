@@ -26,7 +26,7 @@ if (!empty($_GET['room']) && !empty($_GET['floor']) && !empty($_GET['device'])){
 	$manufacturerList = $result->confManufacturerList;
 	$menuProtocol = $result->confMenuProtocol;
 	
-	$device = $roomdevice->$_GET['device'];
+	$device = $roomdevice->{$_GET['device']};
 	$deviceconf = $deviceall->{$device->device_id};
 	
 	$tabopt = array();
@@ -58,6 +58,14 @@ else {
 
 /*** Modify options name ***/
 $option_overload = array(
+	54 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
+	96 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
 	181 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits'),
@@ -102,6 +110,10 @@ $option_overload = array(
 		2  => _('1 bit'),
 		51 => _('8 bits'),
 		73 => _('2 bytes °C')
+	),
+	365 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
 	),
 	400 => array(
 		2  => _('1 bit'),
@@ -154,6 +166,14 @@ $option_overload = array(
 	417 => array(
 		2  => _('1 bit'),
 		51 => _('8 bits')
+	),
+	471 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
+	),
+	472 => array(
+		2 => _('Normal'),
+		473 => _('Reverse')
 	)
 );
 

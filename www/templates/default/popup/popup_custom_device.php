@@ -36,11 +36,11 @@ if (!empty($_GET['type_elem']) && ($_GET['type_elem'] == 1 || $_GET['type_elem']
 		}
 	}
 	$elem = "";
-	if ($type_elem == 1 && !empty($deviceallowed) && !empty($deviceallowed->$_GET['idelem'])) {
-		$elem = $deviceallowed->$_GET['idelem'];
+	if ($type_elem == 1 && !empty($deviceallowed) && !empty($deviceallowed->{$_GET['idelem']})) {
+		$elem = $deviceallowed->{$_GET['idelem']};
 	}
-	else if ($type_elem == 2 && !empty($roomallowed) && !empty($roomallowed->$_GET['idelem'])) {
-		$elem = $roomallowed->$_GET['idelem'];
+	else if ($type_elem == 2 && !empty($roomallowed) && !empty($roomallowed->{$_GET['idelem']})) {
+		$elem = $roomallowed->{$_GET['idelem']};
 	}
 	if (!empty($elem)) {
 		echo

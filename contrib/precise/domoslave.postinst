@@ -20,7 +20,7 @@ if [ "$PIP3" != "/usr/local/bin/pip3" ] ; then
 	rm -f get-pip.py
 fi
 
-pip3 install crypto pycrypto pycurl rsa scapy-python3
+pip3 install crypto pycrypto pycurl scapy-python3
 
 #Init/Upgrade
 python3 /usr/bin/domoslave/domoslave_postinst.py
