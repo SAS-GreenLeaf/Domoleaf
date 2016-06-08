@@ -64,16 +64,17 @@ echo '
 <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2
 col-sm-10 col-sm-offset-2 col-xs-10 col-xs-offset-2" >
 	<div class="row col-xs-12 center">
-		<button class="col-lg-1 col-md-1 col-sm-3 col-xs-6" id="day" type="button" onclick="displayGraphDate(\''.date('Y/m/d').'\', \''.date('Y/m/d').'\')">'._('Day').'</button>
-		<button class="col-lg-1 col-md-1 col-sm-3 col-xs-6" id="week" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 week')).'\', \''.date('Y/m/d').'\')">'._('Week').'</button>
-		<button class="col-lg-1 col-md-1 col-sm-3 col-xs-6" id="month" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 month')).'\', \''.date('Y/m/d').'\')">'._('Month').'</button>
-		<button class="col-lg-1 col-md-1 col-sm-3 col-xs-6" id="year" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 year')).'\', \''.date('Y/m/d').'\')">'._('Year').'</button>
-		<button class="col-lg-1 col-md-1 col-xs-12" id="advanced" type="button" onclick="toggleAdvancedMenu()" title="'._('Advanced').'"><span class="glyphicon glyphicon-cog"></span></button>
+		<button class="col-lg-2 col-md-2 col-sm-3 col-xs-6" id="day" type="button" onclick="displayGraphDate(\''.date('Y/m/d').'\', \''.date('Y/m/d').'\')">'._('Day').'</button>
+		<button class="col-lg-2 col-md-2 col-sm-3 col-xs-6" id="week" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 week')).'\', \''.date('Y/m/d').'\')">'._('Week').'</button>
+		<button class="col-lg-2 col-md-2 col-sm-3 col-xs-6" id="month" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 month')).'\', \''.date('Y/m/d').'\')">'._('Month').'</button>
+		<button class="col-lg-2 col-md-2 col-sm-3 col-xs-6" id="year" type="button" onclick="displayGraphDate(\''.date('Y/m/d', strtotime('-1 year')).'\', \''.date('Y/m/d').'\')">'._('Year').'</button>
+		<button class="col-lg-2 col-md-2 col-xs-12" id="advanced" type="button" onclick="toggleAdvancedMenu()" title="'._('Advanced').'"><span class="glyphicon glyphicon-cog"></span></button>
+		<input type="hidden" class="col-lg-offset-1 col-md-offset-1 col-lg-1 col-md-1"></div>
 		<div id="advanced_datepickers">
-			<label class="col-lg-1 col-lg-offset-1 col-md-1 col-sm-3 col-xs-6" for="from_date">'._('From').'</label>
+			<label class="col-lg-1 col-md-1 col-sm-3 col-xs-6" for="from_date">'._('From').'</label>
 			<input class="col-lg-2 col-md-2 col-sm-3 col-xs-6" data-theme="b" id="from_date" type="button" value="'.date('Y/m/d').'" 
 			       onclick="openFromDatepicker()" onchange="displayOptionChart()"></button>
-			<label class="col-lg-1 col-md-1 col-sm-3 col-xs-6" for="to_date">'._('To').'</label>
+			<label class="col-lg-offset-1 col-md-offset-1 col-lg-1 col-md-1 col-sm-3 col-xs-6" for="to_date">'._('To').'</label>
 			<input class="col-lg-2 col-md-2 col-sm-3 col-xs-6" data-theme="b" id="to_date" type="button" value="'.date('Y/m/d').'" 
 			       onclick="openToDatepicker()" onchange="displayOptionChart()"></button>
 		</div>

@@ -692,12 +692,16 @@ class MasterDaemon:
         query = "SELECT room_device_id, addr, plus1 FROM room_device WHERE protocol_id = 6";
         res = self.sql.mysql_handler_personnal_query(query, db);
         for r in res:
-            if r[1]:
+            ip = str(r[1]);
+            if r[1] and utils.is_valid_ip(ip):
                 camera_file.write("location /camera/"+str(r[0]));
                 camera_file.write("/ {\n")
                 camera_file.write("\tproxy_buffering off;\n")
-                camera_file.write("\tproxy_pass http://"+str(r[1]));
-                camera_file.write(":"+str(r[2])+"/;\n}\n\n");
+                camera_file.write("\tproxy_pass http://"+ip);
+                if str(r[2]).isdigit():
+                    camera_file.write(":"+str(r[2])+"/;\n}\n\n");
+                else:
+                    camera_file.write(":/;\n}\n\n");
         camera_file.close();
         call(["service", "nginx", "restart"]);
 
