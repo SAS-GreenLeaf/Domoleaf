@@ -100,6 +100,7 @@ DATA_SEND_INTERFACES          = 'send_interfaces';
 DATA_SHUTDOWN_D3              = 'shutdown_d3';
 DATA_REBOOT_D3                = 'reboot_d3';
 DATA_WIFI_UPDATE              = 'wifi_update';
+DATA_REMOTE_SQL               = 'remote_sql';
 
 CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
 
@@ -183,7 +184,8 @@ class MasterDaemon:
             DATA_SEND_INTERFACES              : self.send_interfaces,
             DATA_SHUTDOWN_D3                  : self.shutdown_d3,
             DATA_REBOOT_D3                    : self.reboot_d3,
-            DATA_WIFI_UPDATE                  : self.wifi_update
+            DATA_WIFI_UPDATE                  : self.wifi_update,
+            DATA_REMOTE_SQL                   : self.remote_sql
         };
 
     def get_aes_slave_keys(self):
@@ -1100,3 +1102,16 @@ class MasterDaemon:
             connection.send(bytes(re, 'utf-8'));
         connection.close();
         sock.close();
+    
+    def remote_sql(self, json_obj, connection):
+        """
+        Execute sql command from configurator
+        """
+        db = MasterSql();
+        req = json_obj['data'].split(';');
+        for item in req:
+            if item != '':
+                db.mysql_handler_personnal_query(item);
+        connection.close();
+        return;
+
