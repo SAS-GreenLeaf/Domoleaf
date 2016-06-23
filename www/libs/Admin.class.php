@@ -2133,8 +2133,8 @@ class Admin extends User {
 
 	function monitorEnocean() {
 		$link = Link::get_link('domoleaf');
-		if (apc_exists('monitorEnocean')) {
-			return json_decode(apc_fetch('monitorEnocean'));
+		if (apcu_exists('monitorEnocean')) {
+			return json_decode(apcu_fetch('monitorEnocean'));
 		}
 		$list = array();
 		$sql = 'SELECT type, addr_src, addr_dest, eo_value, t_date, daemon_id
@@ -2146,14 +2146,14 @@ class Admin extends User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[] = clone $do;
 		}
-		apc_store('monitorEnocean', json_encode($list), 2);	
+		apcu_store('monitorEnocean', json_encode($list), 2);	
 		return $list;
 	}
 	
 	function monitorKnx() {
 		$link = Link::get_link('domoleaf');
-		if (apc_exists('monitorKnx')) {
-			return json_decode(apc_fetch('monitorKnx'));
+		if (apcu_exists('monitorKnx')) {
+			return json_decode(apcu_fetch('monitorKnx'));
 		}
 		$listDevices = array();
 		$list = array();
@@ -2194,14 +2194,14 @@ class Admin extends User {
 				'device_name' => $name 
 			);
 		}
-		apc_store('monitorKnx', json_encode($list), 2);
+		apcu_store('monitorKnx', json_encode($list), 2);
 		return $list;
 	}
 	
 	function monitorIp() {
 		$link = Link::get_link('domoleaf');
-		if (apc_exists('monitorIp')) {
-			return json_decode(apc_fetch('monitorIp'));
+		if (apcu_exists('monitorIp')) {
+			return json_decode(apcu_fetch('monitorIp'));
 		}
 		$list = array();
 		$sql = 'SELECT mac_addr, ip_addr, hostname, last_update
@@ -2212,7 +2212,7 @@ class Admin extends User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[] = clone $do;
 		}
-		apc_store('monitorIp', json_encode($list), 5);
+		apcu_store('monitorIp', json_encode($list), 5);
 		return $list;
 	}
 	

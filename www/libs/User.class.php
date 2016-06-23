@@ -2717,8 +2717,8 @@ class User {
 	 * @return Ambigous <multitype:, multitype:NULL >
 	 */
 	function mcReturn(){
-		if(apc_exists('mcReturn_'.$this->getId())) {
-			return unserialize(apc_fetch('mcReturn_'.$this->getId()));
+		if(apcu_exists('mcReturn_'.$this->getId())) {
+			return unserialize(apcu_fetch('mcReturn_'.$this->getId()));
 		}
 		$link = Link::get_link('domoleaf');
 		$res = $this->conf_load();
@@ -2761,7 +2761,7 @@ class User {
 				);
 			}
 		}
-		apc_store('mcReturn_'.$this->getId(), serialize($list), 1);
+		apcu_store('mcReturn_'.$this->getId(), serialize($list), 1);
 		return $list;
 	}
 
