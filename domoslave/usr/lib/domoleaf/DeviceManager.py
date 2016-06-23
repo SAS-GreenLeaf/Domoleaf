@@ -64,43 +64,25 @@ class DeviceManager:
     def __init__(self, _id_elem = 0, _option_id = 0, _debug = False):
         self.logger = Logger(LOG_FLAG, LOG_FILE);
         self._id = _id_elem;
-        self._debug = _debug;
         self._option_id = _option_id;
-        self._parser = DaemonConfigParser(CONF_FILENAME);
-        self._db_name = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_USER_ENTRY);
-        self._db_passwd = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_PASSWORD_ENTRY);
-        self._db_dbname = self._parser.getValueFromSection(MYSQL_CONF_SECTION, MYSQL_CONF_DATABASE_ENTRY);
-        self.sql = MasterSql();
-        
+        self._debug = _debug;
+    
     ###############################################################
     # Va surement revoir cette fonction et remettre le mode debug #
     # suivant les options qu'il va falloir check ou pas           #
     ###############################################################
-    def load_from_db(self):
+    def load_from_db(self, db):
         """
         Returns the device from the database.
         """
-        if self._db_name is None:
-            self.logger.error("[ DeviceManager ]: Mysql username not found in '" + CONF_FILENAME + "'");
-            return None;
-        if self._db_passwd is None:
-            self.logger.error("[ DeviceManager ]: Mysql password not found in '" + CONF_FILENAME + "'");
-            return None;
-        if self._db_dbname is None:
-            self.logger.error("[ DeviceManager ]: Mysql database name not found in '" + CONF_FILENAME + "'");
-            return None;
-        
-        db = MysqlHandler(self._db_name, self._db_passwd, self._db_dbname);
         res = db.personnal_query(LOAD_DEVICE_QUERY + str(self._id));
-        if len(res) == 0:
+        if not len(res):
             res = db.personnal_query(LOAD_DEVICE_QUERY_IP + str(self._id));
-        if len(res) == 0:
-            self.logger.error('[ DeviceManager ]: Error: No device with id ' + str(self._id) + ' in database.');
-            db.close();
+        if not len(res):
+            self.logger.error('[ DeviceManager ]: Error: No device with id '+str(self._id)+' in database.');
             return None;
         elif len(res) > 1:
             self.logger.error('[ DeviceManager ]: Dunno wut to do if more than one item in DB.');
-            db.close();
             return None;
         obj = res[0];
         device = {
@@ -113,10 +95,9 @@ class DeviceManager:
             KEY_PLUS_3: obj[6],
             KEY_ROOM_DEVICE_ID: self._id
         };
-        
         query = CHECK_ROOM_DEVICE_OPTIONS + str(device[KEY_PROTOCOL_ID]) + ' WHERE room_device_id = ' + str(self._id);
         res = db.personnal_query(query);
-        if len(res) == 0:
+        if not len(res):
             self.logger.error('[ DeviceManager ]: Error: No room_device_option for room_device_id \'' + str(self._id) + '\'');
             device['option_id'] = self._option_id;
             device['function_writing'] = 0;
@@ -125,10 +106,8 @@ class DeviceManager:
                 res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
                 device['daemon_name'] = res[0][2];
                 device['daemon_secretkey'] = res[0][3];
-            db.close();
             return device;
-        device['addr_dst'] = 0
-        
+        device['addr_dst'] = 0;
         for d in res:
             if d[0] == self._option_id:
                 device['addr_dst'] = d[1];
@@ -140,5 +119,4 @@ class DeviceManager:
             res = db.personnal_query(GET_DAEMON_FROM_ID + str(device['daemon_id']));
             device['daemon_name'] = res[0][2];
             device['daemon_secretkey'] = res[0][3];
-        db.close();
         return device;

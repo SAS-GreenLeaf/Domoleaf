@@ -21,7 +21,7 @@ echo '
 		'<div class="col-xs-6 col-sm-4">'.
 			'<label class="control-label" for="days">'._('Day').'</label>
 			<select id="days" name="daysSelector" class="form-control">';
-				for ($day=1; $day < 32; $day++){
+				for ($day=1; $day < 32; ++$day){
 					if ($day == $curr_day){
 						echo '<option value="'.$day.'" selected="selected">'.str_pad($day, 2, '0', STR_PAD_LEFT).'</option>';							
 					}
@@ -34,7 +34,7 @@ echo '
 		'<div class="col-xs-6 col-sm-4">'.
 			'<label class="control-label" for="months">'._('Month').'</label>
 			<select id="months" name="monthsSelector" class="form-control selectpicker ">';
-				for ($month=1; $month < 13; $month++){
+				for ($month=1; $month < 13; ++$month){
 					if ($month == $curr_month){
 						echo '<option value="'.$month.'" selected="selected">'.str_pad($month, 2, '0', STR_PAD_LEFT).'</option>';
 					}
@@ -53,7 +53,7 @@ echo '
 		'<div class="col-sm-5 col-sm-offset-1 col-xs-6 ">'.
 			'<label class="control-label" for="hours">'._('Hour').'</label>
 			<select id="hours" name="hoursSelector" class="form-control selectpicker ">';
-				for ($hour=0; $hour < 24; $hour++){
+				for ($hour=0; $hour < 24; ++$hour){
 					if ($hour == $curr_hour){
 						echo '<option value="'.$hour.'" selected="selected">'.str_pad($hour, 2, '0', STR_PAD_LEFT).'</option>';
 					}
@@ -66,7 +66,7 @@ echo '
 		'<div class="col-sm-5 col-xs-6">'.
 			'<label class="control-label" for="minutes">'._('Minute').'</label>
 			<select id="minutes" name="minutesSelector" class="form-control selectpicker ">';
-				for ($minute=0; $minute < 60; $minute++){
+				for ($minute=0; $minute < 60; ++$minute){
 					if ($minute == $curr_minute){
 						echo '<option value="'.$minute.'" selected="selected">'.str_pad($minute, 2, '0', STR_PAD_LEFT).'</option>';
 					}

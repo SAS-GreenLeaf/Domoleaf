@@ -18,7 +18,7 @@ class Trigger:
         self.triggers_list = '';
         self.update_triggers_list();
 
-    def update_triggers_list(self):
+    def update_triggers_list(self, db=0):
         self.logger.debug('Updating Triggers');
         query = ('SELECT trigger_events_list.id_trigger, '
                  'trigger_events_conditions.room_device_id, '
@@ -27,16 +27,17 @@ class Trigger:
                  'JOIN trigger_events_conditions '
                  'ON trigger_events_list.id_trigger = trigger_events_conditions.id_trigger '
                  'ORDER BY trigger_events_list.id_trigger');
-        res = self.sql.mysql_handler_personnal_query(query);
+        res = self.sql.mysql_handler_personnal_query(query, db);
         self.triggers_list = res;
         self.logger.debug(res);
 
     def get_trigger_info(self, id_trigger):
         triggers_list = self.triggers_list;
         trigger = [];
+        append = trigger.append;
         for condition in triggers_list:
             if (condition[0] == id_trigger):
-                trigger.append(condition);
+                append(condition);
         return trigger;
 
     def test_trigger(self, id_trigger, global_state):
@@ -44,7 +45,7 @@ class Trigger:
         res = True;
         for condition in trigger:
             res = res and self.test_condition(condition, global_state);
-        if (res == True):
+        if res:
             return 1;
         return 0;
 
@@ -86,5 +87,4 @@ class Trigger:
             "1" : self.test_sup_equ,
             "2" : self.test_inf_equ
             };
-        res = functab[str(condition[3])](device_state[2], condition[4]);
-        return res;
+        return functab[str(condition[3])](device_state[2], condition[4]);

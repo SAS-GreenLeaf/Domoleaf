@@ -83,21 +83,21 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 		<div class="timePicker">
 			<select class="selectpicker" id="selectHours-'.$exec_id.'" data-width="auto" data-size="10"
 			        onchange="selectDelay('.$smartcmd_id.', '.$exec_id.')">';
-				for ($i = 0; $i < 24; $i++) {
+				for ($i = 0; $i < 24; ++$i) {
 					echo '<option value="'.$i.'">'.$i.'h</option>';
 				}
 				echo '
 			</select>
 			<select class="selectpicker" id="selectMinutes-'.$exec_id.'" data-width="auto" data-size="10"
 			        onchange="selectDelay('.$smartcmd_id.', '.$exec_id.')">';
-				for ($i = 0; $i < 60; $i++) {
+				for ($i = 0; $i < 60; ++$i) {
 					echo '<option value="'.$i.'">'.$i.'min</option>';
 				}
 				echo '
 			</select>
 			<select class="selectpicker" id="selectSeconds-'.$exec_id.'" data-width="auto" data-size="10"
 			        onchange="selectDelay('.$smartcmd_id.', '.$exec_id.')">';
-				for ($i = 0; $i < 60; $i++) {
+				for ($i = 0; $i < 60; ++$i) {
 					echo '<option value="'.$i.'">'.$i.'s</option>';
 				}
 				echo '
@@ -125,9 +125,7 @@ function displayDelay($smartcmd_id, $delay, $exec_id, $room_device_id, $option_i
 
 function display_option($elem) {
 	$display = '';
-	if (empty($elem->option_id)) {
-		return $display;
-	}
+	if (empty($elem->option_id)) return $display;
 	$tab_func = array(
 			12  => "display_option_on_off",
 			13  => "display_option_varie",

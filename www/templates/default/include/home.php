@@ -81,7 +81,7 @@ $(document).ready(function(){
 	$(".sidebar").css(\'background-color\', "'.$menus_color.'");
 });
 
-/*for (var i=0; i<360; i++) {
+/*for (var i=0; i<360; ++i) {
 	var color = document.createElement("span")
 	color.setAttribute("id", "d" + i)
 	color.style.backgroundColor = "hsl(" + i + ", 100%, 50%)"

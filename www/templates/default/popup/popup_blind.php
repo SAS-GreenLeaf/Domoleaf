@@ -45,7 +45,7 @@ if(!empty($_GET['iddevice'])){
 		$display.='<div class="clearfix"></div><br/>';
 	}
 	
-	$display = str_replace("\n", '', $display);
+	$display = strtr($display, "\n", '');
 	echo $display;
 
 	echo '<div class="clearfix"></div><br/>';

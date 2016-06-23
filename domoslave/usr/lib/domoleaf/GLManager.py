@@ -19,7 +19,6 @@ class GLManager:
         try:
             parser = DaemonConfigParser(SLAVE_CONF_FILE);
             port = parser.getValueFromSection('cron', 'port').encode()
-            
             sock = socket.create_connection(('127.0.0.1', port));
             sock.send(bytes(cron_name, 'utf-8'));
             sock.close();

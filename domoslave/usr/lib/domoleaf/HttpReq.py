@@ -10,6 +10,6 @@ LOG_FLAG        = True;
 class HttpReq:
 
     def http_action(self, json_obj, dev, hostname):
-        url = ('http://' + str(dev['addr'])+':'+str(dev['plus1'])+str(dev['addr_dst']));
+        url = ('http://'+str(dev['addr'])+':'+str(dev['plus1'])+str(dev['addr_dst']));
         s = requests.Session();
         answer = s.get(url, auth=HTTPDigestAuth(str(dev['plus2']), str(dev['plus3'])));

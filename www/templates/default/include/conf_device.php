@@ -694,7 +694,7 @@ function PreConfigurationDevice(){
 			data: "product_id="+product_id+"&password="+password,
 			dataType: "json",
 			success: function(result) {
-				for (var i = 0 ; i < result.length ; i++){
+				for (var i = 0 ; i < result.length ; ++i){
 					$("#waddr-"+result[i].option_id).val(result[i].addr);
 					$("#unity-"+result[i].option_id).val(result[i].dpt_id);
 					$("#toggle-"+result[i].option_id).prop(\'checked\', true).change();

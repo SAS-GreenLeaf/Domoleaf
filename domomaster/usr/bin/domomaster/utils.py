@@ -63,3 +63,15 @@ def eno_onoff(val, dpt_id):
             return 0
         else:
             return None;
+
+def is_valid_ip(ip):
+    tmp = ip.split('.');
+    if len(tmp) != 4:
+        return False;
+    for x in tmp:
+        if not x.isdigit():
+            return False;
+        i = int(x);
+        if i < 0 or i > 255:
+            return False;
+    return True;

@@ -26,8 +26,9 @@ class Scanner:
         Takes an 'hostname' as parameter and return whether or not the host 'hostname' is on the local network.
         """
         names = [];
+        append = names.append;
         for host in self._HostList:
-            names.append(host._Hostname);
+            append(host._Hostname);
         return hostname in names;
 
     def addNewHost(self, host):
@@ -58,7 +59,7 @@ class Scanner:
         netmask = self.bytesToMask(netmask_bytes);
         net = "%s/%s" % (network, netmask);
         if (netmask < 16):
-            print('[WARNING]: ' + net + ' Is too big. Skipping.');
+            print('[WARNING]: ', net, ' Is too big. Skipping.');
             return None;
         return (net);
 
@@ -68,9 +69,9 @@ class Scanner:
         """
         for h in self._HostList:
             print("=== HOST ON NETWORK ===");
-            print("IP  : " + h._IpAddr);
-            print("MAC : " + h._MacAddr);
-            print("HOST: " + h._Hostname);
+            print("IP  : ", h._IpAddr);
+            print("MAC : ", h._MacAddr);
+            print("HOST: ", h._Hostname);
             print('');
 
     def getHosts(self, net, interface):
