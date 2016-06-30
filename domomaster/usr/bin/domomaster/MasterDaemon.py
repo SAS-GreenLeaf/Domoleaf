@@ -726,7 +726,7 @@ class MasterDaemon:
             self.logger.error('in check_slave: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif res:
+        elif len(res) > 1:
             self.logger.error('in check_slave: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
@@ -916,7 +916,7 @@ class MasterDaemon:
             self.logger.error('in send_interfaces: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif res:
+        elif len(res) > 1:
             self.logger.error('in send_interfaces: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
@@ -981,7 +981,7 @@ class MasterDaemon:
             self.logger.error('in shutdown_d3: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif res:
+        elif len(res) > 1:
             self.logger.error('in shutdown_d3: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
@@ -1018,7 +1018,7 @@ class MasterDaemon:
             self.logger.error('in reboot_d3: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif res:
+        elif len(res) > 1:
             self.logger.error('in reboot_d3: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
@@ -1055,7 +1055,7 @@ class MasterDaemon:
             self.logger.error('in wifi_update: No daemon for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
-        elif res:
+        elif len(res) > 1:
             self.logger.error('in wifi_update: Too much daemons for id '+str(json_obj['data']['daemon_id']));
             connection.close();
             return ;
