@@ -116,7 +116,8 @@ class MasterSql:
                 res = utils.convert_temperature(val);
                 query = ''.join(["UPDATE room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id SET opt_value=\"",
                          str(res), "\" WHERE daemon_id=", str(daemon_id),
-                         " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
+                         " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\"", 
+                         " OR ", "room_device_option.addr_plus=\"", str(json_obj['dst_addr']), "\""]);
                 self.logger.debug('update_room_device_option write_long: query = ' + query);
                 self.mysql_handler_personnal_query(query, db);
             else:
