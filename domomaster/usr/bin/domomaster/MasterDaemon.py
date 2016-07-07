@@ -111,7 +111,7 @@ DATA_REBOOT_D3                = 'reboot_d3';
 DATA_WIFI_UPDATE              = 'wifi_update';
 DATA_REMOTE_SQL               = 'remote_sql';
 
-CAMERA_CONF_FILE              = '/etc/domoleaf/camera.conf';         # Path for the cameras configuration file
+CAMERA_CONF_FILE              = '/etc/domoleaf/devices.conf';         # Path for the cameras configuration file
 
 DEBUG_MODE = True;      # Debug flag
 
@@ -688,7 +688,7 @@ class MasterDaemon:
 
     def reload_camera(self, json_obj, connection, db):
         """
-        Generation of the file camera.conf located in /etc/domoleaf by default.
+        Generation of the file devices.conf located in /etc/domoleaf by default.
         """
         camera_file = open(CAMERA_CONF_FILE, 'w');
         query = "SELECT room_device_id, addr, plus1 FROM room_device WHERE protocol_id = 6";
@@ -696,7 +696,7 @@ class MasterDaemon:
         for r in res:
             ip = str(r[1]);
             if r[1] and utils.is_valid_ip(ip):
-                camera_file.write("location /camera/"+str(r[0]));
+                camera_file.write("location /device/"+str(r[0]));
                 camera_file.write("/ {\n")
                 camera_file.write("\tproxy_buffering off;\n")
                 camera_file.write("\tproxy_pass http://"+ip);

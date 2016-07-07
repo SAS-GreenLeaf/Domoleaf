@@ -1032,10 +1032,18 @@ class Admin extends User {
 		if($port < 0 || $port > 65535){
 			$port = '80';
 		}
-		$addr = gethostbyname($addr);
-		if (!(filter_var($addr, FILTER_VALIDATE_IP))){
-			return;
+		
+		$ip = gethostbyname($addr);
+		
+		if(substr($addr, 0, 7) == 'http://' || substr($addr, 0, 8) == 'https://') {
+			$ip = $addr;
 		}
+		else {
+			if (!(filter_var($ip, FILTER_VALIDATE_IP))){
+				return;
+			}
+		}
+		
 		$sql = 'INSERT INTO room_device
 		        (name, protocol_id, room_id, device_id, addr, plus1, plus2, plus3, plus4)
 		        VALUES
@@ -1045,7 +1053,7 @@ class Admin extends User {
 		$req->bindValue(':proto', $proto, PDO::PARAM_INT);
 		$req->bindValue(':room', $room, PDO::PARAM_INT);
 		$req->bindValue(':device', $device, PDO::PARAM_INT);
-		$req->bindValue(':addr', $addr, PDO::PARAM_STR);
+		$req->bindValue(':addr', $ip, PDO::PARAM_STR);
 		$req->bindValue(':port', $port, PDO::PARAM_STR);
 		$req->bindValue(':login', $login, PDO::PARAM_STR);
 		$req->bindValue(':pass', $pass, PDO::PARAM_STR);

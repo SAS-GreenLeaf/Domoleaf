@@ -24,6 +24,8 @@ function getIcon($iddevice = 1){
 			30 => 'fi flaticon-sign35',
 			31 => 'fa fa-sort-amount-asc rotate--90',
 			33 => 'fa fa-fire',
+			35 => 'glyphicon glyphicon-globe',
+			37 => 'glyphicon glyphicon-globe',
 			38 => 'fi flaticon-switches4',
 			43 => 'fa fa-hand-paper-o',
 			47 => 'fa fa-bolt',
@@ -65,6 +67,8 @@ function display_widget($info){
 			30 => "display_alarm",
 			31 => "display_portal",
 			33 => "display_furnace",
+			35 => 'display_webpage_internal',
+			37 => 'display_webpage_external',
 			38 => "display_commande",
 			43 => "display_commande",
 			47 => "display_consumption",
@@ -1172,6 +1176,22 @@ function display_generic($info){
 	$display .= $btn;
 	$display .= '</div>';
 	
+	return $display;
+}
+
+//Web page
+function display_webpage_internal($info){
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>
+				<div class="foreground-widget">
+					<button type="button" class="btn btn-info" onclick="HandlePopup(9, \''.$info->room_device_id.'\')">'._('View').'</button>
+				</div>';
+	return $display;
+}
+function display_webpage_external($info){
+	$display = '<h3 class="title margin-top foreground-widget">'.$info->name.'</h3>
+				<div class="foreground-widget">
+					<button type="button" class="btn btn-info" onclick="HandlePopup(10, \''.$info->room_device_id.'\')">'._('View').'</button>
+				</div>';
 	return $display;
 }
 

@@ -5,10 +5,12 @@ include('header.php');
 if (!empty($_GET['ipaddr'])){
 	$addr = gethostbyname($_GET['ipaddr']);
 	
-	if (!(filter_var($addr, FILTER_VALIDATE_IP))){
+	if(substr($addr, 0, 7) != 'http://' && substr($addr, 0, 8) != 'https://' && 
+	   !(filter_var($addr, FILTER_VALIDATE_IP))){
 		echo '1';
 		return;
 	}
+	
 	$request =  new Api();
 	$request ->add_request('confRoomList');
 	$request -> add_request('confDeviceNewIp', array($_GET['name'], $_GET['proto'], 

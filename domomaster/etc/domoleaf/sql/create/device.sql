@@ -45,6 +45,8 @@ VALUES
 	(30, 'Siren', 1, 14, '', '', 'Sirène', ''),
 	(31, 'Portal', 1, 15, '', '', 'Portail', ''),
 	(33, 'Water heater', 1, 10, '', '', 'Chauffe eau', ''),
+	(35, 'Internal Web page', 6, 17, '', '', 'Page web interne', ''),
+	(37, 'External Web page', 6, 17, '', '', 'Page web externe', ''),
 	(38, 'Switch', 1, 17, '', '', 'Interrupteur', ''),
 	(43, 'Motion sensor', 1, 17, '', '', 'Détecteur de mouvements', ''),
 	(47, 'Electricity meter', 1, 4, '', '', 'Compteur électrique', ''),

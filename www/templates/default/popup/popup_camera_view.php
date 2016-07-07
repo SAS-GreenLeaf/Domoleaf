@@ -61,7 +61,7 @@ if (!empty($_GET['iddevice'])){
 				  '</a>';
 			}
 			
-		 echo '<img id="cmd-camera-display" class="media-object" src="'.$proto.$auth.$host.'/camera/'.$deviceinfo->room_device_id.$opt->addr.'">'.
+		 echo '<img id="cmd-camera-display" class="media-object" src="'.$proto.$auth.$host.'/device/'.$deviceinfo->room_device_id.$opt->addr.'">'.
 			'</div>'.
 		 	'<div class="center">';
 		 
@@ -81,7 +81,7 @@ if (!empty($_GET['iddevice'])){
 	 			$opt->addr = '/'.$opt->addr;
 	 		}
 			echo '<div class="thumbnail">'.
-					'<img class="media-object" id="refresh" src="'.$proto.$auth.$host.'/camera/'.$deviceinfo->room_device_id.$opt->addr.'">'.
+					'<img class="media-object" id="refresh" src="'.$proto.$auth.$host.'/device/'.$deviceinfo->room_device_id.$opt->addr.'">'.
 				'</div>'.
 				'<script type="text/javascript">'.
 					'var src= $("#refresh").attr("src");'.

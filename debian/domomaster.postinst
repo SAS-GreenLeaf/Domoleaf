@@ -7,7 +7,7 @@ domomaster=`dpkg-query -W -f='${Version}\n' domomaster`
 mkdir -p /etc/domoleaf/mnt
 mkdir -p /etc/domoleaf/sql/backup
 
-touch /etc/domoleaf/camera.conf
+touch /etc/domoleaf/devices.conf
 
 # Create domoleaf db if does not exist
 bash /etc/domoleaf/sql/database.sh

@@ -2269,3 +2269,11 @@ msgstr "Normal"
 #: include/conf_device.php
 msgid "Reverse"
 msgstr "Inversé"
+
+#: function/display_widget.php
+msgid "Web page"
+msgstr "Page web"
+
+#: popup/popup_webpage.php
+msgid "Unknown web page"
+msgstr "Page web inconnue"

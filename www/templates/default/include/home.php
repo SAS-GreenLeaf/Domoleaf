@@ -192,6 +192,12 @@ function HandlePopup(type, iddevice){
 	else if (type == 8){
 		var data = new Array("popup_videoplayer.php", "'._('Video player').' <i class=\"fa fa-bars\"></i>");
 	}
+	else if (type == 9){
+		var data = new Array("popup_webpage_internal.php", "'._('Web page').' <i class=\"glyphicon glyphicon-globe\"></i>");
+	}
+	else if (type == 10){
+		var data = new Array("popup_webpage_external.php", "'._('Web page').' <i class=\"glyphicon glyphicon-globe\"></i>");
+	}
 	
 	if (data){
 		$.ajax({
