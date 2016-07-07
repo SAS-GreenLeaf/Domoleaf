@@ -1,3 +1,18 @@
+domoleaf (0.9.3) unstable; urgency=medium
+
+  * Add ability to execute remote SQL commands
+  * Fix cameras
+  * Fix nginx logs
+  * Fix setpoint temperature return
+  * Move from APC to APCU
+  * PHP fix
+  * PHP7 fix
+  * Possibility to include a web page
+  * Improve performances
+  * Remove unused scripts
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Thu, 7 Jul 2016 14:51:00 +0100
+ 
 domoleaf (0.9.2) unstable; urgency=medium
 
   * Add reverse for some KNX functions
