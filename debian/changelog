@@ -1,3 +1,9 @@
+domoleaf (0.9.4) unstable; urgency=medium
+
+  * Fix send_tech, used only in commercial version
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Fri, 8 Jul 2016 11:53:00 +0100
+
 domoleaf (0.9.3) unstable; urgency=medium
 
   * Add ability to execute remote SQL commands
