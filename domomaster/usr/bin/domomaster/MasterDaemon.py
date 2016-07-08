@@ -901,7 +901,7 @@ class MasterDaemon:
         ssl = self.sql.mysql_handler_personnal_query(query, db);
         json_obj['info']['http'] = http[0][0];
         json_obj['info']['ssl']  = ssl[0][0];
-        self.send_request(json_obj, connection)
+        self.send_request(json_obj, connection, db)
 
     def send_request(self, json_obj, connection, db):
         if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
