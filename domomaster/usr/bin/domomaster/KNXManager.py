@@ -67,7 +67,7 @@ class KNXManager:
             sys.exit(4);
         if json_obj['data']['value'] == '1':
             query = ''.join(['SELECT option_id, addr, dpt_id FROM room_device_option WHERE room_device_id=',
-                           str(dev['room_device_id']), 
+                           str(dev['room_device_id']),
                            ' AND option_id IN(400, 401, 402, 403, 404, 405, 406) AND status=1']);
             res = self.sql.mysql_handler_personnal_query(query);
             for line in res:
@@ -159,11 +159,7 @@ class KNXManager:
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
-    
-    def send_knx_write_short_to_slave_r(self, json_obj, dev, hostname):
-        json_obj['data']['value'] = (int(json_obj['data']['value'])+1)%2;
-        self.send_knx_write_short_to_slave(json_obj, dev, hostname)
-    
+
     def send_knx_read_request_to_slave(self, hostname, json_obj):
         """
         Constructs short read request and sends it to 'hostname'
@@ -199,7 +195,7 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
         return;
-    
+
     def send_off(self, json_obj, dev, hostname):
         """
         Ask to close all the speed fan before open another
@@ -218,8 +214,11 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
         return;
-    
+
     def send_to_thermostat(self, json_obj, dev, hostname):
+        """
+        Send the new value of the temperature to thermostat
+        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -251,6 +250,9 @@ class KNXManager:
             return;
 
     def send_clim_mode(self, json_obj, dev, hostname):
+        """
+        Send the new mode of the air conditioner
+        """
         if json_obj['data']['option_id'] == '425': #Auto
             val = 0
         elif json_obj['data']['option_id'] == '426': #Heat
@@ -291,6 +293,9 @@ class KNXManager:
             return;
 
     def send_knx_write_percent(self, json_obj, dev, hostname):
+        """
+        Send a value converted in percentages
+        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -304,4 +309,3 @@ class KNXManager:
         );
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
-

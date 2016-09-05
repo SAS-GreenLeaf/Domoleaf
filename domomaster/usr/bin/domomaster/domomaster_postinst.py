@@ -17,23 +17,23 @@ SLAVE_CONF_FILE                  = '/etc/domoleaf/slave.conf';
 def master_conf_copy():
     file_from = DaemonConfigParser(MASTER_CONF_FILE_BKP);
     file_to   = DaemonConfigParser(MASTER_CONF_FILE_TO);
-    
+
     #listen
     var = file_from.getValueFromSection('listen', 'port_slave');
     file_to.writeValueFromSection('listen', 'port_slave', var);
     var = file_from.getValueFromSection('listen', 'port_cmd');
     file_to.writeValueFromSection('listen', 'port_cmd', var);
-    
+
     #connect
     var = file_from.getValueFromSection('connect', 'port');
     file_to.writeValueFromSection('connect', 'port', var);
-    
+
     #mysql
     var = file_from.getValueFromSection('mysql', 'user');
     file_to.writeValueFromSection('mysql', 'user', var);
     var = file_from.getValueFromSection('mysql', 'database_name');
     file_to.writeValueFromSection('mysql', 'database_name', var);
-    
+
     #greenleaf
     var = file_from.getValueFromSection('greenleaf', 'commercial');
     file_to.writeValueFromSection('greenleaf', 'commercial', var);
@@ -42,13 +42,13 @@ def master_conf_copy():
 
 def master_conf_initdb():
     file = DaemonConfigParser(MASTER_CONF_FILE_TO);
-    
+
     #mysql password
     password = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(128))
     password = sha1(password.encode('utf-8'))
     file.writeValueFromSection('mysql', 'password', password.hexdigest());
     os.system('sed -i "s/define(\'DB_PASSWORD\', \'domoleaf\')/define(\'DB_PASSWORD\', \''+password.hexdigest()+'\')/g" /etc/domoleaf/www/config.php')
-    
+
     #mysql user
     query1 = 'DELETE FROM user WHERE User="domoleaf"';
     query2 = 'DELETE FROM db WHERE User="domoleaf"';
@@ -91,4 +91,3 @@ if __name__ == "__main__":
     else:
         master_conf_init()
     master_conf_initdb()
-    
