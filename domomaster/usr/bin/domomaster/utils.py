@@ -40,6 +40,9 @@ def convert_temperature_reverse(val):
     return [res[:2], res[2:]];
 
 def convert_float32(val):
+    """
+    Convert a number to a float on 32 bits
+    """
     factor = 0.01;
     exp = (val & 0x7F800000) >> 23;
     sign = val >> 31;
@@ -49,6 +52,9 @@ def convert_float32(val):
     return Decimal(str(round(mant * pow(2, exp) * factor, 2)));
 
 def eno_onoff(val, dpt_id):
+    """
+    Return 0 or 1 depending on dpt_id for the on / off option
+    """
     if dpt_id == 471:
         if val == 16:
             return 1
@@ -65,6 +71,9 @@ def eno_onoff(val, dpt_id):
             return None;
 
 def is_valid_ip(ip):
+    """
+    Check the format of a string representing an IP address
+    """
     tmp = ip.split('.');
     if len(tmp) != 4:
         return False;
