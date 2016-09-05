@@ -6,6 +6,9 @@ import socket
 import json
 from DaemonConfigParser import *;
 
+"""
+Cron that opens of closes the upnp
+"""
 if __name__ == "__main__":
     try:
         parser = DaemonConfigParser('/etc/domoleaf/master.conf')

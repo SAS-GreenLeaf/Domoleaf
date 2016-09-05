@@ -6,6 +6,9 @@ import socket
 import json
 from DaemonConfigParser import *;
 
+"""
+Cron that sends the command calc_logs to the master
+"""
 if __name__ == "__main__":
     try:
         parser = DaemonConfigParser('/etc/domoleaf/master.conf')
@@ -18,6 +21,6 @@ if __name__ == "__main__":
         }
         obj_str = json.JSONEncoder().encode(obj)
         s.send(obj_str.encode())
-        s.close()                                                        
+        s.close()
     except Exception as e:
         print(str(e))
