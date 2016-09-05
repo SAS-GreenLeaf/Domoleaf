@@ -157,8 +157,7 @@ class MasterDaemon:
               9 : HttpReq().http_action,
              10 : self.upnp_audio,
              11 : self.knx_manager.send_knx_write_percent,
-             12 : self.knx_manager.send_off,
-             13 : self.knx_manager.send_knx_write_short_to_slave_r,
+             12 : self.knx_manager.send_off
         };
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
@@ -317,6 +316,9 @@ class MasterDaemon:
             frameinfo = getframeinfo(currentframe());
 
     def check_updates(self, json_obj, connection, db):
+        """
+        Cheking updates for the master daemon package
+        """
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=4';
         actual_version = self.sql.mysql_handler_personnal_query(query, db);
         if not actual_version:
@@ -338,6 +340,9 @@ class MasterDaemon:
         self.sql.mysql_handler_personnal_query(query, db);
 
     def update(self, json_obj, connection, db):
+        """
+        Update the package list and the master daemon
+        """
         call(['apt-get', 'update']);
         p = Popen("DEBIAN_FRONTEND=noninteractive apt-get install domomaster domoslave -y ",
               shell=True, stdin=None, stdout=False, stderr=False,executable="/bin/bash");
@@ -367,6 +372,9 @@ class MasterDaemon:
                 sock.close();
 
     def backup_db_create_local(self, json_obj, connection, db):
+        """
+        Create a backup of the database, stored locally
+        """
         path = '/etc/domoleaf/sql/backup/';
         filename = 'domoleaf_backup_';
         t = str(time.time());
@@ -378,6 +386,9 @@ class MasterDaemon:
         os.system('rm '+path+filename);
 
     def backup_db_remove_local(self, json_obj, connection, db):
+        """
+        Remove a local database backup
+        """
         filename = ''.join(['/etc/domoleaf/sql/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
             self.logger.error('The filename is corrupted. Aborting database file removing.')
@@ -395,6 +406,9 @@ class MasterDaemon:
         os.remove(filename);
 
     def backup_db_list_local(self, json_obj, connection, db):
+        """
+        List all backups stored locally
+        """
         json_obj = [];
         append = json_obj.append;
         backup_list = os.listdir('/etc/domoleaf/sql/backup/')
@@ -408,6 +422,9 @@ class MasterDaemon:
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_restore_local(self, json_obj, connection, db):
+        """
+        Restore the database from a local file
+        """
         path = '/etc/domoleaf/sql/backup/';
         filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
@@ -430,6 +447,9 @@ class MasterDaemon:
         os.system('mysql --defaults-file=/etc/mysql/debian.cnf domoleaf < '+path+filename);
 
     def check_usb(self, json_obj, connection, db):
+        """
+        Check if an USB device is plugged in
+        """
         try:
             sdx1 = glob.glob('/dev/sd?1')[0];
         except Exception as e:
@@ -442,6 +462,9 @@ class MasterDaemon:
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_list_usb(self, json_obj, connection, db):
+        """
+        List backups stored on an USB device
+        """
         json_obj = [];
         append = json_obj.append
         sdx1 = glob.glob('/dev/sd?1')[0];
@@ -461,6 +484,9 @@ class MasterDaemon:
         connection.send(bytes(json_str, 'utf-8'));
 
     def backup_db_remove_usb(self, json_obj, connection, db):
+        """
+        Remove a backup stored on an USB device
+        """
         filename = ''.join(['/etc/domoleaf/mnt/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
             self.logger.error('The filename is corrupted. Aborting database file removing.')
@@ -485,6 +511,9 @@ class MasterDaemon:
         os.system('umount /etc/domoleaf/mnt');
 
     def backup_db_restore_usb(self, json_obj, connection, db):
+        """
+        Restore the database from a backup stored on an USB device
+        """
         path = '/etc/domoleaf/mnt/backup/';
         filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql']);
         if json_obj['data'][0] == '.' or json_obj['data'][0] == '/':
@@ -516,6 +545,9 @@ class MasterDaemon:
         os.remove('/tmp/'+filename.split('.tar.gz')[0]);
 
     def backup_db_create_usb(self, json_obj, connection, db):
+        """
+        Create a backup of the database and stores it on an USB device
+        """
         sdx1 = glob.glob('/dev/sd?1')[0];
         if not (os.path.exists(sdx1)):
             return;
@@ -644,6 +676,9 @@ class MasterDaemon:
         connection.close();
 
     def upnp_audio(self, json_obj, dev, hostname):
+        """
+        Send an UPnP packet to an audio device
+        """
         cmd = UpnpAudio(dev['addr'], int(dev['plus1']));
         cmd.action(json_obj);
 
@@ -824,6 +859,9 @@ class MasterDaemon:
             connection.close();
 
     def modif_datetime(self, json_obj, connection, db):
+        """
+        Changes the date / time of the system
+        """
         os.system('date --set '+json_obj['data'][0]);
         os.system('date --set '+json_obj['data'][1]);
 
@@ -857,29 +895,50 @@ class MasterDaemon:
         self.logger.debug('[ OK ] Done reloading web server.');
 
     def smartcmd_launch(self, json_obj, connection, db):
+        """
+        Start the smartcommand
+        """
         s = Smartcommand(self, int(json_obj['data']))
         s.setValues(connection);
         s.start();
 
     def triggers_list_update(self, json_obj, connection, db):
+        """
+        Update the trigger list in database
+        """
         self.trigger.update_triggers_list(db);
 
     def schedules_list_update(self, json_obj, connection, db):
+        """
+        Update the schedule list in database
+        """
         self.schedule.update_schedules_list(db);
 
     def scenarios_list_update(self, json_obj, connection, db):
+        """
+        Update the scenario list in database
+        """
         self.scenario.update_scenarios_list(db);
 
     def check_schedules(self, json_obj, connection, db):
+        """
+        Check all schedules
+        """
         self.schedule.check_all_schedules(connection);
 
     def launch_calc_logs(self, json_obj, connection, db):
+        """
+        Start the calc logs
+        """
         try:
             self.calcLogs.sort_logs(connection, db);
         except Exception as e:
             self.logger.error(e);
 
     def get_global_state(self, db):
+        """
+        Retrieves all the options from database
+        """
         query = 'SELECT room_device_id, option_id, opt_value FROM room_device_option';
         res = self.sql.mysql_handler_personnal_query(query, db);
         filtered = [];
@@ -895,6 +954,9 @@ class MasterDaemon:
         return global_state;
 
     def send_tech(self, json_obj, connection, db):
+        """
+        Get the http and ssl option values from database
+        """
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=1';
         http = self.sql.mysql_handler_personnal_query(query, db);
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=2';
@@ -904,12 +966,18 @@ class MasterDaemon:
         self.send_request(json_obj, connection, db)
 
     def send_request(self, json_obj, connection, db):
+        """
+        Get the admin address from config file
+        """
         if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
             admin_addr = self._parser.getValueFromSection('greenleaf', 'admin_addr')
             hostname = socket.gethostname()
             GLManager.SendRequest(str(json_obj), admin_addr, self.get_secret_key(hostname))
 
     def send_interfaces(self, json_obj, connection, db):
+        """
+        Change the protocol interfaces of the daemon
+        """
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
         if res is None or not res:
@@ -938,7 +1006,7 @@ class MasterDaemon:
         aes_key = self.get_secret_key(hostname);
         obj_to_send = json.JSONEncoder().encode(
             {
-                "packet_type": "send_interfaces", 
+                "packet_type": "send_interfaces",
                 "sender_name": self_hostname,
                 "interface_knx": json_obj['data']['interface_knx'],
                 "interface_EnOcean": json_obj['data']['interface_EnOcean'],
@@ -1104,7 +1172,7 @@ class MasterDaemon:
             connection.send(bytes(re, 'utf-8'));
         connection.close();
         sock.close();
-    
+
     def remote_sql(self, json_obj, connection):
         """
         Execute sql command from configurator
@@ -1116,4 +1184,3 @@ class MasterDaemon:
                 db.mysql_handler_personnal_query(item);
         connection.close();
         return;
-
