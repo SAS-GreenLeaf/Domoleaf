@@ -138,6 +138,9 @@ class SlaveDaemon:
         };
 
     def update(self, json_obj, connection):
+        """
+        Update the base system of the slave daemon
+        """
         p = call(['dpkg', '--configure', '-a'])
         call(['apt-get', 'update']);
         call(['DEBIAN_FRONTEND=noninteractive', 'apt-get', 'install', 'domoslave', '-y']);
@@ -197,7 +200,7 @@ class SlaveDaemon:
         Get available sockets for reading on the KNX socket.
         """
         rlist, wlist, elist = select.select([self.knx_sock], [], [], SELECT_TIMEOUT);
-        append = self.connected_knx.append       
+        append = self.connected_knx.append
         for connection in rlist:
             new_knx, addr = connection.accept();
             append(new_knx);
@@ -357,6 +360,9 @@ class SlaveDaemon:
         self._hostlist = self._scanner._HostList;
 
     def send_monitor_ip(self):
+        """
+        Send a packet monitor_ip to all the masters available
+        """
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "monitor_ip"
@@ -405,7 +411,7 @@ class SlaveDaemon:
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
-        
+
     def stop(self):
         """
         Stop the daemon and closes all sockets.
@@ -524,6 +530,9 @@ class SlaveDaemon:
                 pass;
 
     def send_tech(self, json_obj, connection):
+        """
+        Send the informations about the slave to all masters available
+        """
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "send_tech",
@@ -533,6 +542,9 @@ class SlaveDaemon:
         self.send_data_to_all_masters(json_str);
 
     def send_alive(self, json_obj, connection):
+        """
+        Send that the slave daemon is alive to all masters available
+        """
         json_str = json.JSONEncoder().encode(
             {
                 "packet_type": "send_alive",
@@ -542,6 +554,9 @@ class SlaveDaemon:
         self.send_data_to_all_masters(json_str);
 
     def send_interfaces(self, json_obj, connection):
+        """
+        Send the protocol interface informations to all masters availables
+        """
         try:
             if os.path.exists('/tmp/knxd'):
                 call(['service', 'knxd', 'stop']);
@@ -584,12 +599,21 @@ class SlaveDaemon:
             call(['service', 'domoslave', 'restart']);
 
     def shutdown_d3(self, json_obj, connection):
+        """
+        Shut down the slave daemon
+        """
         call(['poweroff']);
 
     def reboot_d3(self, json_obj, connection):
+        """
+        Reboot the slave daemon
+        """
         call(['reboot']);
 
     def wifi_init(self, ssid, password, security, mode, opt):
+        """
+        Initialize the wifi protocol
+        """
         try:
             ps_process = Popen(["ps", "-x"], stdout=PIPE);
             res = Popen(["grep", "hostapd"], stdin=ps_process.stdout, stdout=PIPE);
@@ -678,6 +702,9 @@ class SlaveDaemon:
             self.logger.error(e);
 
     def wifi_update(self, json_obj, connection):
+        """
+        Update of the wifi informations
+        """
         try:
             self._parser.writeValueFromSection('wifi', 'ssid', json_obj['ssid']);
             self._parser.writeValueFromSection('wifi', 'password', json_obj['password']);
