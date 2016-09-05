@@ -6,6 +6,9 @@ import socket;
 
 # Pas sur qu'elle soit encore utile A CHECKER
 def get_key(key):
+    """
+    Generates the IV and returns an object containing the key and the IV
+    """
     IV = ''.join([random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16)])
     return "{\"key\": \"" + str(key) + "\", \"IV\": \"" + str(IV) + "\"}";
 
