@@ -19,6 +19,9 @@ class Trigger:
         self.update_triggers_list();
 
     def update_triggers_list(self, db=0):
+        """
+        Update the trigger list
+        """
         self.logger.debug('Updating Triggers');
         query = ('SELECT trigger_events_list.id_trigger, '
                  'trigger_events_conditions.room_device_id, '
@@ -32,6 +35,9 @@ class Trigger:
         self.logger.debug(res);
 
     def get_trigger_info(self, id_trigger):
+        """
+        Retrieve the trigger informations from its ID
+        """
         triggers_list = self.triggers_list;
         trigger = [];
         append = trigger.append;
@@ -41,6 +47,9 @@ class Trigger:
         return trigger;
 
     def test_trigger(self, id_trigger, global_state):
+        """
+        Test all the conditions in a trigger
+        """
         trigger = self.get_trigger_info(id_trigger);
         res = True;
         for condition in trigger:
@@ -50,6 +59,9 @@ class Trigger:
         return 0;
 
     def get_device_state(self, room_device_id, option_id, global_state):
+        """
+        Get the device state
+        """
         device_state = [];
         for elem in global_state:
             if elem[0] == room_device_id and elem[1] == option_id:
@@ -58,11 +70,17 @@ class Trigger:
         return device_state;
 
     def test_equ(self, val_device, val_condition):
+        """
+        Test the equivalence between the value of a device and the value of a condition
+        """
         if (val_device == val_condition):
             return True;
         return False;
 
     def test_sup_equ(self, val_device, val_condition):
+        """
+        Test the superiority of the equivalence between the value of a device and the value of a condition
+        """
         val_device = float(val_device);
         val_condition = float(val_condition);
         if (val_device >= val_condition):
@@ -70,6 +88,9 @@ class Trigger:
         return False;
 
     def test_inf_equ(self, val_device, val_condition):
+        """
+        Test the inferiority of the equivalence between the value of a device and the value of a condition
+        """
         val_device = float(val_device);
         val_condition = float(val_condition);
         if (val_device <= val_condition):
@@ -77,6 +98,9 @@ class Trigger:
         return False;
 
     def test_condition(self, condition, global_state):
+        """
+        Test multiple conditions
+        """
         device_state = self.get_device_state(condition[1], condition[2], global_state);
         if not device_state:
             self.logger.error('No Device State');
@@ -86,5 +110,5 @@ class Trigger:
             "0" : self.test_equ,
             "1" : self.test_sup_equ,
             "2" : self.test_inf_equ
-            };
+        };
         return functab[str(condition[3])](device_state[2], condition[4]);

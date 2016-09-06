@@ -12,6 +12,9 @@ import time;
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 LOG_FLAG        = False;
 
+"""
+Class representing multiple commands launched at the same time
+"""
 class Smartcommand(Thread):
 
     def __init__(self, daemon, smartcmd_id = 0):
@@ -27,14 +30,23 @@ class Smartcommand(Thread):
         self.db_dbname = daemon.db_dbname;
 
     def setValues(self, connection):
+        """
+        Set the connection
+        """
         self.connection = connection;
 
     def run(self):
+        """
+        Run the smart command
+        """
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         launch_smartcommand(self);
         self.db.close();
 
 def launch_smartcommand(self):
+    """
+    Select the smartcommand in database and runs it the good parameters
+    """
     if not self.smartcmd_id:
         self.logger.error('Invalid Smartcommand');
         return;

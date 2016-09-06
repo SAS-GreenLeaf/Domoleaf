@@ -11,6 +11,9 @@ LOG_FILE = '/var/log/domoleaf/domomaster.log'
 TCP_PORT = 4998
 BUFFER_SIZE = 1024
 
+"""
+Class representing a gateway IP / Infrared passing through sockets
+"""
 class IP_IRManager:
 
     def __init__(self):
@@ -18,6 +21,9 @@ class IP_IRManager:
         self.sql = MasterSql();
 
     def send_to_gc(self, json_obj, dev, hostame):
+        """
+        Send a packet to global cache
+        """
         ir_addr = dev['addr_dst'];
         tcp_ip = dev['addr'];
         tcp_port = int(dev['plus1']);
