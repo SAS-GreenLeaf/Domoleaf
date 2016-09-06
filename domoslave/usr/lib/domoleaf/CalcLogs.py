@@ -8,7 +8,7 @@ from MasterSql import *;
 import time;
 
 LOG_FILE                       = '/var/log/domoleaf/domomaster.log'
-TIME_INTERVAL                  = 600  #10min 
+TIME_INTERVAL                  = 600  #10min
 TIME_RANGE_TO_CALC             = 3600 #1h
 TIME_BEFORE_TIME_TO_CALC       = 1800 #30min
 
@@ -100,7 +100,7 @@ class CalcLogs:
             if (option_id not in cut_tab[device_id]):
                 cut_tab[device_id][option_id] = [];
             cut_tab[device_id][option_id].append(log);
-        
+
         for device in cut_tab:
             cut_dict[device] = {};
             for option in cut_tab[device]:
@@ -118,7 +118,7 @@ class CalcLogs:
                 dictaverage[time_r][device] = {};
                 for option in dictlogs[time_r][device]:
                     dictaverage[time_r][device][option] = [];
-                    
+
                     t0 = -1;
                     t1 = 0;
                     avg = 0;
@@ -249,4 +249,3 @@ class CalcLogs:
             self.logger.debug('OK\n\n');
         except Exception as e:
             self.logger.error(e);
-

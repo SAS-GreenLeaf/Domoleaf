@@ -41,7 +41,7 @@ class Scenario(Thread):
                 scenarios_tab[scHash] = [];
             scenarios_tab[scHash].append(d)
         return scenarios_tab;
-    
+
     def update_scenarios_list(self, db=0):
         self.logger.debug('UPDATING SCENARIOS');
         query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, ',
@@ -55,7 +55,7 @@ class Scenario(Thread):
         self.logger.debug('S LIST = '+str(scenarios_list)+'\n');
         self.scenarios_list = self.get_scenarios_tab(scenarios_list);
         self.logger.debug('S TAB = '+str(self.scenarios_list)+'\n\n\n');
-    
+
     def launch_scenario(self, id_smartcmd, connection):
         self.logger.debug('LAUNCH !!!');
         jsonString = json.JSONEncoder().encode({

@@ -10,7 +10,7 @@ class UpnpAudio(Upnp):
     """
     def __init__(self, ip_addr = UPNP_IP_ADDR, port = UPNP_PORT):
         Upnp.__init__(self, ip_addr, port);
-    
+
     def action(self, json_obj):
         option_id = int(json_obj['data']['option_id'])
         if option_id == 363:
@@ -29,7 +29,7 @@ class UpnpAudio(Upnp):
             self.set_mute(mute = mute);
         elif option_id == 383:
             self.set_volume(desired_volume = int(json_obj['data']['value']));
-    
+
     def set_play(self, speed = 1, instance_id = 0):
         """
         Start a song. 'speed' is the playing speed.
