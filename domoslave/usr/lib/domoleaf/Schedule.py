@@ -73,7 +73,7 @@ class Schedule:
         days = list("{0:b}".format(int(days)).zfill(31));
         hours = list("{0:b}".format(int(hours)).zfill(24));
         mins = list(mins);
-        
+
         if (int(months[curr_month]) == 1 and int(weekdays[curr_weekday]) == 1
             and int(days[curr_day]) == 1 and int(hours[curr_hour]) == 1
             and int(mins[curr_min]) == 1):

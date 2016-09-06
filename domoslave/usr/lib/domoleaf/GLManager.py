@@ -14,7 +14,7 @@ import base64
 SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
 
 class GLManager:
-    
+
     def send_cron(cron_name):
         try:
             parser = DaemonConfigParser(SLAVE_CONF_FILE);
@@ -25,7 +25,7 @@ class GLManager:
         except Exception as e:
             if 'sock' in locals():
                 sock.close()
-    
+
     def TechInfo():
         json_str = {
             "ip_private":  InfoSys.ipPrivate(),
@@ -40,21 +40,21 @@ class GLManager:
             "temperature": InfoSys.temperature()
         };
         return json_str
-    
+
     def TechAlive():
         json_str = {
             "uptime":      InfoSys.uptime(),
             "temperature": InfoSys.temperature()
         };
         return json_str
-    
+
     def SendRequest(obj_to_send, admin_addr, aes_key):
         hostname = socket.gethostname()
         aes_IV = AESManager.get_IV();
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         obj_to_send = encode_obj.encrypt(obj_to_send + (spaces * ' '));
-        
+
         data = {
             "sender_name": hostname,
             "data": base64.b64encode(obj_to_send),

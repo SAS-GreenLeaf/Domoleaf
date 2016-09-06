@@ -1,4 +1,3 @@
-
 import pycurl;
 from io import BytesIO;
 
@@ -36,7 +35,7 @@ class Upnp:
         ch.perform();
         ch.close();
         return (res.getvalue().decode('utf-8'));
-        
+
 
     def get_type(self, control_type):
         """
