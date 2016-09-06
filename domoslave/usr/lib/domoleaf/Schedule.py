@@ -9,6 +9,9 @@ import datetime;
 
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
+"""
+Class representing a schedule
+"""
 class Schedule:
 
     def __init__(self, daemon):
@@ -20,12 +23,15 @@ class Schedule:
         self.update_schedules_list(0);
 
     def update_schedules_list(self, db):
+        """
+        Update the schedule list from the database
+        """
         self.logger.debug('Updating Schedules');
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
                  'months, weekdays, days, hours, mins '
                  'FROM scenarios_list '
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
-                 'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
+                0 'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
                  'ORDER BY id_scenario ');
         if not db:
             self.schedules_list = self.sql.mysql_handler_personnal_query(query);
@@ -44,6 +50,9 @@ class Schedule:
 
 
     def get_schedule_infos(self, id_schedule):
+        """
+        Retrieve schedule infos from its ID
+        """
         schedules_list = self.full_schedules_list;
         for schedule in schedules_list:
             if (schedule[0] == id_schedule):
@@ -52,12 +61,18 @@ class Schedule:
         return 0;
 
     def check_all_schedules(self, connection):
+        """
+        Test the schedules and starts a scenario if the test is valid
+        """
         schedules_list = self.schedules_list;
         for schedule in schedules_list:
             if self.test_schedule(schedule[0]) == 1:
                 self.launch_scenario(schedule[1], connection);
 
     def test_schedule(self, id_schedule):
+        """
+        Test if the schedule have to be started
+        """
         if not self.full_schedules_list:
             return 0;
         months, weekdays, days, hours, mins = self.get_schedule_infos(id_schedule);
@@ -81,6 +96,9 @@ class Schedule:
         return 0;
 
     def launch_scenario(self, id_smartcmd, connection):
+        """
+        Start a scenario in the smart command
+        """
         jsonString = json.JSONEncoder().encode({
             "data": id_smartcmd
         });
