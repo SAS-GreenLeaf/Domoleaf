@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import sys;
 sys.path.append("/usr/bin/domomaster");
@@ -10,9 +15,6 @@ LOG_FILE = '/var/log/domoleaf/domomaster.log'
 
 log_flag = False;
 
-"""
-Master daemon main function
-"""
 if len(sys.argv) > 1:
     if sys.argv[1] == '--log':
         log_flag = True;
