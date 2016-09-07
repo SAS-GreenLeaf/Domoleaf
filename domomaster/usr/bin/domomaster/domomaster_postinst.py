@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import sys;
 import os;
 import random;
@@ -14,6 +19,7 @@ MASTER_CONF_FILE_BKP             = '/etc/domoleaf/master.conf.save';
 MASTER_CONF_FILE_TO              = '/etc/domoleaf/master.conf';
 SLAVE_CONF_FILE                  = '/etc/domoleaf/slave.conf';
 
+## Copies the conf data from a backup file to a new one.
 def master_conf_copy():
     file_from = DaemonConfigParser(MASTER_CONF_FILE_BKP);
     file_to   = DaemonConfigParser(MASTER_CONF_FILE_TO);
@@ -40,6 +46,7 @@ def master_conf_copy():
     var = file_from.getValueFromSection('greenleaf', 'admin_addr');
     file_to.writeValueFromSection('greenleaf', 'admin_addr', var);
 
+## Initializes the conf in database.
 def master_conf_initdb():
     file = DaemonConfigParser(MASTER_CONF_FILE_TO);
 
@@ -62,6 +69,7 @@ def master_conf_initdb():
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query4], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'mysql', '-e', query5], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
 
+## Initializes the conf in file.
 def master_conf_init():
     file = DaemonConfigParser(SLAVE_CONF_FILE);
     personnal_key = file.getValueFromSection('personnal_key', 'aes');
@@ -83,6 +91,7 @@ def master_conf_init():
            '-e', query1], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
     Popen(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'domoleaf',
            '-e', query2], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1);
+
 if __name__ == "__main__":
     #Upgrade
     if os.path.exists(MASTER_CONF_FILE_BKP):

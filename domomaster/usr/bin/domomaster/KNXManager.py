@@ -1,3 +1,8 @@
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import logging;
 from Logger import *;
 import socket;
@@ -20,20 +25,26 @@ KNX_RESPONSE            = 1;    # Donnee KNX de type RESPONSE
 KNX_WRITE_SHORT         = 2;    # Donnee KNX de type ecriture courte (0 | 1)
 KNX_WRITE_LONG          = 3;    # Donnee KNX de type ecriture longue (0x0 -> 0xFF)
 
+## Class managing the KNX protocol in D3 boxes.
 class KNXManager:
-    """
-    KNX management class
-    """
+
+    ## The constructor.
+    #
+    # @param slave_keys Array containing the AES keys of all the slaves.
     def __init__(self, slave_keys):
         self.logger = Logger(True, LOG_FILE);
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
         self.aes_slave_keys = slave_keys;
 
+    ## Updates room_device_option table in database to set new values of the device described by json_obj.
+    #
+    # @param daemon_id The ID of a slave daemon.
+    # @param json_obj JSON object containing the values to update.
+    # @param db The database handler.
+    #
+    # @return The result of the query.
     def update_room_device_option(self, daemon_id, json_obj, db):
-        """
-        Update room_device_option table in database to set new values of the device described by 'json_obj'
-        """
         if int(json_obj['type']) == KNX_RESPONSE:
             return self.sql.update_room_device_option_resp(json_obj, daemon_id, db);
         elif int(json_obj['type']) == KNX_WRITE_SHORT:
@@ -41,10 +52,13 @@ class KNXManager:
         elif int(json_obj['type']) == KNX_WRITE_LONG:
             return self.sql.update_room_device_option_write_long(json_obj, daemon_id, db);
 
+    ## Sends a JSON object to a slave daemon.
+    #
+    # @param json_str The data to send.
+    # @param sock The socket used to send the data.
+    # @param hostname The hostname of the slave daemon.
+    # @param aes_key The AES key of the slave daemon to encrypt data.
     def send_json_obj_to_slave(self, json_str, sock, hostname, aes_key):
-        """
-        Send 'json_obj' to 'hostname' via 'sock'
-        """
         hostname_key = '';
         if '.' in hostname:
             hostname_key = hostname.split('.')[0];
@@ -57,10 +71,12 @@ class KNXManager:
         data2 = encode_obj.encrypt(json_str + (spaces * ' '));
         sock.send(bytes(aes_IV, 'utf-8') + data2);
 
+    ## Changes the speed value of a fan.
+    #
+    # @param json_obj JSON object containing the values to write.
+    # @param dev Object containing informations about the device.
+    # @param hostname The hostname of the slave to who send the packet.
     def send_knx_write_speed_fan(self, json_obj, dev, hostname):
-        """
-        Ask to close all the speed fan before open another
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         sock = socket.create_connection((hostname, port));
         if not port:
@@ -101,11 +117,12 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Converts absolute value of temperature (Celsius) in 2 hexadecimal values for sending to KNX device.
+    #
+    # @param json_obj JSON object containing the values to write.
+    # @param dev Object describing the KNX device to who send the packet.
+    # @param hostname The hostname of the slave daemon to who send the packet.
     def send_knx_write_temp(self, json_obj, dev, hostname):
-        """
-        Converts absolute value of temperature (Celsius) in 2 hexadecimal values for
-        sending to KNX device
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -124,10 +141,12 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Builds a "long write" request and sends it to "hostname".
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The device to who send the request.
+    # @param hostname The slave daemon to who send the packet.
     def send_knx_write_long_to_slave(self, json_obj, dev, hostname):
-        """
-        Constructs long write request and sends it to 'hostname'
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -142,6 +161,11 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Builds a "short read" request and sends it to "hostname".
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The device to who send the request.
+    # @param hostname The hostname of the slave daemon to who send the packet.
     def send_knx_write_short_to_slave(self, json_obj, dev, hostname):
         """
         Constructs short write request and sends it to 'hostname'
@@ -160,10 +184,11 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Builds a "short read" request and sends it to the slave "hostname".
+    #
+    # @param hostname The slave daemon to who send the read request.
+    # @param json_obj JSON object containing the data to send.
     def send_knx_read_request_to_slave(self, hostname, json_obj):
-        """
-        Constructs short read request and sends it to 'hostname'
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -177,10 +202,12 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Asks to send a "on" packet to a device.
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The KNX device.
+    # @param hostname The hostname of the slave daemon.
     def send_on(self, json_obj, dev, hostname):
-        """
-        Ask to close all the speed fan before open another
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -196,10 +223,12 @@ class KNXManager:
         sock.close();
         return;
 
+    ## Asks to send a "off" packet to a device.
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The KNX device.
+    # @param hostname The hostname of the slave daemon.
     def send_off(self, json_obj, dev, hostname):
-        """
-        Ask to close all the speed fan before open another
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -215,10 +244,12 @@ class KNXManager:
         sock.close();
         return;
 
+    ## Sends the new value of the temperature to thermostat.
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The KNX device.
+    # @param hostname The hostname of the slave daemon.
     def send_to_thermostat(self, json_obj, dev, hostname):
-        """
-        Send the new value of the temperature to thermostat
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -249,10 +280,12 @@ class KNXManager:
             sock.close();
             return;
 
+    ## Sends the new mode of the air conditioner.
+    #
+    # @param json_obj JSON object containing the new values.
+    # @param dev The KNX device.
+    # @param hostname The hostname of the slave daemon.
     def send_clim_mode(self, json_obj, dev, hostname):
-        """
-        Send the new mode of the air conditioner
-        """
         if json_obj['data']['option_id'] == '425': #Auto
             val = 0
         elif json_obj['data']['option_id'] == '426': #Heat
@@ -292,10 +325,12 @@ class KNXManager:
             sock.close();
             return;
 
+    ## Sends a value converted in percentages.
+    #
+    # @param json_obj Not used here.
+    # @param dev Object describing the KNX device.
+    # @param hostname Hostname of the slave daemon to who sent the packet.
     def send_knx_write_percent(self, json_obj, dev, hostname):
-        """
-        Send a value converted in percentages
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
