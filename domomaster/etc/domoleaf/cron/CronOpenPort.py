@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import sys
 sys.path.append('/usr/lib/domoleaf')
 import socket
 import json
 from DaemonConfigParser import *;
 
-"""
-Cron that opens of closes the upnp
-"""
+## Script sending the command to open or close the UPnP to the master.
 if __name__ == "__main__":
     try:
         parser = DaemonConfigParser('/etc/domoleaf/master.conf')
