@@ -1,3 +1,8 @@
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import logging;
 from Logger import *;
 import sys;
@@ -8,10 +13,12 @@ from DaemonConfigParser import *;
 LOG_FILE                = '/var/log/domoleaf/domomaster.log';
 DEBUG_MODE = False;      # Debug flag
 
+## Class managing the EnOcean protocol in D3 boxes.
 class EnOceanManager:
-    """
-    KNX management class
-    """
+
+    ## The constructor.
+    #
+    # @param slave_keys The aes keys of the slaves.
     def __init__(self, slave_keys):
         self.logger = Logger(DEBUG_MODE, LOG_FILE);
         self.sql = MasterSql();
@@ -22,10 +29,14 @@ class EnOceanManager:
               4: utils.eno_onoff
         };
 
+    ## Updates the table room_device_option with EnOcean values.
+    #
+    # @param daemon_id The ID of the daemon.
+    # @param json_obj JSON object containing the source address of the EnOcean device.
+    # @param db The database handler.
+    #
+    # @return The result of the query.
     def update_room_device_option(self, daemon_id, json_obj, db):
-        """
-        Update of the table room_device_option with EnOcean value
-        """
         query = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, addr_plus, function_answer, room_device_option.dpt_id ",
               "FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id ",
               "JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND ",

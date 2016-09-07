@@ -1,16 +1,34 @@
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 from math import *;
 from decimal import Decimal;
 
+## Strange function returning its first parameter.
+#
+# @param val The returned value.
+# @param dpt_id Unused parameter.
+#
+# @return The first parameter.
 def convert_none(val, dpt_id=0):
     return val;
 
+## Divides "val" by 100.
+#
+# @param val The value to divide.
+#
+# @return The parameter divided by 100.
 def convert_hundred(val):
     return val/100;
 
+## Converts "val" from its raw form to its real value.
+#
+# @param val The value to convert.
+#
+# @return The value converted.
 def convert_temperature(val):
-    """
-    Conversion from val to the real value
-    """
     factor = 0.01;
     exp = (val & 0x7800) >> 11;
     sign = val & 0x8000;
@@ -21,10 +39,12 @@ def convert_temperature(val):
     res = Decimal(str(round(res, 2)));
     return res;
 
+## Converts "val" from integer to hexadecimal.
+#
+# @param val The value to convert.
+#
+# @return The hexadecimal form of "val".
 def convert_temperature_reverse(val):
-    """
-    Val is converted from integer value into two hexadecimal values
-    """
     new_val = val * 100;
     exp = 0;
     while new_val > 2047:
@@ -39,10 +59,12 @@ def convert_temperature_reverse(val):
     res = ('0' * (4 - len(res))) + res;
     return [res[:2], res[2:]];
 
+## Converts a number to a float on 32 bits.
+#
+# @param val The value to convert.
+#
+# @return The converted value to float 32 bits.
 def convert_float32(val):
-    """
-    Convert a number to a float on 32 bits
-    """
     factor = 0.01;
     exp = (val & 0x7F800000) >> 23;
     sign = val >> 31;
@@ -51,10 +73,13 @@ def convert_float32(val):
         mant = mant | 0xFFFFFFFFFF800000;
     return Decimal(str(round(mant * pow(2, exp) * factor, 2)));
 
+## Depending on dpt_id, 1 or 0 will ben returned (on / off EnOcean).
+#
+# @param val The value to return once modified.
+# @param dpt_id The value of the condition.
+#
+# @return 0 or 1 depending on "dpt_id".
 def eno_onoff(val, dpt_id):
-    """
-    Return 0 or 1 depending on dpt_id for the on / off option
-    """
     if dpt_id == 471:
         if val == 16:
             return 1
@@ -69,11 +94,14 @@ def eno_onoff(val, dpt_id):
             return 0
         else:
             return None;
+    return None;
 
+## Checks to format of a string representing an IP address.
+#
+# @param ip The String containing the IP.
+#
+# @return True or False depending on the parsing result.
 def is_valid_ip(ip):
-    """
-    Check the format of a string representing an IP address
-    """
     tmp = ip.split('.');
     if len(tmp) != 4:
         return False;
