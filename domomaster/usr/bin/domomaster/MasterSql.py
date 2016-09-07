@@ -1,3 +1,8 @@
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf
+
 import time;
 import mysql.connector;
 import sys;
@@ -15,10 +20,12 @@ MASTER_CONF_MYSQL_PASSWORD_ENTRY        = 'password';
 MASTER_CONF_MYSQL_DB_NAME_ENTRY         = 'database_name';
 MASTER_CONF_FILE                        = '/etc/domoleaf/master.conf';
 
+## Class with some useful functions to handle the database of the MasterDaemon.
 class MasterSql:
-    """
-    Master daemon SQL management class.
-    """
+
+    ## The constructor
+    #
+    # @param log_flag Flag saying if the logs are active or not.
     def __init__(self, log_flag = True):
         self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
@@ -39,10 +46,12 @@ class MasterSql:
               3: utils.convert_float32
         };
 
+    ## Updates the table containing the hosts.
+    # Inserts each host in "hostlist".
+    #
+    # @param hostlist The list of all the hosts connected on the local network.
+    # @param db The database handler used for queries.
     def insert_hostlist_in_db(self, hostlist, db):
-        """
-        Update of the table containing the hosts. Inserts each host in 'hostlist'.
-        """
         for host in hostlist:
             db.update_datas_in_table('ip_monitor',
                                      {"mac_addr": host._MacAddr},
@@ -55,10 +64,13 @@ class MasterSql:
         self.mysql_handler_personnal_query(query, db);
         db.updatedb();
 
+    ## Updates the enocean log table.
+    #
+    # @param json_obj JSON object containing the values to update.
+    # @param db The database handler used for queries.
+    #
+    # @return The daemon_id.
     def update_enocean_log(self, json_obj, db):
-        """
-        Update of the enocean log table with values from 'json_obj'
-        """
         daemon_id = 0;
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
         for d in daemons:
@@ -72,10 +84,13 @@ class MasterSql:
         db.updatedb();
         return daemon_id;
 
+    ## Updates the KNX log table.
+    #
+    # @param json_obj JSON object containing the values to update.
+    # @param db The database handler used for queries.
+    #
+    # @return The daemon_id.
     def update_knx_log(self, json_obj, db):
-        """
-        Update of the knx log table with values from 'json_obj'
-        """
         daemon_id = 0;
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
         for d in daemons:
@@ -89,10 +104,14 @@ class MasterSql:
         db.updatedb();
         return daemon_id;
 
+    ## Updates the table room_device_option with long KNX values.
+    #
+    # @param json_obj JSON object containing some data such as values, addr...
+    # @param daemon_id The ID of the slave daemon to who send the packet.
+    # @param db The database handler used for queries.
+    #
+    # @return The result of the query.
     def update_room_device_option_write_long(self, json_obj, daemon_id, db):
-        """
-        Update of the table room_device_option with long KNX value
-        """
         query  = ''.join(["SELECT room_device_option.option_id, room_device.room_device_id, function_answer, dpt_optiondef.dpt_id FROM room_device_option JOIN room_device ON room_device_option.room_device_id=room_device.room_device_id JOIN dpt_optiondef ON dpt_optiondef.option_id=room_device_option.option_id AND dpt_optiondef.protocol_id=room_device.protocol_id AND dpt_optiondef.dpt_id=room_device_option.dpt_id WHERE daemon_id=",
                   str(daemon_id), " AND room_device_option.addr=\"", str(json_obj['dst_addr']), "\""]);
         res = self.mysql_handler_personnal_query(query, db);
@@ -128,10 +147,14 @@ class MasterSql:
                 self.mysql_handler_personnal_query(up, db);
         return res
 
+    ## Updates the table room_device_option with resp KNX values.
+    #
+    # @param json_obj JSON object containing data to update.
+    # @param daemon_id The ID of the slave daemon to who send the packet.
+    # @param db The database handler used for queries.
+    #
+    # @return The result of the query.
     def update_room_device_option_resp(self, json_obj, daemon_id, db):
-        """
-        Update of the table room_device_option with resp KNX value
-        """
         query = ''.join(["SELECT option_id, room_device.room_device_id, function_answer FROM ",
               "room_device_option JOIN room_device ON ",
               "room_device_option.room_device_id=room_device.room_device_id ",
@@ -149,10 +172,14 @@ class MasterSql:
             self.mysql_handler_personnal_query(query, db);
         return res
 
+    ## Updates the table room_device_option with short KNX values.
+    #
+    # @param json_obj JSON object containing data to update.
+    # @param daemon_id The ID of the daemon to who send the packet.
+    # @param db The database handler used for queries.
+    #
+    # @return The result of the query.
     def update_room_device_option_write_short(self, json_obj, daemon_id, db):
-        """
-        Update of the table room_device_option with short KNX value
-        """
         query = ''.join(["SELECT option_id, room_device.room_device_id FROM ",
               "room_device_option JOIN room_device ON ",
               "room_device_option.room_device_id=room_device.room_device_id WHERE ",
@@ -184,10 +211,11 @@ class MasterSql:
             self.mysql_handler_personnal_query(up, db);
         return res
 
+    ## Sends a personnal query to the database.
+    #
+    # @param query The query to send to the database.
+    # @param db The database handler used for queries.
     def mysql_handler_personnal_query(self, query, db=0):
-        """
-        Sends personnal query to the database and returns the result
-        """
         tmp = db;
         if not tmp:
             db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
@@ -197,9 +225,11 @@ class MasterSql:
             db.close();
         return res;
 
+    ## Retrieves each daemon stored in the database.
+    #
+    # @param db The database handler used for queries.
+    #
+    # @return An array with all the daemons found.
     def get_daemons(self, db):
-        """
-        Retrieves each daemon stored in the database
-        """
         daemons = db.get_datas_from_table_with_names('daemon', ['daemon_id', 'name', 'serial', 'secretkey']);
         return daemons;
