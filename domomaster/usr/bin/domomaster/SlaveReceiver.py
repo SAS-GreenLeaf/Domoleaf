@@ -34,7 +34,7 @@ class SlaveReceiver(Thread):
         ## Instance of Master daemon
         self.daemon = daemon;
         ## The hostname of the system
-        self.connected_host = hostname;
+        self.connected_host = hostname.upper();
         ## SQL object for managing master database
         self.sql = MasterSql();
         ## Username for login to the database
