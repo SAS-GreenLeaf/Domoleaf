@@ -19,7 +19,7 @@ class SlaveReceiver(Thread):
         Thread.__init__(self);
         self.connection = connection;
         self.daemon = daemon;
-        self.connected_host = hostname;
+        self.connected_host = hostname.upper();
         self.sql = MasterSql();
         self.db_username = daemon.db_username;
         self.db_passwd = daemon.db_passwd;
