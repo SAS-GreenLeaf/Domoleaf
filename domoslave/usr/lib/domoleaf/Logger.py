@@ -1,34 +1,42 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import logging;
 
+## Logging class.
+# Takes log_flag (bool) to log or not, log_filename is the file to log in
 class Logger:
-    """
-    Logging class
-    Takes log_flag (bool) to log or not, log_filename is the file to log in
-    """
+
+    ## The constructor.
+    #
+    # @param log_flag True or False, depending on wheter you want the logger to log or not.
+    # @param log_filename
     def __init__(self, log_flag, log_filename):
         self.log_flag = log_flag;
         if self.log_flag:
             logging.basicConfig(filename = log_filename, level = logging.DEBUG);
 
+    ## Logs and info message in the file if the log_flag is True.
+    #
+    # @param msg The message to log.
     def info(self, msg):
-        """
-        Log an info message in the file
-        """
         if self.log_flag:
             logging.info(msg);
 
+    ## Logs an error message in the file if the log_flag is True.
+    #
+    # @param msg The message to log.
     def error(self, msg):
-        """
-        Log an error message in the file
-        """
         if self.log_flag:
             logging.error(msg);
 
+    ## Logs a debug message in the file if the log_flag is True.
+    #
+    # @param msg The message to log.
     def debug(self, msg):
-        """
-        Log a debug message in the file
-        """
         if self.log_flag:
             logging.debug(msg);
