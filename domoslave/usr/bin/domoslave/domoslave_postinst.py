@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domoslave
+# Slave daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import sys;
 import os;
 import random;
@@ -11,10 +16,8 @@ from DaemonConfigParser import *;
 SLAVE_CONF_FILE_FROM            = '/etc/domoleaf/slave.conf.save';
 SLAVE_CONF_FILE_TO              = '/etc/domoleaf/slave.conf';
 
+## Saves the old conf informations and stores them in the new one.
 def slave_conf_copy():
-    """
-    Saves the old conf informations and stores them in the new one
-    """
     file_from = DaemonConfigParser(SLAVE_CONF_FILE_FROM);
     file_to   = DaemonConfigParser(SLAVE_CONF_FILE_TO);
 
@@ -54,10 +57,8 @@ def slave_conf_copy():
     var = file_from.getValueFromSection('openvpn', 'openvpnserver');
     file_to.writeValueFromSection('openvpn', 'openvpnserver', var);
 
+## Initialization of the slave conf.
 def slave_conf_init():
-    """
-    Initialization of the slave conf
-    """
     file = DaemonConfigParser(SLAVE_CONF_FILE_TO);
 
     #KEY
