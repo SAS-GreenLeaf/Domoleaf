@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domoslave
+# Slave daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import sys;
 sys.path.append("/usr/bin/domoslave");
@@ -10,9 +15,7 @@ LOG_FILE = '/var/log/domoleaf/domoslave.log';
 
 log_flag = False;
 
-"""
-Slave daemon main function
-"""
+## Slave daemon main function.
 if len(sys.argv) > 1:
     if sys.argv[1] == '--log':
         log_flag = True;
