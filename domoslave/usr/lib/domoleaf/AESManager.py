@@ -1,20 +1,21 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
+## Module used to manage AES keys.
+
 import string;
 import random;
 import socket;
 
-# Pas sur qu'elle soit encore utile A CHECKER
-def get_key(key):
-    """
-    Generates the IV and returns an object containing the key and the IV
-    """
-    IV = ''.join([random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16)])
-    return "{\"key\": \"" + str(key) + "\", \"IV\": \"" + str(IV) + "\"}";
-
+## Generates an IV of 16 bytes long.
+#
+# @return The new generated IV.
 def get_IV():
-    """
-    Generates an IV of 16 bytes long
-    """
     IV = ''.join([random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16)]);
     return IV;
+
+## CHECK IF THIS MODULE IS USEFUL.

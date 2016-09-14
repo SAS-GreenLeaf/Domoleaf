@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import json;
 from Logger import *;
@@ -14,8 +19,12 @@ TIME_BEFORE_TIME_TO_CALC       = 1800 #30min
 
 #TEST_TIMESTAMP                  = 1448274600
 
+## Class calculating logs to have an average of values when there are too much.
 class CalcLogs:
 
+    ## The constructor.
+    #
+    # @param daemon The slave daemon which initialized this class instance.
     def __init__(self, daemon):
         self.logger = Logger(False, LOG_FILE);
         self.logger.debug('Init CalcLogs');
@@ -24,6 +33,10 @@ class CalcLogs:
         self.devices_list = {};
         self.devices_list_update();
 
+    ## Updates the device list.
+    #
+    # Queries the database to fetch room_device and room_device_option.
+    # The result is stored in a class variable.
     def devices_list_update(self):
         self.logger.debug('Updating Logs');
         query = ('SELECT room_device.daemon_id, room_device_option.addr_plus, room_device_option.addr, '
@@ -34,9 +47,13 @@ class CalcLogs:
                  'WHERE daemon_id IS NOT NULL '
                  'ORDER BY room_device_id');
         res = self.sql.mysql_handler_personnal_query(query);
-        self.devices_list = res;
         self.devices_list = self.get_tab_devices_list(res);
 
+    ## Stores the device list in an array and returns it.
+    #
+    # @param res Array containing all informations about room_device and room_device_option.
+    #
+    # @return An array containing informations about the devices, with daemon_id as index.
     def get_tab_devices_list(self, res):
         tab = {};
         for r in res:
@@ -57,9 +74,12 @@ class CalcLogs:
                     tab[daemon_id][addr].append(r);
         return tab;
 
+    ## Stores only the logs of specific devices.
+    #
+    # @return an array containing the logs.
     def get_only_good_logs(self, res):
         tab = [];
-        tab_append = tab.append
+        tab_append = tab.append;
         self.logger.debug(self.devices_list);
         for r in res:
             if (r[1] in self.devices_list[r[0]]):
@@ -77,10 +97,14 @@ class CalcLogs:
                 tab_append(log);
         return tab;
 
+    ## Gets the devices for which logs will be done.
+    #
+    # @param res Array containing all the room devices informations.
+    #
+    # @return An array containing the room devices for who the logs will be done.
     def get_good_time_range(self, res):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC - 1;
         init_tr = end_tr - TIME_RANGE_TO_CALC + 1;
-        #self.logger.debug('NOW = '+ time.strftime("%d %m %Y %H:%M:%S", time.localtime(now)));
         tab = [];
         append = tab.append;
         for r in res:
@@ -88,10 +112,14 @@ class CalcLogs:
                 append(r);
         return (tab);
 
+    ## Cuts the logs array.
+    #
+    # @param tab The array to cut.
+    #
+    # @return The cut dictionnary.
     def cut_tab(self, tab):
         cut_tab = {};
         cut_dict = {};
-
         for log in tab:
             device_id = log[2];
             option_id = log[3];
@@ -100,16 +128,19 @@ class CalcLogs:
             if (option_id not in cut_tab[device_id]):
                 cut_tab[device_id][option_id] = [];
             cut_tab[device_id][option_id].append(log);
-
         for device in cut_tab:
             cut_dict[device] = {};
             for option in cut_tab[device]:
                 cut_dict[device][option] = [];
                 for log in cut_tab[device][option]:
                     cut_dict[device][option].append(log);
-
         return cut_dict;
 
+    ## Calculates average values of some data logged.
+    #
+    # @param dictlogs Array containing the logs.
+    #
+    # @return An array containing the average values calculated.
     def calc_average_values(self, dictlogs):
         dictaverage = {};
         for time_r in dictlogs:
@@ -118,7 +149,6 @@ class CalcLogs:
                 dictaverage[time_r][device] = {};
                 for option in dictlogs[time_r][device]:
                     dictaverage[time_r][device][option] = [];
-
                     t0 = -1;
                     t1 = 0;
                     avg = 0;
@@ -141,12 +171,22 @@ class CalcLogs:
                     dictaverage[time_r][device][option].append(avg_elem);
         return (dictaverage);
 
+    ## Gets all the logs from the database.
+    #
+    # @param db The database handler.
+    #
+    # @return An array containing all the logs of the database.
     def get_logs(self, db):
         query = ('SELECT daemon_id, addr_dest, t_date, knx_value, type, addr_src '
                  'FROM knx_log '
                  'ORDER BY t_date');
         return self.sql.mysql_handler_personnal_query(query, db);
 
+    ## Cuts a dictionnay depending on the time.
+    #
+    # @param dictlogs The array to cut.
+    #
+    # @return An array of the logs corresponding the right time range.
     def cut_dict_time(self, dictlogs):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC - 1;
         init_tr = end_tr - TIME_RANGE_TO_CALC + 1;
@@ -184,6 +224,10 @@ class CalcLogs:
             end += TIME_INTERVAL;
         return dicttime;
 
+    ## Inserts a graphic log in the database.
+    #
+    # @param dictlogs Dictionnay containing all the logs.
+    # @param db The database handler.
     def save_graph_logs(self, dictlogs, db):
         query = ('INSERT INTO graphic_log '
                  '(date, value, room_device_id, option_id) '
@@ -196,6 +240,10 @@ class CalcLogs:
         query = query[:-2];
         res = self.sql.mysql_handler_personnal_query(query, db);
 
+    ## Deletes the KNX logs from the database.
+    #
+    # @param dictlogs Dictionnay containing all the logs for all devices.
+    # @param db The database handler.
     def delete_knx_logs(self, dictlogs, db):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC;
         last_logs = [];
@@ -220,11 +268,14 @@ class CalcLogs:
         query = query[:-2];
         res = self.sql.mysql_handler_personnal_query(query, db);
 
+    ## Sorts the logs by calling multiple function to print only the wanted logs.
+    #
+    # @param connection Not used here.
+    # @param db The database handler.
     def sort_logs(self, connection, db):
         self.logger.debug('\n\nSorting Logs : \n');
         try:
             logs = self.get_logs(db);
-            #self.logger.debug('LOGS :\n' + str(logs) + '\n');
             if not logs:
                 return;
             tablogs = self.get_only_good_logs(logs);
