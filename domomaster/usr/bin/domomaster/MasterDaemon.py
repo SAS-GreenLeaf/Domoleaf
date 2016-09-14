@@ -168,6 +168,7 @@ class MasterDaemon:
              11 : self.knx_manager.send_knx_write_percent,
              12 : self.knx_manager.send_off
         };
+
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
             DATA_MONITOR_IP                   : self.monitor_ip,
