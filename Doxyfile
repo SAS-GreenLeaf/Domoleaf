@@ -1,0 +1,6 @@
+RECURSIVE = YES
+PROJECT_NAME = DomoLeaf
+LATEX = NO
+PRIVATE = YES, STATIC = YES
+INPUT = domoslave/ domomaster/ monitor_enocean/ monitor_knx/
+OUTPUT_DIRECTORY = docs/
