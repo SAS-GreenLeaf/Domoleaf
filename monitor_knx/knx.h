@@ -58,28 +58,28 @@
 
 
 /**
- * \struct Telegram
- * \brief Structure of a KNX telegram
+ * \struct s_telegram
+ * \brief KNX telegram structure
  */
 typedef struct __attribute__((packed)) s_telegram
 {
-  uint8_t  control;
-  uint16_t src_addr;
-  uint16_t dst_addr;
-  uint8_t  data_length;
-  uint8_t  data[255];
+  uint8_t  control;	/*!< Control byte of the telegram */
+  uint16_t src_addr;	/*!< Source address */
+  uint16_t dst_addr;	/*!< Destination address */
+  uint8_t  data_length;	/*!< The length of the data */
+  uint8_t  data[255];	/*!< The data of the telegram */
 } Telegram;
 
 /**
- * \struct Slave
+ * \struct s_slave
  * \brief Connection to a slave daemon
  */
 typedef struct __attribute__((packed)) s_slave
 {
-  uint8_t  buff[255];
-  Telegram telegram;
-  EIBConnection *conn;
-  int      sock_fd;
+  uint8_t  buff[255];	/*!< Buffer for communication */
+  Telegram telegram;	/*!< Telegram structure */
+  EIBConnection *conn;	/*!< Connection with EIB client */
+  int      sock_fd;	/*!< File descriptor of the slave socket */
 } Slave;
 
 /**
@@ -101,7 +101,6 @@ void check_args(int argc, char *argv[]);
 
 /* main.c */
 uint8_t get_data_len(uint8_t byte);
-int     groupwrite(EIBConnection *conn, char *argv[]); /* A changer */
 int     connect_to_slave(void);
 void    send_telegram_to_slave(int sock, Telegram *telegram);
 void    handle_keyboard(int signum);
