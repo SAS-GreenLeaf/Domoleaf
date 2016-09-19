@@ -1,3 +1,9 @@
+/**
+ * \file knx.h
+ * \brief Monitor KNX
+ * \author Emmanuel Bonin - GreenLeaf
+ */
+
 #ifndef  __KNX_H__
 # define __KNX_H__
 
@@ -20,39 +26,66 @@
 
 # include "eibclient.h"
 
+/**
+ * \def MAX_GROUP_VALUE_LEN
+ * \brief Maximum length of the value of a group data
+ */
 # define MAX_GROUP_VALUE_LEN  14
-# define DATAGRAM_BUFFER_SIZE 128 /* Telegram buffer size */
 
-# define READ_VAL 0x0	/* READ packet */
-# define RESP_VAL 0x40	/* RESPONSE packet */
-# define WRIT_VAL 0x80	/* WRITE packet */
+/**
+ * \def DATAGRAM_BUFFER_SIZE
+ * \brief The size of a telegram
+ */
+# define DATAGRAM_BUFFER_SIZE 128
 
-/*
-** KNX telegram
-*/
+/**
+ * \def READ_VAL
+ * \brief The value corresponding to a READ packet
+ */
+# define READ_VAL 0x0
+
+/**
+ * \def RESP_VAL
+ * \brief The value corresponding to a RESP packet
+ */
+# define RESP_VAL 0x40
+
+/**
+ * \def WRIT_VAL
+ * \brief The value corresponding to a WRITE packet
+ */
+# define WRIT_VAL 0x80
+
+
+/**
+ * \struct Telegram
+ * \brief Structure of a KNX telegram
+ */
 typedef struct __attribute__((packed)) s_telegram
 {
-	uint8_t  control;
-	uint16_t src_addr;
-	uint16_t dst_addr;
-	uint8_t  data_length;
-	uint8_t  data[255];
+  uint8_t  control;
+  uint16_t src_addr;
+  uint16_t dst_addr;
+  uint8_t  data_length;
+  uint8_t  data[255];
 } Telegram;
 
-/*
-** Connection to a slave daemon
-*/
+/**
+ * \struct Slave
+ * \brief Connection to a slave daemon
+ */
 typedef struct __attribute__((packed)) s_slave
 {
-	uint8_t  buff[255];
-	Telegram telegram;
-	EIBConnection *conn;
-	int      sock_fd;
+  uint8_t  buff[255];
+  Telegram telegram;
+  EIBConnection *conn;
+  int      sock_fd;
 } Slave;
 
-/*
-** Global socket (global to catch CTRL-C and close it)
-*/
+/**
+ * \def g_sock
+ * \brief Global socket (global to catch CTRL-C and close it)
+ */
 extern int g_sock;
 
 /* address.c */
