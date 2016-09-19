@@ -15,7 +15,6 @@ LOG_FILE = '/var/log/domoleaf/domoslave.log';
 
 log_flag = False;
 
-## Slave daemon main function.
 if len(sys.argv) > 1:
     if sys.argv[1] == '--log':
         log_flag = True;
