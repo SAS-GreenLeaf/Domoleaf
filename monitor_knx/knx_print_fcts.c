@@ -8,8 +8,8 @@
 
 /**
  * \fn void print_bits(uint32_t c, int nb_bits)
- * \param c
- * \param nb_bits
+ * \param c The byte of which print bits
+ * \param nb_bits The number of bits to print
  *
  * \brief Displays "nb_bits" of an uint
  */

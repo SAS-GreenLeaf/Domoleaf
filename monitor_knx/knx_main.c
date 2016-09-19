@@ -6,7 +6,14 @@
 
 #include "knx.h"
 
+/**
+ * \brief Counter for the number of sent packet
+ */
 int sent = 0;
+
+/**
+ * \brief Global socket
+ */
 int g_sock;
 
 /**
@@ -86,7 +93,7 @@ void send_telegram_to_slave(int sock, Telegram *telegram)
 }
 
 /**
- * \fn void handle_keyboard(int __attribute__((unused)) signum)
+ * \fn void handle_keyboard(int signum)
  * \param signum Signal number (unused here)
  *
  * \brief Catches CTRL-C to close the socket cleanly and exit the program
