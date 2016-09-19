@@ -4,3 +4,8 @@ LATEX = NO
 PRIVATE = YES, STATIC = YES
 INPUT = domoslave/ domomaster/ monitor_enocean/ monitor_knx/
 OUTPUT_DIRECTORY = docs/
+
+ENABLE_PREPROCESSING = YES
+MACRO_EXPANSION = YES
+EXPAND_ONLY_PREDEF = YES
+PREDEFINED = __attribute__((packed))= __attribute__((unused))=
