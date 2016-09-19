@@ -1,8 +1,8 @@
 #!/bin/bash
 
-for inode in $(find locales/*_* -type d) ; do 
-	if [ -f ${inode}/messages.po ]; then 
+for inode in $(find locales/*_* -type d) ; do
+	if [ -f ${inode}/messages.po ]; then
 		mkdir -p debian/domomaster/etc/domoleaf/www/${inode}/LC_MESSAGES/
-		msgfmt ${inode}/messages.po -o debian/domomaster/etc/domoleaf/www/${inode}/LC_MESSAGES/messages.mo 
-	fi 
+		msgfmt ${inode}/messages.po -o debian/domomaster/etc/domoleaf/www/${inode}/LC_MESSAGES/messages.mo
+	fi
 done

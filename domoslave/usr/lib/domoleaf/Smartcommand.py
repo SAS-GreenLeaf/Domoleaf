@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import json;
 from Logger import *;
@@ -12,8 +17,13 @@ import time;
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 LOG_FLAG        = False;
 
+## Class representing multiple commands launched at the same time
 class Smartcommand(Thread):
 
+    ## The constructor.
+    #
+    # @param daemon The daemon object which instanciated this class.
+    # @param smartcmd_id ID of a smartcommand (default 0).
     def __init__(self, daemon, smartcmd_id = 0):
         Thread.__init__(self);
         self.logger = Logger(LOG_FLAG, LOG_FILE);
@@ -26,14 +36,19 @@ class Smartcommand(Thread):
         self.db_passwd = daemon.db_passwd;
         self.db_dbname = daemon.db_dbname;
 
+    ## Setter for the connection.
+    #
+    # @param connection The connection object to set.
     def setValues(self, connection):
         self.connection = connection;
 
+    ## Runs the smart command.
     def run(self):
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         launch_smartcommand(self);
         self.db.close();
 
+## Selects the smart command in database and runs it with the good parameters.
 def launch_smartcommand(self):
     if not self.smartcmd_id:
         self.logger.error('Invalid Smartcommand');
