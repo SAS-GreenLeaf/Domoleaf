@@ -14,7 +14,9 @@ class Upnp:
     # @param ip_addr The IP address of the Upnp device.
     # @param port The port on which the Upnp device is listenning.
     def __init__(self, ip_addr, port):
+        ## IP address of the Upnp device
         self.ip = ip_addr;
+        ## Port of the Upnp device
         self.port = port;
 
     ## Builds a request to send, and sends it.

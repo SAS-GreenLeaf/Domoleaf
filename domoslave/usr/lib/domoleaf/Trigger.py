@@ -21,9 +21,13 @@ class Trigger:
     #
     # @param daemon The daemon object which instanciated this class.
     def __init__(self, daemon):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(False, LOG_FILE);
+        ## SQL object for managing database
         self.sql = MasterSql();
+        ## Instance of the slave daemon
         self.daemon = daemon;
+        ## Trigger list
         self.triggers_list = '';
         self.update_triggers_list();
 

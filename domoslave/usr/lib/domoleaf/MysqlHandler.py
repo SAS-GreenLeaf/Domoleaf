@@ -17,6 +17,7 @@ class MysqlHandler:
     # @param passwd
     # @param db
     def __init__(self, username, passwd, db):
+        ## Connection to the MySQL database
         self.connection = mysql.connector.connect(user = username, password=passwd, host='localhost', database=db);
 
     ## Gets a description of a table.
@@ -75,7 +76,7 @@ class MysqlHandler:
     # @param table The table in which update / insert the data.
     # @param data_values_ref The reference data to update. If not found, the data are inserted.
     # @param data_to_update The new value of the data.
-    def update_datas_in_table(self, table: str, data_values_ref: dict, data_to_update: dict):
+    def update_datas_in_table(self, table, data_values_ref, data_to_update):
         cursor = self.connection.cursor(buffered=True);
         try:
             query_insert = "INSERT INTO "+table+" (";
@@ -118,7 +119,7 @@ class MysqlHandler:
     #
     # @param table The table to query.
     # @param names The names of the field to retrieve.
-    def get_datas_from_table_with_names(self, table: str, names: list):
+    def get_datas_from_table_with_names(self, table, names):
         res = [];
         append = res.append;
         query = "SELECT ";

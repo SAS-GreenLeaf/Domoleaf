@@ -25,9 +25,13 @@ class Scenario(Thread):
     # @param daemon The daemon which instanciated this class.
     def __init__(self, daemon):
         Thread.__init__(self);
+        ## Logger object for formatting and printing logs
         self.logger = Logger(False, LOG_FILE);
+        ## SQL object for managing slave daemon database
         self.sql = MasterSql();
+        ## Instance of the slave daemon
         self.daemon = daemon;
+        ## List of scenarios
         self.scenarios_list = {};
         self.update_scenarios_list();
 
@@ -39,10 +43,15 @@ class Scenario(Thread):
     # @param connection The new connection.
     # @param doList The new doList.
     def setValues(self, global_state, trigger, schedule, connection, doList):
+        ## Global state object
         self.global_state = global_state;
+        ## The trigger for the scenario
         self.trigger = trigger;
+        ## The schedule for the scenario
         self.schedule = schedule;
+        ## The connection to something
         self.connection = connection;
+        ## The do list
         self.doList = doList;
 
     ## Starts the thread.

@@ -26,10 +26,17 @@ class CalcLogs:
     #
     # @param daemon The slave daemon which initialized this class instance.
     def __init__(self, daemon):
+        ## The logger used for formating and printing
         self.logger = Logger(False, LOG_FILE);
         self.logger.debug('Init CalcLogs');
+
+        ## SQL manager
         self.sql = MasterSql();
+
+        ## The instance of the slave daemon
         self.daemon = daemon;
+
+        ## List of the devices
         self.devices_list = {};
         self.devices_list_update();
 
