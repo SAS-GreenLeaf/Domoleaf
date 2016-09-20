@@ -1,6 +1,6 @@
 /**
  * \file knx_main.c
- * \brief The main file for the monitor KNX
+ * \brief The launch of the monitor KNX
  * \author Emmanuel Bonin - Greenleaf
  */
 
@@ -128,7 +128,6 @@ void *vbusmonitor_thread(void *data)
     }
   while (1)
     {
-      /* signal(2, &handle_keyboard); */
       memset(slave->buff, 0, sizeof(slave->buff));
       memset(&slave->telegram, 0, sizeof(slave->telegram));
       if ((len = EIBGetBusmonitorPacket(slave->conn, sizeof(slave->buff), &slave->buff[0])) == -1)
@@ -190,17 +189,16 @@ int vbusmonitor(EIBConnection *conn)
 }
 
 /**
- * \fn int main(int __attribute__((unused)) argc,
- *              char __attribute__((unused)) *argv[])
  * \param argc The number of arguments the program received
  * \param argv The arguments the program received
- * \return
+ * \return The execution code of the program. 0 if OK
  *
- * To start the program as a daemon, add the --daemon argument.
- * You can also specify the path of the KNX device as second argument.
+ * \brief The main function of the monitor KNX
+ *
+ * To start the program as a daemon, add the --daemon argument
+ * You can also specify the path of the KNX device as second argument
  */
-int main(int __attribute__((unused)) argc,
-         char __attribute__((unused)) *argv[])
+int main(int argc, char *argv[])
 {
   int  pid;
   FILE *pid_file;
@@ -246,6 +244,5 @@ int main(int __attribute__((unused)) argc,
       vbusmonitor(conn);
       EIBClose(conn);
     }
-
-  return 0;
+  return (0);
 }
