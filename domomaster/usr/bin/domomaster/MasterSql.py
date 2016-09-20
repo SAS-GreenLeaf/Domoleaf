@@ -27,18 +27,23 @@ class MasterSql:
     #
     # @param log_flag Flag saying if the logs are active or not.
     def __init__(self, log_flag = True):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
+        ## Username for the database, searched in configuration file
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
                                                             MASTER_CONF_MYSQL_USER_ENTRY);
+        ## Password for the database, searched in configuration file
         self.db_passwd = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
                                                           MASTER_CONF_MYSQL_PASSWORD_ENTRY);
+        ## Database name for the database, searched in configuration file
         self.db_dbname = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
                                                           MASTER_CONF_MYSQL_DB_NAME_ENTRY);
         if not self.db_username or not self.db_passwd or not self.db_dbname:
             frameinfo = getframeinfo(currentframe());
             self.logger.debug("[ MASTER DAEMON "+frameinfo.filaname+":"+str(frameinfo.lineno)+" ]: initialization error: wrong or missing SQL configuration.");
             sys.exit(1);
+        ## Function array with option ID
         self.functions_transform = {
               0: utils.convert_none,
               1: utils.convert_temperature,

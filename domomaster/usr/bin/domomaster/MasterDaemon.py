@@ -130,30 +130,47 @@ class MasterDaemon:
     # Initializes and launches the MasterDaemon.
     # @param log_flag A flag saying if whether the logs should be written in the log file, or not.
     def __init__(self, log_flag):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, LOG_FILE);
         self.logger.info('Started Domoleaf Master Daemon');
+        ## Configuration object of the D3
         self.d3config = {};
+        ## AES keys for the slave daemon to encrypt communications
         self.aes_slave_keys = {};
-        self.aes_master_key = None
+        ## AES key for the master daemon to decrypt incomming communications
+        self.aes_master_key = None;
+        ## Object containing the connected slave daemons
         self.connected_clients = {};
+        ## SQL object for managing database
         self.sql = MasterSql();
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
+        ## Username for the database, searched in configuration file
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION, MASTER_CONF_MYSQL_USER_ENTRY);
-        self.db_passwd = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION, MASTER_CONF_MYSQL_PASSWORD_ENTRY);
+        ## Password for the database, searched in configuration file
+        self.db_passwd = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION, MASTER_CONF_MYSQL_PASSWORD_ENTRY)
+        ## The database name, searched in configuration file
         self.db_dbname = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION, MASTER_CONF_MYSQL_DB_NAME_ENTRY);
         self.get_aes_slave_keys(0);
         self.reload_camera(None, None, 0);
         self._scanner = Scanner();
+        ## The hostlist containing the hosts on the local network
         self.hostlist = [];
         self.hostlist.append(Host('', '127.0.0.1', socket.gethostname().upper()));
+        ## KNX manager object for communications with KNX devices
         self.knx_manager = KNXManager(self.aes_slave_keys);
+        ## EnOcean manager object for communications with EnOcean devices
         self.enocean_manager = EnOceanManager(self.aes_slave_keys);
         self.reload_d3config(None, None, 0);
+        ## Trigger object manager
         self.trigger = Trigger(self);
+        ## Scenario object manager
         self.scenario = Scenario(self);
+        ## Schedule object manager
         self.schedule = Schedule(self);
+        ## CalcLogs manager for optimising logs
         self.calcLogs = CalcLogs(self);
 
+        ## Functions array with option ID
         self.functions = {
               1 : self.knx_manager.send_knx_write_short_to_slave,
               2 : self.knx_manager.send_knx_write_long_to_slave,
@@ -169,6 +186,7 @@ class MasterDaemon:
              12 : self.knx_manager.send_off
         };
 
+        ## Functions array depending on data type
         self.data_function = {
             DATA_MONITOR_KNX                  : self.monitor_knx,
             DATA_MONITOR_IP                   : self.monitor_ip,
@@ -238,7 +256,9 @@ class MasterDaemon:
 
     ## Initializes the connections and accepts incomming communications.
     def run(self):
+        ## Main socket for listening incomming connections for slave daemons
         self.slave_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        ## Main socket for listening incomming connections for MasterCommand
         self.cmd_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.slave_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
         self.cmd_connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1);
@@ -264,6 +284,7 @@ class MasterDaemon:
     #
     # Waits for new connections.
     def loop(self):
+        ## Flag set True for running, False to stop the main loop
         self.run = True;
         while self.run:
             try:
