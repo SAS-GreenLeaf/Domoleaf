@@ -28,15 +28,13 @@
 /**
  * \enum e_log_type
  * \brief Different log types
- *
- * Each field is a type of log.
  */
 typedef enum e_log_type
   {
     LOG_DEBUG = 0x00,	/*!< Debugging logs */
     LOG_INFO  = 0x01,	/*!< Info logs */
     LOG_ERROR = 0x02	/*!< Error logs */
-  } Log_type;
+  } Log_type;		/*!< Log_type */
 
 /**
  * \struct s_args
@@ -46,7 +44,7 @@ typedef struct s_args
 {
   int  daemon;		/*!< Flag at 1 if the program should be started as a daemon, 0 else */
   char *device;		/*!< Name of the device */
-} t_args;
+} t_args;		/*!< t_args */
 
 /**
  * \struct s_packet_header
@@ -59,7 +57,7 @@ typedef struct __attribute__((packed)) s_packet_header
   uint16_t data_length;		/*!< The length of the data */
   uint8_t  opt_data_length;	/*!< The length of the optional data */
   uint8_t  packet_type;		/*!< The type of the packet */
-} Enocean_packet_header;
+} Enocean_packet_header;	/*!< Enocean_packet_header */
 
 /**
  * \struct s_packet
@@ -73,7 +71,7 @@ typedef struct __attribute__((packed)) s_packet
   uint8_t               *data;		/*!< Data of the packet */
   uint8_t               opt_data[255];	/*!< Optionnal data of the packet */
   uint8_t               CRC8D;		/*!< Second byte for control */
-} Enocean_packet;
+} Enocean_packet;			/*!< Enocean_packet */
 
 /**
  * \enum e_event_code
@@ -87,7 +85,7 @@ typedef enum e_event_code
     CO_READY	              = 4,
     CO_EVENT_SECURE_DEVICES   = 5,
     CO_DUTYCYCLE_LIMIT        = 6
-  } Event_code;
+  } Event_code;				/*!< Event_code */
 
 /**
  * \enum e_common_command_code
@@ -130,7 +128,7 @@ typedef enum e_common_command_code
     CO_WR_TEMPORARY_RLC_WINDOW    = 33,
     CO_RD_SECUREDEVICE_PSK        = 34,
     CO_RD_DUTYCYLE_LIMIT          = 35
-  } Common_command_code;
+  } Common_command_code;		/*!< Common_command_code */
 
 /**
  * \enum e_smart_ack_command_code
@@ -146,7 +144,7 @@ typedef enum e_smart_ack_command_code
     SA_RD_LEARNEDCLIENTS= 6,
     SA_WR_RECLAIMS      = 7,
     SA_WR_POSTMASTER    = 8
-  } Smart_ack_command_code;
+  } Smart_ack_command_code;	/*!< Smart_ack_command_code */
 
 /**
  * \enum e_packet_type
@@ -163,7 +161,7 @@ typedef enum e_packet_type
     REMOTE_MAN_COMMAND= 0x07,
     RADIO_MESSAGE     = 0x09,
     RADIO_ERP2        = 0x0A
-  } Packet_type;
+  } Packet_type;		/*!< Packet_type */
 
 /**
  * \brief Function pointer used to call a different function by trame type
@@ -178,7 +176,7 @@ typedef struct __attribute__((packed)) s_packet_type_func
 {
   Packet_type type;	/*!< The type of packet received */
   Pack_func   function; /*!< The callback called depending on the packet type */
-} Packet_function;
+} Packet_function;	/*!< Packet_function */
 
 /**
  * \struct s_slave
@@ -189,14 +187,10 @@ typedef struct __attribute__((packed)) s_slave
   int    sock_fd;		/*!< File descriptor of the socket to communicate with the slave */
   struct protoent *proto;	/*!< Prototype */
   struct sockaddr_in addr_in;	/*!< IP address of the slave */
-} Slave;
+} Slave;			/*!< Slave */
 
-/* slave.c */
-Slave *slave_init();
-void  slave_delete(Slave *slave);
-int   slave_send_data(Slave *slave, void *data, int len);
 
-/* packet_functions.c */
+/* enocean_packet_functions.c */
 void radio_erp1(Enocean_packet __attribute__((unused)) *packet);
 void response(Enocean_packet __attribute__((unused)) *packet);
 void radio_sub_tel(Enocean_packet __attribute__((unused)) *packet);
@@ -208,17 +202,20 @@ void radio_message(Enocean_packet __attribute__((unused)) *packet);
 void radio_erp2(Enocean_packet __attribute__((unused)) *packet);
 Enocean_packet create_packet(uint8_t *buffer, uint16_t data_len, uint8_t opt_data_len, uint8_t packet_type);
 void *thread_treat_packet(Enocean_packet *packet);
-void *tread_packet(void *data);
+void *treat_packet(void *data);
+Slave *slave_init();
+void  slave_delete(Slave *slave);
+int   slave_send_data(Slave *slave, void *data, int len);
 
-/* print.c */
+/* enocean_print.c */
 void print_hex(uint8_t *buffer, int len);
 void print_packet(Enocean_packet packet);
 
-/* xfunctions.c */
+/* enocean_xfunctions.c */
 int xtcgetattr(int fd, struct termios *t);
 int xtcsetattr(int fd, struct termios *t);
 
-/* init.c */
+/* enocean_init.c */
 int init(const char *dev_name, struct termios *options, struct termios *backup);
 int init_listen_slave_socket(const char *ip, uint16_t port);
 char *get_interface_enocean();

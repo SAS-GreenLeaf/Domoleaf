@@ -13,7 +13,7 @@
 int g_flag;
 
 /**
- * \fn int init_select(int enocean_dev, int slave_listen_sock, fd_set *rfds, fd_set __attribute__((unused)) *wfds)
+ * \fn int init_select(int enocean_dev, int slave_listen_sock, fd_set *rfds, fd_set *wfds)
  * \param enocean_dev File descriptor of the EnOcean device to read
  * \param slave_listen_sock The socket on which the monitor is listenning incoming connections
  * \param rfds Reading file descriptor set
@@ -92,7 +92,7 @@ void monitor_enocean(int enocean_dev)
 }
 
 /**
- * \fn void sig_int(int __attribute__((unused)) signum)
+ * \fn void sig_int(int signum)
  * \param signum (unused) the number of the signal
  *
  * \brief Function called after CTRL-C
@@ -168,10 +168,11 @@ void check_args(t_args *args, int argc, char *argv[])
 }
 
 /**
- * \fn int main(int argc, char *argv[])
  * \param argc The number of arguments received from the command line
  * \param argv The arguments received from the command line
  * \return The execution status code of the program
+ *
+ * \brief The Enocean monitor main function
  *
  * To start the program as a daemon, add the option --daemon
  * You can also specify the name of the EnOcean device to use e.g. /dev/ttyUSB0.
