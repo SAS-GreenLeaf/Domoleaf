@@ -32,9 +32,12 @@ class KNXManager:
     #
     # @param slave_keys Array containing the AES keys of all the slaves.
     def __init__(self, slave_keys):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(True, LOG_FILE);
+        ## SQL object for managing database
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
+        ## Object containing AES keys for encrypted communications
         self.aes_slave_keys = slave_keys;
 
     ## Updates room_device_option table in database to set new values of the device described by json_obj.

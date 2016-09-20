@@ -10,8 +10,11 @@ sys.path.append('/usr/lib/domoleaf');
 from MasterSql import *;
 from DaemonConfigParser import *;
 
+## Const variable containing the path of the log file
 LOG_FILE                = '/var/log/domoleaf/domomaster.log';
-DEBUG_MODE = False;      # Debug flag
+
+## Flag saying whether the debug is enabled
+DEBUG_MODE = False;
 
 ## Class managing the EnOcean protocol in D3 boxes.
 class EnOceanManager:
@@ -20,10 +23,17 @@ class EnOceanManager:
     #
     # @param slave_keys The aes keys of the slaves.
     def __init__(self, slave_keys):
+        ## Logger object for formatting and printing
         self.logger = Logger(DEBUG_MODE, LOG_FILE);
+
+        ## SQL manager for the master daemon
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
+
+        ## Object containing the AES keys for encrypted communications
         self.aes_slave_keys = slave_keys;
+
+        ## Array containing functions associated with IDs
         self.functions_transform = {
               0: utils.convert_none,
               4: utils.eno_onoff
