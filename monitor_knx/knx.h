@@ -68,7 +68,7 @@ typedef struct __attribute__((packed)) s_telegram
   uint16_t dst_addr;	/*!< Destination address */
   uint8_t  data_length;	/*!< The length of the data */
   uint8_t  data[255];	/*!< The data of the telegram */
-} Telegram;
+} Telegram;		/*!< Telegram */
 
 /**
  * \struct s_slave
@@ -80,7 +80,7 @@ typedef struct __attribute__((packed)) s_slave
   Telegram telegram;	/*!< Telegram structure */
   EIBConnection *conn;	/*!< Connection with EIB client */
   int      sock_fd;	/*!< File descriptor of the slave socket */
-} Slave;
+} Slave;		/*!< Slave */
 
 /**
  * \def g_sock
@@ -88,7 +88,7 @@ typedef struct __attribute__((packed)) s_slave
  */
 extern int g_sock;
 
-/* address.c */
+/* knx_address.c */
 uint16_t readgaddr(char *addr);
 uint32_t readHex(const char *addr);
 char     *group2string(eibaddr_t addr);
@@ -96,17 +96,17 @@ char     *individual2string(eibaddr_t addr);
 void     printHex(int len, uint8_t *data);
 uint16_t readaddr(char *addr);
 
-/* check_args.c */
+/* knx_check_args.c */
 void check_args(int argc, char *argv[]);
 
-/* main.c */
+/* knx_main.c */
 uint8_t get_data_len(uint8_t byte);
 int     connect_to_slave(void);
 void    send_telegram_to_slave(int sock, Telegram *telegram);
 void    handle_keyboard(int signum);
 int     vbusmonitor(EIBConnection *conn);
 
-/* print_fcts.c */
+/* knx_print_fcts.c */
 void print_bits(uint32_t value, int nb_bits);
 void print_buf(uint8_t buff[4096]);
 void print_buf_hex(void *buf, uint32_t len);
