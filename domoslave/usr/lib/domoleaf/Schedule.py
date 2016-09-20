@@ -14,7 +14,6 @@ import datetime;
 
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
-
 ## Class representing a schedule
 class Schedule:
 
@@ -22,10 +21,15 @@ class Schedule:
     #
     # @param daemon The daemon instanciating the class.
     def __init__(self, daemon):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(False, LOG_FILE);
+        ## SQL object for managing slave database
         self.sql = MasterSql();
+        ## Instance of the slave daemon
         self.daemon = daemon;
+        ## Schedule list
         self.schedules_list = '';
+        ## Full schedule list
         self.full_schedules_list = '';
         self.update_schedules_list(0);
 

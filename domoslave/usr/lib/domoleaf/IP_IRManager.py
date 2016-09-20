@@ -21,7 +21,9 @@ class IP_IRManager:
 
     ## The constructor.
     def __init__(self):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(False, LOG_FILE);
+        ## SQL object for managing database
         self.sql = MasterSql();
 
     ## Sends a packet to global cache.

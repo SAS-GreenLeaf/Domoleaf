@@ -102,15 +102,23 @@ def group2string(addr):
 ## Slave daemon main class.
 # It manages communication between different monitors and the Master daemon.
 class SlaveDaemon:
+
+    ## The constructor
+    #
+    # @param log_flag The flag saying whether the logs should be printing or not
     def __init__(self, log_flag):
+        ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, LOG_FILE);
         self.logger.info('Started Domoleaf Slave daemon');
         print('######## SLAVE DAEMON #######')
+        ## Array of master daemon on local network
         self.connected_masters = {};
+        ## Array of monitor KNX on local network
         self.connected_knx = [];
+        ## Array of monitor EnOcean on local network
         self.connected_enocean = [];
+        ## Array of cron running on the system
         self.connected_cron = [];
-        self.clients = [];
         self._scanner = Scanner();
         self._hostlist = [];
         myhostname = socket.gethostname().upper()
@@ -120,14 +128,22 @@ class SlaveDaemon:
         else:
             self._hostlist.append(Host('', '127.0.0.1', myhostname));
         self._parser = DaemonConfigParser(SLAVE_CONF_FILE);
+        ## Keys for encrypting communications
         self.encrypt_keys = {};
+        ## Main socket for communication with KNX daemon
         self.knx_sock = None;
+        ## Main socket for communication with master daemon
         self.master_sock = None;
+        ## Main socket for communication with enocean daemon
         self.enocean_sock = None;
+        ## Main socket for communication with cron
         self.cron_sock = None;
+        ## Private AES key got from configuration file
         self.private_aes = self._parser.getValueFromSection('personnal_key', 'aes');
         self.wifi_init(self._parser.getValueFromSection('wifi', 'ssid'), self._parser.getValueFromSection('wifi', 'password'), self._parser.getValueFromSection('wifi', 'encryption'), self._parser.getValueFromSection('wifi', 'mode'), 0);
+        ## Port on which connect got from configuration file
         self.connect_port = self._parser.getValueFromSection(SLAVE_CONF_CONNECT_SECTION, SLAVE_CONF_CONNECT_PORT_ENTRY);
+        ## Callback array indexed on packet type
         self.functions = {
             KNX_READ_REQUEST    : self.knx_read_request,
             KNX_WRITE_SHORT     : self.knx_write_short,
@@ -164,6 +180,7 @@ class SlaveDaemon:
 
     ## Initializes the sockets for listenning incomming connections.
     def run(self):
+        ## Run flag at True for running, at False to stop the main loop
         self.run = True;
         self.knx_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.master_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -257,7 +274,7 @@ class SlaveDaemon:
     ## System call of 'groupread' with parameters.
     #
     # @param json_obj JSON Object containing the address to read.
-    # @connection Not used here.
+    # @param connection Not used here.
     def knx_read_request(self, json_obj, connection):
         call(['knxtool', CALL_GROUPREAD, EIB_URL, json_obj['addr_to_read']]);
 

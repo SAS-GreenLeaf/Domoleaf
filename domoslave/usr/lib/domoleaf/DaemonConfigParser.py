@@ -18,6 +18,7 @@ class DaemonConfigParser:
     #
     # @param filename The filename of the file to parse.
     def __init__(self, filename):
+        ## Instance of the logger object for fomatting and printing logs
         self.logger = Logger(LOG_FLAG, LOG_FILE);
         self._Filename = filename;
         self._Config = configparser.ConfigParser();

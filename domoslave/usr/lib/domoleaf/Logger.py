@@ -16,6 +16,7 @@ class Logger:
     # @param log_flag True or False, depending on wheter you want the logger to log or not.
     # @param log_filename
     def __init__(self, log_flag, log_filename):
+        ## True or False, depending on wheter you want the logger to log or not.
         self.log_flag = log_flag;
         if self.log_flag:
             logging.basicConfig(filename = log_filename, level = logging.DEBUG);

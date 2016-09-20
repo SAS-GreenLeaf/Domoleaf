@@ -71,6 +71,7 @@ class DeviceManager:
     # @param _option_id Option ID of the device (default 0)
     # @param _debug Debugging flag (default False)
     def __init__(self, _id_elem = 0, _option_id = 0, _debug = False):
+        ## Instance of the logger object for formatting and printing
         self.logger = Logger(LOG_FLAG, LOG_FILE);
         self._id = _id_elem;
         self._option_id = _option_id;
