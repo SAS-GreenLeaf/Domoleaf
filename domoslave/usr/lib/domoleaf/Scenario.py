@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import json;
 from Logger import *;
@@ -12,26 +17,52 @@ import time;
 
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 
+## Threaded class representing scenarios.
 class Scenario(Thread):
 
+    ## The constructor.
+    #
+    # @param daemon The daemon which instanciated this class.
     def __init__(self, daemon):
         Thread.__init__(self);
+        ## Logger object for formatting and printing logs
         self.logger = Logger(False, LOG_FILE);
+        ## SQL object for managing slave daemon database
         self.sql = MasterSql();
+        ## Instance of the slave daemon
         self.daemon = daemon;
+        ## List of scenarios
         self.scenarios_list = {};
         self.update_scenarios_list();
 
+    ## Sets values of a scenario.
+    #
+    # @param global_state The new global state.
+    # @param trigger The new trigger.
+    # @param schedule The new schedule.
+    # @param connection The new connection.
+    # @param doList The new doList.
     def setValues(self, global_state, trigger, schedule, connection, doList):
+        ## Global state object
         self.global_state = global_state;
+        ## The trigger for the scenario
         self.trigger = trigger;
+        ## The schedule for the scenario
         self.schedule = schedule;
+        ## The connection to something
         self.connection = connection;
+        ## The do list
         self.doList = doList;
 
+    ## Starts the thread.
     def run(self):
         check_all_scenarios(self);
 
+    ## Gets scenarios from a list.
+    #
+    # @param scenarios The scenarios list.
+    #
+    # @return An array of scenarios.
     def get_scenarios_tab(self, scenarios):
         scenarios_tab = {};
         self.logger.debug('\n\nGETTING SCENARIOS TAB\n');
@@ -41,7 +72,10 @@ class Scenario(Thread):
                 scenarios_tab[scHash] = [];
             scenarios_tab[scHash].append(d)
         return scenarios_tab;
-    
+
+    ## Updates the list of scenarios in database.
+    #
+    # @param db The database handler (default 0).
     def update_scenarios_list(self, db=0):
         self.logger.debug('UPDATING SCENARIOS');
         query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, ',
@@ -55,7 +89,11 @@ class Scenario(Thread):
         self.logger.debug('S LIST = '+str(scenarios_list)+'\n');
         self.scenarios_list = self.get_scenarios_tab(scenarios_list);
         self.logger.debug('S TAB = '+str(self.scenarios_list)+'\n\n\n');
-    
+
+    ## Starts a scenario.
+    #
+    # @param id_smartcmd ID of the smartcommand launching the scenario.
+    # @param connection The connection used to communicate.
     def launch_scenario(self, id_smartcmd, connection):
         self.logger.debug('LAUNCH !!!');
         jsonString = json.JSONEncoder().encode({
@@ -64,6 +102,7 @@ class Scenario(Thread):
         data = json.JSONDecoder().decode(jsonString);
         self.daemon.smartcmd_launch(data, connection);
 
+## Checks all the scenarios.
 def check_all_scenarios(self):
     self.logger.debug('CHECKING ALL SCENARIOS');
     self.logger.debug('SCENARIOS LIST = ');

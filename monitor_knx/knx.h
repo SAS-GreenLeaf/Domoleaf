@@ -1,3 +1,9 @@
+/**
+ * \file knx.h
+ * \brief Monitor KNX
+ * \author Emmanuel Bonin - GreenLeaf
+ */
+
 #ifndef  __KNX_H__
 # define __KNX_H__
 
@@ -20,42 +26,69 @@
 
 # include "eibclient.h"
 
+/**
+ * \def MAX_GROUP_VALUE_LEN
+ * \brief Maximum length of the value of a group data
+ */
 # define MAX_GROUP_VALUE_LEN  14
-# define DATAGRAM_BUFFER_SIZE 128 /* Telegram buffer size */
 
-# define READ_VAL 0x0	/* READ packet */
-# define RESP_VAL 0x40	/* RESPONSE packet */
-# define WRIT_VAL 0x80	/* WRITE packet */
+/**
+ * \def DATAGRAM_BUFFER_SIZE
+ * \brief The size of a telegram
+ */
+# define DATAGRAM_BUFFER_SIZE 128
 
-/*
-** KNX telegram
-*/
+/**
+ * \def READ_VAL
+ * \brief The value corresponding to a READ packet
+ */
+# define READ_VAL 0x0
+
+/**
+ * \def RESP_VAL
+ * \brief The value corresponding to a RESP packet
+ */
+# define RESP_VAL 0x40
+
+/**
+ * \def WRIT_VAL
+ * \brief The value corresponding to a WRITE packet
+ */
+# define WRIT_VAL 0x80
+
+
+/**
+ * \struct s_telegram
+ * \brief KNX telegram structure
+ */
 typedef struct __attribute__((packed)) s_telegram
 {
-	uint8_t  control;
-	uint16_t src_addr;
-	uint16_t dst_addr;
-	uint8_t  data_length;
-	uint8_t  data[255];
-} Telegram;
+  uint8_t  control;	/*!< Control byte of the telegram */
+  uint16_t src_addr;	/*!< Source address */
+  uint16_t dst_addr;	/*!< Destination address */
+  uint8_t  data_length;	/*!< The length of the data */
+  uint8_t  data[255];	/*!< The data of the telegram */
+} Telegram;		/*!< Telegram */
 
-/*
-** Connection to a slave daemon
-*/
+/**
+ * \struct s_slave
+ * \brief Connection to a slave daemon
+ */
 typedef struct __attribute__((packed)) s_slave
 {
-	uint8_t  buff[255];
-	Telegram telegram;
-	EIBConnection *conn;
-	int      sock_fd;
-} Slave;
+  uint8_t  buff[255];	/*!< Buffer for communication */
+  Telegram telegram;	/*!< Telegram structure */
+  EIBConnection *conn;	/*!< Connection with EIB client */
+  int      sock_fd;	/*!< File descriptor of the slave socket */
+} Slave;		/*!< Slave */
 
-/*
-** Global socket (global to catch CTRL-C and close it)
-*/
+/**
+ * \def g_sock
+ * \brief Global socket (global to catch CTRL-C and close it)
+ */
 extern int g_sock;
 
-/* address.c */
+/* knx_address.c */
 uint16_t readgaddr(char *addr);
 uint32_t readHex(const char *addr);
 char     *group2string(eibaddr_t addr);
@@ -63,18 +96,17 @@ char     *individual2string(eibaddr_t addr);
 void     printHex(int len, uint8_t *data);
 uint16_t readaddr(char *addr);
 
-/* check_args.c */
+/* knx_check_args.c */
 void check_args(int argc, char *argv[]);
 
-/* main.c */
+/* knx_main.c */
 uint8_t get_data_len(uint8_t byte);
-int     groupwrite(EIBConnection *conn, char *argv[]); /* A changer */
 int     connect_to_slave(void);
 void    send_telegram_to_slave(int sock, Telegram *telegram);
 void    handle_keyboard(int signum);
 int     vbusmonitor(EIBConnection *conn);
 
-/* print_fcts.c */
+/* knx_print_fcts.c */
 void print_bits(uint32_t value, int nb_bits);
 void print_buf(uint8_t buff[4096]);
 void print_buf_hex(void *buf, uint32_t len);
