@@ -175,7 +175,7 @@ static void dump_radio_erp1(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void radio_erp1(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void radio_erp1(Enocean_packet *packet)
  * \param packet The EnOcean packet received to treat
  *
  * \brief Callback called when an ERP1 packet is received
@@ -200,7 +200,7 @@ void radio_erp1(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void response(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void response(Enocean_packet *packet)
  *
  * \brief Callback called when a response packet is received
  */
@@ -210,7 +210,7 @@ void response(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void radio_sub_tel(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void radio_sub_tel(Enocean_packet *packet)
  *
  * \brief Callback called when a radio_sub_tel packet is received
  */
@@ -220,7 +220,7 @@ void radio_sub_tel(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void event(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void event(Enocean_packet *packet)
  *
  * \brief Callback called when an event packet is received
  */
@@ -230,7 +230,7 @@ void event(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void common_command(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void common_command(Enocean_packet *packet)
  *
  * \brief Callback called when a common_command packet is received
  */
@@ -240,7 +240,7 @@ void common_command(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void smart_ack_command(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void smart_ack_command(Enocean_packet *packet)
  *
  * \brief Callback called when a smart_ack_command packet is received
  */
@@ -250,7 +250,7 @@ void smart_ack_command(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void remote_man_command(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void remote_man_command(Enocean_packet *packet)
  *
  * \brief Callback called when a remote_man_command packet is received
  */
@@ -260,7 +260,7 @@ void remote_man_command(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void radio_message(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void radio_message(Enocean_packet *packet)
  *
  * \brief Callback called when a radio_message packet is received
  */
@@ -270,7 +270,7 @@ void radio_message(Enocean_packet __attribute__((unused)) *packet)
 }
 
 /**
- * \fn void radio_erp2(Enocean_packet __attribute__((unused)) *packet)
+ * \fn void radio_erp2(Enocean_packet *packet)
  *
  * \brief Callback called when a radio_erp2 packet is received
  */
