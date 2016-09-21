@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo -e "[ \033[33m..\033[0m ] Stopping domomaster..."
+service domomaster stop
+
 echo -e "[ \033[33m..\033[0m ] Removing Domoleaf master daemon..."
 
 #Conf file
@@ -14,4 +17,4 @@ rm -rf /etc/domoleaf/www
 rm -rf /etc/domoleaf/sql
 rm -f /etc/init.d/domomaster
 rm -f /etc/nginx/sites-available/domoleaf.conf
-rm -rf /usr/bin/domomaster 
+rm -rf /usr/bin/domomaster
