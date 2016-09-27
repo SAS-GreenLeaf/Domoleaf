@@ -91,7 +91,6 @@ def master_conf_init():
            '-e', query1]);
     call(['mysql', '--defaults-file=/etc/mysql/debian.cnf', 'domoleaf',
            '-e', query2]);
-
 if __name__ == "__main__":
     #Upgrade
     if os.path.exists(MASTER_CONF_FILE_BKP):
