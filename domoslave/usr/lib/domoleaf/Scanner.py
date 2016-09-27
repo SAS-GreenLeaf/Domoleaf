@@ -1,3 +1,8 @@
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 from __future__ import absolute_import, division, print_function;
 import scapy.config;
 import scapy.layers.l2;
@@ -14,47 +19,54 @@ import configparser;
 HOST_IP_FIELD = 'IP';
 HOST_MAC_FIELD = 'MAC';
 
+## Local network scanning class.
 class Scanner:
-    """
-    Local network scanning class.
-    """
+
+    ## The constructor.
     def __init__(self):
         self._HostList = [];
 
+    ## Checks if a hostname is available on local network.
+    #
+    # @param hostname The hostname to check.
+    #
+    # @return True of False if the hostname is available.
     def isHostAvailable(self, hostname):
-        """
-        Takes an 'hostname' as parameter and return whether or not the host 'hostname' is on the local network.
-        """
         names = [];
         append = names.append;
         for host in self._HostList:
             append(host._Hostname);
         return hostname in names;
 
+    ## Adds a new host in the hostlist.
+    #
+    # @param host The host to add.
     def addNewHost(self, host):
-        """
-        Add the host 'host' to the hostlist.
-        """
         self._HostList.append(host);
 
+    ## Builds and adds a new host in the hostlist.
+    #
+    # @param macAddr The MAC address of the new host.
+    # @param ipAddr The IP address of the new host.
+    # @param hostname The hostname of the new hsot.
     def addNewHost(self, macAddr, ipAddr, hostname):
-        """
-        Creates a new host with 'macAddr', 'ipAddr', 'hostname', and adds it to the hostlist
-        """
         self._HostList.append(Host(macAddr, ipAddr, hostname.upper(), None, 0));
 
+    ## Converts a netmask of the form 'xxx.xxx.xxx.xxx' to a 32 bit integer.
+    #
+    # @param netmask_bytes The address in the form xxx.xxx.xxx.xxx.
+    #
+    # @return The 32 bit integer containing the IP address.
     def bytesToMask(self, netmask_bytes):
-        """
-        Converts a netmask of the form 'xxx.xxx.xxx.xxx' to a 32 bit integer.
-        """
         return (32 - int(round(math.log(0xFFFFFFFF - netmask_bytes, 2))));
 
+    ## Converts a 4 bytes integer containing an IP address from an integer form to the CIDR form.
+    #
+    # @param network_bytes IP address in integer form.
+    # @param netmask_bytes Netmask (has to be passed to bytesToMask() before treatment).
+    #
+    # @return The CIDR form of the address and its mask.
     def bytesToCIDR(self, network_bytes, netmask_bytes):
-        """
-        Converts a 4 bytes integer containing an IP address to the CIDF form (e.g) '192.168.1.1'
-        'network_bytes' IP address stored in an integer
-        'netmask_bytes' Netmask (has to be passed to self.bytesToMask() before treatment)
-        """
         network = scapy.utils.ltoa(network_bytes);
         netmask = self.bytesToMask(netmask_bytes);
         net = "%s/%s" % (network, netmask);
@@ -63,10 +75,8 @@ class Scanner:
             return None;
         return (net);
 
+    ## Displays a list of the available hosts.
     def printHosts(self):
-        """
-        Print of the hostlist on the screen (useful for debug)
-        """
         for h in self._HostList:
             print("=== HOST ON NETWORK ===");
             print("IP  : ", h._IpAddr);
@@ -74,12 +84,11 @@ class Scanner:
             print("HOST: ", h._Hostname);
             print('');
 
+    ## Gets every hosts on the local network with ARP requests.
+    #
+    # @param net IP address under CIDR form.
+    # @param interface Name of the used network interface.
     def getHosts(self, net, interface):
-        """
-        Retrieving every hosts on the local network with ARP requests.
-        'net' IP under the CIDR form (e.g) '192.168.1.1/24'
-        'interface' Name of the used network interface
-        """
         try:
             ans, unans = scapy.layers.l2.arping(net, iface = interface, timeout = 1, verbose = False);
             for s, r in ans.res:
@@ -98,10 +107,8 @@ class Scanner:
                 raise;
         self.addNewHost(macAddr = '', ipAddr = '127.0.0.1', hostname = socket.gethostname().upper());
 
+    ## Scans the local network and gets all the MAC and IP of hosts.
     def scan(self):
-        """
-        Hosts retrieving.
-        """
         for network, netmask, _, interface, address in scapy.config.conf.route.routes:
             if (network == 0 or
                 interface == 'lo' or

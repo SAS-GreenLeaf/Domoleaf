@@ -1,11 +1,17 @@
 #!/usr/bin/python3
 
+## @package domomaster
+# Master daemon for D3 boxes.
+#
+# Developed by GreenLeaf.
+
 import sys
 sys.path.append('/usr/lib/domoleaf')
 import socket
 import json
 from DaemonConfigParser import *;
 
+## Script sending "check_all_schedules" packet to a master daemon.
 if __name__ == "__main__":
     try:
         parser = DaemonConfigParser('/etc/domoleaf/master.conf')

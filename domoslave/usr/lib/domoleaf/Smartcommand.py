@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import logging;
 import json;
 from Logger import *;
@@ -12,28 +17,48 @@ import time;
 LOG_FILE                = '/var/log/domoleaf/domomaster.log'
 LOG_FLAG        = False;
 
+## Class representing multiple commands launched at the same time
 class Smartcommand(Thread):
 
+    ## The constructor.
+    #
+    # @param daemon The daemon object which instanciated this class.
+    # @param smartcmd_id ID of a smartcommand (default 0).
     def __init__(self, daemon, smartcmd_id = 0):
         Thread.__init__(self);
+        ## Logger object for formatting and printing logs
         self.logger = Logger(LOG_FLAG, LOG_FILE);
         self.logger.debug('Started SMARTCMD');
+        ## The ID of the smart command
         self.smartcmd_id = smartcmd_id;
+        ## SQL object for managing database
         self.sql = MasterSql();
+        ## Instance of the slave daemon
         self.daemon = daemon;
+        ## Array of option code for which the data is not important
         self.tab_except_http = [356, 357, 358, 359, 360, 361];
+        ## Username to connect to the database
         self.db_username = daemon.db_username;
+        ## Password to connect to the database
         self.db_passwd = daemon.db_passwd;
+        ## Database name on which connect
         self.db_dbname = daemon.db_dbname;
 
+    ## Setter for the connection.
+    #
+    # @param connection The connection object to set.
     def setValues(self, connection):
+        ## Connection object
         self.connection = connection;
 
+    ## Runs the smart command.
     def run(self):
+        ## Database handler for querying database
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);
         launch_smartcommand(self);
         self.db.close();
 
+## Selects the smart command in database and runs it with the good parameters.
 def launch_smartcommand(self):
     if not self.smartcmd_id:
         self.logger.error('Invalid Smartcommand');
