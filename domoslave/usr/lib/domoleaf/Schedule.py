@@ -42,7 +42,7 @@ class Schedule:
                  'months, weekdays, days, hours, mins '
                  'FROM scenarios_list '
                  'JOIN trigger_schedules_list ON scenarios_list.id_schedule = trigger_schedules_list.id_schedule '
-                0 'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
+                 'WHERE scenarios_list.id_schedule IS NOT NULL && id_trigger IS NULL && activated = 1 '
                  'ORDER BY id_scenario ');
         if not db:
             self.schedules_list = self.sql.mysql_handler_personnal_query(query);
