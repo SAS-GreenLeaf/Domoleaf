@@ -1,3 +1,13 @@
+domoleaf (0.9.5) unstable; urgency=medium
+
+  * Add comments
+  * Fix bug with wifi access point and MySQL
+  * Fix possible bug on hostname
+  * Fix possible bug with MySQL on update
+  * Fix required reboot after upgrade (for next release)
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Wed, 28 Sep 2016 11:50:00 +0100
+
 domoleaf (0.9.4) unstable; urgency=medium
 
   * Fix send_tech, used only in commercial version

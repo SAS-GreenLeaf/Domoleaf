@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import socket
 import sys;
 sys.path.append('/usr/lib/domoleaf');
@@ -13,8 +18,12 @@ import base64
 
 SLAVE_CONF_FILE                 = '/etc/domoleaf/slave.conf';
 
+## Class with static utils methods.
 class GLManager:
-    
+
+    ## Sends a packet to use the cron cron_name.
+    #
+    # @param cron_name The name of the cron to use.
     def send_cron(cron_name):
         try:
             parser = DaemonConfigParser(SLAVE_CONF_FILE);
@@ -25,7 +34,10 @@ class GLManager:
         except Exception as e:
             if 'sock' in locals():
                 sock.close()
-    
+
+    ## Gets informations about the system.
+    #
+    # @return JSON object containing the wanted informations.
     def TechInfo():
         json_str = {
             "ip_private":  InfoSys.ipPrivate(),
@@ -40,21 +52,28 @@ class GLManager:
             "temperature": InfoSys.temperature()
         };
         return json_str
-    
+
+    ## Informations about the fact that the D3 is alive.
+    #
+    # @return JSON Object containing the wanted informations.
     def TechAlive():
         json_str = {
             "uptime":      InfoSys.uptime(),
             "temperature": InfoSys.temperature()
         };
         return json_str
-    
+
+    ## Sends the request to the admin.
+    #
+    # @param obj_to_send The JSON Object to send.
+    # @param admin_addr The address to who send the packet.
+    # @param aes_key The AES keys to cypher the packet.
     def SendRequest(obj_to_send, admin_addr, aes_key):
         hostname = socket.gethostname()
         aes_IV = AESManager.get_IV();
         encode_obj = AES.new(aes_key, AES.MODE_CBC, aes_IV);
         spaces = 16 - len(obj_to_send) % 16;
         obj_to_send = encode_obj.encrypt(obj_to_send + (spaces * ' '));
-        
         data = {
             "sender_name": hostname,
             "data": base64.b64encode(obj_to_send),

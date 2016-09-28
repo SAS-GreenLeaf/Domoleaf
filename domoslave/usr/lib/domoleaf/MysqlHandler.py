@@ -1,20 +1,30 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import mysql.connector;
 
+## Mysql Master daemon management class.
+# Built with 'username', 'password' and 'database' for the connection to the server.
 class MysqlHandler:
-    """
-    Mysql Master daemon management class.
-    Built with 'username', 'password' and 'database' for the connection to the server.
-    """
-    def __init__(self, username, passwd, db):
-        self.connection = mysql.connector.connect(user = username, password=passwd, host='localhost', database=db);
 
+    ## The constructor.
+    #
+    # @param username
+    # @param passwd
+    # @param db
+    def __init__(self, username, passwd, db):
+        self.connection = mysql.connector.connect(unix_socket = '/var/run/mysqld/mysqld.sock', user = username, password=passwd, host='localhost', database=db);
+
+    ## Gets a description of a table.
+    #
+    # @param table The table name in which retrieve the fields.
+    #
+    # @return The field names.
     def get_field_names_from_table(self, table):
-        """
-        Takes as parameter the 'table' name of a table
-        return the field names.
-        """
         query = 'DESCRIBE '+table;
         cursor = self.connection.cursor(buffered=True);
         res = [];
@@ -24,10 +34,12 @@ class MysqlHandler:
             append(item[0]);
         return res;
 
+    ## Function used to send a personnal query, which is not proposed by this class.
+    #
+    # @param query The query to execute.
+    #
+    # @return The result of the query.
     def personnal_query(self, query):
-        """
-        Function used to send a personnal query, which is not proposed by this class.
-        """
         cursor = self.connection.cursor(buffered=True);
         cursor.execute(query);
         res = [];
@@ -36,10 +48,12 @@ class MysqlHandler:
             append(item);
         return res;
 
+    ## Inserts datas in a table.
+    #
+    # @param table The table in which insert data.
+    # @param field_names The field names for the value to insert.
+    # @param data_values The values to insert.
     def insert_datas_in_table(self, table, field_names, data_values):
-        """
-        Inserts 'data_values' in 'field_names' in the table 'table'.
-        """
         cursor = self.connection.cursor(buffered=False);
         query = "INSERT INTO "+table+" (";
         i = 0;
@@ -55,12 +69,13 @@ class MysqlHandler:
         query += "%s)";
         cursor.execute(query, data_values);
 
-    def update_datas_in_table(self, table: str, data_values_ref: dict, data_to_update: dict):
-        """
-        Updates data in table 'table'. If data having to be inserted do not exist, they are created and inserted.
-        'data_values_ref' is a dict containing the field names to update.
-        'data_to_update' is a dict containing the data to insert.
-        """
+    ## Updates data in table. If the data having to be updated do not exist, they are created and inserted.
+    # Else, they are updated.
+    #
+    # @param table The table in which update / insert the data.
+    # @param data_values_ref The reference data to update. If not found, the data are inserted.
+    # @param data_to_update The new value of the data.
+    def update_datas_in_table(self, table, data_values_ref, data_to_update):
         cursor = self.connection.cursor(buffered=True);
         try:
             query_insert = "INSERT INTO "+table+" (";
@@ -91,20 +106,19 @@ class MysqlHandler:
             query_update = query_update[:len(query_update) - 5];
             cursor.execute(query_update);
 
+    ## Erases the content of a table.
+    #
+    # @param table The table to empty.
     def reset_table(self, table):
-        """
-        Erase content of the table 'table'
-        """
         query = "DELETE FROM "+table;
         cursor = self.connection.cursor(buffered=True);
         cursor.execute(query);
 
-    def get_datas_from_table_with_names(self, table: str, names: list):
-        """
-        Retrieves fields values from a table.
-        'table' is the table name.
-        'names' is a list containing the field names to retrieve.
-        """
+    ## Gets some fields values from a table.
+    #
+    # @param table The table to query.
+    # @param names The names of the field to retrieve.
+    def get_datas_from_table_with_names(self, table, names):
         res = [];
         append = res.append;
         query = "SELECT ";
@@ -118,10 +132,12 @@ class MysqlHandler:
             append(item);
         return res;
 
+    ## Retrieves all the data from a table.
+    #
+    # @param table The table to query.
+    #
+    # @return Array containing the result.
     def get_all_datas_from_table(self, table: str):
-        """
-        Retrieves all data from the table 'table'.
-        """
         res = [];
         append = res.append;
         query = "SELECT * FROM "+table;
@@ -131,14 +147,10 @@ class MysqlHandler:
             append(item);
         return res;
 
+    ## Commits the changes done to database.
     def updatedb(self):
-        """
-        Commits changes done to database.
-        """
         self.connection.commit();
 
+    ## Closes the connection to mysql server.
     def close(self):
-        """
-        Close connection to mysql server.
-        """
         self.connection.close();

@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+## @package domolib
+# Library for domomaster and domoslave.
+#
+# Developed by GreenLeaf.
+
 import sys;
 sys.path.append('/usr/lib/domoleaf');
 from MysqlHandler import *;
@@ -57,24 +62,28 @@ MYSQL_CONF_DATABASE_ENTRY = 'database_name';
 LOG_FILE        = '/var/log/domoleaf/domoslave.log';
 LOG_FLAG        = True;
 
+## Device management class. Manages the device described with the ID passed at construction.
 class DeviceManager:
-    """
-    Device management class. Manages the device described with the ID passed at construction.
-    """
+
+    ## The constructor.
+    #
+    # @param _id_elem ID of the device (default 0).
+    # @param _option_id Option ID of the device (default 0)
+    # @param _debug Debugging flag (default False)
     def __init__(self, _id_elem = 0, _option_id = 0, _debug = False):
+        ## Instance of the logger object for formatting and printing
         self.logger = Logger(LOG_FLAG, LOG_FILE);
         self._id = _id_elem;
         self._option_id = _option_id;
         self._debug = _debug;
-    
-    ###############################################################
-    # Va surement revoir cette fonction et remettre le mode debug #
-    # suivant les options qu'il va falloir check ou pas           #
-    ###############################################################
+
+
+    ## Returns the device from the database.
+    #
+    # @param db The database handler.
+    #
+    # @return The device if no error.
     def load_from_db(self, db):
-        """
-        Returns the device from the database.
-        """
         res = db.personnal_query(LOAD_DEVICE_QUERY + str(self._id));
         if not len(res):
             res = db.personnal_query(LOAD_DEVICE_QUERY_IP + str(self._id));
