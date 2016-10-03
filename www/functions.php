@@ -1,6 +1,10 @@
 <?php 
 
-function langToLocale($lang) {
+/**
+ * Transform language code to locale
+ * @param string $lang language code
+ */
+function langToLocale($lang='') {
 	switch($lang) {
 		case 'de':
 			return 'de_DE';
@@ -17,6 +21,10 @@ function langToLocale($lang) {
 	}
 }
 
+/**
+ * Set locales
+ * @param string $lang language code
+ */
 function defineLocale($lang='') {
 	$locale = langToLocale($lang);
 	if (!empty($locale)){
@@ -35,8 +43,8 @@ function defineLocale($lang='') {
 
 /**
  * Redirect to an URL after "time" seconds
- * @param string : destination
- * @param int : time en seconds
+ * @param string $url destination
+ * @param int $time time en seconds
  */
 function redirect($url='/', $time=0) {
 	echo'<meta http-equiv="refresh" content="',$time,'; url=',$url,'" />';
@@ -47,8 +55,8 @@ function redirect($url='/', $time=0) {
 
 /**
  * Format a number
- * @param int : number
- * @param int : decimal places
+ * @param int $n number
+ * @param int $nb decimal places
  */
 function nbf($n, $nb=2) {
 	if(is_numeric($n)) {
@@ -65,9 +73,9 @@ function nbf($n, $nb=2) {
 }
 
 /**
- * 
- * @param unknown $error
- * @param unknown $param
+ * Transform an error code to a text
+ * @param int $error error id
+ * @param array $param error param
  */
 function number2Error($error=0, $param=array()) {
 	$text = '';
@@ -84,6 +92,10 @@ function number2Error($error=0, $param=array()) {
 	return $text;
 }
 
+/**
+ * Detect user browser language
+ * @return string language locale
+ */
 function detect_language() {
 	$language = null;
 	if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -102,6 +114,10 @@ function detect_language() {
 	}
 }
 
+/**
+ * Format date
+ * @param int $time timestamp
+ */
 function format_date($time) {
 	switch(LOCALE) {
 		case 'fr_FR':
@@ -128,6 +144,11 @@ function format_date($time) {
 	textdomain("messages");
 }
 
+/**
+ * Transform bytes size
+ * @param int $bytes size
+ * @param string $format format
+ */
 function format_size($bytes, $format = '%.2f') {
 	$units = array(
 			_('B'),
@@ -150,6 +171,10 @@ function format_size($bytes, $format = '%.2f') {
 	return sprintf($format.' %s', $b, $units[$e]);
 }
 
+/**
+ * Convert Hex value like #AABBCC to separeted colors value
+ * @param string $color color in RGB format
+ */
 function convertHexaToRGB($color) {
 	if ($color[0] == '#') {
 		$color = substr($color, 1);
@@ -165,6 +190,10 @@ function convertHexaToRGB($color) {
 	return array($red, $green, $blue);
 }
 
+/**
+ * Convert Hex value like #AABBCCDD to separeted colors value
+ * @param string $color color in RGBW format
+ */
 function convertHexaToRGBW($color) {
 	if ($color[0] == '#') {
 		$color = substr($color, 1);
@@ -183,6 +212,12 @@ function convertHexaToRGBW($color) {
 	return array($red, $green, $blue, $white);
 }
 
+/**
+ * Convert separeted RGB value to hex format
+ * @param int $red 0-255 RED value
+ * @param int $green 0-255 GREEN value
+ * @param int $blue 0-255 BLUE value
+ */
 function convertRGBToHexa($red, $green, $blue) {
 	$red = dechex($red);
 	$green = dechex($green);
@@ -192,6 +227,13 @@ function convertRGBToHexa($red, $green, $blue) {
 	return $hexa_color;
 }
 
+/**
+ * Convert separeted RGBW value to hex format
+ * @param int $red 0-255 RED value
+ * @param int $green 0-255 GREEN value
+ * @param int $blue 0-255 BLUE value
+ * @param int $white 0-255 WHITE value
+ */
 function convertRGBWToHexa($red, $green, $blue, $white) {
 	$red   = dechex($red);
 	$green = dechex($green);
@@ -202,6 +244,12 @@ function convertRGBWToHexa($red, $green, $blue, $white) {
 	return $hexa_color;
 }
 
+/**
+ * Compress image
+ * @param string $src image source
+ * @param string $dest image destination
+ * @param int $quality 0-100 quality
+ */
 function compress_image($src, $dest , $quality)
 {
 	$info = getimagesize($src);
@@ -222,6 +270,10 @@ function compress_image($src, $dest , $quality)
 	return $dest;
 }
 
+/**
+ * Check if currency exists
+ * @param int $currencyId currency id
+ */
 function checkCurrency($currencyId) {
 	$allCurrency = array(
 			2	=>	'$',
@@ -239,14 +291,26 @@ function checkCurrency($currencyId) {
 	}
 }
 
+/**
+ * Return input value
+ * @param int $val value
+ */
 function convert_none($val) {
 	return $val;
 }
 
+/**
+ * Return pct value
+ * @param int $val value
+ */
 function convert_hundred($val) {
 	return $val / 100;
 }
 
+/**
+ * convert temperature to KNX format
+ * @param int $val temperature
+ */
 function convert_temperature($val) {
 	$factor = 0.01;
 	$exp = ($val & 0x7800) >> 11;
@@ -257,13 +321,17 @@ function convert_temperature($val) {
 	return ($mant*pow(2,$exp)*$factor);
 }
 
+/**
+ * convert a value to 32 bits format
+ * @param int $val value
+ */
 function convert_float32($val) {
 	$factor = 0.01;
 	$exp = ($val & 0x7F800000) >> 23;
 	$sign = $val >> 31;
 	$mant = $val & 0x007FFFFF;
 	if ($sign) {
-		$mant = $mant | 0xFFFFFFFFFF800000;		
+		$mant = $mant | 0xFFFFFFFFFF800000;
 	}
 	return strval(round($mant * pow(2, $exp) * $factor, 2));
 }

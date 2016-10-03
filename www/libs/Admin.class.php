@@ -1,8 +1,15 @@
 <?php 
 
+/**
+ * Admin class
+ * @author virgil
+ */
 class Admin extends User {
 
 	/*** Profile ***/
+	/**
+	 * List all users
+	 */
 	function profileList() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -18,6 +25,11 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Get all profile information
+	 * @param int $id user id, current user by default
+	 * @return object user information
+	 */
 	function profileInfo($id=0) {
 		$link = Link::get_link('domoleaf');
 		if(empty($id)) {
@@ -35,6 +47,11 @@ class Admin extends User {
 		return $do;
 	}
 	
+	/**
+	 * Add a new user
+	 * @param string $username user name
+	 * @param string $password password
+	 */
 	function profileNew($username, $password) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT mcuser_id
@@ -87,6 +104,10 @@ class Admin extends User {
 		return $id;
 	}
 	
+	/**
+	 * Delete an user
+	 * @param int $user_id user id
+	 */
 	function profileRemove($user_id) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'DELETE FROM mcuser
@@ -97,6 +118,17 @@ class Admin extends User {
 		return $req->rowCount();
 	}
 	
+	/**
+	 * Modify user information
+	 * @param string $lastname lastname
+	 * @param string $firstname firstname
+	 * @param int $gender gender 0/1
+	 * @param string $email email
+	 * @param string $phone phone number
+	 * @param string $language language
+	 * @param int $timezone timezone id
+	 * @param int $user_id user id, current user by default
+	 */
 	function profileRename($lastname, $firstname, $gender, $email, $phone, $language, $timezone, $user_id=0) {
 		$link = Link::get_link('domoleaf');
 		if(empty($user_id)) {
@@ -116,6 +148,11 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Modify user level
+	 * @param int $id user id
+	 * @param int $level user level
+	 */
 	function profileLevel($id, $level) {
 		$link = Link::get_link('domoleaf');
 		//only 3 lvl for the moment
@@ -131,6 +168,11 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Rename an user
+	 * @param int $id user id
+	 * @param string $username new user name
+	 */
 	function profileUsername($id, $username) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT mcuser_id
@@ -152,6 +194,12 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Modify user password
+	 * @param string $last old password (not used if it's not current user)
+	 * @param string $new new password
+	 * @param int $id user id (current user by default)
+	 */
 	function profilePassword($last, $new, $id=0) {
 		if(empty($id)) {
 			parent::profilePassword($last, $new);
@@ -177,6 +225,12 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Configure UPNP for remote access
+	 * @param int $http HTTP port
+	 * @param int $https HTTPS port
+	 * @param int $securemode force secured mode 0/1
+	 */
 	function confRemote($http, $https, $securemode){
 		$link = Link::get_link('domoleaf');
 		$conf = $this->conf_load();
@@ -184,10 +238,10 @@ class Admin extends User {
 			$data = array();
 			if ($conf[1]->configuration_value != 0){
 				$data[] = Array(
-									'action' => 'close',
-									'configuration_id' => '1',
-									'protocol' => 'TCP'
-								  );
+					'action' => 'close',
+					'configuration_id' => '1',
+					'protocol' => 'TCP'
+				);
 			}
 			if ($conf[2]->configuration_value != 0){
 				$data[] = Array(
@@ -201,14 +255,14 @@ class Admin extends User {
 				$socket1->send('cron_upnp', $data);
 			}
 			$sql = 'UPDATE configuration
-		       	 	SET configuration_value= :value
-					WHERE configuration_id = 1';
+			        SET configuration_value= :value
+			        WHERE configuration_id = 1';
 			$req = $link->prepare($sql);
 			$req->bindValue(':value', $http, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 			$sql = 'UPDATE configuration
-		        SET configuration_value= :value
-				WHERE configuration_id = 2';
+			        SET configuration_value= :value
+			        WHERE configuration_id = 2';
 			$req = $link->prepare($sql);
 			$req->bindValue(':value', $https, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -233,13 +287,23 @@ class Admin extends User {
 			}
 		}
 		$sql = 'UPDATE configuration
-			        SET configuration_value= :value
-					WHERE configuration_id = 3';
+		        SET configuration_value= :value
+		        WHERE configuration_id = 3';
 		$req = $link->prepare($sql);
 		$req->bindValue(':value', $securemode, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-
+	
+	/**
+	 * Define SMTP configuration
+	 * @param string $fromMail sender email
+	 * @param string $fromName sender name
+	 * @param string $smtpHost SMTP host
+	 * @param int $smtpSecure SMTP security
+	 * @param int $smtpPort SMTP port
+	 * @param string $smtpUsername SMTP username
+	 * @param string $smtpPassword SMTP password
+	 */
 	function confMail($fromMail, $fromName, $smtpHost, $smtpSecure, $smtpPort, $smtpUsername, $smtpPassword){
 		$link = Link::get_link('domoleaf');
 		if (empty($fromMail) or filter_var($fromMail, FILTER_VALIDATE_EMAIL) == false){
@@ -247,24 +311,24 @@ class Admin extends User {
 		}
 		if (!empty($fromMail) && $fromMail != '' && filter_var($fromMail, FILTER_VALIDATE_EMAIL) == true){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :fromMail
-					WHERE configuration_id = 5';
+			        SET configuration_value = :fromMail
+			        WHERE configuration_id = 5';
 			$req = $link->prepare($sql);
 			$req->bindValue(':fromMail', $fromMail, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		if (!empty($fromName) && $fromName != ''){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :fromName
-					WHERE configuration_id = 6';
+			        SET configuration_value = :fromName
+			        WHERE configuration_id = 6';
 			$req = $link->prepare($sql);
 			$req->bindValue(':fromName', $fromName, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		if (!empty($smtpHost) && $smtpHost != ''){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :smtpHost
-					WHERE configuration_id = 7';
+			        SET configuration_value = :smtpHost
+			        WHERE configuration_id = 7';
 			$req = $link->prepare($sql);
 			$req->bindValue(':smtpHost', $smtpHost, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -274,16 +338,16 @@ class Admin extends User {
 		}
 		if ($smtpSecure >= 0 && $smtpSecure < 3){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :smtpSecure
-					WHERE configuration_id = 8';
+			        SET configuration_value = :smtpSecure
+			        WHERE configuration_id = 8';
 			$req = $link->prepare($sql);
 			$req->bindValue(':smtpSecure', (int)$smtpSecure, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		if (!empty($smtpPort) && $smtpPort > 0 and $smtpPort <= 65535){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :smtpPort
-					WHERE configuration_id = 9';
+			        SET configuration_value = :smtpPort
+			        WHERE configuration_id = 9';
 			$req = $link->prepare($sql);
 			$req->bindValue(':smtpPort', (int)$smtpPort, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -292,16 +356,18 @@ class Admin extends User {
 			$smtpUsername = '';
 			$smtpPassword = '';
 		}
-			$sql = 'UPDATE configuration
-					SET configuration_value = :smtpUsername
-					WHERE configuration_id = 10';
-			$req = $link->prepare($sql);
-			$req->bindValue(':smtpUsername', $smtpUsername, PDO::PARAM_STR);
-			$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
+		$sql = 'UPDATE configuration
+		        SET configuration_value = :smtpUsername
+		        WHERE configuration_id = 10';
+		$req = $link->prepare($sql);
+		$req->bindValue(':smtpUsername', $smtpUsername, PDO::PARAM_STR);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+		
 		if (!empty($smtpPassword) || empty($smtpUsername)){
 			$sql = 'UPDATE configuration
-					SET configuration_value = :smtpPassword
-					WHERE configuration_id = 11';
+			        SET configuration_value = :smtpPassword
+			        WHERE configuration_id = 11';
 			$req = $link->prepare($sql);
 			$req->bindValue(':smtpPassword', $smtpPassword, PDO::PARAM_STR);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -309,45 +375,49 @@ class Admin extends User {
 		$socket = new Socket();
 		$socket->send('reload_d3config');
 	}
-
+	
+	/**
+	 * Try to preconfigure SMTP for emails
+	 * @param string $fromMail admin email
+	 */
 	function confPreConfigurationMail($fromMail){
 		if (empty($fromMail) or filter_var($fromMail, FILTER_VALIDATE_EMAIL) == false){
 			return '2';
 		}
-		$parse = explode("@", $fromMail)[1];
-		$fromName = explode("@", $fromMail)[0];
-		$smtpHost = "";
-		if ($parse == "greenleaf.fr"){
-			$smtpHost = "smtp.free.fr";
+		$parse = explode('@', $fromMail)[1];
+		$fromName = explode('@', $fromMail)[0];
+		$smtpHost = '';
+		if ($parse == 'greenleaf.fr'){
+			$smtpHost = 'smtp.free.fr';
 			$smtpSecure = 0;
 			$smtpPort = 25;
 		}
-		else if ($parse == "sfr.fr"){
-			$smtpHost = "smtp.sfr.fr";
+		else if ($parse == 'sfr.fr'){
+			$smtpHost = 'smtp.sfr.fr';
 			$smtpSecure = 1;
 			$smtpPort = 465;
 		}
-		else if ($parse == "bbox.fr"){
-			$smtpHost = "smtp.bbox.fr";
+		else if ($parse == 'bbox.fr'){
+			$smtpHost = 'smtp.bbox.fr';
 			$smtpSecure = 1;
 			$smtpPort = 587;
 		}
-		else if ($parse == "free.fr"){
-			$smtpHost = "smtp.free.fr";
+		else if ($parse == 'free.fr'){
+			$smtpHost = 'smtp.free.fr';
 			$smtpSecure = 0;
 			$smtpPort = 25;
 		}
-		else if ($parse == "orange.fr"){
-			$smtpHost = "smtp.orange.fr";
+		else if ($parse == 'orange.fr'){
+			$smtpHost = 'smtp.orange.fr';
 			$smtpSecure = 1;
 			$smtpPort = 465;
 		}
-		else if ($parse == "gmail.com"){
-			$smtpHost = "smtp.gmail.com";
+		else if ($parse == 'gmail.com'){
+			$smtpHost = 'smtp.gmail.com';
 			$smtpSecure = 2;
 			$smtpPort = 587;
 		}
-		if ($smtpHost == ""){
+		if ($smtpHost == ''){
 			return '1';
 		}
 		else{
@@ -355,7 +425,10 @@ class Admin extends User {
 			return '|'.$fromMail.'|'.$fromName.'|'.$smtpHost.'|'.$smtpSecure.'|'.$smtpPort;
 		}
 	}
-
+	
+	/**
+	 * Send an email to test SMTP configuration
+	 */
 	function confSendTestMail(){
 		$destinatorMail = $this->profileInfo()->user_mail;
 		if (empty($destinatorMail)){
@@ -365,7 +438,13 @@ class Admin extends User {
 		$messageMail = _('Your mail is configured from your D3 machine.');
 		return $this->confSendMail($destinatorMail, $objectMail, $messageMail);
 	}
-
+	
+	/**
+	 * Send a email
+	 * @param string $destinatorMail email destinator
+	 * @param string $objectMail email object
+	 * @param string $messageMail email message
+	 */
 	function confSendMail($destinatorMail, $objectMail, $messageMail){
 		if (empty($destinatorMail) || filter_var($destinatorMail, FILTER_VALIDATE_EMAIL) == false){
 			return NULL;
@@ -385,7 +464,15 @@ class Admin extends User {
 		$socket->send('send_mail', $data);
 		return $socket->receive();
 	}
-
+	
+	/**
+	 * Configure electricity cost
+	 * @param float $highCost highter cost
+	 * @param float $lowCost lower cost
+	 * @param int $lowField1 begining time
+	 * @param int $lowField2 ending time
+	 * @param int $currency currency id
+	 */
 	function confPriceElec($highCost=0, $lowCost=0, $lowField1=0, $lowField2=0, $currency=0){
 		$link = Link::get_link('domoleaf');
 		if (!is_numeric($highCost)){
@@ -429,26 +516,26 @@ class Admin extends User {
 			$currency = '1';
 		}
 		$sql = 'UPDATE configuration
-				SET configuration_value = :highCost
-				WHERE configuration_id = 14';
+		        SET configuration_value = :highCost
+		        WHERE configuration_id = 14';
 		$req = $link->prepare($sql);
 		$req->bindValue(':highCost', $highCost, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$sql = 'UPDATE configuration
-				SET configuration_value = :lowCost
-				WHERE configuration_id = 15';
+		        SET configuration_value = :lowCost
+		        WHERE configuration_id = 15';
 		$req = $link->prepare($sql);
 		$req->bindValue(':lowCost', $lowCost, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$sql = 'UPDATE configuration
-				SET configuration_value = :lowField1
-				WHERE configuration_id = 16';
+		        SET configuration_value = :lowField1
+		        WHERE configuration_id = 16';
 		$req = $link->prepare($sql);
 		$req->bindValue(':lowField1', $lowField1, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$sql = 'UPDATE configuration
-				SET configuration_value = :lowField2
-				WHERE configuration_id = 17';
+		        SET configuration_value = :lowField2
+		        WHERE configuration_id = 17';
 		$req = $link->prepare($sql);
 		$req->bindValue(':lowField2', $lowField2, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -456,8 +543,8 @@ class Admin extends User {
 			$currency = 1;
 		}
 		$sql = 'UPDATE configuration
-				SET configuration_value = :currency
-				WHERE configuration_id = 18';
+		        SET configuration_value = :currency
+		        WHERE configuration_id = 18';
 		$req = $link->prepare($sql);
 		$req->bindValue(':currency', $currency, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -465,6 +552,14 @@ class Admin extends User {
 		$socket->send('reload_d3config');
 	}
 	
+	/**
+	 * Modify Box date
+	 * @param int $day day
+	 * @param int $month month
+	 * @param int $year year
+	 * @param int $hour hour
+	 * @param int $minute minute
+	 */
 	function confDateTime($day, $month, $year, $hour, $minute) {
 		$link = Link::get_link('domoleaf');
 		if (empty($day)) {
@@ -501,6 +596,9 @@ class Admin extends User {
 	}
 		
 	/*** Floors ***/
+	/**
+	 * List floors
+	 */
 	function confFloorList() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -515,7 +613,12 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confFloorNew($namefloor, $nameroom = 0) {
+	/**
+	 * Create a new floor and its first room
+	 * @param string $namefloor floor name
+	 * @param string $nameroom room name
+	 */
+	function confFloorNew($namefloor, $nameroom = '') {
 		$link = Link::get_link('domoleaf');
 		$tmpNameFloor = $namefloor;
 		if (empty($namefloor)) {
@@ -549,8 +652,8 @@ class Admin extends User {
 			$this->confRoomNew($nameroom, $newfloorid);
 		}
 		$sql = 'SELECT mcuser_id
-			    FROM mcuser
-				WHERE mcuser_level>=2';
+		        FROM mcuser
+		        WHERE mcuser_level>=2';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -559,6 +662,11 @@ class Admin extends User {
 		return $newfloorid;
 	}
 	
+	/**
+	 * Rename a floor
+	 * @param int $id floor id
+	 * @param string $name new floor name
+	 */
 	function confFloorRename($id, $name) {
 		$link = Link::get_link('domoleaf');
 		if(!empty($name)) {
@@ -572,6 +680,10 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Delete a floor
+	 * @param int $idfloor floor id
+	 */
 	function confFloorRemove($idfloor) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'UPDATE mcuser_floor
@@ -591,11 +703,14 @@ class Admin extends User {
 	}
 	
 	/*** Rooms ***/
+	/**
+	 * List all rooms
+	 */
 	function confRoomAll(){
 		$list = array();
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT room_id, room_name, floor as id_floor
-				FROM room
+		        FROM room
 		        ORDER BY room_name ASC';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -605,6 +720,10 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * List rooms for a floor, list all rooms by default
+	 * @param number $floor floor id
+	 */
 	function confRoomList($floor=0) {
 		$list = array();
 		$link = Link::get_link('domoleaf');
@@ -631,6 +750,11 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Create a new room
+	 * @param string $name room name
+	 * @param int $floor floor id
+	 */
 	function confRoomNew($name, $floor) {
 		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
@@ -669,8 +793,8 @@ class Admin extends User {
 			}
 		}
 		$sql = 'SELECT mcuser_id
-			    FROM mcuser
-				WHERE mcuser_level>=2';
+		        FROM mcuser
+		        WHERE mcuser_level>=2';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -678,6 +802,11 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Rename a room
+	 * @param int $id room id
+	 * @param string $name new room name
+	 */
 	function confRoomRename($id, $name) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT room_id, room_name
@@ -698,6 +827,11 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Attribute a room to a floor
+	 * @param int $id room id
+	 * @param int $floor floor id
+	 */
 	function confRoomFloor($id, $floor) {
 		$link = Link::get_link('domoleaf');
 		$floorList = $this->confFloorList();
@@ -719,6 +853,11 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Delete a room
+	 * @param int $idroom room id
+	 * @param int $idfloor floor id
+	 */
 	function confRoomRemove($idroom, $idfloor) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'UPDATE mcuser_room
@@ -740,8 +879,11 @@ class Admin extends User {
 	}
 	
 	/*** Devices ***/
-	function confRoomDeviceAll($iddevice){
-		$list = array();
+	/**
+	 * Return basic information for a device
+	 * @param int $iddevice project device id
+	 */
+	function confRoomDeviceInfo($iddevice){
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT room_device_id, name
 		        FROM room_device
@@ -749,15 +891,16 @@ class Admin extends User {
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->room_device_id] = array(
-				'room_device_id' => $do->room_device_id,
-				'name'           => $do->name
-			);
-		}
-		return $list;
+		$do = $req->fetch(PDO::FETCH_OBJ);
+		
+		return $do;
 	}
 	
+	/**
+	 * Delete a device
+	 * @param int $iddevice device id
+	 * @param int $idroom room id
+	 */
 	function confRoomDeviceRemove($iddevice, $idroom){
 		$listSmartcmd = array();
 		$link = Link::get_link('domoleaf');
@@ -773,9 +916,9 @@ class Admin extends User {
 		$req->bindValue(':room_id', $idroom, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$sql = 'SELECT smartcommand_id, exec_id
-				FROM smartcommand_elems
-				WHERE room_device_id=:room_device_id
-				ORDER BY smartcommand_id, exec_id';
+		        FROM smartcommand_elems
+		        WHERE room_device_id=:room_device_id
+		        ORDER BY smartcommand_id, exec_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -800,9 +943,9 @@ class Admin extends User {
 			$listSmartcmd = array_unique($listSmartcmd);
 			$listSmartcmd = implode(', ', $listSmartcmd);
 			$sql = 'DELETE smartcommand_list
-					FROM smartcommand_list
-					LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
-					WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
+			        FROM smartcommand_list
+			        LEFT JOIN smartcommand_elems ON smartcommand_list.smartcommand_id = smartcommand_elems.smartcommand_id
+			        WHERE smartcommand_elems.smartcommand_id IS NULL AND smartcommand_list.smartcommand_id IN ('.$listSmartcmd.')';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
@@ -811,14 +954,16 @@ class Admin extends User {
 	
 	/**
 	 * Save all device information
-	 * @param int: room id
-	 * @param string : device name
-	 * @param int : daemon id
-	 * @param string : device address
-	 * @param int : device id
-	 * @param int : device port
-	 * @param string : login
-	 * @param string : password
+	 * @param int $idroom room id
+	 * @param string $name device name
+	 * @param int $daemon daemon id
+	 * @param string $devaddr device address
+	 * @param int $iddevice device id
+	 * @param int $port device port
+	 * @param string $login login
+	 * @param string $pass password
+	 * @param string $macaddr physical address
+	 * @param string $password widget's password
 	 * @return NULL
 	 */
 	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
@@ -902,8 +1047,8 @@ class Admin extends User {
 	
 	/**
 	 * Save device options
-	 * @param int : device id
-	 * @param array : option information
+	 * @param int $room_device_id device id
+	 * @param array $options option information
 	 * @return NULL
 	 */
 	function confDeviceSaveOption($room_device_id, $options){
@@ -971,6 +1116,10 @@ class Admin extends User {
 		$this->udpateScenariosList();
 	}
 	
+	/**
+	 * List devices, all devices by default
+	 * @param int $room room id
+	 */
 	function confRoomDeviceList($room){
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1005,6 +1154,10 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * List all available protocol for a device
+	 * @param int $device device id
+	 */
 	function confDeviceProtocol($device=0) {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1020,6 +1173,18 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Add a new IP device
+	 * @param string $name device name
+	 * @param int $proto protocol id
+	 * @param int $room room id
+	 * @param int $device device id
+	 * @param string $addr IP address
+	 * @param int $port port
+	 * @param string $login login
+	 * @param string $pass password
+	 * @param string $macaddr physical address
+	 */
 	function confDeviceNewIp($name, $proto, $room, $device, $addr, $port='80', $login='', $pass='', $macaddr=''){
 		$link = Link::get_link('domoleaf');
 		if(empty($name) or empty($proto) or 
@@ -1071,8 +1236,8 @@ class Admin extends User {
 		$socket = new Socket();
 		$socket->send('reload_camera');
 		$sql = 'SELECT mcuser_id
-			    FROM mcuser
-				WHERE mcuser_level>=2';
+		        FROM mcuser
+		        WHERE mcuser_level>=2';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -1081,6 +1246,15 @@ class Admin extends User {
 		return $newdeviceid;
 	}
 	
+	/**
+	 * Add a new KNX device
+	 * @param string $name device name
+	 * @param int $proto protocol id
+	 * @param int $room room id
+	 * @param int $device device id
+	 * @param string $addr physical address
+	 * @param int $daemon daemon id
+	 */
 	function confDeviceNewKnx($name, $proto, $room, $device, $addr, $daemon){
 		$link = Link::get_link('domoleaf');
 		if(empty($name) or empty($proto) or empty($room) or 
@@ -1097,7 +1271,7 @@ class Admin extends User {
 		$req->bindValue(':room', $room, PDO::PARAM_INT);
 		$req->bindValue(':device', $device, PDO::PARAM_INT);
 		$req->bindValue(':addr', $addr, PDO::PARAM_STR);
-		$req->bindValue(':dae', $daemon, PDO::PARAM_STR);
+		$req->bindValue(':dae', $daemon, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$newdeviceid = $link->lastInsertId();
 		if(!empty($newdeviceid)){
@@ -1109,8 +1283,8 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		$sql = 'SELECT mcuser_id
-			    FROM mcuser
-				WHERE mcuser_level>=2';
+		        FROM mcuser
+		        WHERE mcuser_level>=2';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -1119,6 +1293,15 @@ class Admin extends User {
 		return $newdeviceid;
 	}
 	
+	/**
+	 * Add a new EnOcean device
+	 * @param string $name device name
+	 * @param int $proto protocol id
+	 * @param int $room room id
+	 * @param int $device device id
+	 * @param string $addr physical address
+	 * @param int $daemon daemon id
+	 */
 	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		$link = Link::get_link('domoleaf');
 		if(empty($name) or empty($proto) or empty($room) or 
@@ -1147,8 +1330,8 @@ class Admin extends User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 		$sql = 'SELECT mcuser_id
-			    FROM mcuser
-				WHERE mcuser_level>=2';
+		        FROM mcuser
+		        WHERE mcuser_level>=2';
 		$req = $link->prepare($sql);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		while ($do = $req->fetch(PDO::FETCH_OBJ)) {
@@ -1156,13 +1339,17 @@ class Admin extends User {
 		}
 		return $newdeviceid;
 	}
-
+	
+	/**
+	 * List all manufacturer with preconfigured product for a project device
+	 * @param int $room_device_id project device id
+	 */
 	function confManufacturerList($room_device_id){
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		$sql = 'SELECT device_id, protocol_id
-				FROM room_device
-				WHERE room_device_id=:room_device_id';
+		        FROM room_device
+		        WHERE room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1170,10 +1357,10 @@ class Admin extends User {
 		$device_id = $do->device_id;
 		$protocol_id = $do->protocol_id;
 		$sql = 'SELECT DISTINCT manufacturer.manufacturer_id, manufacturer.name
-				FROM manufacturer
-				JOIN product ON manufacturer.manufacturer_id=product.manufacturer_id
-				WHERE product.device_id=:device_id AND product.protocol_id=:protocol_id 
-				ORDER BY manufacturer.name ASC';
+		        FROM manufacturer
+		        JOIN product ON manufacturer.manufacturer_id=product.manufacturer_id
+		        WHERE product.device_id=:device_id AND product.protocol_id=:protocol_id 
+		        ORDER BY manufacturer.name ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':device_id', $device_id, PDO::PARAM_INT);
 		$req->bindValue(':protocol_id', $protocol_id, PDO::PARAM_INT);
@@ -1186,13 +1373,18 @@ class Admin extends User {
 		}
 		return $list;
 	}
-
+	
+	/**
+	 * List preconfigured product for a device and a manufacturer
+	 * @param int $room_device_id project device id
+	 * @param int $manufacturer_id manufacturer id
+	 */
 	function confProductList($room_device_id, $manufacturer_id){
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		$sql = 'SELECT device_id, protocol_id
-				FROM room_device
-				WHERE room_device_id=:room_device_id';
+		        FROM room_device
+		        WHERE room_device_id=:room_device_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $room_device_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1200,9 +1392,9 @@ class Admin extends User {
 		$device_id = $do->device_id;
 		$protocol_id = $do->protocol_id;
 		$sql = 'SELECT product_id, name
-				FROM product
-				WHERE device_id=:device_id AND protocol_id=:protocol_id AND manufacturer_id=:manufacturer_id
-				ORDER BY name ASC';
+		        FROM product
+		        WHERE device_id=:device_id AND protocol_id=:protocol_id AND manufacturer_id=:manufacturer_id
+		        ORDER BY name ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':device_id', $device_id, PDO::PARAM_INT);
 		$req->bindValue(':protocol_id', $protocol_id, PDO::PARAM_INT);
@@ -1216,13 +1408,17 @@ class Admin extends User {
 		}
 		return $list;
 	}
-
+	
+	/**
+	 * List all preconfigured option for a product
+	 * @param int $product_id product id
+	 */
 	function confProductOptionList($product_id){
 		$link = Link::get_link('domoleaf');
 		$list = array();
 		$sql = 'SELECT option_id, addr, dpt_id 
-				FROM product_option 
-				WHERE product_id=:product_id';
+		        FROM product_option 
+		        WHERE product_id=:product_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':product_id', $product_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1237,6 +1433,9 @@ class Admin extends User {
 	}
 
 	/*** Daemon management ***/
+	/**
+	 * List all daemons/box
+	 */
 	function confDaemonList() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1266,6 +1465,13 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Add Daemon information of a new Box
+	 * @param string $name Box name
+	 * @param string $serial Box serial number
+	 * @param string $skey Box AES key
+	 * @return number Box id
+	 */
 	function confDaemonNew($name, $serial, $skey) {
 		$link = Link::get_link('domoleaf');	
 		if(empty($name) or empty($serial) or empty($skey)) {
@@ -1283,6 +1489,14 @@ class Admin extends User {
 		return $link->lastInsertId();
 	}
 	
+	/**
+	 * Modify wifi configuration
+	 * @param int $daemon_id daemon id
+	 * @param string $ssid SSID
+	 * @param string $password password
+	 * @param int $security 1 WEP, 2 WPA, 3 WPA2
+	 * @param int $mode 0 disabled, 1 Client, 2 AP
+	 */
 	function confSaveWifi($daemon_id, $ssid, $password, $security = 3, $mode = 0) {
 		if (!($mode == 0 || $mode == 1 || $mode == 2)){
 			return;
@@ -1321,11 +1535,15 @@ class Admin extends User {
 		return;
 	}
 	
+	/**
+	 * Get Wifi information
+	 * @param int $daemon_id daemon id
+	 */
 	function confWifi($daemon_id) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT wifi_ssid, wifi_password, wifi_security, wifi_mode
 		        FROM daemon
-				WHERE daemon_id=:daemon_id';
+		        WHERE daemon_id=:daemon_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':daemon_id', $daemon_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
@@ -1339,6 +1557,11 @@ class Admin extends User {
 		return $list;
 	}	
 	
+	/**
+	 * Restart or shutdown the domotic Box
+	 * @param int $iddaemon the Box id
+	 * @param int $opt 1 for reboot, shutdown else
+	 */
 	function confD3Reboot($iddaemon, $opt=1) {
 		$socket = new Socket();
 		$data = array(
@@ -1353,6 +1576,10 @@ class Admin extends User {
 		return $socket->receive();
 	}
 	
+	/**
+	 * Delete a Box
+	 * @param int $id Box id
+	 */
 	function confDaemonRemove($id) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'DELETE FROM daemon
@@ -1362,6 +1589,13 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Configure basic daemon information
+	 * @param int $id Box/Daemon id
+	 * @param string $name Box/Daemon name
+	 * @param string $serial Box/Daemon hostname
+	 * @param string $skey Box/Daemon secret AES key
+	 */
 	function confDaemonRename($id, $name, $serial, $skey='') {
 		$link = Link::get_link('domoleaf');
 		if(!empty($name) && !empty($serial)) {
@@ -1404,6 +1638,9 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * List protocols who require a specific daemon
+	 */
 	function confDaemonProtocolList() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1420,45 +1657,55 @@ class Admin extends User {
 		return $list;
 	}
 	
-	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='ttyAMA0', $interface_knx_arg='', $daemon_knx=1, $interface_EnOcean='ttyUSB0', $interface_EnOcean_arg='') {
-		if ($interface_knx == "tpuarts"){
-			if ($interface_knx_arg != "ttyS0" && $interface_knx_arg != "ttyS1" && $interface_knx_arg != "ttyS2"){
-				$interface_knx_arg = "ttyAMA0";
+	/**
+	 * Configure Interface on Slave Daemon
+	 * @param int $daemon Box/Daemon id
+	 * @param array $newProtocolList used protocols
+	 * @param string $interface_knx KNX interface type
+	 * @param string $interface_knx_arg KNX interface name
+	 * @param number $daemon_knx KNX Programmation mode
+	 * @param string $interface_EnOcean EnOcean interface type
+	 * @param string $interface_EnOcean_arg EnOcean interface name
+	 */
+	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='tpuarts', $interface_knx_arg='ttyAMA0', $daemon_knx=1, $interface_EnOcean='usb', $interface_EnOcean_arg='ttyUSB0') {
+		if ($interface_knx == 'tpuarts'){
+			if ($interface_knx_arg != 'ttyS0' && $interface_knx_arg != 'ttyS1' && $interface_knx_arg != 'ttyS2'){
+				$interface_knx_arg = 'ttyAMA0';
 			}	
 		}
-		else if ($interface_knx == "ipt"){
+		else if ($interface_knx == 'ipt'){
 			if (!(filter_var($interface_knx_arg, FILTER_VALIDATE_IP))){
-				$interface_knx = "tpuarts";
-				$interface_knx_arg = "ttyAMA0";
+				$interface_knx = 'tpuarts';
+				$interface_knx_arg = 'ttyAMA0';
 			}
 		}
 		else{
-			$interface_knx = "tpuarts";
-			$interface_knx_arg = "ttyAMA0";
+			$interface_knx = 'tpuarts';
+			$interface_knx_arg = 'ttyAMA0';
 		}
 		if($daemon_knx != 1) {
 			$daemon_knx = 0;
 		}
 		
 		if ($interface_EnOcean == "usb"){
-			if ($interface_EnOcean_arg != "ttyUSB0" && $interface_EnOcean_arg != "ttyUSB1"){
-				$interface_EnOcean_arg = "ttyUSB0";
+			if ($interface_EnOcean_arg != 'ttyUSB0' && $interface_EnOcean_arg != 'ttyUSB1'){
+				$interface_EnOcean_arg = 'ttyUSB0';
 			}
 		}
-		else if ($interface_EnOcean == "tpuarts"){
-			if ($interface_EnOcean_arg != "ttyS0" && $interface_EnOcean_arg != "ttyS1" && $interface_EnOcean_arg != "ttyS2"){
-				$interface_EnOcean_arg = "ttyAMA0";
+		else if ($interface_EnOcean == 'tpuarts'){
+			if ($interface_EnOcean_arg != 'ttyS0' && $interface_EnOcean_arg != 'ttyS1' && $interface_EnOcean_arg != 'ttyS2'){
+				$interface_EnOcean_arg = 'ttyAMA0';
 			}
 		}
-		else if ($interface_EnOcean == "ipt"){
+		else if ($interface_EnOcean == 'ipt'){
 			if (!(filter_var($interface_EnOcean_arg, FILTER_VALIDATE_IP))){
-				$interface_EnOcean = "usb";
-				$interface_EnOcean_arg = "ttyUSB0";
+				$interface_EnOcean = 'usb';
+				$interface_EnOcean_arg = 'ttyUSB0';
 			}
 		}
 		else{
-			$interface_EnOcean = "usb";
-			$interface_EnOcean_arg = "ttyUSB0";
+			$interface_EnOcean = 'usb';
+			$interface_EnOcean_arg = 'ttyUSB0';
 		}
 		$socket = new Socket();
 		$data = array(
@@ -1512,9 +1759,9 @@ class Admin extends User {
 					}
 					else{
 						$sql = 'INSERT INTO daemon_protocol
-					        	(daemon_id, protocol_id)
-					        	VALUES
-					        	(:daemon_id, :protocol_id)';
+						        (daemon_id, protocol_id)
+						        VALUES
+						        (:daemon_id, :protocol_id)';
 						$req = $link->prepare($sql);
 						$req->bindValue(':daemon_id',   $daemon,   PDO::PARAM_INT);
 						$req->bindValue(':protocol_id', $protocol, PDO::PARAM_INT);
@@ -1525,6 +1772,11 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Check if the communication between the master's daemon and the 
+	 * slave daemon of the target Domotic Box is OK
+	 * @param int $iddaemon Box id
+	 */
 	function confDaemonSendValidation($iddaemon){
 		$socket = new Socket();
 		$data = array(
@@ -1534,6 +1786,9 @@ class Admin extends User {
 		return $socket->receive();
 	}
 	
+	/**
+	 * Count configured daemon by protocol
+	 */
 	function confMenuProtocol() {
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1549,6 +1804,10 @@ class Admin extends User {
 	}
 	
 	/*** User permission ***/
+	
+	/**
+	 * Return all installation information
+	 */
 	function mcAllowed(){
 		$link = Link::get_link('domoleaf');
 		$listFloor = array();
@@ -1704,6 +1963,9 @@ class Admin extends User {
 		);
 	}
 	
+	/**
+	 * Return all visible MasterCommand elements
+	 */
 	function mcVisible(){
 		$link = Link::get_link('domoleaf');
 		$listFloor = array();
@@ -1747,6 +2009,11 @@ class Admin extends User {
 		);
 	}
 	
+	/**
+	 * Reset error on a device
+	 * @param int $room_device_id project device id
+	 * @param int $option_id option id
+	 */
 	function mcResetError($room_device_id, $option_id) {
 		$link = Link::get_link('domoleaf');
 		$sql = 'UPDATE room_device_option
@@ -1758,6 +2025,10 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Get all information of an installation for an user
+	 * @param int $userid user id, current user by default
+	 */
 	function confUserInstallation($userid) {
 		$link = Link::get_link('domoleaf');
 		if(empty($userid)) {
@@ -1824,7 +2095,10 @@ class Admin extends User {
 		return $list;
 	}
 	
-	//device
+	/**
+	 * List devices information for an user
+	 * @param number $userid user id
+	 */
 	function confUserDeviceEnable($userid){
 		if (empty($userid)) {
 			$userid = $this -> getId();
@@ -1850,7 +2124,13 @@ class Admin extends User {
 		}
 		return $list;
 	}
-
+	
+	/**
+	 * Modify device permissions for an user
+	 * @param int $userid user id
+	 * @param int $deviceid device id
+	 * @param int $status allow or not (0/1)
+	 */
 	function confUserPermissionDevice($userid, $deviceid, $status){
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT mcuser_device.room_device_id, device_order, room_id
@@ -1884,7 +2164,10 @@ class Admin extends User {
 		}
 	}
 	
-	//room
+	/**
+	 * List rooms information for an user
+	 * @param number $userid user id
+	 */
 	function confUserRoomEnable($userid = 0){
 		if (empty($userid)) {
 			$userid = $this -> getId();
@@ -1910,6 +2193,12 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Modify room permissions for an user
+	 * @param int $userid user id
+	 * @param int $roomid room id
+	 * @param int $status allow or not (0/1)
+	 */
 	function confUserPermissionRoom($userid, $roomid, $status){
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT mcuser_room.room_id, room_order, floor
@@ -1942,7 +2231,10 @@ class Admin extends User {
 		}
 	}
 	
-//Floor
+	/**
+	 * List floors information for an user
+	 * @param number $userid user id
+	 */
 	function confUserFloorEnable($userid){
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -1964,6 +2256,12 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Modify floor permissions for an user
+	 * @param int $userid user id
+	 * @param int $floorid floor id
+	 * @param int $status allow or not (0/1)
+	 */
 	function confUserPermissionFloor($userid, $floorid, $status){
 		$link = Link::get_link('domoleaf');
 		$sql = 'SELECT floor_id
@@ -1996,6 +2294,9 @@ class Admin extends User {
 
 	/*** Backup Database ***/
 	
+	/**
+	 * List local Database backups
+	 */
 	function confDbListLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_list_local');
@@ -2008,6 +2309,9 @@ class Admin extends User {
 		}
 	}
 	
+	/**
+	 * Create a local backup of the Database
+	 */
 	function confDbCreateLocal(){
 		$socket = new Socket();
 		$socket->send('backup_db_create_local');
@@ -2015,6 +2319,10 @@ class Admin extends User {
 		$socket->receive();
 	}
 	
+	/**
+	 * Delete a backup on an USB key
+	 * @param int $filename backup creation timestamp
+	 */
 	function confDbRemoveUsb($filename){
 		if (empty($filename)){
 			return NULL;
@@ -2025,6 +2333,10 @@ class Admin extends User {
 		$socket->receive();
 	}
 	
+	/**
+	 * Restore a backup on an USB key
+	 * @param int $filename backup creation timestamp
+	 */
 	function confDbRestoreUsb($filename){
 		if (empty($filename)){
 			return NULL;
@@ -2036,6 +2348,9 @@ class Admin extends User {
 		$socket->send('reload_d3config');
 	}
 	
+	/**
+	 * Check if an USB key is connected to the Box
+	 */
 	function confDbCheckUsb(){
 		$socket = new Socket();
 		$socket->send('check_usb');
@@ -2043,6 +2358,9 @@ class Admin extends User {
 		return $res;
 	}
 	
+	/**
+	 * List all backups on the USB key
+	 */
 	function confDbListUsb(){
 		$socket = new Socket();
 		$socket->send('backup_db_list_usb');
@@ -2054,13 +2372,20 @@ class Admin extends User {
 			return NULL;
 		}
 	}
-
+	
+	/**
+	 * Create a backup on the USB key
+	 */
 	function confDbCreateUsb(){
 		$socket = new Socket();
 		$socket->send('backup_db_create_usb');
 		$socket->receive();
 	}
 	
+	/**
+	 * Delete a local backup
+	 * @param int $filename backup creation timestamp
+	 */
 	function confDbRemoveLocal($filename){
 		if (empty($filename)){
 			return NULL;
@@ -2070,6 +2395,10 @@ class Admin extends User {
 		$socket->receive();
 	}
 	
+	/**
+	 * Restore a local backup
+	 * @param int $filename backup creation timestamp
+	 */
 	function confDbRestoreLocal($filename){
 		if (empty($filename)){
 			return NULL;
@@ -2082,21 +2411,10 @@ class Admin extends User {
 	}
 
 	/*** Option ***/
-	function confOptionList(){
-		$link = Link::get_link('domoleaf');
-		$list = array();
-		$sql = 'SELECT option_id, 
-		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name 
-		        FROM optiondef
-		        ORDER BY name'.$this->getLanguage();
-		$req = $link->prepare($sql);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		while($do = $req->fetch(PDO::FETCH_OBJ)) {
-			$list[$do->option_id] = clone $do;
-		}
-		return $list;
-	}
-	
+	/**
+	 * List available options for a project device
+	 * @param number $iddevice project device id
+	 */
 	function confOptionDptList($iddevice = 0){
 		$link = Link::get_link('domoleaf');
 		$list = array();
@@ -2114,31 +2432,13 @@ class Admin extends User {
 		while($do = $req->fetch(PDO::FETCH_OBJ)) {
 			$list[$do->option_id][] = clone $do;
 		}
-		/*
-		 * JOIN room_device
-		        ON room_device.protocol_id = dpt_optiondef.protocol_id
-		        WHERE room_device_id=:iddevice
-		        $req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
-		 */
+		
 		return $list;
 	}
-
-	function checkDevice($iddevice){
-		$link = Link::get_link('domoleaf');
-		$sql = 'SELECT mcuser_id
-		        FROM mcuser_device
-		        WHERE mcuser_id=:user_id AND room_device_id=:iddevice';
-		$req = $link->prepare($sql);
-		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
-		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
-		$req->execute() or die (error_log(serialize($req->errorInfo())));
-		$do = $req->fetch(PDO::FETCH_OBJ);
-		if(empty($do->mcuser_id)) {
-			return false;
-		}
-		return true;
-	}
-
+	
+	/**
+	 * Get last 500 EnOcean events
+	 */
 	function monitorEnocean() {
 		$link = Link::get_link('domoleaf');
 		if (apcu_exists('monitorEnocean')) {
@@ -2158,6 +2458,9 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Get last 100 KNX events
+	 */
 	function monitorKnx() {
 		$link = Link::get_link('domoleaf');
 		if (apcu_exists('monitorKnx')) {
@@ -2206,6 +2509,9 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * List all IP device on the network
+	 */
 	function monitorIp() {
 		$link = Link::get_link('domoleaf');
 		if (apcu_exists('monitorIp')) {
@@ -2224,6 +2530,9 @@ class Admin extends User {
 		return $list;
 	}
 	
+	/**
+	 * Scan the IP network
+	 */
 	function monitorIpRefresh(){
 		$socket = new Socket();
 		$socket->send("monitor_ip");
@@ -2233,9 +2542,9 @@ class Admin extends User {
 	
 	/**
 	 * Set floor order
-	 * @param int : user id
-	 * @param int : floor id
-	 * @param int : -1 ou 1
+	 * @param int $userid user id
+	 * @param int $floorid floor id
+	 * @param int $action -1 or 1
 	 */
 	function SetFloorOrder($userid, $floorid, $action) {
 		$link = Link::get_link('domoleaf');
@@ -2285,9 +2594,9 @@ class Admin extends User {
 	
 	/**
 	 * Set room order
-	 * @param int : user id
-	 * @param int : room id
-	 * @param int : -1 ou 1
+	 * @param int $userid user id
+	 * @param int $roomid room id
+	 * @param int $action -1 or 1
 	 */
 	function SetRoomOrder($userid, $roomid, $action){
 		$link = Link::get_link('domoleaf');
@@ -2335,9 +2644,9 @@ class Admin extends User {
 	
 	/**
 	 * Set device order
-	 * @param int : user id
-	 * @param int : device id
-	 * @param int : -1 ou 1
+	 * @param int $userid user id
+	 * @param int $deviceid device id
+	 * @param int $action -1 or 1
 	 */
 	function SetDeviceOrder($userid, $deviceid, $action){
 		$link = Link::get_link('domoleaf');
@@ -2385,6 +2694,12 @@ class Admin extends User {
 	
 	/*** User customisation ***/
 	
+	/**
+	 * Set a background image for a widget
+	 * @param int $iddevice device id
+	 * @param string $bgimg image name
+	 * @param int $userid user id, current user by default
+	 */
 	function confUserDeviceBgimg($iddevice, $bgimg, $userid = 0){
 		if (empty($userid)) {
 			$userid = $this->getId();
@@ -2400,6 +2715,12 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Set a background image for a room
+	 * @param int $idroom room id
+	 * @param string $bgimg image name
+	 * @param int $userid user id, current user by default
+	 */
 	function confUserRoomBgimg($idroom, $bgimg, $userid = 0){
 		if (empty($userid)) {
 			$userid = $this->getId();
@@ -2415,6 +2736,11 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Update background color
+	 * @param string $color color html code
+	 * @param int $userid user id, current user by default
+	 */
 	function userUpdateBGColor($color, $userid = 0){
 		if (empty($userid)) {
 			$userid = $this->getId();
@@ -2429,6 +2755,11 @@ class Admin extends User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
 	
+	/**
+	 * Update menu color
+	 * @param string $color color html code
+	 * @param int $userid user id, current user by default
+	 */
 	function userUpdateMenusBordersColor($color, $userid = 0){
 		if (empty($userid)) {
 			$userid = $this->getId();
@@ -2445,6 +2776,12 @@ class Admin extends User {
 	
 	/*** KNX action ***/
 	
+	/**
+	 * Launch a KNX write long (> 1bit)
+	 * @param int $daemon daemon id
+	 * @param string $addr KNX address
+	 * @param int $value value
+	 */
 	function knx_write_l($daemon, $addr, $value=0){
 		$socket = new Socket();
 		$tab = array(
@@ -2455,6 +2792,12 @@ class Admin extends User {
 		$socket->send('knx_write_l', $tab);
 	}
 	
+	/**
+	 * Launch a KNX write short (1bit)
+	 * @param int $daemon daemon id
+	 * @param string $addr KNX address
+	 * @param int $value value
+	 */
 	function knx_write_s($daemon, $addr, $value=0){
 		$socket = new Socket();
 		$tab = array(
@@ -2465,6 +2808,11 @@ class Admin extends User {
 		$socket->send('knx_write_s', $tab);
 	}
 	
+	/**
+	 * Launch a KNX read
+	 * @param int $daemon daemon id
+	 * @param string $addr KNX address
+	 */
 	function knx_read($daemon, $addr){
 		$socket = new Socket();
 		$tab = array(
@@ -2475,6 +2823,9 @@ class Admin extends User {
 	}
 	
 	/*** KNX log ***/
+	/**
+	 * List all KNX physical address in the logs
+	 */
 	function confKnxAddrList(){
 		$link = Link::get_link('domoleaf');
 		$list = array();

@@ -1,5 +1,9 @@
 <?php 
 
+/**
+ * Connection and execution of the API
+ * @author virgil
+ */
 class Api {
 	private $id=0;
 	private $token   = '';
@@ -14,13 +18,18 @@ class Api {
 		}
 	}
 	
+	/**
+	 * Add the request to the stack
+	 * @param string $action action name
+	 * @param array $parameters action parameters
+	 */
 	function add_request($action, $parameters=array('')) {
 		$this->request[$action] = $parameters;
 	}
 	
 	/**
 	 * Send requests
-	 * Get all answers
+	 *@return Get all answers
 	 */
 	function send_request() {
 		$data = array('token'   => $this->token,
@@ -76,18 +85,30 @@ class Api {
 		return $result->request;
 	}
 	
+	/**
+	 * Get user id
+	 */
 	function getId() {
 		return $this->id;
 	}
 	
+	/**
+	 * Get user level
+	 */
 	function getLevel() {
 		return $this->level;
 	}
 	
+	/**
+	 * Get user language
+	 */
 	function getLanguage() {
 		return $this->language;
 	}
 	
+	/**
+	 * Set used Design
+	 */
 	function setDesign() {
 		switch ($this->design) {
 			case 1: 
@@ -99,6 +120,10 @@ class Api {
 		}
 	}
 	
+	/**
+	 * Current user is connected ?
+	 * @return true or false
+	 */
 	function is_co() {
 		if($this->id != 0) {
 			return true;
@@ -108,6 +133,11 @@ class Api {
 		}
 	}
 	
+	/**
+	 * Return formated date
+	 * @param int $time timestamp
+	 * @param int $type template format
+	 */
 	function date($time=0, $type=0) {
 		if(empty($time)) {
 			$time = $_SERVER['REQUEST_TIME'];
@@ -127,8 +157,14 @@ class Api {
 		return NULL;
 	}
 	
+	/**
+	 * Execute actions
+	 * @param string $token authentication token
+	 * @param array $request all actions and params
+	 * @return array answer after treatment
+	 */
 	static function action($token, $request) {
-
+		
 		$answer  = array(
 				'request' => array(),
 				'id'      => 0,
@@ -136,7 +172,7 @@ class Api {
 				'language'=> '',
 				'design'  => 0
 		);
-
+		
 		if(!empty($token)) {
 			$co = Guest::connect($token);
 			$answer['id']       = $co['id'];
@@ -533,9 +569,9 @@ class Api {
 							$res = $user->confDeviceAll();
 						break;
 						
-						case 'confRoomDeviceAll':
+						case 'confRoomDeviceInfo':
 							if (!empty($var[0])){
-								$res = $user->confRoomDeviceAll($var[0]);
+								$res = $user->confRoomDeviceInfo($var[0]);
 							}
 						break;
 						
