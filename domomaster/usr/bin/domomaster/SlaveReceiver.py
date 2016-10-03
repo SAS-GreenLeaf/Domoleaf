@@ -45,6 +45,8 @@ class SlaveReceiver(Thread):
         self.db_dbname = daemon.db_dbname;
 
     ## Thread run function overload.
+    #
+    # @return None
     def run(self):
         ## Database handler to query master database
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);

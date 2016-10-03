@@ -42,6 +42,7 @@ class Scenario(Thread):
     # @param schedule The new schedule.
     # @param connection The new connection.
     # @param doList The new doList.
+    # @return None
     def setValues(self, global_state, trigger, schedule, connection, doList):
         ## Global state object
         self.global_state = global_state;
@@ -55,6 +56,8 @@ class Scenario(Thread):
         self.doList = doList;
 
     ## Starts the thread.
+    #
+    # @return None
     def run(self):
         check_all_scenarios(self);
 
@@ -76,6 +79,7 @@ class Scenario(Thread):
     ## Updates the list of scenarios in database.
     #
     # @param db The database handler (default 0).
+    # @return None
     def update_scenarios_list(self, db=0):
         self.logger.debug('UPDATING SCENARIOS');
         query = ''.join(['SELECT id_scenario, trigger_events_conditions.id_trigger, id_schedule, ',
@@ -94,6 +98,7 @@ class Scenario(Thread):
     #
     # @param id_smartcmd ID of the smartcommand launching the scenario.
     # @param connection The connection used to communicate.
+    # @return None
     def launch_scenario(self, id_smartcmd, connection):
         self.logger.debug('LAUNCH !!!');
         jsonString = json.JSONEncoder().encode({

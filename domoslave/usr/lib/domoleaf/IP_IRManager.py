@@ -31,6 +31,7 @@ class IP_IRManager:
     # @param json_obj Not used here.
     # @param dev Object containing the device informations to who send the packet.
     # @param hostname Not used here.
+    # @return None
     def send_to_gc(self, json_obj, dev, hostname):
         ir_addr = dev['addr_dst'];
         tcp_ip = dev['addr'];

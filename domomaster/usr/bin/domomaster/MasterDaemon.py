@@ -231,6 +231,7 @@ class MasterDaemon:
     ## Gets the secretkeys of each slave daemon stored in database.
     #
     # @param db The database handler used to query the database.
+    # @return None
     def get_aes_slave_keys(self, db):
         query = "SELECT serial, secretkey FROM daemon";
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -243,6 +244,8 @@ class MasterDaemon:
                 self.aes_master_key = r[1];
 
     ## Stops the daemon and closes sockets.
+    #
+    # @return None
     def stop(self):
         flag = False;
         while not flag:
@@ -255,6 +258,8 @@ class MasterDaemon:
         sys.exit(0);
 
     ## Initializes the connections and accepts incomming communications.
+    #
+    # @return None
     def run(self):
         ## Main socket for listening incomming connections for slave daemons
         self.slave_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -283,6 +288,8 @@ class MasterDaemon:
     ## Master daemon main loop.
     #
     # Waits for new connections.
+    #
+    # @return None
     def loop(self):
         ## Flag set True for running, False to stop the main loop
         self.run = True;
@@ -310,6 +317,7 @@ class MasterDaemon:
     ## Gets new domoleaf connections and threads the treatment.
     #
     # @param connection The connection object used to listen and accept the incomming connection from the MasterCommand.
+    # @return None
     def accept_new_cmd_connection(self, connection):
         new_connection, addr = connection.accept();
         r = CommandReceiver(new_connection, self);
@@ -318,6 +326,7 @@ class MasterDaemon:
     ## Gets new slave connections and threads the treatment.
     #
     # @param connection The connection object used to listen and accept the incomming connection from a slave.
+    # @return None
     def accept_new_slave_connection(self, connection):
         new_connection, addr = connection.accept();
         myname = socket.gethostname();
@@ -337,6 +346,7 @@ class MasterDaemon:
     # @param connection The connection object used to communicate.
     # @param daemon_id The ID of the slave daemon who sent the data.
     # @param db The database handler.
+    # @return None
     def parse_data(self, data, connection, daemon_id, db):
         json_obj = json.JSONDecoder().decode(data);
         json_obj['daemon_id'] = daemon_id;
@@ -352,6 +362,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def check_updates(self, json_obj, connection, db):
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=4';
         actual_version = self.sql.mysql_handler_personnal_query(query, db);
@@ -378,6 +389,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def update(self, json_obj, connection, db):
         call(['apt-get', 'update']);
         p = Popen("DEBIAN_FRONTEND=noninteractive apt-get install domomaster domoslave -y ",
@@ -412,6 +424,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_create_local(self, json_obj, connection, db):
         path = '/etc/domoleaf/sql/backup/';
         filename = 'domoleaf_backup_';
@@ -428,6 +441,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_remove_local(self, json_obj, connection, db):
         filename = ''.join(['/etc/domoleaf/sql/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
@@ -450,6 +464,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Connection object used to send the result.
     # @param db Not used here.
+    # @return None
     def backup_db_list_local(self, json_obj, connection, db):
         json_obj = [];
         append = json_obj.append;
@@ -468,6 +483,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_restore_local(self, json_obj, connection, db):
         path = '/etc/domoleaf/sql/backup/';
         filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
@@ -495,6 +511,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data, and the result.
     # @param connection The connection object used to send the result.
     # @param db The database handler.
+    # @return None
     def check_usb(self, json_obj, connection, db):
         try:
             sdx1 = glob.glob('/dev/sd?1')[0];
@@ -512,6 +529,7 @@ class MasterDaemon:
     # @param json_obj JSON object reinitialized to store the result.
     # @param connection Connection object used to send the result.
     # @param db Not used here.
+    # @return None
     def backup_db_list_usb(self, json_obj, connection, db):
         json_obj = [];
         append = json_obj.append
@@ -536,6 +554,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_remove_usb(self, json_obj, connection, db):
         filename = ''.join(['/etc/domoleaf/mnt/backup/domoleaf_backup_', str(json_obj['data']), '.sql.tar.gz']);
         if str(json_obj['data'][0]) == '.' or str(json_obj['data'][0]) == '/':
@@ -565,6 +584,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_restore_usb(self, json_obj, connection, db):
         path = '/etc/domoleaf/mnt/backup/';
         filename = ''.join(['domoleaf_backup_', str(json_obj['data']), '.sql']);
@@ -601,6 +621,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def backup_db_create_usb(self, json_obj, connection, db):
         sdx1 = glob.glob('/dev/sd?1')[0];
         if not (os.path.exists(sdx1)):
@@ -624,6 +645,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def monitor_knx(self, json_obj, connection, db):
         daemon_id = self.sql.update_knx_log(json_obj, db);
         doList = self.knx_manager.update_room_device_option(daemon_id, json_obj, db);
@@ -638,6 +660,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Connection object used to communicate.
     # @param db The database handler
+    # @return None
     def knx_write_short(self, json_obj, connection, db):
         daemons = self.sql.get_daemons(db);
         slave_name = self.get_slave_name(json_obj, daemons);
@@ -657,6 +680,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection The connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def knx_write_long(self, json_obj, connection, db):
         daemons = self.sql.get_daemons(db);
         slave_name = self.get_slave_name(json_obj, daemons);
@@ -675,6 +699,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def knx_read(self, json_obj, connection, db):
         daemons = self.sql.get_daemons(db);
         slave_name = self.get_slave_name(json_obj, daemons);
@@ -690,6 +715,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Connection object, juste closed here.
     # @param db The database handler.
+    # @return None
     def monitor_ip(self, json_obj, connection, db):
         self.scanner.scan();
         self.sql.insert_hostlist_in_db(self.scanner._HostList, db);
@@ -701,6 +727,7 @@ class MasterDaemon:
     # @param json_obj UNUSED
     # @param connection UNUSED
     # @param db UNUSED
+    # @return None
     def monitor_bluetooth(self, json_obj, connection, db):
         connection.close();
         return None;
@@ -711,6 +738,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing the enocean packet data.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def monitor_enocean(self, json_obj, connection, db):
         daemon_id = self.sql.update_enocean_log(json_obj, db);
         doList = self.enocean_manager.update_room_device_option(daemon_id, json_obj, db);
@@ -725,6 +753,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data about room device and option.
     # @param connection Connection object, just closed here.
     # @param db The database handler.
+    # @return None
     def send_to_device(self, json_obj, connection, db):
         hostname = '';
         dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
@@ -750,6 +779,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing the data about the audio device.
     # @param dev Other informations about the device.
     # @param hostname The hostname of the audio device.
+    # @return None
     def upnp_audio(self, json_obj, dev, hostname):
         cmd = UpnpAudio(dev['addr'], int(dev['plus1']));
         cmd.action(json_obj);
@@ -776,6 +806,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing whether 'open' or 'close'.
     # @param connection Connection object, just closed here.
     # @param db Not used here.
+    # @return None
     def cron_upnp(self, json_obj, connection, db):
         local_ip = self.get_ip_ifname("eth0");
         if local_ip is None:
@@ -802,6 +833,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler used to query the database.
+    # @return None
     def reload_camera(self, json_obj, connection, db):
         camera_file = open(CAMERA_CONF_FILE, 'w');
         query = "SELECT room_device_id, addr, plus1 FROM room_device WHERE protocol_id = 6";
@@ -825,6 +857,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def reload_d3config(self, json_obj, connection, db):
         query = "SELECT configuration_id, configuration_value FROM configuration";
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -836,6 +869,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data about the daemon_id.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def check_slave(self, json_obj, connection, db):
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -915,6 +949,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data about the packet.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def send_mail(self, json_obj, connection, db):
         try:
             from_addr = formataddr((self.d3config['6'], self.d3config['5']));
@@ -950,6 +985,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing the new date / time to set.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def modif_datetime(self, json_obj, connection, db):
         os.system('date --set '+json_obj['data'][0]);
         os.system('date --set '+json_obj['data'][1]);
@@ -979,6 +1015,8 @@ class MasterDaemon:
         return slave_name;
 
     ## Calls the command "service reload nginx".
+    #
+    # @return None
     def reload_web_server(self):
         self.logger.debug('Reloading web server...');
         call(["service", "nginx", "reload"]);
@@ -989,6 +1027,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing informations about the smartcommand to start.
     # @param connection Connection object used to communicate.
     # @param db Not used here.
+    # @return None
     def smartcmd_launch(self, json_obj, connection, db):
         s = Smartcommand(self, int(json_obj['data']))
         s.setValues(connection);
@@ -999,6 +1038,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def triggers_list_update(self, json_obj, connection, db):
         self.trigger.update_triggers_list(db);
 
@@ -1007,6 +1047,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def schedules_list_update(self, json_obj, connection, db):
         self.schedule.update_schedules_list(db);
 
@@ -1015,6 +1056,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Not used here.
     # @param db The database handler.
+    # @return None
     def scenarios_list_update(self, json_obj, connection, db):
         self.scenario.update_scenarios_list(db);
 
@@ -1023,6 +1065,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Connection object used to communicate.
     # @param db Not used here.
+    # @return None
     def check_schedules(self, json_obj, connection, db):
         self.schedule.check_all_schedules(connection);
 
@@ -1031,6 +1074,7 @@ class MasterDaemon:
     # @param json_obj Not used here.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def launch_calc_logs(self, json_obj, connection, db):
         try:
             self.calcLogs.sort_logs(connection, db);
@@ -1062,6 +1106,7 @@ class MasterDaemon:
     # @param json_obj JSON object in which the HTTP and SSL option values are stored.
     # @param connection Connection object used to communicate.
     # @param db The database handler.
+    # @return None
     def send_tech(self, json_obj, connection, db):
         query = 'SELECT configuration_value FROM configuration WHERE configuration_id=1';
         http = self.sql.mysql_handler_personnal_query(query, db);
@@ -1076,6 +1121,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Not used here.
     # @param db Not used here.
+    # @return None
     def send_request(self, json_obj, connection, db):
         if self._parser.getValueFromSection('greenleaf', 'commercial') == "1":
             admin_addr = self._parser.getValueFromSection('greenleaf', 'admin_addr')
@@ -1087,6 +1133,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing the daemon data.
     # @param connection Connection object, juste closed here.
     # @param db The database handler.
+    # @return None
     def send_interfaces(self, json_obj, connection, db):
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -1154,6 +1201,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing data describing the daemon to shut down.
     # @param connection Used here to close the connection.
     # @param db The database handler.
+    # @return None
     def shutdown_d3(self, json_obj, connection, db):
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -1193,6 +1241,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing the description of the slave to reboot.
     # @param connection Used here to close the connection.
     # @param db The database handler.
+    # @return None
     def reboot_d3(self, json_obj, connection, db):
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -1232,6 +1281,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection User here to close the connection.
     # @param db The database handler.
+    # @return None
     def wifi_update(self, json_obj, connection, db):
         query = ''.join(["SELECT serial, secretkey FROM daemon WHERE daemon_id=", str(json_obj['data']['daemon_id'])]);
         res = self.sql.mysql_handler_personnal_query(query, db);
@@ -1293,6 +1343,7 @@ class MasterDaemon:
     #
     # @param json_obj JSON object containing some data.
     # @param connection Used here to close the connection.
+    # @return None
     def remote_sql(self, json_obj, connection):
         db = MasterSql();
         req = json_obj['data'].split(';');

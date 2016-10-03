@@ -24,6 +24,7 @@ class GLManager:
     ## Sends a packet to use the cron cron_name.
     #
     # @param cron_name The name of the cron to use.
+    # @return None
     def send_cron(cron_name):
         try:
             parser = DaemonConfigParser(SLAVE_CONF_FILE);
@@ -68,6 +69,7 @@ class GLManager:
     # @param obj_to_send The JSON Object to send.
     # @param admin_addr The address to who send the packet.
     # @param aes_key The AES keys to cypher the packet.
+    # @return Result of the request
     def SendRequest(obj_to_send, admin_addr, aes_key):
         hostname = socket.gethostname()
         aes_IV = AESManager.get_IV();

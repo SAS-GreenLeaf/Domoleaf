@@ -59,6 +59,7 @@ class DaemonConfigParser:
     # @param sectionName The name of the section to which write the new key - value pair.
     # @param valueName The name of the key to write with its value.
     # @param value The value to write.
+    # @return None
     def writeValueFromSection(self, sectionName, valueName, value):
         try:
             if not self.getValueFromSection(sectionName, valueName):
