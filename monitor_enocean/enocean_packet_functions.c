@@ -137,6 +137,7 @@ void slave_delete(Slave *slave)
  * \param data The data to send to the slave
  * \param size The length of the data to send
  * \brief Writes datas on slave's socket
+ * \return -1 if fails to write on socket, 0 otherwise
  */
 int slave_send_data(Slave *slave, void *data, int size)
 {

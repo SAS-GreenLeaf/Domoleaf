@@ -41,6 +41,7 @@ class Scanner:
     ## Adds a new host in the hostlist.
     #
     # @param host The host to add.
+    # @return None
     def addNewHost(self, host):
         self._HostList.append(host);
 
@@ -49,6 +50,7 @@ class Scanner:
     # @param macAddr The MAC address of the new host.
     # @param ipAddr The IP address of the new host.
     # @param hostname The hostname of the new hsot.
+    # @return None
     def addNewHost(self, macAddr, ipAddr, hostname):
         self._HostList.append(Host(macAddr, ipAddr, hostname.upper(), None, 0));
 
@@ -76,6 +78,8 @@ class Scanner:
         return (net);
 
     ## Displays a list of the available hosts.
+    #
+    # @return None
     def printHosts(self):
         for h in self._HostList:
             print("=== HOST ON NETWORK ===");
@@ -88,6 +92,7 @@ class Scanner:
     #
     # @param net IP address under CIDR form.
     # @param interface Name of the used network interface.
+    # @return None
     def getHosts(self, net, interface):
         try:
             ans, unans = scapy.layers.l2.arping(net, iface = interface, timeout = 1, verbose = False);
@@ -108,6 +113,8 @@ class Scanner:
         self.addNewHost(macAddr = '', ipAddr = '127.0.0.1', hostname = socket.gethostname().upper());
 
     ## Scans the local network and gets all the MAC and IP of hosts.
+    #
+    # @return None
     def scan(self):
         for network, netmask, _, interface, address in scapy.config.conf.route.routes:
             if (network == 0 or

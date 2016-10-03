@@ -37,6 +37,8 @@ class CommandReceiver(Thread):
     ## Thread run function overload.
     #
     # It listens to the slaves and sends the packet to the treatment function.
+    #
+    # @return None
     def run(self):
         ## The MysqlHandler object for the communication with the database
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);

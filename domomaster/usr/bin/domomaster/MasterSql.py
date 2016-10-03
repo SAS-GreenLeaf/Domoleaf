@@ -56,6 +56,7 @@ class MasterSql:
     #
     # @param hostlist The list of all the hosts connected on the local network.
     # @param db The database handler used for queries.
+    # @return None
     def insert_hostlist_in_db(self, hostlist, db):
         for host in hostlist:
             db.update_datas_in_table('ip_monitor',
@@ -220,6 +221,7 @@ class MasterSql:
     #
     # @param query The query to send to the database.
     # @param db The database handler used for queries.
+    # @return Result of the query.
     def mysql_handler_personnal_query(self, query, db=0):
         tmp = db;
         if not tmp:

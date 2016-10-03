@@ -164,6 +164,7 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def update(self, json_obj, connection):
         p = call(['dpkg', '--configure', '-a'])
         call(['apt-get', 'update']);
@@ -179,6 +180,8 @@ class SlaveDaemon:
         # connection.send(bytes(encrypt_IV, 'utf-8') + data);
 
     ## Initializes the sockets for listenning incomming connections.
+    #
+    # @return None
     def run(self):
         ## Run flag at True for running, at False to stop the main loop
         self.run = True;
@@ -218,6 +221,8 @@ class SlaveDaemon:
         self.loop();
 
     ## Gets available sockets for reading on the KNX socket.
+    #
+    # @return None
     def accept_knx(self):
         rlist, wlist, elist = select.select([self.knx_sock], [], [], SELECT_TIMEOUT);
         append = self.connected_knx.append
@@ -227,6 +232,8 @@ class SlaveDaemon:
         self.receive_from_knx(self.connected_knx);
 
     ## Gets available sockets for reading on the master socket.
+    #
+    # @return None
     def accept_masters(self):
         rlist, wlist, elist = select.select([self.master_sock], [], [], SELECT_TIMEOUT);
         masters_socks = [];
@@ -237,6 +244,8 @@ class SlaveDaemon:
         self.receive_from_masters(masters_socks);
 
     ## Gets available sockets for reading on the EnOcean socket.
+    #
+    # @return None
     def accept_enocean(self):
         rlist, wlist, elist = select.select([self.enocean_sock], [], [], SELECT_TIMEOUT);
         enocean_socks = [];
@@ -249,6 +258,8 @@ class SlaveDaemon:
         self.receive_from_enocean(enocean_socks);
 
     ## Gets available sockets for reading on the Cron socket.
+    #
+    # @return None
     def accept_cron(self):
         rlist, wlist, elist = select.select([self.cron_sock], [], [], SELECT_TIMEOUT);
         cron_socks = [];
@@ -264,6 +275,7 @@ class SlaveDaemon:
     #
     # @param data Packet data including the packet type.
     # @param connection Connection object sent to the function.
+    # @return None
     def parse_data(self, data, connection):
         json_obj = json.JSONDecoder().decode(data);
         if json_obj['packet_type'] in self.functions.keys():
@@ -275,6 +287,7 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing the address to read.
     # @param connection Not used here.
+    # @return None
     def knx_read_request(self, json_obj, connection):
         call(['knxtool', CALL_GROUPREAD, EIB_URL, json_obj['addr_to_read']]);
 
@@ -282,6 +295,7 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing the address to which send, and the values to send.
     # @param connection Not used here.
+    # @return None
     def knx_write_temp(self, json_obj, connection):
         val = json_obj['value'].split(' ')
         call(['knxtool', CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], val[0], val[1]]);
@@ -290,6 +304,7 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing the address to which send, and the value to send.
     # @param connection Not used here.
+    # @return None
     def knx_write_short(self, json_obj, connection):
         call(['knxtool', CALL_GROUPSWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
 
@@ -297,12 +312,14 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing the address to which send, and the value to send.
     # @param connection Not used here.
+    # @return None
     def knx_write_long(self, json_obj, connection):
         call(['knxtool', CALL_GROUPWRITE, EIB_URL, json_obj['addr_to_send'], str(json_obj['value'])]);
 
     ## Reads data comming from amsters and calls parse_data().
     #
     # @param masters_to_read Array containing the sockets of all the masters found on local network.
+    # @return None
     def receive_from_masters(self, masters_to_read):
         for master in masters_to_read:
             data = master.recv(4096);
@@ -315,6 +332,7 @@ class SlaveDaemon:
     ## Reads data from monitor KNX and transmits to master.
     #
     # @param knx_to_read Array containing the sockets of all the KNX daemons on local network.
+    # @return None
     def receive_from_knx(self, knx_to_read):
         for knx in knx_to_read:
             data = knx.recv(TELEGRAM_LENGTH);
@@ -327,6 +345,7 @@ class SlaveDaemon:
     ## Reads data from monitor EnOcean and transmits to master.
     #
     # @param enocean_to_read Array containing the sockets of all the EnOcean daemons on local network.
+    # @return None
     def receive_from_enocean(self, enocean_to_read):
         for enocean in enocean_to_read:
             data = enocean.recv(4096);
@@ -339,6 +358,7 @@ class SlaveDaemon:
     ## Receives data from a cron and executes it.
     #
     # @param cron_to_read Array containing the sockets of all crons on local network.
+    # @return None
     def receive_from_cron(self, cron_to_read):
         for cron in cron_to_read:
             data = cron.recv(4096);
@@ -358,6 +378,7 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing the hostname of the sender of the packet.
     # @param connection Connection object used to send the response.
+    # @return None
     def check_slave(self, json_obj, connection):
         interface_knx = self._parser.getValueFromSection(SLAVE_CONF_KNX_SECTION, SLAVE_CONF_KNX_INTERFACE);
         interface_enocean = self._parser.getValueFromSection(SLAVE_CONF_ENOCEAN_SECTION, SLAVE_CONF_ENOCEAN_INTERFACE);
@@ -375,11 +396,14 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def monitor_ip(self, json_obj, connection):
         self._scanner.scan();
         self._hostlist = self._scanner._HostList;
 
     ## Sends a monitor_ip packet to all the masters available.
+    #
+    # @return None
     def send_monitor_ip(self):
         json_str = json.JSONEncoder().encode(
             {
@@ -389,6 +413,8 @@ class SlaveDaemon:
         self.send_data_to_all_masters(json_str);
 
     ## Main daemon loop.
+    #
+    # @return None
     def loop(self):
         while self.run:
             try:
@@ -429,6 +455,8 @@ class SlaveDaemon:
                 self.logger.error('in loop: Keyboard interrupt');
 
     ## Stops the daemon and closes all sockets.
+    #
+    # @return None
     def stop(self):
         for name, sock in self.connected_masters.items():
             sock.close();
@@ -437,6 +465,8 @@ class SlaveDaemon:
         self.knx_sock.close();
 
     ## Stores every host on local network if its hostname begins by 'MD3' in connected_masters dict().
+    #
+    # @return None
     def connect_to_masters(self):
         hostname = socket.gethostname()
         self.connected_masters = {};
@@ -458,6 +488,7 @@ class SlaveDaemon:
     ## Converts data from bytes to a clear KNX datagram, and sends it to all available masters.
     #
     # @param data The data having to be converted from bytes to clear KNX datagram.
+    # @return None
     def send_knx_data_to_masters(self, data):
         ctrl = int(data[0]);
         src_addr = int.from_bytes(data[1:3], byteorder='big');
@@ -497,6 +528,7 @@ class SlaveDaemon:
     ## Convertes data from bytes to a clear EnOcean datagram, and sends it to available masters.
     #
     # @param data The data having to be converted from bytes to EnOcean datagram.
+    # @return None
     def send_enocean_data_to_masters(self, data):
         if (data[4] == PACKET_TYPE_RADIO_ERP1): # si le packet_type == radio_erp1
             data_len = int.from_bytes(data[1:2], byteorder='big');
@@ -522,6 +554,7 @@ class SlaveDaemon:
     ## Sends data to all masters available on local network.
     #
     # @param json_str The data to send under form of a JSON Object stringified.
+    # @return None
     def send_data_to_all_masters(self, json_str):
         self.connect_to_masters();
         for name in self.connected_masters.keys():
@@ -543,6 +576,7 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def send_tech(self, json_obj, connection):
         json_str = json.JSONEncoder().encode(
             {
@@ -556,6 +590,7 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def send_alive(self, json_obj, connection):
         json_str = json.JSONEncoder().encode(
             {
@@ -569,6 +604,7 @@ class SlaveDaemon:
     #
     # @param json_obj Protocol interface informations.
     # @param connection Connection object used to send the response.
+    # @return None
     def send_interfaces(self, json_obj, connection):
         try:
             if os.path.exists('/tmp/knxd'):
@@ -615,6 +651,7 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def shutdown_d3(self, json_obj, connection):
         call(['poweroff']);
 
@@ -622,6 +659,7 @@ class SlaveDaemon:
     #
     # @param json_obj Not used here.
     # @param connection Not used here.
+    # @return None
     def reboot_d3(self, json_obj, connection):
         call(['reboot']);
 
@@ -632,6 +670,7 @@ class SlaveDaemon:
     # @param security The security type of the connection.
     # @param mode The mode of the initialization of the network interface.
     # @param opt Flag to do some more stuff if it is 1.
+    # @return None
     def wifi_init(self, ssid, password, security, mode, opt):
         try:
             ps_process = Popen(["ps", "-x"], stdout=PIPE);
@@ -724,6 +763,7 @@ class SlaveDaemon:
     #
     # @param json_obj JSON Object containing all the informations for the wifi.
     # @param connection Connection object used to send the response.
+    # @return None
     def wifi_update(self, json_obj, connection):
         try:
             self._parser.writeValueFromSection('wifi', 'ssid', json_obj['ssid']);

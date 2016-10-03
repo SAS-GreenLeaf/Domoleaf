@@ -34,6 +34,7 @@ class Trigger:
     ## Updates the trigger list.
     #
     # @param db The database handler (default 0).
+    # @return None
     def update_triggers_list(self, db=0):
         self.logger.debug('Updating Triggers');
         query = ('SELECT trigger_events_list.id_trigger, '
