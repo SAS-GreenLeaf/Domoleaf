@@ -44,6 +44,8 @@ class CalcLogs:
     #
     # Queries the database to fetch room_device and room_device_option.
     # The result is stored in a class variable.
+    #
+    # @return none
     def devices_list_update(self):
         self.logger.debug('Updating Logs');
         query = ('SELECT room_device.daemon_id, room_device_option.addr_plus, room_device_option.addr, '
@@ -235,6 +237,7 @@ class CalcLogs:
     #
     # @param dictlogs Dictionnay containing all the logs.
     # @param db The database handler.
+    # @return none
     def save_graph_logs(self, dictlogs, db):
         query = ('INSERT INTO graphic_log '
                  '(date, value, room_device_id, option_id) '
@@ -251,6 +254,7 @@ class CalcLogs:
     #
     # @param dictlogs Dictionnay containing all the logs for all devices.
     # @param db The database handler.
+    # @return none
     def delete_knx_logs(self, dictlogs, db):
         end_tr = time.time() - TIME_BEFORE_TIME_TO_CALC;
         last_logs = [];
@@ -279,6 +283,7 @@ class CalcLogs:
     #
     # @param connection Not used here.
     # @param db The database handler.
+    # @return none
     def sort_logs(self, connection, db):
         self.logger.debug('\n\nSorting Logs : \n');
         try:

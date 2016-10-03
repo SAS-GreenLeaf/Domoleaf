@@ -17,6 +17,7 @@ class MysqlHandler:
     # @param passwd
     # @param db
     def __init__(self, username, passwd, db):
+        ## Connection to the Database
         self.connection = mysql.connector.connect(unix_socket = '/var/run/mysqld/mysqld.sock', user = username, password=passwd, host='localhost', database=db);
 
     ## Gets a description of a table.
