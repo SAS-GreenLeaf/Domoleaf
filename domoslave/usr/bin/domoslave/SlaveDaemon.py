@@ -110,7 +110,6 @@ class SlaveDaemon:
         ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, LOG_FILE);
         self.logger.info('Started Domoleaf Slave daemon');
-        print('######## SLAVE DAEMON #######')
         ## Array of master daemon on local network
         self.connected_masters = {};
         ## Array of monitor KNX on local network
@@ -119,7 +118,7 @@ class SlaveDaemon:
         self.connected_enocean = [];
         ## Array of cron running on the system
         self.connected_cron = [];
-        self._scanner = Scanner();
+        self._scanner = Scanner(log_flag);
         self._hostlist = [];
         myhostname = socket.gethostname().upper()
         if SLAVE_NAME_PREFIX in myhostname:
@@ -422,7 +421,6 @@ class SlaveDaemon:
             except Exception as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop accept_knx: '+str(e));
-                print('in loop accept_knx: ',str(e));
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
@@ -431,7 +429,6 @@ class SlaveDaemon:
             except Exception as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop accept_masters: '+str(e));
-                print('in loop accept_masters: ',str(e));
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
@@ -440,7 +437,6 @@ class SlaveDaemon:
             except Exception as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop accept_enocean: '+str(e));
-                print('in loop accept_enocean: ',str(e));
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
@@ -449,7 +445,6 @@ class SlaveDaemon:
             except Exception as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop accept_cron: '+str(e));
-                print('in loop accept_cron: ',str(e));
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Keyboard interrupt');
@@ -569,7 +564,6 @@ class SlaveDaemon:
                 master.close();
             except KeyError as e:
                 self.logger.error('in send_data_to_all_masters: '+str(e));
-                print(e);
                 pass;
 
     ## Sends the informations about the slave to all masters available.

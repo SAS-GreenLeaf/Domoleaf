@@ -15,16 +15,21 @@ import os;
 sys.path.append("/usr/lib/domoleaf")
 from Host import *;
 import configparser;
+from Logger import *;
 
 HOST_IP_FIELD = 'IP';
 HOST_MAC_FIELD = 'MAC';
+
+LOG_FILE = '/var/log/domoleaf/domoslave.log';
 
 ## Local network scanning class.
 class Scanner:
 
     ## The constructor.
-    def __init__(self):
+    def __init__(self, log_flag):
         self._HostList = [];
+        self.log_flag = log_flag;
+        self.logger = Logger(log_flag, LOG_FILE);
 
     ## Checks if a hostname is available on local network.
     #
@@ -73,7 +78,7 @@ class Scanner:
         netmask = self.bytesToMask(netmask_bytes);
         net = "%s/%s" % (network, netmask);
         if (netmask < 16):
-            print('[WARNING]: ', net, ' Is too big. Skipping.');
+            self.logger.info('[WARNING]: ' + net + ' Is too big. Skipping.')
             return None;
         return (net);
 
@@ -82,11 +87,11 @@ class Scanner:
     # @return None
     def printHosts(self):
         for h in self._HostList:
-            print("=== HOST ON NETWORK ===");
-            print("IP  : ", h._IpAddr);
-            print("MAC : ", h._MacAddr);
-            print("HOST: ", h._Hostname);
-            print('');
+            self.logger.info("=== HOST ON NETWORK ===");
+            self.logger.info("IP  : ", h._IpAddr);
+            self.logger.info("MAC : ", h._MacAddr);
+            self.logger.info("HOST: ", h._Hostname);
+            self.logger.info('');
 
     ## Gets every hosts on the local network with ARP requests.
     #
@@ -107,7 +112,7 @@ class Scanner:
                     pass;
         except socket.error as e:
             if (e.errno == errno.EPERM):
-                print('[ ERROR ]: socket: Permission Denied. Are you root ?');
+                self.logger.error('[ ERROR ]: socket: Permission Denied. Are you root ?');
             else:
                 raise;
         self.addNewHost(macAddr = '', ipAddr = '127.0.0.1', hostname = socket.gethostname().upper());
