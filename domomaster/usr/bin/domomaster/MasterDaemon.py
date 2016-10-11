@@ -1340,7 +1340,7 @@ class MasterDaemon:
     # @param json_obj JSON object containing some data.
     # @param connection Used here to close the connection.
     # @return None
-    def remote_sql(self, json_obj, connection):
+    def remote_sql(self, json_obj, connection, db):
         db = MasterSql();
         req = json_obj['data'].split(';');
         for item in req:
