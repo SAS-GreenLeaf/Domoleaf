@@ -5,7 +5,6 @@
 #
 # Developed by GreenLeaf.
 
-import logging;
 from inspect import currentframe, getframeinfo;
 from Crypto.Cipher import AES;
 import smtplib;
@@ -304,14 +303,11 @@ class MasterDaemon:
             except KeyboardInterrupt as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.info('in loop: Keyboard interrupt: leaving program');
-                print("[ MASTER DAEMON ",frameinfo.filename,":",str(frameinfo.lineno)," ]: Keyboard Interrupt");
                 self.stop();
                 sys.exit(0);
             except ValueError as e:
                 frameinfo = getframeinfo(currentframe());
                 self.logger.error('in loop: Value error: '+str(e));
-                print("[ MASTER DAEMON ",frameinfo.filename,":",str(frameinfo.lineno),"]: Value Error");
-                print(e);
                 pass;
 
     ## Gets new domoleaf connections and threads the treatment.

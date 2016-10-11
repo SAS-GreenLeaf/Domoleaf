@@ -5,7 +5,6 @@
 #
 # Developed by GreenLeaf.
 
-import logging;
 import json;
 from Logger import *;
 from MysqlHandler import *;

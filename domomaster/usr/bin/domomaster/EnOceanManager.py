@@ -3,7 +3,6 @@
 #
 # Developed by GreenLeaf.
 
-import logging;
 from Logger import *;
 import sys;
 sys.path.append('/usr/lib/domoleaf');
