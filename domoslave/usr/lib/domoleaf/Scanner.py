@@ -26,7 +26,7 @@ LOG_FILE = '/var/log/domoleaf/domoslave.log';
 class Scanner:
 
     ## The constructor.
-    def __init__(self, log_flag):
+    def __init__(self, log_flag = False):
         self._HostList = [];
         self.log_flag = log_flag;
         self.logger = Logger(log_flag, LOG_FILE);
