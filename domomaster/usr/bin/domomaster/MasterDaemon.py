@@ -1250,6 +1250,11 @@ class MasterDaemon:
             connection.close();
             return ;
         hostname = res[0][0];
+        self_hostname = socket.gethostname();
+        if '.' in self_hostname:
+            self_hostname = self_hostname.split('.')[0];
+        if (hostname == self_hostname):
+            call(['reboot'])
         ip = '';
         for h in self.hostlist:
             if hostname in h._Hostname.upper():
@@ -1260,9 +1265,6 @@ class MasterDaemon:
             return ;
         port = self._parser.getValueFromSection('connect', 'port');
         sock = socket.create_connection((ip, port));
-        self_hostname = socket.gethostname();
-        if '.' in self_hostname:
-            self_hostname = self_hostname.split('.')[0];
         aes_IV = AESManager.get_IV();
         aes_key = self.get_secret_key(hostname);
         obj_to_send = ''.join(['{"packet_type": "reboot_d3", "sender_name": "', self_hostname, '"}']);
