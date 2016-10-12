@@ -117,8 +117,6 @@ DATA_REMOTE_SQL               = 'remote_sql';
 
 CAMERA_CONF_FILE              = '/etc/domoleaf/devices.conf';         # Path for the cameras configuration file
 
-DEBUG_MODE = False;      # Debug flag
-
 ## The main class of the master daemon.
 #
 # It provides communication between master and slave boxes and a part of the database management.
@@ -128,10 +126,12 @@ class MasterDaemon:
     #
     # Initializes and launches the MasterDaemon.
     # @param log_flag A flag saying if whether the logs should be written in the log file, or not.
-    def __init__(self, log_flag):
+    def __init__(self, log_flag = False):
         ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, LOG_FILE);
         self.logger.info('Started Domoleaf Master Daemon');
+        ## Flag toggling logger
+        self.log_flag = log_flag;
         ## Configuration object of the D3
         self.d3config = {};
         ## AES keys for the slave daemon to encrypt communications
@@ -753,7 +753,7 @@ class MasterDaemon:
     # @return None
     def send_to_device(self, json_obj, connection, db):
         hostname = '';
-        dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), DEBUG_MODE);
+        dm = DeviceManager(int(json_obj['data']['room_device_id']), int(json_obj['data']['option_id']), self.log_flag);
         dev = dm.load_from_db(db);
         if dev is None:
             connection.close();

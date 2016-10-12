@@ -20,6 +20,8 @@ MASTER_CONF_MYSQL_PASSWORD_ENTRY        = 'password';
 MASTER_CONF_MYSQL_DB_NAME_ENTRY         = 'database_name';
 MASTER_CONF_FILE                        = '/etc/domoleaf/master.conf';
 
+LOG_FILE                                = '/var/log/domoleaf/domomaster.log'
+
 ## Class with some useful functions to handle the database of the MasterDaemon.
 class MasterSql:
 
@@ -28,7 +30,7 @@ class MasterSql:
     # @param log_flag Flag saying if the logs are active or not.
     def __init__(self, log_flag = False):
         ## Logger object for formatting and printing logs
-        self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
+        self.logger = Logger(log_flag, LOG_FILE);
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
         ## Username for the database, searched in configuration file
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
