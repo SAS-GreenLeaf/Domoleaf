@@ -24,14 +24,11 @@ class EnOceanManager:
     def __init__(self, slave_keys):
         ## Logger object for formatting and printing
         self.logger = Logger(DEBUG_MODE, LOG_FILE);
-
         ## SQL manager for the master daemon
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');
-
         ## Object containing the AES keys for encrypted communications
         self.aes_slave_keys = slave_keys;
-
         ## Array containing functions associated with IDs
         self.functions_transform = {
               0: utils.convert_none,
