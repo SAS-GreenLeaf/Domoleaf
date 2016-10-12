@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo -e "[ \033[32mOK\033[0m ] Done installing Domoleaf slave daemon"
-
 usermod -a -G dialout knxd
 
 pip3 install scapy-python3
@@ -21,3 +19,5 @@ chmod +x /usr/bin/domoslave.py
 update-rc.d domoslave defaults
 update-rc.d domoslave enable
 service domoslave start
+
+echo -e "[ \033[32mOK\033[0m ] Done installing Domoleaf slave daemon"
