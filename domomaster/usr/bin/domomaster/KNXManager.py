@@ -175,9 +175,6 @@ class KNXManager:
     # @param hostname The hostname of the slave daemon to who send the packet.
     # @return None
     def send_knx_write_short_to_slave(self, json_obj, dev, hostname):
-        """
-        Constructs short write request and sends it to 'hostname'
-        """
         port = self._parser.getValueFromSection('connect', 'port');
         if not port:
             sys.exit(4);
@@ -192,6 +189,16 @@ class KNXManager:
         self.send_json_obj_to_slave(json_str, sock, hostname, self.aes_slave_keys[hostname]);
         sock.close();
 
+    ## Changes the value to send when it is supposed to be inverted and sends the packet to the slave.
+    #
+    # @param json_obj JSON object to change before sending.
+    # @param dev The device to who send the request.
+    # @param hostname The hostname of the slave daemon to who send the packet.
+    # @return None.
+    def send_knx_write_short_to_slave_reverse(self, json_obj, dev, hostname):
+        json_obj['data']['value'] = (int(json_obj['data']['value']) + 1) % 2;
+        self.send_knx_write_short_to_slave(json_obj, dev, hostname);
+        
     ## Builds a "short read" request and sends it to the slave "hostname".
     #
     # @param hostname The slave daemon to who send the read request.

@@ -171,18 +171,19 @@ class MasterDaemon:
 
         ## Functions array with option ID
         self.functions = {
-              1 : self.knx_manager.send_knx_write_short_to_slave,
-              2 : self.knx_manager.send_knx_write_long_to_slave,
-              3 : self.knx_manager.send_knx_write_speed_fan,
-              4 : self.knx_manager.send_knx_write_temp,
-              5 : IP_IRManager().send_to_gc,
-              6 : self.knx_manager.send_on,
-              7 : self.knx_manager.send_to_thermostat,
-              8 : self.knx_manager.send_clim_mode,
-              9 : HttpReq().http_action,
-             10 : self.upnp_audio,
-             11 : self.knx_manager.send_knx_write_percent,
-             12 : self.knx_manager.send_off
+            1 : self.knx_manager.send_knx_write_short_to_slave,
+            2 : self.knx_manager.send_knx_write_long_to_slave,
+            3 : self.knx_manager.send_knx_write_speed_fan,
+            4 : self.knx_manager.send_knx_write_temp,
+            5 : IP_IRManager().send_to_gc,
+            6 : self.knx_manager.send_on,
+            7 : self.knx_manager.send_to_thermostat,
+            8 : self.knx_manager.send_clim_mode,
+            9 : HttpReq().http_action,
+            10 : self.upnp_audio,
+            11 : self.knx_manager.send_knx_write_percent,
+            12 : self.knx_manager.send_off,
+            13 : self.knx_manager.send_knx_write_short_to_slave_reverse
         };
 
         ## Functions array depending on data type
