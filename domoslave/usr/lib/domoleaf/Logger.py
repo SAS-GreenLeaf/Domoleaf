@@ -20,6 +20,8 @@ class Logger:
         self.log_flag = log_flag;
         if self.log_flag:
             logging.basicConfig(filename = log_filename, level = logging.DEBUG);
+        else:
+            logging.basicConfig(filename = log_filename, level = logging.ERROR);
 
     ## Logs and info message in the file if the log_flag is True.
     #

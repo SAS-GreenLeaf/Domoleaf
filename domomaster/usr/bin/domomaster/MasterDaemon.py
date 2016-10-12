@@ -117,7 +117,7 @@ DATA_REMOTE_SQL               = 'remote_sql';
 
 CAMERA_CONF_FILE              = '/etc/domoleaf/devices.conf';         # Path for the cameras configuration file
 
-DEBUG_MODE = True;      # Debug flag
+DEBUG_MODE = False;      # Debug flag
 
 ## The main class of the master daemon.
 #
