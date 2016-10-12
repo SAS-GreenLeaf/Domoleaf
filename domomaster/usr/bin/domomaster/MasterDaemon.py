@@ -714,9 +714,9 @@ class MasterDaemon:
     # @param db The database handler.
     # @return None
     def monitor_ip(self, json_obj, connection, db):
-        self.scanner.scan();
-        self.sql.insert_hostlist_in_db(self.scanner._HostList, db);
-        self.hostlist = self.scanner._HostList;
+        self._scanner.scan();
+        self.sql.insert_hostlist_in_db(self._scanner._HostList, db);
+        self.hostlist = self._scanner._HostList;
         connection.close();
 
     ## FUNCTION NOT IMPLEMENTED
