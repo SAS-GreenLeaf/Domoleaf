@@ -24,6 +24,8 @@ KNX_RESPONSE            = 1;    # Donnee KNX de type RESPONSE
 KNX_WRITE_SHORT         = 2;    # Donnee KNX de type ecriture courte (0 | 1)
 KNX_WRITE_LONG          = 3;    # Donnee KNX de type ecriture longue (0x0 -> 0xFF)
 
+DEBUG_MODE              = False;
+
 ## Class managing the KNX protocol in D3 boxes.
 class KNXManager:
 
@@ -33,7 +35,7 @@ class KNXManager:
     # @return None
     def __init__(self, slave_keys):
         ## Logger object for formatting and printing logs
-        self.logger = Logger(True, LOG_FILE);
+        self.logger = Logger(DEBUG_MODE, LOG_FILE);
         ## SQL object for managing database
         self.sql = MasterSql();
         self._parser = DaemonConfigParser('/etc/domoleaf/master.conf');

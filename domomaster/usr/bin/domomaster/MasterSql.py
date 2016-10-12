@@ -26,7 +26,7 @@ class MasterSql:
     ## The constructor
     #
     # @param log_flag Flag saying if the logs are active or not.
-    def __init__(self, log_flag = True):
+    def __init__(self, log_flag = False):
         ## Logger object for formatting and printing logs
         self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
