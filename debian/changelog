@@ -1,3 +1,14 @@
+domoleaf (0.9.6) unstable; urgency=medium
+
+  * Add missing function for sending reversed KNX short frame
+  * Fix scanner in master daemon
+  * Fix remote_sql function
+  * Fix reboot on master server when the slave daemon is down
+  * Remove useless logs
+  * Update installation scripts
+
+ -- Virgil Rochette <vr@greenleaf.fr>  Thu, 13 Oct 2016 14:58:00 +0100
+
 domoleaf (0.9.5) unstable; urgency=medium
 
   * Add comments
