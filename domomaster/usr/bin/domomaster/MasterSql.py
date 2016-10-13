@@ -20,15 +20,17 @@ MASTER_CONF_MYSQL_PASSWORD_ENTRY        = 'password';
 MASTER_CONF_MYSQL_DB_NAME_ENTRY         = 'database_name';
 MASTER_CONF_FILE                        = '/etc/domoleaf/master.conf';
 
+LOG_FILE                                = '/var/log/domoleaf/domomaster.log'
+
 ## Class with some useful functions to handle the database of the MasterDaemon.
 class MasterSql:
 
     ## The constructor
     #
     # @param log_flag Flag saying if the logs are active or not.
-    def __init__(self, log_flag = True):
+    def __init__(self, log_flag = False):
         ## Logger object for formatting and printing logs
-        self.logger = Logger(log_flag, '/var/log/domoleaf/domomaster.log');
+        self.logger = Logger(log_flag, LOG_FILE);
         self._parser = DaemonConfigParser(MASTER_CONF_FILE);
         ## Username for the database, searched in configuration file
         self.db_username = self._parser.getValueFromSection(MASTER_CONF_MYSQL_SECTION,
@@ -56,6 +58,7 @@ class MasterSql:
     #
     # @param hostlist The list of all the hosts connected on the local network.
     # @param db The database handler used for queries.
+    # @return None
     def insert_hostlist_in_db(self, hostlist, db):
         for host in hostlist:
             db.update_datas_in_table('ip_monitor',
@@ -220,6 +223,7 @@ class MasterSql:
     #
     # @param query The query to send to the database.
     # @param db The database handler used for queries.
+    # @return Result of the query.
     def mysql_handler_personnal_query(self, query, db=0):
         tmp = db;
         if not tmp:

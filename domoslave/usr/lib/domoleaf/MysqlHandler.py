@@ -17,6 +17,7 @@ class MysqlHandler:
     # @param passwd
     # @param db
     def __init__(self, username, passwd, db):
+        ## Connection to the Database
         self.connection = mysql.connector.connect(unix_socket = '/var/run/mysqld/mysqld.sock', user = username, password=passwd, host='localhost', database=db);
 
     ## Gets a description of a table.
@@ -53,6 +54,7 @@ class MysqlHandler:
     # @param table The table in which insert data.
     # @param field_names The field names for the value to insert.
     # @param data_values The values to insert.
+    # @return None
     def insert_datas_in_table(self, table, field_names, data_values):
         cursor = self.connection.cursor(buffered=False);
         query = "INSERT INTO "+table+" (";
@@ -75,6 +77,7 @@ class MysqlHandler:
     # @param table The table in which update / insert the data.
     # @param data_values_ref The reference data to update. If not found, the data are inserted.
     # @param data_to_update The new value of the data.
+    # @return None
     def update_datas_in_table(self, table, data_values_ref, data_to_update):
         cursor = self.connection.cursor(buffered=True);
         try:
@@ -109,6 +112,7 @@ class MysqlHandler:
     ## Erases the content of a table.
     #
     # @param table The table to empty.
+    # @return None
     def reset_table(self, table):
         query = "DELETE FROM "+table;
         cursor = self.connection.cursor(buffered=True);
@@ -118,6 +122,7 @@ class MysqlHandler:
     #
     # @param table The table to query.
     # @param names The names of the field to retrieve.
+    # @return Array containing the result of the query.
     def get_datas_from_table_with_names(self, table, names):
         res = [];
         append = res.append;
@@ -148,9 +153,13 @@ class MysqlHandler:
         return res;
 
     ## Commits the changes done to database.
+    #
+    # @return None
     def updatedb(self):
         self.connection.commit();
 
     ## Closes the connection to mysql server.
+    #
+    # @return None
     def close(self):
         self.connection.close();

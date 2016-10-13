@@ -5,7 +5,6 @@
 #
 # Developed by GreenLeaf.
 
-import logging;
 import json;
 from Logger import *;
 from MysqlHandler import *;
@@ -47,11 +46,14 @@ class Smartcommand(Thread):
     ## Setter for the connection.
     #
     # @param connection The connection object to set.
+    # @return None
     def setValues(self, connection):
         ## Connection object
         self.connection = connection;
 
     ## Runs the smart command.
+    #
+    # @return None
     def run(self):
         ## Database handler for querying database
         self.db = MysqlHandler(self.db_username, self.db_passwd, self.db_dbname);

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo -e "[ \033[32mok\033[0m ] Done installing Domoleaf master daemon"
 domomaster=`dpkg-query -W -f='${Version}\n' domomaster`
 
 #Backups
@@ -49,3 +48,5 @@ SOCKET=$(echo $SOCKET | sed 's/\//\\\//g')
 sed -i "s/SOCKET/$SOCKET/g" /etc/nginx/sites-available/domoleaf.conf
 service $SERVICE restart
 service nginx restart
+
+echo -e "[ \033[32mOK\033[0m ] Done installing Domoleaf master daemon"

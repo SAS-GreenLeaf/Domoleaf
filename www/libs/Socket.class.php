@@ -1,9 +1,17 @@
 <?php 
 
+/**
+ * Manage sockets
+ * @author virgil
+ */
 class Socket {
 	
 	private $link;
 	
+	/**
+	 * Build the socket connection
+	 * @param number $port used port
+	 */
 	function __construct($port=4224) {
 		try {
 			$this->link = @fsockopen('localhost', $port, $errno, $errstr);
@@ -12,6 +20,12 @@ class Socket {
 		}
 	}
 	
+	/**
+	 * Send information to socket/daemon
+	 * @param string $packetType packet type
+	 * @param array $data all datas
+	 * @param int $sync Synchro or not
+	 */
 	function send($packetType, $data=array(), $sync=0) {
 		$trame = array(
 			'packet_type' => $packetType,
@@ -28,6 +42,9 @@ class Socket {
 		}
 	}
 	
+	/**
+	 * Receive information from socket/daemon
+	 */
 	function receive() {
 		$packetrcv = '';
 		try {

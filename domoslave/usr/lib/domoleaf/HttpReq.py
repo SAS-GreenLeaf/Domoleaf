@@ -20,6 +20,7 @@ class HttpReq:
     # @param json_obj Not used here.
     # @param dev Object describing the action.
     # @param hostname Not used here.
+    # @return None
     def http_action(self, json_obj, dev, hostname):
         url = ('http://'+str(dev['addr'])+':'+str(dev['plus1'])+str(dev['addr_dst']));
         s = requests.Session();

@@ -9,7 +9,7 @@ import sys;
 sys.path.append("/usr/lib/domoleaf");
 
 LOG_FILE        = '/var/log/domoleaf/domoslave.log';
-LOG_FLAG        = True;
+LOG_FLAG        = False;
 
 ## Configuration files parsing class.
 class DaemonConfigParser:
@@ -36,10 +36,10 @@ class DaemonConfigParser:
             if valueName in self._Config[sectionName]:
                 return self._Config[sectionName][valueName];
             else:
-                print("[ WARNING ]: '", valueName, "' not defined in section '", sectionName, "'");
+                self.logger.info("[ WARNING ]: '", valueName, "' not defined in section '", sectionName, "'");
                 return None;
         else:
-            print("[ WARNING ]: '", sectionName, "' not defined in ", self._Filename);
+            self.logger.info("[ WARNING ]: '", sectionName, "' not defined in ", self._Filename);
             return None;
 
     ## Returns the content of a section inside the open configuration file.
@@ -51,7 +51,7 @@ class DaemonConfigParser:
         if sectionName in self._Config:
             return self._Config[sectionName];
         else:
-            print("[ ERROR ]: '", sectionName, "' not defined in ", self._Filename);
+            self.logger.error("[ ERROR ]: '", sectionName, "' not defined in ", self._Filename);
             return None;
 
     ## Write the content of a section inside the open configuration file.
@@ -59,6 +59,7 @@ class DaemonConfigParser:
     # @param sectionName The name of the section to which write the new key - value pair.
     # @param valueName The name of the key to write with its value.
     # @param value The value to write.
+    # @return None
     def writeValueFromSection(self, sectionName, valueName, value):
         try:
             if not self.getValueFromSection(sectionName, valueName):

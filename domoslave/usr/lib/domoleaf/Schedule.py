@@ -5,7 +5,6 @@
 #
 # Developed by GreenLeaf.
 
-import logging;
 import json;
 from Logger import *;
 from MysqlHandler import *;
@@ -36,6 +35,7 @@ class Schedule:
     ## Updates the schedule list from the database.
     #
     # @param db The database handler.
+    # @return None
     def update_schedules_list(self, db):
         self.logger.debug('Updating Schedules');
         query = ('SELECT trigger_schedules_list.id_schedule, id_smartcmd, '
@@ -75,6 +75,7 @@ class Schedule:
     ## Tests the schedules and starts a scenario if the test is valid.
     #
     # @param connection Connection object.
+    # @return None
     def check_all_schedules(self, connection):
         schedules_list = self.schedules_list;
         for schedule in schedules_list:
@@ -111,6 +112,7 @@ class Schedule:
     #
     # @param id_smartcmd The ID of the smartcommand from which start the scenario.
     # @param connection Connection object.
+    # @return None
     def launch_scenario(self, id_smartcmd, connection):
         jsonString = json.JSONEncoder().encode({
             "data": id_smartcmd
