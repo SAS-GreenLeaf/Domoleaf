@@ -94,33 +94,6 @@ int init_listen_slave_socket(const char *ip, uint16_t port)
   return (sock);
 }
 
-/* char *strcpy_to_n(char *dest, const char *src, int n) */
-/* { */
-/*   int x; */
-
-/*   x = 0; */
-/*   if (!dest || !src) */
-/*     { */
-/*       return (NULL); */
-/*     } */
-/*   while (dest[x] != '\0') */
-/*     { */
-/*       x++; */
-/*     } */
-/*   while (src[n] != '\0') */
-/*     { */
-/*       dest[x] = src[n]; */
-/*       x = x + 1; */
-/*       n = n + 1; */
-/*     } */
-/*   if (dest[x - 1] == '\n') */
-/*     { */
-/*       dest[x - 1] = '\0'; */
-/*     } */
-/*   dest[x] = '\0'; */
-/*   return (dest); */
-/* } */
-
 /**
  * \fn char *get_interface_enocean()
  * \return The name of the enocean interface
