@@ -295,8 +295,9 @@ Enocean_packet create_packet(uint8_t *buffer, uint16_t data_len, uint8_t opt_dat
   Enocean_packet res;
 
   memset(&res, 0, sizeof(res));
+  res.data = malloc(255);
   res.sync_byte = buffer[0];
-  res.header.data_length = data_len - 6;
+  res.header.data_length = data_len;
   res.header.opt_data_length = opt_data_len;
   res.header.packet_type = packet_type;
   res.CRC8H = buffer[5];
