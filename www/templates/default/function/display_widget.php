@@ -756,62 +756,62 @@ function display_OnOff($info, $popup = 0){
 			if (!empty($info->device_opt->{12}->addr_plus)){
 				$display .= '<div class="checkbox foreground-widget">';
 						if (!empty($info->device_opt->{12}->opt_value)){
-						 	$display.='<input data-on-color="greenleaf"
-						 				      data-label-width="0"
-										      data-on-text="'._('On').'"
-										      data-off-text="'._('Off').'"
-						 				      checked ';
+						 	$display.='<input data-on-color="greenleaf"'
+										      .'data-label-width="0"'
+										      .'data-on-text="'._('On').'"'
+										      .'data-off-text="'._('Off').'"'
+										      .'checked ';
 						 						if ($popup == 0){
 						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
 						 						}
 						 				      	else{ 
 						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
 						 				      	}
-						 		   $display.='class="onoff-switch"
-						 				      type="checkbox"
-						 				      onchange="onOffToggle(\''.$info->room_device_id.'\', 12, '.$popup.')"
-						 				/>';
+						 		   $display.='class="onoff-switch"'
+									      .'type="checkbox"'
+									      .'onchange="onOffToggle(\''.$info->room_device_id.'\', 12, '.$popup.')"'
+									      .'/>';
 						}
 						else {
-							$display.='<input data-on-color="greenleaf"
-										      data-label-width="0"
-										      data-on-text="'._('On').'"
-										      data-off-text="'._('Off').'" ';
+							$display.='<input data-on-color="greenleaf"'
+										      .'data-label-width="0"'
+										      .'data-on-text="'._('On').'"'
+										      .'data-off-text="'._('Off').'" ';
 						 						if ($popup == 0){
 						 				      		$display.='id="onoff-'.$info->room_device_id.'" ';
 						 						}
 						 				      	else{ 
 						 				      		$display.='id="onoff-popup-'.$info->room_device_id.'" ';
 						 				      	}	      			
-						 		   $display.='class="onoff-switch"
-										      type="checkbox"
-										      onchange="onOffToggle(\''.$info->room_device_id.'\', 12, '.$popup.')"
-										/>';
+						 		   $display.='class="onoff-switch"'
+										      .'type="checkbox"'
+										      .'onchange="onOffToggle(\''.$info->room_device_id.'\', 12, '.$popup.')"'
+										.'/>';
 						}
 				$display.='</div>';
 			}
 			else {
-				$display .= '<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">
-								<button type="button" class="btn btn-onoff-widget btn-greenleaf" onclick="onOff(\''.$info->room_device_id.'\', 1, 12)">'._('On').'</button>
-								<button type="button" class="btn btn-onoff-widget btn-danger" onclick="onOff(\''.$info->room_device_id.'\', 0, 12)" >'._('Off').'</button>
-							</div>';
+				$display .= '<div class="margin-bottom btn-group btn-group-greenleaf foreground-widget">'
+								.'<button type="button" class="btn btn-onoff-widget btn-greenleaf" onclick="onOff(\''.$info->room_device_id.'\', 1, 12)">'._('On').'</button>'
+								.'<button type="button" class="btn btn-onoff-widget btn-danger" onclick="onOff(\''.$info->room_device_id.'\', 0, 12)" >'._('Off').'</button>'
+							.'</div>';
 			}
 		break;
 		// EnOcean
 		case 2:
-			$display .= '<div class="btn-group foreground-widget">
-							<button type="button" class="btn btn-greenleaf">'._('On').'</button>
-							<button type="button" class="btn btn-danger">'._('Off').'</button>
-						</div>';
+			$display .= '<div class="btn-group foreground-widget">'
+							.'<button type="button" class="btn btn-greenleaf">'._('On').'</button>'
+							.'<button type="button" class="btn btn-danger">'._('Off').'</button>'
+						.'</div>';
 		break;
 		default:
 			$display.='';
 		break;
 	}
 
-	$display.='<script type="text/javascript">
-					$(".onoff-switch").bootstrapSwitch();
-				</script>';
+	$display.='<script type="text/javascript">'
+			   .'$(".onoff-switch").bootstrapSwitch();'
+			   .'</script>';
 	return $display;
 }
 
