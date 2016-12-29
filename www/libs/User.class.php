@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * User class
@@ -8,9 +8,9 @@ class User {
 	private $id;
 	private $level;
 	private $language;
-	
+
 	/*** Get/Set ***/
-	
+
 	/**
 	 * Constructor
 	 * @param int $userId user id
@@ -18,21 +18,21 @@ class User {
 	function __construct($userId) {
 		$this->id = $userId;
 	}
-	
+
 	/**
 	 * Get user id
 	 */
 	function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * Get user level
 	 */
 	function getLevel() {
 		return $this->level;
 	}
-	
+
 	/**
 	 * Set user level
 	 * @param int $level user level
@@ -40,7 +40,7 @@ class User {
 	function setLevel($level) {
 		$this->level = $level;
 	}
-	
+
 	/**
 	 * Get user language
 	 * @return string language, EN is the default language
@@ -51,7 +51,7 @@ class User {
 		}
 		return '';
 	}
-	
+
 	/**
 	 * Set user language
 	 * @param string $language user language
@@ -59,7 +59,7 @@ class User {
 	function setLanguage($language) {
 		$this->language = $language;
 	}
-	
+
 	/**
 	 * Update user's activity
 	 */
@@ -73,9 +73,17 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
+	/*** Import project file ***/
+	function importProjectFromFile($fileContent) {
+		$link = Link::get_link('domoleaf');
+		$sql = $fileContent;
+		$req = $link->prepare($sql);
+		$req->execute() or die (error_log(serialize($req->errorInfo())));
+	}
+
 	/*** Disconnect ***/
-	
+
 	/**
 	 * Disconnect user
 	 * @param string $token user's token
@@ -88,7 +96,7 @@ class User {
 		$req->bindValue(':token', $token, PDO::PARAM_STR);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/********************** Domotic configuration **********************/
 	/**
 	 * Load the D3 configuration from the Database
@@ -106,16 +114,16 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/*** Daemon management ***/
-	
+
 	/**
 	 * List all daemons/box
 	 */
 	function confDaemonList() {
 		return null;
 	}
-	
+
 	/**
 	 * Add Daemon information of a new Box
 	 * @param string $name Box name
@@ -126,7 +134,7 @@ class User {
 	function confDaemonNew($name, $serial, $skey) {
 		return null;
 	}
-	
+
 	/**
 	 * Modify wifi configuration
 	 * @param int $daemon_id daemon id
@@ -138,7 +146,7 @@ class User {
 	function confSaveWifi($daemon_id, $ssid, $password, $security = 3, $mode = 0){
 		return null;
 	}
-	
+
 	/**
 	 * Delete a Box
 	 * @param int $id Box id
@@ -146,7 +154,7 @@ class User {
 	function confDaemonRemove($id) {
 		return null;
 	}
-	
+
 	/**
 	 * Configure basic daemon information
 	 * @param int $id Box/Daemon id
@@ -157,14 +165,14 @@ class User {
 	function confDaemonRename($id, $name, $serial, $skey='') {
 		return null;
 	}
-	
+
 	/**
 	 * List protocols who require a specific daemon
 	 */
 	function confDaemonProtocolList() {
 		return null;
 	}
-	
+
 	/**
 	 * Configure Interface on Slave Daemon
 	 * @param int $daemon Box/Daemon id
@@ -178,14 +186,14 @@ class User {
 	function confDaemonProtocol($daemon, $newProtocolList=array(), $interface_knx='tpuarts', $interface_knx_arg='ttyAMA0', $daemon_knx=1, $interface_EnOcean='usb', $interface_EnOcean_arg='ttyUSB0') {
 		return null;
 	}
-	
+
 	/**
 	 * Count configured daemon by protocol
 	 */
 	function confMenuProtocol() {
 		return null;
 	}
-	
+
 	/**
 	 * Get information to draw a graphic
 	 * @param int $id_device project device id
@@ -218,8 +226,8 @@ class User {
 			3 => 'convert_float32'
 		);
 		if ($id_option == 399) {
-			$sql = 'SELECT configuration_id, configuration_value 
-			        FROM configuration 
+			$sql = 'SELECT configuration_id, configuration_value
+			        FROM configuration
 			        WHERE configuration_id BETWEEN 14 AND 18';
 			$req = $link->prepare($sql);
 			$req->execute() or die (error_log('error : '.serialize($req->errorInfo())));
@@ -234,14 +242,14 @@ class User {
 		$sql = 'SELECT if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               dpt.unit, room_device.protocol_id, room_device.daemon_id, room_device_option.addr,
 		               function_answer
-		        FROM room_device_option 
+		        FROM room_device_option
 		        JOIN room_device ON room_device.room_device_id=room_device_option.room_device_id
-		        JOIN dpt ON room_device_option.dpt_id = dpt.dpt_id 
-		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id 
-		        JOIN dpt_optiondef ON dpt_optiondef.option_id= optiondef.option_id AND 
-		                              dpt_optiondef.dpt_id=dpt.dpt_id AND 
+		        JOIN dpt ON room_device_option.dpt_id = dpt.dpt_id
+		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
+		        JOIN dpt_optiondef ON dpt_optiondef.option_id= optiondef.option_id AND
+		                              dpt_optiondef.dpt_id=dpt.dpt_id AND
 		                              dpt_optiondef.protocol_id=room_device.protocol_id
-		        WHERE room_device_option.room_device_id = :device 
+		        WHERE room_device_option.room_device_id = :device
 		        AND room_device_option.option_id = :option';
 		$req = $link->prepare($sql);
 		$req->bindValue(':device', $id_device, PDO::PARAM_INT);
@@ -258,10 +266,10 @@ class User {
 		$from_timestamp = strtotime($from);
 		$to_timestamp = strtotime($to) + 86399;
 		$sql = 'SELECT graphic_log.date as date_time, graphic_log.value, 0 as price
-		        FROM graphic_log 
-		        WHERE graphic_log.room_device_id = :device 
-		        AND graphic_log.option_id = :option 
-		        AND graphic_log.date BETWEEN :from_date AND :to_date 
+		        FROM graphic_log
+		        WHERE graphic_log.room_device_id = :device
+		        AND graphic_log.option_id = :option
+		        AND graphic_log.date BETWEEN :from_date AND :to_date
 		        ORDER BY graphic_log.date';
 		$req = $link->prepare($sql);
 		$req->bindValue(':device', $id_device, PDO::PARAM_INT);
@@ -299,8 +307,8 @@ class User {
 		//KNX
 		if ($list['infos']->protocol_id == 1) {
 			$sql = 'SELECT t_date as date_time, knx_value as value, 0 as price
-			        FROM knx_log 
-			        WHERE knx_log.daemon_id = :daemon 
+			        FROM knx_log
+			        WHERE knx_log.daemon_id = :daemon
 			        AND knx_log.t_date < :date_limit
 			        AND addr_dest=:addr
 			        ORDER BY t_date ASC';
@@ -338,7 +346,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Modify Box date
 	 * @param int $day day
@@ -358,7 +366,7 @@ class User {
 	function confFloorList() {
 		return null;
 	}
-	
+
 	/**
 	 * Create a new floor and its first room
 	 * @param string $namefloor floor name
@@ -367,7 +375,7 @@ class User {
 	function confFloorNew($namefloor, $nameroom = '') {
 		return null;
 	}
-	
+
 	/**
 	 * Delete a floor
 	 * @param int $idfloor floor id
@@ -375,9 +383,9 @@ class User {
 	function confFloorRemove($idfloor) {
 		return null;
 	}
-	
+
 	/*** Rooms ***/
-	
+
 	/**
 	 * List rooms for a floor, list all rooms by default
 	 * @param number $floor floor id
@@ -385,7 +393,7 @@ class User {
 	function confRoomList($floor) {
 		return null;
 	}
-	
+
 	/**
 	 * Create a new room
 	 * @param string $name room name
@@ -394,7 +402,7 @@ class User {
 	function confRoomNew($name, $floor) {
 		return null;
 	}
-	
+
 	/**
 	 * Rename a room
 	 * @param int $id room id
@@ -403,7 +411,7 @@ class User {
 	function confRoomRename($id, $name) {
 		return null;
 	}
-	
+
 	/**
 	 * Attribute a room to a floor
 	 * @param int $id room id
@@ -412,7 +420,7 @@ class User {
 	function confRoomFloor($id, $floor) {
 		return null;
 	}
-	
+
 	/**
 	 * Delete a room
 	 * @param int $idroom room id
@@ -421,9 +429,9 @@ class User {
 	function confRoomRemove($idroom, $idfloor) {
 		return null;
 	}
-	
+
 	/*** Devices ***/
-	
+
 	/**
 	 * Delete a device
 	 * @param int $iddevice device id
@@ -432,7 +440,7 @@ class User {
 	function confRoomDeviceRemove($iddevice, $idroom) {
 		return null;
 	}
-	
+
 	/**
 	 * Return basic information for a device
 	 * @param int $iddevice project device id
@@ -440,7 +448,7 @@ class User {
 	function confRoomDeviceInfo($iddevice){
 		return null;
 	}
-	
+
 	/**
 	 * Save all device information
 	 * @param int $idroom room id
@@ -458,7 +466,7 @@ class User {
 	function confDeviceSaveInfo($idroom, $name, $daemon=0, $devaddr, $iddevice, $port='', $login='', $pass='', $macaddr='', $password=''){
 		return null;
 	}
-	
+
 	/**
 	 * Save device options
 	 * @param int $room_device_id device id
@@ -477,8 +485,8 @@ class User {
 	function confDeviceRoomOpt($deviceroomid) {
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		$sql = 'SELECT room_device_option.option_id, room_device_option.addr, 
-		               addr_plus, room_device_option.dpt_id, status, opt_value, 
+		$sql = 'SELECT room_device_option.option_id, room_device_option.addr,
+		               addr_plus, room_device_option.dpt_id, status, opt_value,
 		               function_writing,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name
 		        FROM room_device_option
@@ -495,7 +503,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * List devices, all devices by default
 	 * @param int $room room id
@@ -503,7 +511,7 @@ class User {
 	function confRoomDeviceList($room){
 		return null;
 	}
-	
+
 	/**
 	 * List all available protocol for a device
 	 * @param int $device device id
@@ -511,7 +519,7 @@ class User {
 	function confDeviceProtocol($device=0) {
 		return null;
 	}
-	
+
 	/**
 	 * Add a new IP device
 	 * @param string $name device name
@@ -527,7 +535,7 @@ class User {
 	function confDeviceNewIp($name, $proto, $room, $device, $addr, $port='80', $login='', $pass='', $macaddr=''){
 		return null;
 	}
-	
+
 	/**
 	 * Add a new KNX device
 	 * @param string $name device name
@@ -540,7 +548,7 @@ class User {
 	function confDeviceNewKnx($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
-	
+
 	/**
 	 * Add a new EnOcean device
 	 * @param string $name device name
@@ -553,9 +561,9 @@ class User {
 	function confDeviceNewEnocean($name, $proto, $room, $device, $addr, $daemon){
 		return null;
 	}
-	
+
 	/********************** Domotic definition **********************/
-	
+
 	/**
 	 * Return all applications
 	 * @return array : application list
@@ -574,7 +582,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Return all protocols
 	 * @return array : protocol list
@@ -593,7 +601,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Return all devices
 	 * @return array : device list
@@ -629,14 +637,14 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/********************** Users configuration **********************/
-	
+
 	/**
 	 * List all users
 	 */
 	function profileList() { return null; }
-	
+
 	/**
 	 * Get user information
 	 * @param int $id not used
@@ -654,7 +662,7 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do;
 	}
-	
+
 	/**
 	 * Add a new user
 	 * @param string $username user name
@@ -663,7 +671,7 @@ class User {
 	function profileNew($username, $password) {
 		return null;
 	}
-	
+
 	/**
 	 * Delete an user
 	 * @param int $user_id user id
@@ -671,7 +679,7 @@ class User {
 	function profileRemove($user_id) {
 		return 0;
 	}
-	
+
 	/**
 	 * Modify user information
 	 * @param string $lastname lastname
@@ -715,7 +723,7 @@ class User {
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Modify user level
 	 * @param int $id user id
@@ -724,7 +732,7 @@ class User {
 	function profileLevel($id, $level) {
 		return null;
 	}
-	
+
 	/**
 	 * Rename an user
 	 * @param int $id user id
@@ -733,7 +741,7 @@ class User {
 	function profileUsername($id, $username) {
 		return null;
 	}
-	
+
 	/**
 	 * Modify user password
 	 * @param string $last old password
@@ -759,7 +767,7 @@ class User {
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
 	}
-	
+
 	/**
 	 * List available time zone
 	 */
@@ -817,30 +825,30 @@ class User {
 		);
 	return $allTimeZone[$do->timezone];
 	}
-	
+
 	/********************** Monitors **********************/
-	
+
 	/**
 	 * Get last KNX events
 	 */
 	function monitorKnx() {
 		return null;
 	}
-	
+
 	/**
 	 * List all IP device on the network
 	 */
 	function monitorIp() {
 		return null;
 	}
-	
+
 	/**
 	 * Scan the IP network
 	 */
 	function monitorIpRefresh() {
 		return null;
 	}
-	
+
 	/**
 	 * Get last 500 EnOcean
 	 */
@@ -853,9 +861,9 @@ class User {
 	function monitorBluetooth() {
 		return null;
 	}
-	
+
 	/********************** User permission **********************/
-	
+
 	/**
 	 * Modify floor order
 	 * @param int $userid user id
@@ -902,7 +910,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * Modify room order
 	 * @param int $userid user id
@@ -949,7 +957,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * Modify device order
 	 * @param int $userid user id
@@ -996,7 +1004,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the temperature of a project device
 	 * @param int $iddevice project device id
@@ -1031,7 +1039,7 @@ class User {
 		$this->mcTemperature($iddevice, $idoption, $val);
 		return $val;
 	}
-	
+
 	/**
 	 * Return all allowed installation information
 	 */
@@ -1058,7 +1066,7 @@ class User {
 				'floor_order' => $do->floor_order
 			);
 		}
-		$sql = 'SELECT room.room_name, room.room_id, mcuser_room.room_order, 
+		$sql = 'SELECT room.room_name, room.room_id, mcuser_room.room_order,
 		               floor, mcuser_room.room_bgimg
 		        FROM room
 		        JOIN mcuser_room ON room.room_id=mcuser_room.room_id
@@ -1086,13 +1094,13 @@ class User {
 		        FROM room_device
 		        JOIN device ON room_device.device_id=device.device_id
 		        JOIN mcuser_device ON room_device.room_device_id=mcuser_device.room_device_id
-		        JOIN mcuser_room ON room_device.room_id=mcuser_room.room_id AND 
+		        JOIN mcuser_room ON room_device.room_id=mcuser_room.room_id AND
 		                          mcuser_room.mcuser_id=mcuser_device.mcuser_id
 		        JOIN room ON room.room_id=room_device.room_id
 		        JOIN mcuser_floor ON room.floor=mcuser_floor.floor_id AND
 		                          mcuser_floor.mcuser_id=mcuser_device.mcuser_id
 		        WHERE mcuser_device.mcuser_id=:user_id AND mcuser_device.device_allowed = 1
-		        ORDER BY mcuser_floor.floor_order ASC, mcuser_room.room_order ASC, 
+		        ORDER BY mcuser_floor.floor_order ASC, mcuser_room.room_order ASC,
 		                 mcuser_device.device_order ASC';
 		$req = $link->prepare($sql);
 		$req->bindValue(':user_id', $this->getId(), PDO::PARAM_INT);
@@ -1127,7 +1135,7 @@ class User {
 					'room_id'         => $do->room_id
 			);
 		}
-		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
+		$sql = 'SELECT room_device.room_device_id, room_device.room_id,
 		               room_device.device_id, optiondef.option_id,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr, room_device_option.addr_plus,
@@ -1189,7 +1197,7 @@ class User {
 			'ListApp'      => $listApps
 		);
 	}
-	
+
 	/**
 	 * Return all visible MasterCommand elements
 	 */
@@ -1235,7 +1243,7 @@ class User {
 				'ListApp'      => $listApps
 		);
 	}
-	
+
 	/**
 	 * Reset error on a device
 	 * @param int $room_device_id project device id
@@ -1244,7 +1252,7 @@ class User {
 	function mcResetError($room_device_id, $option_id) {
 		return null;
 	}
-	
+
 	/**
 	 * Connection to a protected popup
 	 * @param int $room_device_id device id
@@ -1266,7 +1274,7 @@ class User {
 			return 1;
 		}
 	}
-	
+
 	/**
 	 * Get all information of an installation for an user
 	 * @param int $userid user id, current user by default
@@ -1335,7 +1343,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Hide or Display a device
 	 * @param int $userid user id
@@ -1403,7 +1411,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * Hide or Display a room
 	 * @param int $userid user id
@@ -1460,8 +1468,8 @@ class User {
 					$sql = 'UPDATE room
 					        JOIN mcuser_room ON mcuser_room.room_id = room.room_id
 					        SET room_order = room_order - 1
-					        WHERE room.floor =:floor AND 
-					              mcuser_room.mcuser_id=:user_id AND 
+					        WHERE room.floor =:floor AND
+					              mcuser_room.mcuser_id=:user_id AND
 					              room_order > :room_order';
 					$req = $link->prepare($sql);
 					$req->bindValue(':floor', $do->floor, PDO::PARAM_INT);
@@ -1472,7 +1480,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * Hide or Display a floor
 	 * @param int $userid user id
@@ -1535,7 +1543,7 @@ class User {
 			}
 		}
 	}
-	
+
 	/**
 	 * List devices information for an user
 	 * @param number $userid user id (not used)
@@ -1563,7 +1571,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Modify device permissions for an user
 	 * @param int $iduser user id
@@ -1573,7 +1581,7 @@ class User {
 	function confUserPermissionDevice($iduser, $deviceid, $status){
 		return null;
 	}
-	
+
 	/**
 	 * List rooms information
 	 * @param number $userid user id (not used)
@@ -1600,7 +1608,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Modify room permissions for an user
 	 * @param int $iduser user id
@@ -1610,7 +1618,7 @@ class User {
 	function confUserPermissionRoom($iduser, $roomid, $status){
 		return null;
 	}
-	
+
 	/**
 	 * Modify floor permissions for an user
 	 * @param int $iduser user id
@@ -1620,9 +1628,9 @@ class User {
 	function confUserPermissionFloor($iduser, $floorid, $status){
 		return null;
 	}
-	
+
 	/*** User customisation ***/
-	
+
 	/**
 	 * Set a background image for a widget
 	 * @param int $iddevice device id
@@ -1641,7 +1649,7 @@ class User {
 		$req->bindValue(':iddevice', $iddevice, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Set a background image for a room
 	 * @param int $idroom room id
@@ -1660,7 +1668,7 @@ class User {
 		$req->bindValue(':idroom', $idroom, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Update background color
 	 * @param string $color color html code
@@ -1677,7 +1685,7 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Update menu color
 	 * @param string $color color html code
@@ -1694,9 +1702,9 @@ class User {
 		$req->bindValue(':user_id', $userid, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/*** Smartcommand ***/
-	
+
 	/**
 	 * Search a Smartcommand
 	 * @param string $smartcmd_name Smartcommand name
@@ -1720,7 +1728,7 @@ class User {
 		}
 		return $do->smartcommand_id;
 	}
-	
+
 	/**
 	 * Get Smartcommand information
 	 * @param int $smartcmd_id Smartcommand id
@@ -1746,7 +1754,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * Count elements of a Smartcommand
 	 * @param int $idsmartcmd Smartcommand id
@@ -1762,7 +1770,7 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do->nb;
 	}
-	
+
 	/**
 	 * List all Smartcommands
 	 */
@@ -1790,7 +1798,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Get Smartcommand information
 	 * @param int $id_smartcmd Smartcommand id
@@ -1860,7 +1868,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Create a new Smartcommand
 	 * @param string $smartcmd_name Smartcommand name
@@ -1885,7 +1893,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $link->lastInsertId();
 	}
-	
+
 	/**
 	 * Rename a Smartcommand
 	 * @param int $smartcmd_id Smartcommand id
@@ -1905,7 +1913,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $smartcmd_id;
 	}
-	
+
 	/**
 	 * Add a new element to a Smartcommand
 	 * @param int $idsmartcmd Smartcommand id
@@ -1927,7 +1935,7 @@ class User {
 			$req->bindValue(':smartcommand_id', $idsmartcmd, PDO::PARAM_INT);
 			$req->execute() or die (error_log(serialize($req->errorInfo())));
 		}
-		
+
 		$sql = 'INSERT INTO smartcommand_elems
 		        (smartcommand_id, exec_id, room_device_id, option_id, option_value, time_lapse)
 		        VALUES
@@ -1941,7 +1949,7 @@ class User {
 		$req->bindValue(':time_lapse', $timelapse, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Update the option value of a Smartcommand
 	 * @param int $idsmartcmd Smartcommand id
@@ -1953,7 +1961,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 		$sql = 'UPDATE smartcommand_elems
 		        SET option_value=:option_val
-		        WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND 
+		        WHERE smartcommand_id=:smartcmd_id AND exec_id=:exec_id AND
 		              option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':option_val', $optionval, PDO::PARAM_STR);
@@ -1962,7 +1970,7 @@ class User {
 		$req->bindValue(':option_id', $id_option, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Change element order of a Smartcommand
 	 * @param int $smartcmd_id Smartcommand id
@@ -2010,7 +2018,7 @@ class User {
 		$req->bindValue(':smartcommand_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Delete a Smartcommand
 	 * @param id $smartcmd_id Smartcommand id
@@ -2023,7 +2031,7 @@ class User {
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Remove an element from a Smartcommand
 	 * @param int $smartcmd_id Smartcommand id
@@ -2045,7 +2053,7 @@ class User {
 		$req->bindValue(':exec_id', $exec_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Modify the delay before the element launching
 	 * @param int $smartcmd_id Smartcommand id
@@ -2063,7 +2071,7 @@ class User {
 		$req->bindValue(':delay', $delay, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Link a Smartcommand to a room
 	 * @param int $smartcmd_id Smartcommand id
@@ -2082,9 +2090,9 @@ class User {
 		$req->bindValue(':smartcmd_id', $smartcmd_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/*** Trigger Events ***/
-	
+
 	/**
 	 * Search a Trigger
 	 * @param string $trigger_name Trigger name
@@ -2108,7 +2116,7 @@ class User {
 		}
 		return $do->id_trigger;
 	}
-	
+
 	/**
 	 * Get Trigger information
 	 * @param int $trigger_id Trigger id
@@ -2130,7 +2138,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * Return number of conditions in the trigger
 	 * @param int $trigger_id trigger id
@@ -2146,7 +2154,7 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do->nb;
 	}
-	
+
 	/**
 	 * List user's Triggers
 	 */
@@ -2168,7 +2176,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Get Trigger elements
 	 * @param int $id_trigger Trigger id
@@ -2239,7 +2247,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Create a new trigger
 	 * @param string $trigger_name trigger name
@@ -2252,7 +2260,7 @@ class User {
 		$link = Link::get_link('domoleaf');
 		$sql = 'INSERT INTO trigger_events_list
 		        (trigger_name, mcuser_id)
-				VALUES 
+				VALUES
 				(:trigger_name, :user_id)';
 		$req = $link->prepare($sql);
 		$req->bindValue(':trigger_name', $trigger_name, PDO::PARAM_STR);
@@ -2261,7 +2269,7 @@ class User {
 		$this->udpateTriggersList();
 		return $link->lastInsertId();
 	}
-	
+
 	/**
 	 * Rename a trigger
 	 * @param int $trigger_id trigger id
@@ -2281,7 +2289,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $trigger_id;
 	}
-	
+
 	/**
 	 * Add a new condition to a Trigger
 	 * @param int $idtrigger Trigger id
@@ -2317,7 +2325,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
 	}
-	
+
 	/**
 	 * Get informations for an option in a trigger
 	 * @param int $idtrigger Trigger id
@@ -2335,7 +2343,7 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do;
 	}
-	
+
 	/**
 	 * Update the required option value of a Trigger
 	 * @param int $idtrigger Trigger id
@@ -2358,7 +2366,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
 	}
-	
+
 	/**
 	 * Change the order of conditions in a Trigger
 	 * @param int $id_trigger Trigger id
@@ -2407,7 +2415,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
 	}
-	
+
 	/**
 	 * Delete Trigger
 	 * @param int $trigger_id Trigger id
@@ -2421,7 +2429,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
 	}
-	
+
 	/**
 	 * Delete a condition on a Trigger
 	 * @param int $trigger_id Trigger id
@@ -2444,7 +2452,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateTriggersList();
 	}
-	
+
 	/**
 	 * Ask to the master daemon to update the Trigger list
 	 */
@@ -2453,8 +2461,8 @@ class User {
 		$socket->send('triggers_list_update');
 	}
 
-	/*** Schedules ***/ 
-	
+	/*** Schedules ***/
+
 	/**
 	 * Search a Schedule
 	 * @param string $schedule_name Schedule name
@@ -2478,7 +2486,7 @@ class User {
 		}
 		return $do->id_schedule;
 	}
-	
+
 	/**
 	 * Get Schedule information
 	 * @param int $schedule_id Schedule id
@@ -2500,7 +2508,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * List user's Schedules
 	 */
@@ -2522,7 +2530,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Update Schedule date
 	 * @param int $idschedule Schedule id
@@ -2563,7 +2571,7 @@ class User {
 			$mins = join($arrayMins);
 		}
 		$sql = 'UPDATE trigger_schedules_list
-		        SET months=:months, weekdays=:weekdays, days=:days, 
+		        SET months=:months, weekdays=:weekdays, days=:days,
 		            hours=:hours, mins=:mins
 		        WHERE id_schedule=:schedule_id AND mcuser_id = :user_id';
 		$req = $link->prepare($sql);
@@ -2577,7 +2585,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateSchedulesList();
 	}
-	
+
 	/**
 	 * Get Schedule information
 	 * @param int $idschedule Schedule id
@@ -2622,7 +2630,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * Modify Schedule name
 	 * @param int $schedule_id Schedule id
@@ -2642,7 +2650,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $schedule_id;
 	}
-	
+
 	/**
 	 * Create a new Schedule
 	 * @param string $schedule_name Schedule name
@@ -2669,7 +2677,7 @@ class User {
 		$this->udpateSchedulesList();
 		return $link->lastInsertId();
 	}
-	
+
 	/**
 	 * Delete a Schedule
 	 * @param int $schedule_id Schedule id
@@ -2683,7 +2691,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateSchedulesList();
 	}
-	
+
 	/**
 	 * Ask to the master daemon to reload all Schedules
 	 */
@@ -2691,9 +2699,9 @@ class User {
 		$socket = new Socket();
 		$socket->send('schedules_list_update');
 	}
-	
+
 	/*** Scenarios ***/
-	
+
 	/**
 	 * Search a scenario
 	 * @param string $scenario_name scenario name
@@ -2714,7 +2722,7 @@ class User {
 		$do = $req->fetch(PDO::FETCH_OBJ);
 		return $do->id_scenario;
 	}
-	
+
 	/**
 	 * Get scenario information
 	 * @param int $scenario_id scenario id
@@ -2736,7 +2744,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * List all current user's scenarios
 	 */
@@ -2767,7 +2775,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Get scenario information
 	 * @param int $idscenario scenario id
@@ -2795,7 +2803,7 @@ class User {
 		}
 		return $do;
 	}
-	
+
 	/**
 	 * Create a new scenario
 	 * @param string $scenario_name scenario's name
@@ -2815,7 +2823,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $link->lastInsertId();
 	}
-	
+
 	/**
 	 * Activate/Desactivate a scenario
 	 * @param int $scenario_id scenario id
@@ -2832,7 +2840,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateScenariosList();
 	}
-	
+
 	/**
 	 * Attribute a smartcommand to a scenario
 	 * @param int $scenario_id scenario id
@@ -2849,7 +2857,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateScenariosList();
 	}
-	
+
 	/**
 	 * Set a trigger for a scenario
 	 * @param int $scenario_id scenario id
@@ -2869,7 +2877,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateScenariosList();
 	}
-	
+
 	/**
 	 * Set a schedule for a scenario
 	 * @param int $scenario_id scenario id
@@ -2889,7 +2897,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateScenariosList();
 	}
-	
+
 	/**
 	 * Change scenario name
 	 * @param int $scenario_id scenario id
@@ -2909,7 +2917,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		return $scenario_id;
 	}
-	
+
 	/**
 	 * Set a scenario as completed
 	 * @param int $scenario_id scenario id
@@ -2923,7 +2931,7 @@ class User {
 		$req->bindValue(':scenario_id', $scenario_id, PDO::PARAM_INT);
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 	}
-	
+
 	/**
 	 * Delete a scenario
 	 * @param int $scenario_id scenario id
@@ -2937,7 +2945,7 @@ class User {
 		$req->execute() or die (error_log(serialize($req->errorInfo())));
 		$this->udpateScenariosList();
 	}
-	
+
 	/**
 	 * Ask to the master daemon to update the scenarios list
 	 */
@@ -2947,9 +2955,9 @@ class User {
 		$socket = new Socket();
 		$socket->send('scenarios_list_update');
 	}
-	
+
 	/*** KNX action ***/
-	
+
 	/**
 	 * Launch a KNX write long (> 1bit)
 	 * @param int $daemon daemon id
@@ -2959,7 +2967,7 @@ class User {
 	function knx_write_l($daemon, $addr, $value=0){
 		return null;
 	}
-	
+
 	/**
 	 * Launch a KNX write short (1bit)
 	 * @param int $daemon daemon id
@@ -2969,40 +2977,40 @@ class User {
 	function knx_write_s($daemon, $addr, $value=0){
 		return null;
 	}
-	
+
 	/**
 	 * Launch a KNX read
 	 * @param int $daemon daemon id
 	 * @param string $addr KNX address
 	 */
 	function knx_read($daemon, $addr){
-		return null;	
+		return null;
 	}
-	
+
 	/*** KNX log ***/
-	
+
 	/**
 	 * List all KNX physical address in the logs
 	 */
 	function confKnxAddrList(){
 		return null;
 	}
-	
+
 
 	/*** Backup Database ***/
-	
+
 	/**
 	 * List local Database backups
 	 */
 	function confDbListLocal(){
 		return NULL;
 	}
-	
+
 	/**
 	 * Create a local backup of the Database
 	 */
 	function confDbCreateLocal(){}
-	
+
 	/**
 	 * Delete a backup on an USB key
 	 * @param int $filename backup creation timestamp
@@ -3010,7 +3018,7 @@ class User {
 	function confDbRemoveUsb($filename){
 		return NULL;
 	}
-	
+
 	/**
 	 * Restore a backup on an USB key
 	 * @param int $filename backup creation timestamp
@@ -3018,48 +3026,48 @@ class User {
 	function confDbRestoreUsb($filename){
 		return NULL;
 	}
-	
+
 	/**
 	 * Check if an USB key is connected to the Box
 	 */
 	function confDbCheckUsb(){
 		return NULL;
 	}
-	
+
 	/**
 	 * List all backups on the USB key
 	 */
 	function confDbListUsb(){
 		return NULL;
 	}
-	
+
 	/**
 	 * Create a backup on the USB key
 	 */
 	function confDbCreateUsb(){}
-	
+
 	/**
 	 * Delete a local backup
 	 * @param int $filename backup creation timestamp
 	 */
 	function confDbRemoveLocal($filename){}
-	
+
 	/**
 	 * Restore a local backup
 	 * @param int $filename backup creation timestamp
 	 */
 	function confDbRestoreLocal($filename){}
-	
+
 	/*** Optiondef ***/
-	
+
 	/**
 	 * List all available options
 	 */
 	function confOptionList(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		$sql = 'SELECT option_id, 
-		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name 
+		$sql = 'SELECT option_id,
+		               if(name'.$this->getLanguage().' = "", name, name'.$this->getLanguage().') as name
 		        FROM optiondef
 		        ORDER BY name'.$this->getLanguage();
 		$req = $link->prepare($sql);
@@ -3069,9 +3077,9 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/*** Room_device_option ***/
-	
+
 	/**
 	 * List the used option units by project device and option
 	 */
@@ -3090,7 +3098,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * List available options for a project device
 	 * @param number $iddevice project device id
@@ -3098,9 +3106,9 @@ class User {
 	function confOptionDptList($iddevice = 0){
 		return null;
 	}
-	
+
 	/*** Updates ***/
-	
+
 	/**
 	 * Check if an update is available for the Domoleaf Software
 	 */
@@ -3108,7 +3116,7 @@ class User {
 		$socket = new Socket();
 		$socket->send('check_updates');
 	}
-	
+
 	/**
 	 * Update the Domoleaf Software
 	 */
@@ -3116,18 +3124,18 @@ class User {
 		$socket = new Socket();
 		$socket->send('update');
 	}
-	
-	
+
+
 	/*** Master command ***/
-	
+
 	/**
 	 * List all devices
 	 */
 	function mcDeviceAll(){
 		$link = Link::get_link('domoleaf');
 		$list = array();
-		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id, 
-		               room_device.device_id, room_device.name, addr, plus1, 
+		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id,
+		               room_device.device_id, room_device.name, addr, plus1,
 		               plus2, plus3, device.application_id
 		        FROM room_device
 		        JOIN device ON room_device.device_id = device.device_id
@@ -3149,8 +3157,8 @@ class User {
 				'device_opt'    => array()
 			);
 		}
-		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               room_device.device_id, 
+		$sql = 'SELECT room_device.room_device_id, room_device.room_id,
+		               room_device.device_id,
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr_plus, room_device_option.opt_value
@@ -3171,7 +3179,7 @@ class User {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Return all device information for display
 	 * @param int $roomdeviceid project device id
@@ -3181,8 +3189,8 @@ class User {
 		if(empty($roomdeviceid)){
 			return null;
 		}
-		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id, 
-		               room_device.device_id, room_device.name, addr, plus1, 
+		$sql = 'SELECT room_device_id, room_device.protocol_id, room_id,
+		               room_device.device_id, room_device.name, addr, plus1,
 		               plus2, plus3, device.application_id
 		        FROM room_device
 		        JOIN device ON room_device.device_id = device.device_id
@@ -3207,15 +3215,15 @@ class User {
 				'mdp'           => $do->plus3,
 				'device_opt'    => array()
 		);
-		$sql = 'SELECT room_device.room_device_id, room_device.room_id, 
-		               room_device.device_id, 
+		$sql = 'SELECT room_device.room_device_id, room_device.room_id,
+		               room_device.device_id,
 		               optiondef.option_id, room_device_option.addr,
 		               if(optiondef.name'.$this->getLanguage().' = "", optiondef.name, optiondef.name'.$this->getLanguage().') as name,
 		               room_device_option.addr_plus, room_device_option.opt_value
 		        FROM room_device
 		        JOIN room_device_option ON room_device_option.room_device_id = room_device.room_device_id
 		        JOIN optiondef ON room_device_option.option_id = optiondef.option_id
-		        WHERE room_device.room_device_id=:room_device_id AND 
+		        WHERE room_device.room_device_id=:room_device_id AND
 		              room_device_option.status = 1';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $roomdeviceid, PDO::PARAM_INT);
@@ -3231,7 +3239,7 @@ class User {
 		}
 		return $info;
 	}
-	
+
 	/**
 	 * Check if access to device is allowed
 	 * @param int $iddevice device id
@@ -3252,7 +3260,7 @@ class User {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Send an action request to the master daemon
 	 * @param int $iddevice project device id
@@ -3261,13 +3269,13 @@ class User {
 	 */
 	function mcAction($iddevice, $value, $optionid){
 		$link = Link::get_link('domoleaf');
-		$sql = 'SELECT device_allowed, room_device_option.addr_plus, 
+		$sql = 'SELECT device_allowed, room_device_option.addr_plus,
 		               room_device.device_id
 		        FROM mcuser_device
 		        JOIN room_device_option ON mcuser_device.room_device_id=room_device_option.room_device_id
 		        JOIN room_device ON room_device.room_device_id=room_device_option.room_device_id
-		        WHERE mcuser_id=:user_id AND 
-		              mcuser_device.room_device_id=:room_device_id AND 
+		        WHERE mcuser_id=:user_id AND
+		              mcuser_device.room_device_id=:room_device_id AND
 		              option_id=:option_id';
 		$req = $link->prepare($sql);
 		$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
@@ -3283,7 +3291,7 @@ class User {
 			}
 			$sql ='UPDATE room_device_option
 			       SET opt_value=:opt_value
-			       WHERE room_device_id=:room_device_id AND 
+			       WHERE room_device_id=:room_device_id AND
 			             option_id=:option_id';
 			$req = $link->prepare($sql);
 			$req->bindValue(':room_device_id', $iddevice, PDO::PARAM_INT);
@@ -3299,7 +3307,7 @@ class User {
 			$socket->send('send_to_device', $data);
 		}
 	}
-	
+
 	/**
 	 * Get all information for the display interface
 	 */
@@ -3351,7 +3359,7 @@ class User {
 		apcu_store('mcReturn_'.$this->getId(), serialize($list), 1);
 		return $list;
 	}
-	
+
 	/**
 	 * Send an action to a camera
 	 * @param int $iddevice project device id
@@ -3371,7 +3379,7 @@ class User {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param int $iddevice device id
 	 * @param int $optionid option id
 	 * @param int $val Temperature value
@@ -3385,7 +3393,7 @@ class User {
 		);
 		$socket->send('send_to_device', $data);
 	}
-	
+
 	/**
 	 * Launch a Smart Command
 	 * @param int $smartcmd_id the Smart Command ID
