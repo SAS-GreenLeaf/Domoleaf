@@ -46,6 +46,16 @@ msgstr ""
 msgid "Close"
 msgstr "Fermer"
 
+#: popup/popup_import_project_file.php
+msgid "Choose a project file to import"
+msgstr "Choisir un fichier projet à importer"
+msgid "No file selected"
+msgstr "Aucun fichier selectionné"
+
+#: include/conf_installation.php:35
+msgid "Import project file"
+msgstr "Importer un fichier de projet"
+
 #: popup/popup_camera_view.php:93 popup/popup_new_daemon.php:61
 #: popup/popup_new_user.php:9 form/form_conf_alert_error.php:9
 #: form/form_conf_alert_error.php:16 include/signin.php:40

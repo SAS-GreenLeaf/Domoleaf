@@ -29,7 +29,13 @@ echo '
 				</ul>';
 			}
 		echo '
-		</div><br/><br/>';
+		</div>
+		<div class="btn-group btn-group-greenleaf block-left">
+		     <button type="button" class="btn btn-primary" onclick="PopupImportProjectFile()">
+		     	     <span class="glyphicon glyphicon-share" aria-hidden="true"></span> '._('Import project file').'
+		     </button>
+		</div>
+		<br/><br/>';
 		foreach ($roomlist as $elem) {
 			echo '
 			<table id="table-'.$elem['id'].'" class="table table-bordered table-striped table-condensed">
@@ -83,6 +89,19 @@ echo '
 $(document).ready(function(){
 	activateMenuElem(\'install\');
 });
+
+function PopupImportProjectFile() {
+	 $.ajax({
+		type: "GET",
+		url: "/templates/'.TEMPLATE.'/popup/popup_import_project_file.php",
+		success: function (msg) {
+			 BootstrapDialog.show({
+				title: "'._('Import project file').'",
+				message: msg
+			});
+		}
+	 });
+}
 
 function PopupRenameFloor(idfloor){
 		

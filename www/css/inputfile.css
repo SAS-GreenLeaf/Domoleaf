@@ -1,0 +1,17 @@
+/* styles de base si JS est activé */
+.js .input-file-container {
+  position: relative;
+  margin-bottom: 1%;
+}
+.js .input-file-trigger {
+  color: #fff;
+  cursor: pointer;
+}
+.js .input-file {
+  position: absolute;
+  top: 0; left: 0;
+  width: 225px;
+  padding: 14px 0;
+  opacity: 0;
+  cursor: pointer;
+}
